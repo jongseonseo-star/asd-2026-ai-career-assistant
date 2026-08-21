@@ -1,0 +1,8 @@
+name: asd-2026-ai-career-assistant
+
+# Services will be added incrementally by each feature owner.
+services: {}
+
+networks:
+  career-assistant-network:
+    name: career-assistant-network

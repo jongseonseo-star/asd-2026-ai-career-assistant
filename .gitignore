@@ -1,0 +1,31 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Databases and runtime data
+*.db
+*.sqlite
+*.sqlite3
+data/
+logs/
+
+# IDE and operating system
+.DS_Store
+.vscode/
+.idea/
+
+# Temporary and generated files
+tmp/
+dist/
+build/
+*.log
