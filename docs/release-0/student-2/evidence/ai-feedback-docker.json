@@ -1,0 +1,13 @@
+{
+    "context_summary": {
+        "job_description_supplied": true,
+        "profile_records": 1,
+        "resume_records": 1,
+        "skill_records": 2
+    },
+    "feedback": "Strengths\n- Proficient in Python with 2 years of experience.\n- Experienced with Flask and REST API.\n- Has a project experience with SQLite.\n\nSkill Gaps\n- Docker experience is not demonstrated by candidate evidence.\n- Automated testing experience is not demonstrated by candidate evidence.\n- Cloud deployment experience is not demonstrated by candidate evidence.\n\nRecommended Actions\n- Take online courses or attend workshops to learn Docker.\n- Participate in coding challenges or projects to gain automated testing experience.\n- Research and explore cloud deployment platforms to gain hands-on experience.\n\nInformation Missing\n- Employment history\n- Education\n- Certifications",
+    "grounding": "Candidate data was retrieved through the Student 2 Database API.",
+    "model": "llama3.1:8b",
+    "profile_id": 1,
+    "resume_id": 1
+}

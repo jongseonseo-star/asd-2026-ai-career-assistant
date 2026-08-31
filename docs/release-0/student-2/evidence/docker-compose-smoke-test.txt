@@ -1,0 +1,29 @@
+Student 2 Release 0 - Docker Compose Validation
+Captured UTC: 2026-08-31T14:44:45Z
+
+=== Docker Compose Services ===
+NAME                                            IMAGE                         COMMAND           SERVICE              CREATED          STATUS                    PORTS
+student-2-resume-profile-student-2-backend-1    student-2-backend:release0    "python app.py"   student-2-backend    12 minutes ago   Up 12 minutes (healthy)   0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp
+student-2-resume-profile-student-2-database-1   student-2-database:release0   "python app.py"   student-2-database   12 minutes ago   Up 12 minutes (healthy)   0.0.0.0:5002->5002/tcp, [::]:5002->5002/tcp
+student-2-resume-profile-student-2-frontend-1   student-2-frontend:release0   "python app.py"   student-2-frontend   12 minutes ago   Up 11 minutes (healthy)   0.0.0.0:8082->8082/tcp, [::]:8082->8082/tcp
+
+=== Database Health ===
+{"service":"student-2-database","status":"healthy"}
+
+
+=== Backend Readiness ===
+{"dependencies":{"database":{"service":"student-2-database","status":"healthy"}},"service":"student-2-backend","status":"ready"}
+
+
+=== Frontend Readiness ===
+{"backend":{"dependencies":{"database":{"service":"student-2-database","status":"healthy"}},"service":"student-2-backend","status":"ready"},"service":"student-2-frontend","status":"ready"}
+
+
+=== Ollama AI Status ===
+{"configured_model":"llama3.1:8b","configured_model_available":true,"installed_models":["llama3.1:8b","qwen2.5:0.5b"],"runtime":"Ollama","status":"available"}
+
+
+=== Seed Record Counts ===
+Profiles: 10
+Resumes: 10
+Skills: 20
