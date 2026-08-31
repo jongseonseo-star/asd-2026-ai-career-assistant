@@ -1,0 +1,77 @@
+<section class="feature-card">
+    <div class="card-heading">
+        <div>
+            <p class="eyebrow">Entity 1</p>
+            <h3>Candidate Profiles</h3>
+        </div>
+        <span class="count-badge">{{ profiles|length }} records</span>
+    </div>
+
+    {% include "partials/_notice.html" %}
+
+    <details class="create-panel">
+        <summary>Create a candidate profile</summary>
+        <form
+            class="form-grid"
+            hx-post="/ui/profiles"
+            hx-target="#profiles-section"
+            hx-swap="innerHTML"
+            hx-disabled-elt="find button">
+            <label>
+                <span>Full name</span>
+                <input name="full_name" maxlength="120" required placeholder="e.g. Jordan Smith">
+            </label>
+            <label>
+                <span>Email</span>
+                <input name="email" type="email" maxlength="254" required placeholder="jordan@example.com">
+            </label>
+            <label class="form-span-2">
+                <span>Target role</span>
+                <input name="target_role" maxlength="120" required placeholder="e.g. Backend Developer">
+            </label>
+            <label class="form-span-2">
+                <span>Career summary</span>
+                <textarea name="career_summary" rows="3" maxlength="3000" required placeholder="Summarise career goals and relevant background."></textarea>
+            </label>
+            <div class="form-actions form-span-2">
+                <button class="button button--primary" type="submit">Create Profile</button>
+                <span class="htmx-indicator mini-loader">Saving…</span>
+            </div>
+        </form>
+    </details>
+
+    <div class="record-grid record-grid--profiles">
+        {% for profile in profiles %}
+        <article class="record-card" id="profile-card-{{ profile.id }}">
+            <div class="record-card__topline">
+                <span class="record-id">Profile #{{ profile.id }}</span>
+                <span class="role-badge">{{ profile.target_role }}</span>
+            </div>
+            <h4>{{ profile.full_name }}</h4>
+            <a class="record-email" href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+            <p>{{ profile.career_summary }}</p>
+            <div class="record-actions">
+                <button
+                    type="button"
+                    class="button button--secondary button--small"
+                    hx-get="/ui/profiles/{{ profile.id }}/edit"
+                    hx-target="#profile-card-{{ profile.id }}"
+                    hx-swap="outerHTML">
+                    Edit
+                </button>
+                <button
+                    type="button"
+                    class="button button--danger button--small"
+                    hx-delete="/ui/profiles/{{ profile.id }}"
+                    hx-target="#profiles-section"
+                    hx-swap="innerHTML"
+                    hx-confirm="Delete {{ profile.full_name }}? Related resumes and skills will also be removed.">
+                    Delete
+                </button>
+            </div>
+        </article>
+        {% else %}
+        <p class="empty-state">No candidate profiles are available.</p>
+        {% endfor %}
+    </div>
+</section>

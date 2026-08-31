@@ -1,0 +1,100 @@
+<section class="feature-card">
+    <div class="card-heading">
+        <div>
+            <p class="eyebrow">Entity 3</p>
+            <h3>Candidate Skills</h3>
+        </div>
+        <span class="count-badge">{{ skills|length }} records</span>
+    </div>
+
+    {% include "partials/_notice.html" %}
+
+    <details class="create-panel">
+        <summary>Add a candidate skill</summary>
+        {% if profiles %}
+        <form
+            class="form-grid"
+            hx-post="/ui/skills"
+            hx-target="#skills-section"
+            hx-swap="innerHTML"
+            hx-disabled-elt="find button">
+            <label>
+                <span>Candidate profile</span>
+                <select name="candidate_profile_id" required>
+                    {% for profile in profiles %}
+                    <option value="{{ profile.id }}">#{{ profile.id }} · {{ profile.full_name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Skill name</span>
+                <input name="skill_name" maxlength="120" required placeholder="e.g. Docker">
+            </label>
+            <label>
+                <span>Proficiency</span>
+                <select name="proficiency_level" required>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate" selected>Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                    <option value="Expert">Expert</option>
+                </select>
+            </label>
+            <label>
+                <span>Years of experience</span>
+                <input name="years_experience" type="number" min="0" step="0.5" value="0" required>
+            </label>
+            <div class="form-actions form-span-2">
+                <button class="button button--primary" type="submit">Add Skill</button>
+                <span class="htmx-indicator mini-loader">Saving…</span>
+            </div>
+        </form>
+        {% else %}
+        <div class="notice notice--error">Create a candidate profile before adding a skill.</div>
+        {% endif %}
+    </details>
+
+    <div class="skill-table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Skill</th>
+                    <th>Level</th>
+                    <th>Experience</th>
+                    <th><span class="sr-only">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for skill in skills %}
+                <tr id="skill-row-{{ skill.id }}">
+                    <td>{{ profile_map.get(skill.candidate_profile_id, 'Unknown') }}</td>
+                    <td><strong>{{ skill.skill_name }}</strong></td>
+                    <td><span class="level-badge level-badge--{{ skill.proficiency_level|lower }}">{{ skill.proficiency_level }}</span></td>
+                    <td>{{ skill.years_experience }} years</td>
+                    <td class="table-actions">
+                        <button
+                            type="button"
+                            class="button button--secondary button--small"
+                            hx-get="/ui/skills/{{ skill.id }}/edit"
+                            hx-target="#skill-row-{{ skill.id }}"
+                            hx-swap="outerHTML">
+                            Edit
+                        </button>
+                        <button
+                            type="button"
+                            class="button button--danger button--small"
+                            hx-delete="/ui/skills/{{ skill.id }}"
+                            hx-target="#skills-section"
+                            hx-swap="innerHTML"
+                            hx-confirm="Delete {{ skill.skill_name }}?">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" class="empty-state">No skills are available.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>

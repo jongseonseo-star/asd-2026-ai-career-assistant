@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Student 2 Resume and Profile Management microservice">
+    <title>Resume &amp; Profile Management | AI Career Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script
+        src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
+        integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
+        crossorigin="anonymous">
+    </script>
+    <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero__content">
+            <p class="eyebrow">AI Career Preparation &amp; Job Application Assistant</p>
+            <h1>Resume &amp; Profile Management</h1>
+            <p class="hero__summary">
+                Manage candidate profiles, resumes and skills, then request
+                evidence-based feedback through the local AI-Mode workflow.
+            </p>
+            <div class="architecture-chip" aria-label="Request flow">
+                Frontend → Backend/API → Database API &amp; Ollama
+            </div>
+        </div>
+
+        <aside
+            id="service-status"
+            class="status-shell"
+            hx-get="/ui/status"
+            hx-trigger="load, every 30s"
+            hx-swap="innerHTML"
+            aria-live="polite">
+            <div class="loading-line">Checking services…</div>
+        </aside>
+    </header>
+
+    <main class="page-shell">
+        <nav class="tab-list" role="tablist" aria-label="Feature modes">
+            <button
+                type="button"
+                class="tab-button is-active"
+                role="tab"
+                aria-selected="true"
+                aria-controls="normal-ui-panel"
+                data-tab-target="normal-ui-panel">
+                Normal UI
+            </button>
+            <button
+                type="button"
+                class="tab-button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="ai-mode-panel"
+                data-tab-target="ai-mode-panel">
+                AI Mode
+            </button>
+        </nav>
+
+        <section
+            id="normal-ui-panel"
+            class="tab-panel is-active"
+            role="tabpanel">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">CRUD Operations</p>
+                    <h2>Candidate Data Management</h2>
+                </div>
+                <p>
+                    Every action passes through the Backend/API microservice.
+                    The frontend never accesses SQLite directly.
+                </p>
+            </div>
+
+            <div
+                id="profiles-section"
+                hx-get="/ui/profiles"
+                hx-trigger="load"
+                hx-swap="innerHTML">
+                <div class="loading-card">Loading candidate profiles…</div>
+            </div>
+
+            <div
+                id="resumes-section"
+                hx-get="/ui/resumes"
+                hx-trigger="load, profileDataChanged from:body"
+                hx-swap="innerHTML">
+                <div class="loading-card">Loading resumes…</div>
+            </div>
+
+            <div
+                id="skills-section"
+                hx-get="/ui/skills"
+                hx-trigger="load, profileDataChanged from:body"
+                hx-swap="innerHTML">
+                <div class="loading-card">Loading candidate skills…</div>
+            </div>
+        </section>
+
+        <section
+            id="ai-mode-panel"
+            class="tab-panel"
+            role="tabpanel"
+            hidden>
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Local Agentic AI</p>
+                    <h2>AI Resume Feedback</h2>
+                </div>
+                <p>
+                    Candidate evidence is retrieved from the Database API and
+                    compared with the supplied job requirements by an approved
+                    local model through Ollama.
+                </p>
+            </div>
+
+            <div
+                id="ai-form-panel"
+                hx-get="/ui/ai/form"
+                hx-trigger="load, profileDataChanged from:body, resumeDataChanged from:body, skillDataChanged from:body"
+                hx-swap="innerHTML">
+                <div class="loading-card">Preparing AI Mode…</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <span>Student 2 · Tomohisa Tamao · Release 0</span>
+        <span>Backend: {{ backend_api_url }}</span>
+    </footer>
+</body>
+</html>

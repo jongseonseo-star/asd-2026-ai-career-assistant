@@ -1,0 +1,29 @@
+<div class="status-card">
+    <div class="status-card__header">
+        <span>Live service status</span>
+        <span class="status-dot {% if backend_ready and database_ready and ai_ready %}is-online{% else %}is-offline{% endif %}"></span>
+    </div>
+    <div class="status-grid">
+        <div>
+            <span class="status-label">Backend</span>
+            <strong class="status-value {% if backend_ready %}is-good{% else %}is-bad{% endif %}">
+                {% if backend_ready %}Ready{% else %}Unavailable{% endif %}
+            </strong>
+        </div>
+        <div>
+            <span class="status-label">Database</span>
+            <strong class="status-value {% if database_ready %}is-good{% else %}is-bad{% endif %}">
+                {% if database_ready %}Ready{% else %}Unavailable{% endif %}
+            </strong>
+        </div>
+        <div>
+            <span class="status-label">AI Model</span>
+            <strong class="status-value {% if ai_ready %}is-good{% else %}is-bad{% endif %}">
+                {{ model }}
+            </strong>
+        </div>
+    </div>
+    {% if status_message %}
+    <p class="status-message">{{ status_message }}</p>
+    {% endif %}
+</div>
