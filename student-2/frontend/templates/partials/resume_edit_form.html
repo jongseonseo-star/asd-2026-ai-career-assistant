@@ -1,0 +1,47 @@
+<article class="record-card record-card--editing" id="resume-card-{{ resume.id }}">
+    <div class="record-card__topline">
+        <span class="record-id">Editing Resume #{{ resume.id }}</span>
+        <span class="role-badge">Update</span>
+    </div>
+    <form
+        class="form-grid form-grid--compact"
+        hx-put="/ui/resumes/{{ resume.id }}"
+        hx-target="#resumes-section"
+        hx-swap="innerHTML"
+        hx-disabled-elt="find button">
+        <label>
+            <span>Candidate profile</span>
+            <select name="candidate_profile_id" required>
+                {% for profile in profiles %}
+                <option value="{{ profile.id }}" {% if profile.id == resume.candidate_profile_id %}selected{% endif %}>
+                    #{{ profile.id }} · {{ profile.full_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span>Resume title</span>
+            <input name="title" value="{{ resume.title }}" maxlength="200" required>
+        </label>
+        <label class="form-span-2">
+            <span>Resume content</span>
+            <textarea name="content" rows="6" maxlength="12000" required>{{ resume.content }}</textarea>
+        </label>
+        <label class="checkbox-label form-span-2">
+            <input name="is_primary" type="checkbox" value="1" {% if resume.is_primary %}checked{% endif %}>
+            <span>Set as primary resume</span>
+        </label>
+        <div class="form-actions form-span-2">
+            <button class="button button--primary button--small" type="submit">Save Changes</button>
+            <button
+                class="button button--ghost button--small"
+                type="button"
+                hx-get="/ui/resumes"
+                hx-target="#resumes-section"
+                hx-swap="innerHTML">
+                Cancel
+            </button>
+            <span class="htmx-indicator mini-loader">Updating…</span>
+        </div>
+    </form>
+</article>

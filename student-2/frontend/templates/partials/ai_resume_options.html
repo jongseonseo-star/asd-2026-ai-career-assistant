@@ -1,0 +1,17 @@
+<label>
+    <span>Resume</span>
+    {% if resumes %}
+    <select name="resume_id" required>
+        {% for resume in resumes %}
+        <option value="{{ resume.id }}">
+            #{{ resume.id }} · {{ resume.title }}{% if resume.is_primary %} · Primary{% endif %}
+        </option>
+        {% endfor %}
+    </select>
+    {% else %}
+    <select name="resume_id" required disabled>
+        <option value="">No resume available for this candidate</option>
+    </select>
+    {% endif %}
+    {% if error_message %}<small class="field-error">{{ error_message }}</small>{% endif %}
+</label>

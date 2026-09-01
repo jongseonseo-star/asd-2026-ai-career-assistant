@@ -1,0 +1,18 @@
+Return exactly these four headings in this order:
+
+Strengths
+- Up to three evidence-based bullet points.
+
+Skill Gaps
+- Up to three evidence-based bullet points.
+- If no job description is supplied, assess gaps only against the target role and say so.
+
+Recommended Actions
+- Up to three specific and realistic actions.
+
+Information Missing
+- List important missing evidence, or write "None identified from the supplied context."
+
+Use no more than 220 words.
+Do not use a markdown table.
+Do not add an introduction or conclusion outside the four headings.

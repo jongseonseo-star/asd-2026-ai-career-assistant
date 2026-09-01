@@ -1,0 +1,66 @@
+<section class="ai-workspace">
+    {% if profiles %}
+    <form
+        class="ai-form"
+        hx-post="/ui/ai/resume-feedback"
+        hx-target="#ai-result"
+        hx-swap="innerHTML"
+        hx-disabled-elt="find button"
+        hx-indicator="#ai-loader">
+        <div class="form-grid">
+            <label>
+                <span>Candidate profile</span>
+                <select
+                    name="profile_id"
+                    required
+                    hx-get="/ui/ai/resume-options"
+                    hx-target="#ai-resume-options"
+                    hx-swap="innerHTML"
+                    hx-include="this">
+                    {% for profile in profiles %}
+                    <option value="{{ profile.id }}" {% if profile.id == selected_profile_id %}selected{% endif %}>
+                        #{{ profile.id }} · {{ profile.full_name }} — {{ profile.target_role }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <div id="ai-resume-options">
+                {% include "partials/ai_resume_options.html" %}
+            </div>
+
+            <label class="form-span-2">
+                <span>Job description or requirements</span>
+                <textarea name="job_description" rows="8" maxlength="6000" required>We are looking for a junior software engineer with Python, Flask, REST API, Docker, automated testing and cloud deployment experience.</textarea>
+                <small>
+                    Job requirements are treated as comparison criteria, not as
+                    evidence about the candidate.
+                </small>
+            </label>
+        </div>
+
+        <div class="ai-actions">
+            <button class="button button--ai" type="submit">
+                Generate AI Feedback
+            </button>
+            <span id="ai-loader" class="htmx-indicator ai-loader">
+                Ollama is analysing grounded candidate evidence…
+            </span>
+        </div>
+    </form>
+
+    <div id="ai-result" class="ai-result" aria-live="polite">
+        <div class="ai-placeholder">
+            <span class="ai-placeholder__icon">AI</span>
+            <div>
+                <h3>Ready for analysis</h3>
+                <p>Select a profile and resume, then generate local AI feedback.</p>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="notice notice--error">
+        Create at least one candidate profile before using AI Mode.
+    </div>
+    {% endif %}
+</section>

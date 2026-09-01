@@ -1,0 +1,23 @@
+Analyse the selected candidate profile, resume, and candidate skills against the supplied job description.
+
+First determine what is actually supported by candidate evidence.
+
+Then compare that evidence with the job requirements.
+
+Keep these two concepts separate:
+
+CANDIDATE EVIDENCE
+= facts explicitly contained in candidate_profile, resume, or candidate_skills.
+
+JOB REQUIREMENTS
+= capabilities requested by the employer.
+
+A job requirement must NEVER be treated as candidate evidence.
+
+Identify:
+1. Evidence-based strengths.
+2. Requirements not demonstrated by candidate evidence.
+3. Realistic actions to address those gaps.
+4. Important information that cannot be verified.
+
+Do not rewrite or modify stored candidate data.

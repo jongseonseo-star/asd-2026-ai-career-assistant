@@ -1,0 +1,56 @@
+{% if error_message %}
+<div class="notice notice--error ai-error" role="alert">
+    <strong>AI feedback failed.</strong>
+    <span>{{ error_message }}</span>
+</div>
+{% elif feedback %}
+<div class="ai-result__header">
+    <div>
+        <p class="eyebrow">Grounded Result</p>
+        <h3>Resume Feedback</h3>
+    </div>
+    <span class="model-badge">{{ model }}</span>
+</div>
+
+<div class="feedback-grid">
+    {% for heading in ["Strengths", "Skill Gaps", "Recommended Actions", "Information Missing"] %}
+    <section class="feedback-card feedback-card--{{ heading|lower|replace(' ', '-') }}">
+        <h4>{{ heading }}</h4>
+        {% if feedback_sections.get(heading) %}
+        <ul>
+            {% for item in feedback_sections.get(heading) %}
+            <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No structured items were returned for this section.</p>
+        {% endif %}
+    </section>
+    {% endfor %}
+</div>
+
+<div class="evidence-strip">
+    <div>
+        <span>Profile records</span>
+        <strong>{{ context_summary.get("profile_records", 0) }}</strong>
+    </div>
+    <div>
+        <span>Resume records</span>
+        <strong>{{ context_summary.get("resume_records", 0) }}</strong>
+    </div>
+    <div>
+        <span>Skill records</span>
+        <strong>{{ context_summary.get("skill_records", 0) }}</strong>
+    </div>
+    <div>
+        <span>Job description</span>
+        <strong>{% if context_summary.get("job_description_supplied") %}Supplied{% else %}Not supplied{% endif %}</strong>
+    </div>
+</div>
+
+<p class="grounding-note">{{ grounding }}</p>
+<details class="raw-feedback">
+    <summary>View raw model response</summary>
+    <pre>{{ feedback }}</pre>
+</details>
+{% endif %}

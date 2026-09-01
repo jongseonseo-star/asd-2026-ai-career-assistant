@@ -1,0 +1,323 @@
+name: Student 2 - Build and Validate
+
+on:
+  push:
+    branches:
+      - main
+      - feature/student-2-resume-profile
+    paths:
+      - "student-2/**"
+      - ".github/workflows/student-2.yml"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "student-2/**"
+      - ".github/workflows/student-2.yml"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: student-2-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-student-2:
+    name: Build, smoke-test, and collect evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      COMPOSE_FILE: student-2/compose.local.yml
+      COMPOSE_PROJECT: student2-ci
+      REPORT_DIR: reports/student-2
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Prepare evidence directory
+        run: mkdir -p "$REPORT_DIR"
+
+      - name: Validate Python syntax
+        run: |
+          python -m py_compile student-2/database/init_db.py
+          python -m py_compile student-2/database/app.py
+          python -m py_compile student-2/backend/app.py
+          python -m py_compile student-2/frontend/app.py
+
+      - name: Validate Docker Compose configuration
+        run: |
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            config -q
+
+      - name: Build Student 2 Docker images
+        run: |
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            build
+
+      - name: Start Student 2 services
+        run: |
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            up -d
+
+      - name: Run retry-based smoke checks
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wait_for_url() {
+            local service_name="$1"
+            local url="$2"
+            local output_file="$3"
+            local attempts=8
+            local delay_seconds=2
+            local status_code=""
+
+            for attempt in $(seq 1 "$attempts"); do
+              status_code="$(
+                curl \
+                  --silent \
+                  --show-error \
+                  --output "$output_file" \
+                  --write-out "%{http_code}" \
+                  "$url" || true
+              )"
+
+              if [[ "$status_code" == "200" ]]; then
+                echo "$service_name is ready on attempt $attempt."
+                cat "$output_file"
+                echo
+                return 0
+              fi
+
+              echo \
+                "$service_name is not ready yet " \
+                "(HTTP ${status_code:-000}, attempt $attempt/$attempts)."
+
+              sleep "$delay_seconds"
+            done
+
+            echo "::error::$service_name did not become ready."
+            return 1
+          }
+
+          wait_for_url \
+            "Student 2 Database" \
+            "http://127.0.0.1:5002/health" \
+            "$REPORT_DIR/database-health.json"
+
+          wait_for_url \
+            "Student 2 Backend" \
+            "http://127.0.0.1:5001/ready" \
+            "$REPORT_DIR/backend-readiness.json"
+
+          wait_for_url \
+            "Student 2 Frontend" \
+            "http://127.0.0.1:8082/ready" \
+            "$REPORT_DIR/frontend-readiness.json"
+
+      - name: Validate seed records and API responses
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -fsS \
+            http://127.0.0.1:5001/api/v1/profiles \
+            > "$REPORT_DIR/profiles.json"
+
+          curl -fsS \
+            http://127.0.0.1:5001/api/v1/resumes \
+            > "$REPORT_DIR/resumes.json"
+
+          curl -fsS \
+            http://127.0.0.1:5001/api/v1/skills \
+            > "$REPORT_DIR/skills.json"
+
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          report_dir = Path(os.environ["REPORT_DIR"])
+
+          minimums = {
+              "profiles": 10,
+              "resumes": 10,
+              "skills": 10,
+          }
+
+          counts = {}
+
+          for resource, minimum in minimums.items():
+              file_path = report_dir / f"{resource}.json"
+              records = json.loads(file_path.read_text(encoding="utf-8"))
+
+              if not isinstance(records, list):
+                  raise SystemExit(
+                      f"{resource} endpoint did not return a JSON list."
+                  )
+
+              count = len(records)
+              counts[resource] = count
+
+              if count < minimum:
+                  raise SystemExit(
+                      f"{resource} has {count} records; "
+                      f"minimum required is {minimum}."
+                  )
+
+          output = report_dir / "seed-counts.json"
+          output.write_text(
+              json.dumps(counts, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          print(json.dumps(counts, indent=2))
+          PY
+
+      - name: Validate AI dependency status handling
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          status_code="$(
+            curl \
+              --silent \
+              --show-error \
+              --output "$REPORT_DIR/ai-status.json" \
+              --write-out "%{http_code}" \
+              http://127.0.0.1:5001/api/v1/ai/status || true
+          )"
+
+          echo "$status_code" > "$REPORT_DIR/ai-status-http-code.txt"
+
+          if [[ "$status_code" != "200" && "$status_code" != "503" ]]; then
+            echo "::error::Unexpected AI status HTTP code: $status_code"
+            cat "$REPORT_DIR/ai-status.json"
+            exit 1
+          fi
+
+          echo "AI status endpoint returned expected HTTP $status_code."
+          cat "$REPORT_DIR/ai-status.json"
+          echo
+
+      - name: Capture Compose status and logs
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "$REPORT_DIR"
+
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            ps --all \
+            > "$REPORT_DIR/compose-ps.txt" 2>&1 || true
+
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            logs --no-color \
+            > "$REPORT_DIR/compose-logs.txt" 2>&1 || true
+
+      - name: Create CI evidence summary
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          report_dir = Path(os.environ["REPORT_DIR"])
+          report_dir.mkdir(parents=True, exist_ok=True)
+
+          counts_path = report_dir / "seed-counts.json"
+          counts = {}
+
+          if counts_path.exists():
+              counts = json.loads(
+                  counts_path.read_text(encoding="utf-8")
+              )
+
+          report = {
+              "workflow": os.environ.get("GITHUB_WORKFLOW"),
+              "run_id": os.environ.get("GITHUB_RUN_ID"),
+              "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+              "run_url": os.environ.get("RUN_URL"),
+              "repository": os.environ.get("GITHUB_REPOSITORY"),
+              "commit_sha": os.environ.get("GITHUB_SHA"),
+              "ref_name": os.environ.get("GITHUB_REF_NAME"),
+              "event_name": os.environ.get("GITHUB_EVENT_NAME"),
+              "job_status": os.environ.get("JOB_STATUS"),
+              "generated_at_utc": datetime.now(
+                  timezone.utc
+              ).isoformat(),
+              "record_counts": counts,
+          }
+
+          (report_dir / "report.json").write_text(
+              json.dumps(report, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          markdown = f"""# Student 2 CI Evidence
+
+          - Workflow: {report['workflow']}
+          - Run ID: {report['run_id']}
+          - Run attempt: {report['run_attempt']}
+          - Commit SHA: {report['commit_sha']}
+          - Branch or ref: {report['ref_name']}
+          - Event: {report['event_name']}
+          - Job status: {report['job_status']}
+          - Generated at: {report['generated_at_utc']}
+          - Profiles: {counts.get('profiles', 'not recorded')}
+          - Resumes: {counts.get('resumes', 'not recorded')}
+          - Skills: {counts.get('skills', 'not recorded')}
+          """
+
+          (report_dir / "report.md").write_text(
+              markdown,
+              encoding="utf-8",
+          )
+
+          (report_dir / "run-view.md").write_text(
+              f"# GitHub Actions Run\n\n{report['run_url']}\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Tear down Student 2 services
+        if: always()
+        run: |
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            down -v --remove-orphans
+
+      - name: Upload Student 2 CI evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: student-2-ci-evidence-${{ github.run_id }}
+          path: reports/student-2/
+          if-no-files-found: error
+          retention-days: 14

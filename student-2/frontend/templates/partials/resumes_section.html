@@ -1,0 +1,85 @@
+<section class="feature-card">
+    <div class="card-heading">
+        <div>
+            <p class="eyebrow">Entity 2</p>
+            <h3>Resumes</h3>
+        </div>
+        <span class="count-badge">{{ resumes|length }} records</span>
+    </div>
+
+    {% include "partials/_notice.html" %}
+
+    <details class="create-panel">
+        <summary>Create a resume</summary>
+        {% if profiles %}
+        <form
+            class="form-grid"
+            hx-post="/ui/resumes"
+            hx-target="#resumes-section"
+            hx-swap="innerHTML"
+            hx-disabled-elt="find button">
+            <label>
+                <span>Candidate profile</span>
+                <select name="candidate_profile_id" required>
+                    {% for profile in profiles %}
+                    <option value="{{ profile.id }}">#{{ profile.id }} · {{ profile.full_name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Resume title</span>
+                <input name="title" maxlength="200" required placeholder="e.g. Backend Engineering Resume">
+            </label>
+            <label class="form-span-2">
+                <span>Resume content</span>
+                <textarea name="content" rows="5" maxlength="12000" required placeholder="Enter the candidate's evidence-based resume content."></textarea>
+            </label>
+            <label class="checkbox-label form-span-2">
+                <input name="is_primary" type="checkbox" value="1">
+                <span>Set as primary resume</span>
+            </label>
+            <div class="form-actions form-span-2">
+                <button class="button button--primary" type="submit">Create Resume</button>
+                <span class="htmx-indicator mini-loader">Saving…</span>
+            </div>
+        </form>
+        {% else %}
+        <div class="notice notice--error">Create a candidate profile before adding a resume.</div>
+        {% endif %}
+    </details>
+
+    <div class="record-grid">
+        {% for resume in resumes %}
+        <article class="record-card" id="resume-card-{{ resume.id }}">
+            <div class="record-card__topline">
+                <span class="record-id">Resume #{{ resume.id }}</span>
+                {% if resume.is_primary %}<span class="primary-badge">Primary</span>{% endif %}
+            </div>
+            <h4>{{ resume.title }}</h4>
+            <p class="record-owner">{{ profile_map.get(resume.candidate_profile_id, 'Unknown candidate') }}</p>
+            <p>{{ resume.content }}</p>
+            <div class="record-actions">
+                <button
+                    type="button"
+                    class="button button--secondary button--small"
+                    hx-get="/ui/resumes/{{ resume.id }}/edit"
+                    hx-target="#resume-card-{{ resume.id }}"
+                    hx-swap="outerHTML">
+                    Edit
+                </button>
+                <button
+                    type="button"
+                    class="button button--danger button--small"
+                    hx-delete="/ui/resumes/{{ resume.id }}"
+                    hx-target="#resumes-section"
+                    hx-swap="innerHTML"
+                    hx-confirm="Delete this resume?">
+                    Delete
+                </button>
+            </div>
+        </article>
+        {% else %}
+        <p class="empty-state">No resumes are available.</p>
+        {% endfor %}
+    </div>
+</section>

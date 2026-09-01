@@ -1,0 +1,49 @@
+<tr id="skill-row-{{ skill.id }}" class="editing-row">
+    <td colspan="5">
+        <form
+            class="form-grid form-grid--compact"
+            hx-put="/ui/skills/{{ skill.id }}"
+            hx-target="#skills-section"
+            hx-swap="innerHTML"
+            hx-disabled-elt="find button">
+            <label>
+                <span>Candidate profile</span>
+                <select name="candidate_profile_id" required>
+                    {% for profile in profiles %}
+                    <option value="{{ profile.id }}" {% if profile.id == skill.candidate_profile_id %}selected{% endif %}>
+                        #{{ profile.id }} · {{ profile.full_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Skill name</span>
+                <input name="skill_name" value="{{ skill.skill_name }}" maxlength="120" required>
+            </label>
+            <label>
+                <span>Proficiency</span>
+                <select name="proficiency_level" required>
+                    {% for level in ["Beginner", "Intermediate", "Advanced", "Expert"] %}
+                    <option value="{{ level }}" {% if level == skill.proficiency_level %}selected{% endif %}>{{ level }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Years of experience</span>
+                <input name="years_experience" type="number" min="0" step="0.5" value="{{ skill.years_experience }}" required>
+            </label>
+            <div class="form-actions form-span-2">
+                <button class="button button--primary button--small" type="submit">Save Changes</button>
+                <button
+                    class="button button--ghost button--small"
+                    type="button"
+                    hx-get="/ui/skills"
+                    hx-target="#skills-section"
+                    hx-swap="innerHTML">
+                    Cancel
+                </button>
+                <span class="htmx-indicator mini-loader">Updating…</span>
+            </div>
+        </form>
+    </td>
+</tr>
