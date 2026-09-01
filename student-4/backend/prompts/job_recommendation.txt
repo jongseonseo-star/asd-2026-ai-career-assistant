@@ -1,0 +1,10 @@
+Rank the supplied jobs against the candidate profile.
+
+Return the three strongest matches with:
+- job id
+- title
+- match reasons
+- gaps
+- a score out of 100
+
+Do not claim that the candidate is guaranteed employment.
