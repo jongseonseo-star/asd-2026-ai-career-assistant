@@ -1,10 +1,15 @@
 from __future__ import annotations
 
 import os
-from pathlib import Path
 import sqlite3
+import sys
+from pathlib import Path
 
 from flask import Flask, jsonify, request
+
+APP_DIR = Path(__file__).resolve().parent
+if str(APP_DIR) not in sys.path:
+    sys.path.insert(0, str(APP_DIR))
 
 try:
     from .init_db import initialise_database

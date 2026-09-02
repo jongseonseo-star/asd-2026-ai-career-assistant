@@ -266,7 +266,12 @@ def generate_questions_for_session(session_id: int):
             return jsonify(record), record_status
         created_questions.append(record)
 
-    return jsonify({"session_id": session_id, "generated_questions": created_questions, "count": len(created_questions)}), 200
+    return jsonify({
+        "session_id": session_id,
+        "questions": created_questions,
+        "generated_questions": created_questions,
+        "count": len(created_questions),
+    }), 200
 
 
 @app.route("/api/v1/interview-questions", methods=["GET", "POST"])
@@ -296,7 +301,10 @@ def interview_responses_collection():
 @app.route("/api/v1/interview-questions/<int:question_id>/evaluate-answer", methods=["POST"])
 def evaluate_answer(question_id: int):
     data = require_json_object()
-    candidate_answer = require_text(data, "answer", 12000)
+    if "answer" in data:
+        candidate_answer = require_text(data, "answer", 12000)
+    else:
+        candidate_answer = require_text(data, "user_answer", 12000)
     question_payload, question_status = database_request("GET", f"/api/v1/interview-questions/{question_id}")
     if question_status != 200:
         return jsonify(question_payload), question_status
@@ -316,7 +324,11 @@ def evaluate_answer(question_id: int):
         raise DependencyError("ollama", "Ollama evaluation did not include a numeric score.", 502)
     score = float(score)
     feedback = parsed.get("feedback") or "The response was submitted for review."
-    tips = parsed.get("improvement_tips") or "Keep practising with more concrete examples and clearer structure."
+    tips_raw = parsed.get("improvement_tips") or "Keep practising with more concrete examples and clearer structure."
+    if isinstance(tips_raw, list):
+        tips = "; ".join(str(item).strip() for item in tips_raw if str(item).strip())
+    else:
+        tips = str(tips_raw).strip()
 
     response_payload, response_status = database_request(
         "POST",
