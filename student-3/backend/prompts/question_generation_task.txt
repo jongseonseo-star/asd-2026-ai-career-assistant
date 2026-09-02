@@ -1,0 +1,10 @@
+Generate interview questions for a candidate interview session.
+
+Requirements:
+- Return valid JSON only.
+- Output a JSON object with a top-level key named "questions".
+- The value must be an array of question objects.
+- Each question object should contain a "question" field and an optional "category" field.
+- Create questions appropriate to the specified target role and interview type.
+- Keep each question practical, job-relevant, and realistic for a mock interview.
+- Use no more than 10 questions.

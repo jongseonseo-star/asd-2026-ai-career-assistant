@@ -1,0 +1,9 @@
+Evaluate the candidate's interview answer.
+
+Requirements:
+- Return valid JSON only.
+- Output a JSON object with these keys: "score", "feedback", and "improvement_tips".
+- score must be a number between 0 and 100.
+- feedback should explain strengths and gaps in a concise but practical manner.
+- improvement_tips should include 2 to 4 actionable suggestions.
+- Consider the target role, the question, and the interview context.
