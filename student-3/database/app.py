@@ -375,9 +375,13 @@ def responses_collection():
         connection = get_connection()
         try:
             if question_id:
+                try:
+                    question_id_int = int(question_id)
+                except (TypeError, ValueError):
+                    return jsonify({"error": "question_id must be an integer."}), 400
                 rows = connection.execute(
                     "SELECT * FROM interview_responce WHERE question_id = ? ORDER BY id ASC",
-                    (int(question_id),),
+                    (question_id_int,),
                 ).fetchall()
                 return jsonify(rows_to_dicts(rows)), 200
             rows = connection.execute("SELECT * FROM interview_responce ORDER BY id ASC").fetchall()
