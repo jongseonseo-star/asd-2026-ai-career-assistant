@@ -119,7 +119,7 @@ def proxy_database(method: str, path: str, *, json_body: dict[str, Any] | None =
 
 def get_ollama_models() -> list[str]:
     try:
-        response = session.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=DATABASE_TIMEOUT)
+        response = session.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=OLLAMA_TIMEOUT)
         response.raise_for_status()
         payload = response.json()
     except requests.Timeout as error:
