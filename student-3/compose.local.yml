@@ -1,0 +1,79 @@
+name: student-3-interview-prep
+
+services:
+  student-3-database:
+    build:
+      context: ./database
+    image: student-3-database:release0
+    environment:
+      PORT: "5002"
+      DB_PATH: /app/data/interview_data.db
+    ports:
+      - "5002:5002"
+    volumes:
+      - student-3-database-data:/app/data
+    networks:
+      - student-3-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5002/health', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  student-3-backend:
+    build:
+      context: ./backend
+    image: student-3-backend:release0
+    environment:
+      PORT: "5001"
+      DATABASE_API_URL: http://student-3-database:5002
+      DATABASE_TIMEOUT_SECONDS: "5"
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: qwen2.5:3b
+      OLLAMA_TIMEOUT_SECONDS: "180"
+    ports:
+      - "5001:5001"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      student-3-database:
+        condition: service_healthy
+    networks:
+      - student-3-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/ready', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
+  student-3-frontend:
+    build:
+      context: ./frontend
+    image: student-3-frontend:release0
+    environment:
+      PORT: "8083"
+      BACKEND_API_URL: http://student-3-backend:5001
+      BACKEND_TIMEOUT_SECONDS: "10"
+      AI_TIMEOUT_SECONDS: "180"
+    ports:
+      - "8083:8083"
+    depends_on:
+      student-3-backend:
+        condition: service_healthy
+    networks:
+      - student-3-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8083/health', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
+networks:
+  student-3-network:
+    driver: bridge
+
+volumes:
+  student-3-database-data:
