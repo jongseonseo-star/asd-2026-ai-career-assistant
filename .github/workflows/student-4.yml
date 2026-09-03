@@ -1,0 +1,54 @@
+name: Student 4 - Build and Validate
+
+on:
+  push:
+    branches: [main, codex/student-4-job-listing, feature/student-4-job-listing]
+    paths: ["student-4/**", "shared/frontend/**", "docker-compose.yml", ".github/workflows/student-4.yml"]
+  pull_request:
+    branches: [main]
+    paths: ["student-4/**", "shared/frontend/**", "docker-compose.yml", ".github/workflows/student-4.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-student-4:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with: {python-version: "3.12"}
+      - name: Validate Python and run unit tests
+        run: |
+          python -m pip install -r student-4/database/requirements.txt
+          python -m py_compile student-4/database/init_db.py student-4/database/app.py student-4/backend/app.py student-4/frontend/app.py
+          python -m unittest discover -s student-4/tests -v
+      - name: Validate Compose and build services
+        run: |
+          docker compose -f student-4/compose.local.yml config -q
+          docker compose -f student-4/compose.local.yml build
+      - name: Start services
+        run: docker compose -f student-4/compose.local.yml up -d
+      - name: Smoke-test APIs and seed counts
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 15); do curl -fsS http://127.0.0.1:5401/ready && break; sleep 2; done
+          curl -fsS http://127.0.0.1:5402/api/v1/stats | tee seed-counts.json
+          python -c 'import json; d=json.load(open("seed-counts.json")); assert all(d[k]>=10 for k in ("companies","job_postings","job_skills")), d'
+          curl -fsS http://127.0.0.1:5401/api/v1/jobs/enriched | python -c 'import json,sys; assert len(json.load(sys.stdin))>=10'
+          curl -fsS http://127.0.0.1:8404/ready
+      - name: Capture logs
+        if: always()
+        run: docker compose -f student-4/compose.local.yml logs --no-color > student-4-compose.log
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: student-4-release0-evidence
+          path: |
+            seed-counts.json
+            student-4-compose.log
+      - name: Stop services
+        if: always()
+        run: docker compose -f student-4/compose.local.yml down -v

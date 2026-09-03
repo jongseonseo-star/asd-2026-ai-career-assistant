@@ -29,3 +29,13 @@ tmp/
 dist/
 build/
 *.log
+
+# Local assessment documents and generated reports
+# Keep repository Markdown documentation and test evidence tracked.
+docs/**/*.docx
+docs/**/*.pdf
+docs/Release_0_Assessment_Brief.txt
+
+# Local-only report generation helpers
+scripts/build_release0_report_template.py
+scripts/create_submission_report.py

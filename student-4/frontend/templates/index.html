@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Job Listing Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+  </head>
+  <body>
+    <header>
+      <div>
+        <p class="eyebrow">AI Career Assistant · Student 4</p>
+        <h1>Job Listing Management</h1>
+        <p>Manage opportunities and use grounded AI to understand job fit.</p>
+      </div>
+      <span class="status">Release 0</span>
+    </header>
+    <main>
+      {% if notice %}
+      <p class="alert success">{{ notice }}</p>
+      {% endif %} {% if error %}
+      <p class="alert error">{{ error }}</p>
+      {% endif %}
+
+      <section class="hero-grid">
+        <article class="panel">
+          <h2>AI job recommendations</h2>
+          <form hx-post="/ai/recommendations" hx-target="#ai-output" hx-indicator="#ai-loading">
+            <label
+              >Candidate profile<textarea
+                name="candidate_profile"
+                required
+                placeholder="Example: Graduate developer with Python, Flask, SQL and Docker experience."
+              ></textarea>
+            </label>
+            <button type="submit">Recommend jobs</button><span id="ai-loading" class="htmx-indicator">Analysing…</span>
+          </form>
+        </article>
+        <article id="ai-output" class="panel muted">
+          <p>AI summaries, extracted skills and recommendations will appear here.</p>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Core feature</p>
+            <h2>Job postings</h2>
+          </div>
+          <span>{{ jobs|length }} records</span>
+        </div>
+        <details>
+          <summary>Add a job posting</summary>
+          <form class="form-grid" method="post" action="/actions/job_postings/create">
+            <label
+              >Company<select name="company_id" required>
+                {% for c in companies %}
+                <option value="{{ c.id }}">{{ c.name }}</option>
+                {% endfor %}
+              </select></label
+            >
+            <label>Title<input name="title" required /></label><label>Location<input name="location" required /></label>
+            <label>Employment type<input name="employment_type" value="Full-time" required /></label
+            ><label>Experience level<input name="experience_level" value="Junior" required /></label>
+            <label>Minimum salary<input name="salary_min" type="number" min="0" /></label
+            ><label>Maximum salary<input name="salary_max" type="number" min="0" /></label>
+            <label>Closing date<input name="closing_date" type="date" required /></label
+            ><label
+              >Status<select name="status">
+                <option>open</option>
+                <option>closed</option>
+                <option>draft</option>
+              </select></label
+            >
+            <label class="wide">Description<textarea name="description" required></textarea></label
+            ><button type="submit">Create job</button>
+          </form>
+        </details>
+        <div class="cards">
+          {% for job in jobs %}
+          <article class="job-card">
+            <div>
+              <p class="eyebrow">{{ job.company.name if job.company else 'Unknown company' }}</p>
+              <h3>{{ job.title }}</h3>
+              <p>{{ job.location }} · {{ job.employment_type }} · {{ job.experience_level }}</p>
+            </div>
+            <p>{{ job.description }}</p>
+            <div class="chips">{% for s in job.skills %}<span>{{ s.skill_name }}</span>{% endfor %}</div>
+            <div class="actions">
+              <button hx-post="/ai/jobs/{{ job.id }}/summary" hx-target="#ai-output">AI summary</button>
+              <button class="secondary" hx-post="/ai/jobs/{{ job.id }}/skills" hx-target="#ai-output">
+                Extract skills
+              </button>
+              <form
+                method="post"
+                action="/actions/job_postings/{{ job.id }}/delete"
+                onsubmit="return confirm('Delete this job and its skills?');"
+              >
+                <button class="danger">Delete</button>
+              </form>
+            </div>
+            <details>
+              <summary>Edit job</summary>
+              <form class="form-grid" method="post" action="/actions/job_postings/{{ job.id }}/update">
+                <label
+                  >Company<select name="company_id">
+                    {% for c in companies %}
+                    <option value="{{ c.id }}" {% if c.id="" ="job.company_id" %}selected{% endif %}>
+                      {{ c.name }}
+                    </option>
+                    {% endfor %}
+                  </select></label
+                >
+                <label>Title<input name="title" value="{{ job.title }}" required /></label
+                ><label>Location<input name="location" value="{{ job.location }}" required /></label>
+                <label>Employment type<input name="employment_type" value="{{ job.employment_type }}" required /></label
+                ><label
+                  >Experience level<input name="experience_level" value="{{ job.experience_level }}" required
+                /></label>
+                <label>Minimum salary<input name="salary_min" type="number" value="{{ job.salary_min or '' }}" /></label
+                ><label
+                  >Maximum salary<input name="salary_max" type="number" value="{{ job.salary_max or '' }}"
+                /></label>
+                <label
+                  >Closing date<input name="closing_date" type="date" value="{{ job.closing_date }}" required /></label
+                ><label>Status<input name="status" value="{{ job.status }}" required /></label>
+                <label class="wide"
+                  >Description<textarea name="description" required>{{ job.description }}</textarea></label
+                ><button>Save job</button>
+              </form>
+            </details>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="two-col">
+        <article class="panel">
+          <div class="section-head">
+            <h2>Companies</h2>
+            <span>{{ companies|length }}</span>
+          </div>
+          <form class="compact" method="post" action="/actions/companies/create">
+            <input name="name" placeholder="Name" required /><input
+              name="industry"
+              placeholder="Industry"
+              required
+            /><input name="location" placeholder="Location" required /><input
+              name="website"
+              placeholder="Website"
+              required
+            /><button>Add</button>
+          </form>
+          {% for c in companies %}
+          <details>
+            <summary>{{ c.name }} · {{ c.location }}</summary>
+            <form class="compact" method="post" action="/actions/companies/{{ c.id }}/update">
+              <input name="name" value="{{ c.name }}" /><input name="industry" value="{{ c.industry }}" /><input
+                name="location"
+                value="{{ c.location }}"
+              /><input name="website" value="{{ c.website }}" /><button>Save</button>
+            </form>
+            <form method="post" action="/actions/companies/{{ c.id }}/delete">
+              <button class="danger">Delete</button>
+            </form>
+          </details>
+          {% endfor %}
+        </article>
+        <article class="panel">
+          <div class="section-head">
+            <h2>Job skills</h2>
+            <span>{{ skills|length }}</span>
+          </div>
+          <form class="compact" method="post" action="/actions/job_skills/create">
+            <select name="job_posting_id">
+              {% for j in jobs %}
+              <option value="{{ j.id }}">{{ j.title }}</option>
+              {% endfor %}</select
+            ><input name="skill_name" placeholder="Skill" required /><select name="importance">
+              <option>required</option>
+              <option>preferred</option></select
+            ><button>Add</button>
+          </form>
+          {% for s in skills %}
+          <details>
+            <summary>{{ s.skill_name }} · Job #{{ s.job_posting_id }}</summary>
+            <form class="compact" method="post" action="/actions/job_skills/{{ s.id }}/update">
+              <select name="job_posting_id">
+                {% for j in jobs %}
+                <option value="{{ j.id }}" {% if j.id="" ="s.job_posting_id" %}selected{% endif %}>
+                  {{ j.title }}
+                </option>
+                {% endfor %}</select
+              ><input name="skill_name" value="{{ s.skill_name }}" /><select name="importance">
+                <option {% if s.importance="" ="required" %}selected{% endif %}>required</option>
+                <option {% if s.importance="" ="preferred" %}selected{% endif %}>preferred</option></select
+              ><button>Save</button>
+            </form>
+            <form method="post" action="/actions/job_skills/{{ s.id }}/delete">
+              <button class="danger">Delete</button>
+            </form>
+          </details>
+          {% endfor %}
+        </article>
+      </section>
+    </main>
+    <footer>Student 4 · Job Listing Management · AI Career Assistant</footer>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+<section class="ai-result" aria-live="polite">
+  {% if error %}
+  <p class="alert error">{{ error }}</p>
+  {% else %}
+  <h3>AI result</h3>
+  <pre>{{ payload.result if payload.result is string else payload.result | tojson(indent=2) }}</pre>
+  <details>
+    <summary>Plan → Act → Observe → Adapt record</summary>
+    <pre>{{ payload.workflow | tojson(indent=2) }}</pre>
+  </details>
+  {% endif %}
+</section>
