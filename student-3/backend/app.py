@@ -233,9 +233,10 @@ def generate_questions_for_session(session_id: int):
     if status != 200:
         return jsonify(session_payload), status
 
-role = require_text(data, "target_role", 200) if "target_role" in data else str(session_payload.get("target_role", "General role")).strip()
-raw_interview_type = data.get("interview_type", session_payload.get("interview_type", "general"))
-interview_type = str(raw_interview_type).strip() or "general"
+    role = require_text(data, "target_role", 200) if "target_role" in data else str(session_payload.get("target_role", "General role")).strip()
+    raw_interview_type = data.get("interview_type", session_payload.get("interview_type", "general"))
+    interview_type = str(raw_interview_type).strip() or "general"
+    question_count = data.get("question_count", 5)
     if isinstance(question_count, bool) or not isinstance(question_count, int):
         raise ClientInputError("question_count must be an integer.")
     if question_count < 1 or question_count > 10:
@@ -319,28 +320,27 @@ def evaluate_answer(question_id: int):
     if not isinstance(parsed, dict):
         raise DependencyError("ollama", "Ollama returned an invalid evaluation payload.", 502)
 
-score = parsed.get("score", 0)
-if isinstance(score, bool) or not isinstance(score, (int, float)):
-    raise DependencyError("ollama", "Ollama evaluation did not include a numeric score.", 502)
-score = float(score)
-score = min(max(score, 0.0), 100.0)
-feedback = parsed.get("feedback") or "The response was submitted for review."
-tips_raw = parsed.get("improvement_tips") or "Keep practising with more concrete examples and clearer structure."
-if isinstance(tips_raw, list):
-    tips = "; ".join(str(item).strip() for item in tips_raw if str(item).strip())
-else:
-    tips = str(tips_raw).strip()
+    score = parsed.get("score", 0)
+    if isinstance(score, bool) or not isinstance(score, (int, float)):
+        raise DependencyError("ollama", "Ollama evaluation did not include a numeric score.", 502)
+    score = float(score)
+    score = min(max(score, 0.0), 100.0)
+    feedback = parsed.get("feedback") or "The response was submitted for review."
+    tips_raw = parsed.get("improvement_tips") or "Keep practising with more concrete examples and clearer structure."
+    if isinstance(tips_raw, list):
+        tips = "; ".join(str(item).strip() for item in tips_raw if str(item).strip())
+    else:
+        tips = str(tips_raw).strip()
 
-response_payload, response_status = database_request(
-    "POST",
-    "/api/v1/interview-responce",
-    json_body={
-        "question_id": question_id,
-        "user_answer": candidate_answer,
-        "ai_feedback": str(feedback).strip()[:4000],
-        "score": score,
-        "improvement_tips": str(tips).strip()[:4000],
-    },
+    response_payload, response_status = database_request(
+        "POST",
+        "/api/v1/interview-responce",
+        json_body={
+            "question_id": question_id,
+            "user_answer": candidate_answer,
+            "ai_feedback": str(feedback).strip()[:4000],
+            "score": score,
+            "improvement_tips": str(tips).strip()[:4000],
         },
     )
     if response_status != 201:
