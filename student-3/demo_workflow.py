@@ -247,7 +247,7 @@ def demo():
     print("\nKey Achievements:")
     print(f"  • Interview session: Active")
     print(f"  • Total questions generated: {len(all_questions)}")
-    print(f"  • AI model used: qwen2.5:3b")
+    print(f"  • AI model used: qwen2.5:0.5b")
     print(f"  • User response evaluated: Yes")
     print(f"  • Adaptive adjustments made: Yes (follow-up questions)")
 

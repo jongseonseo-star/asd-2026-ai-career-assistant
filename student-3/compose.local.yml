@@ -30,7 +30,7 @@ services:
       DATABASE_API_URL: http://student-3-database:5002
       DATABASE_TIMEOUT_SECONDS: "5"
       OLLAMA_BASE_URL: http://host.docker.internal:11434
-      OLLAMA_MODEL: qwen2.5:3b
+      OLLAMA_MODEL: qwen2.5:0.5b
       OLLAMA_TIMEOUT_SECONDS: "180"
     ports:
       - "5001:5001"
