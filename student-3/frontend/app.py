@@ -5,7 +5,7 @@ from typing import Any
 
 import requests
 from flask import Flask, jsonify, make_response, render_template_string, request
-
+from markupsafe import escape
 BACKEND_API_URL = os.getenv("BACKEND_API_URL", "http://127.0.0.1:5001").rstrip("/")
 PORT = int(os.getenv("PORT", "8083"))
 BACKEND_TIMEOUT = float(os.getenv("BACKEND_TIMEOUT_SECONDS", "10"))
