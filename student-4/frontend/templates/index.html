@@ -106,7 +106,7 @@
                 <label
                   >Company<select name="company_id">
                     {% for c in companies %}
-                    <option value="{{ c.id }}" {% if c.id="" ="job.company_id" %}selected{% endif %}>
+                    <option value="{{ c.id }}" {% if c.id == job.company_id %}selected{% endif %}>
                       {{ c.name }}
                     </option>
                     {% endfor %}
@@ -188,13 +188,13 @@
             <form class="compact" method="post" action="/actions/job_skills/{{ s.id }}/update">
               <select name="job_posting_id">
                 {% for j in jobs %}
-                <option value="{{ j.id }}" {% if j.id="" ="s.job_posting_id" %}selected{% endif %}>
+                <option value="{{ j.id }}" {% if j.id == s.job_posting_id %}selected{% endif %}>
                   {{ j.title }}
                 </option>
                 {% endfor %}</select
               ><input name="skill_name" value="{{ s.skill_name }}" /><select name="importance">
-                <option {% if s.importance="" ="required" %}selected{% endif %}>required</option>
-                <option {% if s.importance="" ="preferred" %}selected{% endif %}>preferred</option></select
+                <option {% if s.importance == "required" %}selected{% endif %}>required</option>
+                <option {% if s.importance == "preferred" %}selected{% endif %}>preferred</option></select
               ><button>Save</button>
             </form>
             <form method="post" action="/actions/job_skills/{{ s.id }}/delete">

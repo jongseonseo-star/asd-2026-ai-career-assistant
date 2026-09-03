@@ -206,7 +206,7 @@ def recommendations():
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or not isinstance(data.get("candidate_profile"), str) or not data["candidate_profile"].strip():
         return jsonify({"error": "candidate_profile is required."}), 400
-    jobs = enriched_jobs()[0].get_json()
+    jobs = enriched_jobs().get_json()
     context = {"candidate_profile": data["candidate_profile"].strip()[:4000], "jobs": jobs}
     result = ollama_generate(prompt("job_recommendation.txt"), context)
     return jsonify(agentic_result(
