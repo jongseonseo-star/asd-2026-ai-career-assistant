@@ -1,8 +1,83 @@
 name: asd-2026-ai-career-assistant
 
-# Services will be added incrementally by each feature owner.
-services: {}
+services:
+  shared-frontend:
+    build: ./shared/frontend
+    image: career-assistant-shared-frontend:release0
+    ports: ["8080:80"]
+    networks: [career-assistant-network]
+
+  student-2-database:
+    build: ./student-2/database
+    environment: {PORT: "5002", DB_PATH: /app/data/candidate_data.db}
+    ports: ["5002:5002"]
+    volumes: [student-2-data:/app/data]
+    networks: [career-assistant-network]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5002/health', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  student-2-backend:
+    build: ./student-2/backend
+    environment:
+      PORT: "5001"
+      DATABASE_API_URL: http://student-2-database:5002
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:0.5b}
+    ports: ["5001:5001"]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    depends_on:
+      student-2-database: {condition: service_healthy}
+    networks: [career-assistant-network]
+
+  student-2-frontend:
+    build: ./student-2/frontend
+    environment: {PORT: "8082", BACKEND_API_URL: "http://student-2-backend:5001"}
+    ports: ["8082:8082"]
+    depends_on: [student-2-backend]
+    networks: [career-assistant-network]
+
+  student-4-database:
+    build: ./student-4/database
+    environment: {PORT: "5402", DB_PATH: /app/data/jobs.db}
+    ports: ["5402:5402"]
+    volumes: [student-4-data:/app/data]
+    networks: [career-assistant-network]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5402/health', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  student-4-backend:
+    build: ./student-4/backend
+    environment:
+      PORT: "5401"
+      DATABASE_API_URL: http://student-4-database:5402
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:0.5b}
+      OLLAMA_TIMEOUT_SECONDS: "180"
+    ports: ["5401:5401"]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    depends_on:
+      student-4-database: {condition: service_healthy}
+    networks: [career-assistant-network]
+
+  student-4-frontend:
+    build: ./student-4/frontend
+    environment: {PORT: "8404", BACKEND_API_URL: "http://student-4-backend:5401", AI_TIMEOUT_SECONDS: "180"}
+    ports: ["8404:8404"]
+    depends_on: [student-4-backend]
+    networks: [career-assistant-network]
 
 networks:
   career-assistant-network:
     name: career-assistant-network
+
+volumes:
+  student-2-data:
+  student-4-data:

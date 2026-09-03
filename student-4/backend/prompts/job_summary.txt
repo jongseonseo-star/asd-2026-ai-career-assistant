@@ -1,0 +1,13 @@
+Summarise the opportunity for a prospective applicant.
+
+Return short sections titled:
+- Overview
+- Key responsibilities
+- Required skills
+- Candidate considerations
+
+Base every claim on the supplied job record.
+
+Do not describe the reader as already employed by the company.
+Do not invent responsibilities or selection criteria that are absent from the record.
+Say when the posting does not provide enough detail.

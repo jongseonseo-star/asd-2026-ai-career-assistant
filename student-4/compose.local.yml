@@ -1,0 +1,81 @@
+name: student-4-job-listing
+
+services:
+  student-4-database:
+    build: ./database
+    image: student-4-database:release0
+    environment:
+      PORT: "5402"
+      DB_PATH: /app/data/jobs.db
+    ports: ["5402:5402"]
+    volumes: [student-4-database-data:/app/data]
+    networks: [student-4-network]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5402/health', timeout=3)",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  student-4-backend:
+    build: ./backend
+    image: student-4-backend:release0
+    environment:
+      PORT: "5401"
+      DATABASE_API_URL: http://student-4-database:5402
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:0.5b}
+      OLLAMA_TIMEOUT_SECONDS: "180"
+    ports: ["5401:5401"]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    depends_on:
+      student-4-database: { condition: service_healthy }
+    networks: [student-4-network]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5401/ready', timeout=3)",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  student-4-frontend:
+    build: ./frontend
+    image: student-4-frontend:release0
+    environment:
+      PORT: "8404"
+      BACKEND_API_URL: http://student-4-backend:5401
+      AI_TIMEOUT_SECONDS: "180"
+    ports: ["8404:8404"]
+    depends_on:
+      student-4-backend: { condition: service_healthy }
+    networks: [student-4-network]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8404/ready', timeout=3)",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+networks:
+  student-4-network:
+
+volumes:
+  student-4-database-data:

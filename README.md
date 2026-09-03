@@ -19,10 +19,10 @@ An integrated Agentic AI application that helps users discover jobs, improve res
 
 | Student | Feature | Frontend responsibility | Backend/API responsibility | Database responsibility |
 | --- | --- | --- | --- | --- |
-| Student 1 | Job Listing Management | Search and manage jobs | Analyse jobs and extract required skills | Store companies, job postings, and job skills |
+| Student 1 | Application and Cover Letter Management | Track applications and manage cover letters | Generate tailored cover letters and next actions | Store applications, cover letters, and status history |
 | Student 2 | Resume Management | Manage profiles and resumes | Analyse resumes and identify skill gaps | Store candidate profiles, resumes, and skills |
-| Student 3 | Application Management | Track applications and cover letters | Generate tailored cover letters and next actions | Store applications, cover letters, and status history |
-| Student 4 | Interview Preparation | Run interview practice sessions | Generate questions and evaluate responses | Store sessions, questions, responses, and feedback |
+| Student 3 | Interview Preparation | Run interview practice sessions | Generate questions and evaluate responses | Store sessions, questions, responses, and feedback |
+| Student 4 | Job Listing Management | Search and manage jobs | Analyse jobs, extract skills, and recommend roles | Store companies, job postings, and job skills |
 
 ## Intended request flow
 
@@ -80,12 +80,14 @@ student-x/
 
 ## Local setup
 
-The service implementations have not been added yet. Once Dockerfiles are available:
+Start Ollama on the host, then run the integrated services currently available:
 
 ```bash
 cp .env.example .env
 docker compose config
 docker compose up --build
 ```
+
+Open the shared home page at `http://localhost:8080`.
 
 Do not commit `.env`, database files, secrets, or generated logs.

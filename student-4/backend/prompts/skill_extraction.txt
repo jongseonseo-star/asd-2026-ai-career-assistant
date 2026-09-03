@@ -1,0 +1,6 @@
+Extract the technical and transferable skills explicitly supported by the job title and description.
+
+Return JSON only in this shape:
+{"skills":[{"name":"...","importance":"required|preferred"}]}
+
+Do not add commentary or markdown.
