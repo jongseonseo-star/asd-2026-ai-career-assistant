@@ -181,9 +181,9 @@ def demo():
                 print(f"Evaluation status: {eval_resp.status_code}")
 
     # PHASE 4: ADAPT
-    print("\n" + "█" * 80)
+    print("\n" + "=" * 80)
     print("PHASE 4: ADAPT")
-    print("█" * 80)
+    print("=" * 80)
 
     print("\n[ADAPT-1] Analyzing workflow results and adapting strategy...")
     print("  Observations:")
@@ -233,9 +233,9 @@ def demo():
         print(f"⚠ Follow-up generation status: {followup_resp.status_code}")
 
     # Summary
-    print("\n" + "█" * 80)
+    print("\n" + "=" * 80)
     print("WORKFLOW SUMMARY")
-    print("█" * 80)
+    print("=" * 80)
     print(f"\nSession ID: {session_id}")
     print(f"Candidate: Jane Smith")
     print(f"Role: Python Backend Engineer")
