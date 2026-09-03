@@ -273,9 +273,13 @@ def questions_collection():
         connection = get_connection()
         try:
             if session_id:
+                try:
+                    session_id_int = int(session_id)
+                except (TypeError, ValueError):
+                    return jsonify({"error": "session_id must be an integer."}), 400
                 rows = connection.execute(
                     "SELECT * FROM interview_questions WHERE session_id = ? ORDER BY id ASC",
-                    (int(session_id),),
+                    (session_id_int,),
                 ).fetchall()
                 return jsonify(rows_to_dicts(rows)), 200
             rows = connection.execute("SELECT * FROM interview_questions ORDER BY id ASC").fetchall()
