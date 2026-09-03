@@ -233,9 +233,9 @@ def generate_questions_for_session(session_id: int):
     if status != 200:
         return jsonify(session_payload), status
 
-    role = require_text(data, "target_role", 200) if "target_role" in data else str(session_payload.get("target_role", "General role")).strip()
-    interview_type = str(data.get("interview_type", session_payload.get("interview_type", "general")).strip())
-    question_count = data.get("question_count", 5)
+role = require_text(data, "target_role", 200) if "target_role" in data else str(session_payload.get("target_role", "General role")).strip()
+raw_interview_type = data.get("interview_type", session_payload.get("interview_type", "general"))
+interview_type = str(raw_interview_type).strip() or "general"
     if isinstance(question_count, bool) or not isinstance(question_count, int):
         raise ClientInputError("question_count must be an integer.")
     if question_count < 1 or question_count > 10:
