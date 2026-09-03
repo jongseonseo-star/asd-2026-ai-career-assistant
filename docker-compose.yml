@@ -40,6 +40,58 @@ services:
     depends_on: [student-2-backend]
     networks: [career-assistant-network]
 
+  student-3-database:
+    build: ./student-3/database
+    environment: {PORT: "5002", DB_PATH: /app/data/interview_data.db}
+    ports: ["5302:5002"]
+    volumes: [student-3-data:/app/data]
+    networks: [career-assistant-network]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5002/health', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  student-3-backend:
+    build: ./student-3/backend
+    environment:
+      PORT: "5001"
+      DATABASE_API_URL: http://student-3-database:5002
+      DATABASE_TIMEOUT_SECONDS: "5"
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:0.5b}
+      OLLAMA_TIMEOUT_SECONDS: "180"
+    ports: ["5301:5001"]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    depends_on:
+      student-3-database: {condition: service_healthy}
+    networks: [career-assistant-network]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/ready', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
+  student-3-frontend:
+    build: ./student-3/frontend
+    environment:
+      PORT: "8083"
+      BACKEND_API_URL: http://student-3-backend:5001
+      BACKEND_TIMEOUT_SECONDS: "10"
+      AI_TIMEOUT_SECONDS: "180"
+    ports: ["8303:8083"]
+    depends_on:
+      student-3-backend: {condition: service_healthy}
+    networks: [career-assistant-network]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8083/health', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
   student-4-database:
     build: ./student-4/database
     environment: {PORT: "5402", DB_PATH: /app/data/jobs.db}
@@ -80,4 +132,5 @@ networks:
 
 volumes:
   student-2-data:
+  student-3-data:
   student-4-data:
