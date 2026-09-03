@@ -175,6 +175,70 @@ pre {
   max-height: 420px;
   overflow: auto;
 }
+.ai-result {
+  color: var(--navy);
+  display: block;
+}
+.ai-result__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.ai-result h3 {
+  margin: 0.15rem 0 0.75rem;
+}
+.result-count,
+.skill-card__importance {
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.3rem 0.65rem;
+}
+.result-count,
+.skill-card__importance.preferred {
+  color: #075985;
+  background: #e0f2fe;
+}
+.skill-card__importance.required {
+  color: #166534;
+  background: #dcfce7;
+}
+.extracted-skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.6rem;
+}
+.skill-card {
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #f8fbff;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.skill-card h4,
+.ai-evidence h4 {
+  margin: 0;
+}
+.skill-card h4 {
+  font-size: 0.95rem;
+}
+.ai-prose,
+.empty-result {
+  color: #334155;
+  white-space: pre-wrap;
+  line-height: 1.65;
+}
+.ai-evidence {
+  margin-top: 1rem;
+}
+.ai-evidence h4 {
+  margin-top: 0.85rem;
+  font-size: 0.9rem;
+}
 .htmx-indicator {
   display: none;
   color: var(--muted);

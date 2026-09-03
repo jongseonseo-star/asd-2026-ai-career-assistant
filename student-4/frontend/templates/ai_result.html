@@ -2,10 +2,37 @@
   {% if error %}
   <p class="alert error">{{ error }}</p>
   {% else %}
-  <h3>AI result</h3>
-  <pre>{{ payload.result if payload.result is string else payload.result | tojson(indent=2) }}</pre>
-  <details>
-    <summary>Plan → Act → Observe → Adapt record</summary>
+  {% set result = payload.result %}
+  {% if result is mapping and result.skills is defined %}
+  <div class="ai-result__header">
+    <div>
+      <p class="eyebrow">AI-assisted review</p>
+      <h3>Extracted skills</h3>
+    </div>
+    <span class="result-count">{{ result.skills | length }} found</span>
+  </div>
+  {% if result.skills %}
+  <div class="extracted-skills">
+    {% for skill in result.skills %}
+    <article class="skill-card">
+      <h4>{{ skill.name }}</h4>
+      <span class="skill-card__importance {{ skill.importance | lower }}">{{ skill.importance | title }}</span>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty-result">No skills were found from the supplied job information.</p>
+  {% endif %}
+  {% else %}
+  <p class="eyebrow">AI-assisted result</p>
+  <h3>Career guidance</h3>
+  <p class="ai-prose">{{ result }}</p>
+  {% endif %}
+  <details class="ai-evidence">
+    <summary>View structured AI response and workflow record</summary>
+    <h4>Structured response</h4>
+    <pre>{{ result | tojson(indent=2) if result is mapping else result }}</pre>
+    <h4>Plan → Act → Observe → Adapt</h4>
     <pre>{{ payload.workflow | tojson(indent=2) }}</pre>
   </details>
   {% endif %}
