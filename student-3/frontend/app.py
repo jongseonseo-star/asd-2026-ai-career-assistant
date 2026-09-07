@@ -10,6 +10,7 @@ BACKEND_API_URL = os.getenv("BACKEND_API_URL", "http://127.0.0.1:5001").rstrip("
 PORT = int(os.getenv("PORT", "8083"))
 BACKEND_TIMEOUT = float(os.getenv("BACKEND_TIMEOUT_SECONDS", "10"))
 AI_TIMEOUT = float(os.getenv("AI_TIMEOUT_SECONDS", "180"))
+STATUS_TIMEOUT = float(os.getenv("STATUS_TIMEOUT_SECONDS", "5"))
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -44,6 +45,55 @@ def fetch_collection(path: str, *, params: dict[str, Any] | None = None) -> list
     return payload
 
 
+def status_badge(label: str, state: str, detail: str) -> str:
+    safe_state = escape(state)
+    safe_detail = escape(detail)
+    return f'<div class="dependency-status"><span class="status-dot {safe_state}"></span><div><strong>{escape(label)}</strong><span class="status-detail">{safe_detail}</span></div></div>'
+
+
+def dependency_status() -> str:
+    backend_state = "error"
+    backend_detail = "Unavailable"
+    database_state = "unknown"
+    database_detail = "Unknown"
+    ollama_state = "error"
+    ollama_detail = "Unavailable"
+
+    try:
+        backend_payload, backend_http_status = backend_request("GET", "/health", timeout=STATUS_TIMEOUT)
+        if backend_http_status == 200 and isinstance(backend_payload, dict) and backend_payload.get("status") == "healthy":
+            backend_state, backend_detail = "ready", "Connected"
+        else:
+            backend_detail = "Not healthy"
+
+        readiness_payload, readiness_http_status = backend_request("GET", "/ready", timeout=STATUS_TIMEOUT)
+        database_payload = readiness_payload.get("dependencies", {}).get("database", {}) if isinstance(readiness_payload, dict) else {}
+        if readiness_http_status == 200 and isinstance(database_payload, dict) and database_payload.get("status") == "healthy":
+            database_state, database_detail = "ready", "Connected"
+        else:
+            database_state, database_detail = "error", "Unavailable"
+    except BackendUnavailable as error:
+        backend_detail = str(error)
+
+    try:
+        ollama_payload, ollama_http_status = backend_request("GET", "/api/v1/ai/status", timeout=STATUS_TIMEOUT)
+        if ollama_http_status == 200 and isinstance(ollama_payload, dict) and ollama_payload.get("status") == "available":
+            if ollama_payload.get("configured_model_available"):
+                ollama_state, ollama_detail = "ready", f"Connected ({ollama_payload.get('configured_model', 'model')})"
+            else:
+                ollama_state, ollama_detail = "warning", "Connected, model unavailable"
+        else:
+            ollama_detail = "Not available"
+    except BackendUnavailable as error:
+        ollama_detail = str(error)
+
+    return "".join([
+        status_badge("Database", database_state, database_detail),
+        status_badge("Backend", backend_state, backend_detail),
+        status_badge("Ollama", ollama_state, ollama_detail),
+    ])
+
+
 def response_with_trigger(html: str, trigger_name: str | None = None):
     response = make_response(html, 200)
     if trigger_name:
@@ -76,7 +126,16 @@ def index():
         th, td { border-bottom: 1px solid #edf0f4; padding: .7rem .5rem; text-align: left; }
         .status { padding: .5rem .75rem; border-radius: 999px; display: inline-block; font-size: 0.8rem; }
         .status.ready { background:#dcfce7;color:#166534; }
+        .status.warning { background:#fef3c7;color:#92400e; }
         .status.error { background:#fee2e2;color:#b91c1c; }
+        .status-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:.6rem; margin-top:1rem; }
+        .dependency-status { display:flex; align-items:center; gap:.55rem; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:8px; padding:.65rem .75rem; }
+        .dependency-status strong, .status-detail { display:block; }
+        .status-detail { color:rgba(255,255,255,.8); font-size:.78rem; margin-top:.15rem; }
+        .status-dot { width:.6rem; height:.6rem; flex:0 0 .6rem; border-radius:50%; background:#fca5a5; }
+        .status-dot.ready { background:#86efac; }
+        .status-dot.warning { background:#fcd34d; }
+        @media (max-width: 700px) { .status-grid { grid-template-columns:1fr; } }
         .card { background: #f9fafb; border: 1px solid #edf0f4; border-radius: 10px; padding: .8rem; margin-top: .8rem; }
       </style>
     </head>
@@ -85,7 +144,11 @@ def index():
         <div class="hero">
           <h1>Interview Preparation Management</h1>
           <p class="muted" style="color: rgba(255,255,255,.9);">Create interview sessions, generate role-specific questions, and evaluate responses with AI feedback.</p>
-          <div id="service-status" hx-get="/ui/status" hx-trigger="load, every 30s" hx-swap="innerHTML"></div>
+                    <div id="service-status" class="status-grid" hx-get="/ui/status" hx-trigger="load, every 30s" hx-swap="innerHTML">
+                        <div class="dependency-status"><span class="status-dot loading"></span><div><strong>Database</strong><span class="status-detail">Checking...</span></div></div>
+                        <div class="dependency-status"><span class="status-dot loading"></span><div><strong>Backend</strong><span class="status-detail">Checking...</span></div></div>
+                        <div class="dependency-status"><span class="status-dot loading"></span><div><strong>Ollama</strong><span class="status-detail">Checking...</span></div></div>
+                    </div>
         </div>
 
         <div class="grid">
@@ -131,13 +194,7 @@ def index():
 
 @app.get("/ui/status")
 def ui_status():
-    try:
-        payload, status = backend_request("GET", "/ready")
-        if status == 200 and isinstance(payload, dict) and payload.get("status") == "ready":
-            return f'<span class="status ready">Backend ready</span>'
-        return f'<span class="status error">Backend unavailable</span>'
-    except BackendUnavailable as error:
-        return f'<span class="status error">{error}</span>'
+    return dependency_status()
 
 
 @app.get("/ui/sessions")
