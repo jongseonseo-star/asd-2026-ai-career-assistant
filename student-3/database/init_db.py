@@ -64,16 +64,62 @@ def seed_sessions(connection):
     if existing > 0:
         return
 
+    sessions = [
+        (
+            session_id,
+            f"Candidate {session_id}",
+            role,
+            interview_type,
+            "active" if session_id % 2 == 0 else "draft",
+            0.0,
+            f"Practice plan for {role} interviews.",
+        )
+        for session_id, (role, interview_type) in enumerate(
+            [
+                ("Software Engineer", "technical"),
+                ("Product Manager", "behavioral"),
+                ("Data Analyst", "technical"),
+                ("UX Designer", "behavioral"),
+                ("DevOps Engineer", "technical"),
+                ("Project Manager", "behavioral"),
+                ("QA Engineer", "technical"),
+                ("Security Engineer", "technical"),
+                ("Business Analyst", "behavioral"),
+                ("Cloud Architect", "technical"),
+            ],
+            start=1,
+        )
+    ]
+
+    questions = [
+        (
+            question_id,
+            ((question_id - 1) // 2) + 1,
+            "technical" if question_id % 2 else "behavioral",
+            f"Practice interview question {question_id}: explain your approach and trade-offs.",
+        )
+        for question_id in range(1, 21)
+    ]
+
+    responses = [
+        (
+            response_id,
+            response_id,
+            f"Sample answer for interview question {response_id}.",
+            "Clear answer with room for more concrete examples.",
+            70.0 + (response_id % 21),
+            "Add measurable results and discuss trade-offs.",
+        )
+        for response_id in range(1, 21)
+    ]
+
     connection.executemany(
         """
         INSERT INTO interview_sessions (
             id, candidate_name, target_role, interview_type, status, overall_score, notes
         ) VALUES (?, ?, ?, ?, ?, ?, ?)
         """,
-        [
-            (1, "David Saputra", "Software Engineer", "technical", "draft", 0.0, "Prepare for backend and systems questions."),
-            (2, "Nina Hartono", "Product Manager", "behavioral", "active", 0.0, "Focus on stakeholder communication and prioritisation."),
-        ],
+        sessions,
     )
 
     connection.executemany(
@@ -82,11 +128,7 @@ def seed_sessions(connection):
             id, session_id, category, question_text
         ) VALUES (?, ?, ?, ?)
         """,
-        [
-            (1, 1, "technical", "Describe how you would design a scalable API for an application with high read traffic."),
-            (2, 1, "behavioral", "Tell me about a time you handled ambiguity in a project."),
-            (3, 2, "behavioral", "How do you align product trade-offs between engineering and business stakeholders?"),
-        ],
+        questions,
     )
 
     connection.executemany(
@@ -95,10 +137,7 @@ def seed_sessions(connection):
             id, question_id, user_answer, ai_feedback, score, improvement_tips
         ) VALUES (?, ?, ?, ?, ?, ?)
         """,
-        [
-            (1, 1, "I would use a stateless service, cache reads, and add observability around latency and throughput.", "Strong structure and good use of scaling principles.", 84.0, "Add explicit trade-offs and failure scenarios to deepen the answer."),
-            (2, 3, "I usually frame decisions around customer impact and data, then document assumptions to align stakeholders.", "Good communication and prioritisation style.", 88.0, "Include a concrete example with a tough trade-off."),
-        ],
+        responses,
     )
 
 

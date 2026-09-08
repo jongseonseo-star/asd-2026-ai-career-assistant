@@ -134,6 +134,22 @@ def health():
         return jsonify({"status": "unhealthy", "service": "student-3-database"}), 503
 
 
+@app.get("/api/v1/stats")
+def stats():
+    connection = get_connection()
+    try:
+        counts = {}
+        for key, table in [
+            ("sessions", "interview_sessions"),
+            ("questions", "interview_questions"),
+            ("evaluations", "interview_responce"),
+        ]:
+            counts[key] = connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+        return jsonify(counts), 200
+    finally:
+        connection.close()
+
+
 @app.get("/api/v1/interview-sessions")
 def get_sessions():
     connection = get_connection()
