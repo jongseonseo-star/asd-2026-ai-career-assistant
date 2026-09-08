@@ -40,14 +40,14 @@ jobs:
       - name: Smoke Test Health and Readiness Endpoints
         run: |
           echo "Waiting for services to report ready..."
-          timeout 60 bash -c 'until curl -sf http://localhost:5302/health; do sleep 2; done' || { docker compose -f student-3/compose.local.yml logs; exit 1; }
-          timeout 60 bash -c 'until curl -sf http://localhost:5301/health; do sleep 2; done' || { docker compose -f student-3/compose.local.yml logs; exit 1; }
-          timeout 60 bash -c 'until curl -sf http://localhost:8403/health; do sleep 2; done' || { docker compose -f student-3/compose.local.yml logs; exit 1; }
+          timeout 60 bash -c 'until curl -sf http://localhost:5002/health; do sleep 2; done' || { docker compose -f student-3/compose.local.yml logs; exit 1; }
+          timeout 60 bash -c 'until curl -sf http://localhost:5001/health; do sleep 2; done' || { docker compose -f student-3/compose.local.yml logs; exit 1; }
+          timeout 60 bash -c 'until curl -sf http://localhost:8083/health; do sleep 2; done' || { docker compose -f student-3/compose.local.yml logs; exit 1; }
 
 
       - name: Verify Seed Data Rubric Compliance
         run: |
-          STATS=$(curl -s http://localhost:5302/api/v1/stats)
+          STATS=$(curl -s http://localhost:5002/api/v1/stats)
           echo "Database Stats: $STATS"
           python -c "
           import json, sys
