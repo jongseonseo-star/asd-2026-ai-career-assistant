@@ -1,0 +1,72 @@
+name: Student 3 CI
+
+on:
+  push:
+    paths:
+      - 'student-3/**'
+      - '.github/workflows/student-3.yml'
+  pull_request:
+    paths:
+      - 'student-3/**'
+      - '.github/workflows/student-3.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-and-test:
+    name: Build, Test, and Verify Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate Python Syntax
+        run: |
+          python -m py_compile $(find student-3/database student-3/backend student-3/frontend -name "*.py")
+
+      - name: Run Unit and Schema Tests
+        run: |
+          pip install -r student-3/backend/requirements.txt pytest
+          pytest student-3/tests/test_interview_service.py -v
+
+      - name: Build and Start Containers
+        run: |
+          docker compose -f student-3/compose.local.yml up -d --build
+
+      - name: Smoke Test Health and Readiness Endpoints
+        run: |
+          echo "Waiting for services to report ready..."
+          timeout 30 bash -c 'until curl -sf http://localhost:5302/health; do sleep 2; done'
+          timeout 30 bash -c 'until curl -sf http://localhost:5301/health; do sleep 2; done'
+          timeout 30 bash -c 'until curl -sf http://localhost:8403/health; do sleep 2; done'
+
+      - name: Verify Seed Data Rubric Compliance
+        run: |
+          STATS=$(curl -s http://localhost:5302/api/v1/stats)
+          echo "Database Stats: $STATS"
+          python -c "
+          import json, sys
+          data = json.loads('''$STATS''')
+          assert data.get('sessions', 0) >= 10, 'Sessions below 10'
+          assert data.get('questions', 0) >= 10, 'Questions below 10'
+          assert data.get('evaluations', 0) >= 20, 'Evaluations below 20'
+          print('Seed count verification passed!')
+          "
+
+      - name: Export Container Logs and Cleanup
+        if: always()
+        run: |
+          mkdir -p evidence
+          docker compose -f student-3/compose.local.yml logs > evidence/student-3-docker.log
+          docker compose -f student-3/compose.local.yml down -v
+
+      - name: Upload Verification Evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: student-3-evidence
+          path: evidence/ 
