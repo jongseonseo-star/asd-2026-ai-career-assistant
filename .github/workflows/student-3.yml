@@ -40,9 +40,10 @@ jobs:
       - name: Smoke Test Health and Readiness Endpoints
         run: |
           echo "Waiting for services to report ready..."
-          timeout 30 bash -c 'until curl -sf http://localhost:5302/health; do sleep 2; done'
-          timeout 30 bash -c 'until curl -sf http://localhost:5301/health; do sleep 2; done'
-          timeout 30 bash -c 'until curl -sf http://localhost:8403/health; do sleep 2; done'
+          timeout 60 bash -c 'until curl -sf http://localhost:5302/health; do sleep 2; done' || { docker compose -f student-3/compose.local.yml logs; exit 1; }
+          timeout 60 bash -c 'until curl -sf http://localhost:5301/health; do sleep 2; done' || { docker compose -f student-3/compose.local.yml logs; exit 1; }
+          timeout 60 bash -c 'until curl -sf http://localhost:8403/health; do sleep 2; done' || { docker compose -f student-3/compose.local.yml logs; exit 1; }
+
 
       - name: Verify Seed Data Rubric Compliance
         run: |
