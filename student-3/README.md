@@ -1,6 +1,6 @@
-# Student 3 - Application Management
+# Student 3 - Interview Preparation
 
-- `frontend/`: application tracking and cover-letter interface
-- `backend/`: cover-letter generation and next-action API
-- `database/`: application, cover letter, and status history data API
+- `frontend/`: interview practice and feedback interface
+- `backend/`: interview question generation and response evaluation API
+- `database/`: interview sessions, questions, responses, and feedback data API
 - `tests/`: feature and integration tests

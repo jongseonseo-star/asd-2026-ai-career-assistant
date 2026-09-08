@@ -51,10 +51,10 @@ Microservices must access another feature's data through its exposed API. They m
 |   `-- reports/             Technical report material
 |-- scripts/                 Build, test, and deployment helpers
 |-- shared/frontend/         Shared HTMX home page and common assets
-|-- student-1/               Job Listing feature
+|-- student-1/               Application feature
 |-- student-2/               Resume feature
-|-- student-3/               Application feature
-|-- student-4/               Interview feature
+|-- student-3/               Interview feature
+|-- student-4/               Job Listing feature
 |-- docker-compose.yml       Integrated local application
 `-- .env.example             Shared environment variable template
 ```

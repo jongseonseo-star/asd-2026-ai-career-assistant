@@ -1,10 +1,10 @@
 # Team responsibilities
 
-## Student 1 - Job Listing Management
+## Student 1 - Application Management
 
-- Frontend: job search and management interface
-- Backend/API: job analysis, skill extraction, and AI recommendations
-- Database: companies, job postings, and job skills
+- Frontend: application tracking and cover-letter interface
+- Backend/API: tailored cover-letter generation and next-action recommendations
+- Database: applications, cover letters, and application status history
 
 ## Student 2 - Resume Management
 
@@ -12,17 +12,17 @@
 - Backend/API: resume analysis, job matching, and skill-gap analysis
 - Database: candidate profiles, resumes, and candidate skills
 
-## Student 3 - Application Management
-
-- Frontend: application tracking and cover-letter interface
-- Backend/API: tailored cover-letter generation and next-action recommendations
-- Database: applications, cover letters, and application status history
-
-## Student 4 - Interview Preparation
+## Student 3 - Interview Preparation
 
 - Frontend: interview practice and feedback interface
 - Backend/API: interview question generation and response evaluation
 - Database: interview sessions, questions, responses, and feedback
+
+## Student 4 - Job Listing Management
+
+- Frontend: job search and management interface
+- Backend/API: job analysis, skill extraction, and AI recommendations
+- Database: companies, job postings, and job skills
 
 ## Shared responsibilities
 
