@@ -1,0 +1,20 @@
+=== 1. DATABASE HEALTH (PORT 5302) ===
+{"service":"student-3-database","status":"healthy"}
+
+HTTP Status: 200
+
+=== 2. SEED DATA COMPLIANCE (/api/v1/stats) ===
+{"error":"Endpoint not found."}
+
+=== 3. BACKEND HEALTH (PORT 5301) ===
+{"service":"student-3-backend","status":"healthy"}
+
+HTTP Status: 200
+
+=== 4. AI READINESS (/api/v1/ai/status) ===
+{"configured_model":"qwen2.5:0.5b","configured_model_available":true,"installed_models":["qwen2.5:0.5b","qwen2.5:3b","nomic-embed-text:latest"],"runtime":"Ollama","status":"available"}
+
+=== 5. FRONTEND HEALTH (PORT 8303) ===
+{"service":"student-3-frontend","status":"healthy"}
+
+HTTP Status: 200
