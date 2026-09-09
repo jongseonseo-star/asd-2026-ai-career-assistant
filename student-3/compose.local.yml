@@ -9,7 +9,7 @@ services:
       PORT: "5002"
       DB_PATH: /app/data/interview_data.db
     ports:
-      - "5002:5002"
+      - "5302:5002"
     volumes:
       - student-3-database-data:/app/data
     networks:
@@ -33,7 +33,7 @@ services:
       OLLAMA_MODEL: qwen2.5:0.5b
       OLLAMA_TIMEOUT_SECONDS: "180"
     ports:
-      - "5001:5001"
+      - "5301:5001"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -58,7 +58,7 @@ services:
       BACKEND_TIMEOUT_SECONDS: "10"
       AI_TIMEOUT_SECONDS: "180"
     ports:
-      - "8083:8083"
+      - "8303:8083"
     depends_on:
       student-3-backend:
         condition: service_healthy
