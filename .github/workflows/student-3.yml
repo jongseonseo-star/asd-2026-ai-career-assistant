@@ -15,6 +15,8 @@ jobs:
   validate-and-test:
     name: Build, Test, and Verify Compliance
     runs-on: ubuntu-latest
+    env:
+      AI_SERVICES_ENABLED: "false"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v6
