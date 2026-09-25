@@ -58,6 +58,10 @@ def dependency_status() -> str:
     database_detail = "Unknown"
     ollama_state = "error"
     ollama_detail = "Unavailable"
+    mcp_state = "warning"
+    mcp_detail = "Disabled"
+    rag_state = "warning"
+    rag_detail = "Disabled"
 
     try:
         backend_payload, backend_http_status = backend_request("GET", "/health", timeout=STATUS_TIMEOUT)
@@ -84,6 +88,9 @@ def dependency_status() -> str:
                 ollama_state, ollama_detail = "warning", "Connected, model unavailable"
         else:
             ollama_detail = "Not available"
+        if isinstance(ollama_payload, dict) and ollama_payload.get("shared_ai_services_enabled"):
+            mcp_state, mcp_detail = "ready", "Enabled"
+            rag_state, rag_detail = "ready", "Enabled"
     except BackendUnavailable as error:
         ollama_detail = str(error)
 
@@ -91,6 +98,8 @@ def dependency_status() -> str:
         status_badge("Database", database_state, database_detail),
         status_badge("Backend", backend_state, backend_detail),
         status_badge("Ollama", ollama_state, ollama_detail),
+        status_badge("MCP", mcp_state, mcp_detail),
+        status_badge("RAG", rag_state, rag_detail),
     ])
 
 
@@ -301,7 +310,8 @@ def ui_generate_questions():
         </div>
         """ for idx, q in enumerate(questions)
     )
-    return f'<div class="card"><strong>Generated questions</strong>{rows}</div>'
+    sources = ", ".join(str(source) for source in payload.get("sources", [])) or "No sources returned"
+    return f'<div class="card"><strong>Generated questions</strong><br><small>Grounding confidence: {escape(payload.get("confidence", "unknown"))} | Sources: {escape(sources)}</small>{rows}</div>'
 
 
 @app.post("/ui/questions/<int:question_id>/evaluate")
@@ -325,11 +335,14 @@ def ui_evaluate_answer(question_id: int):
     score = payload.get("score", 0)
     feedback = payload.get("feedback", "No feedback returned.")
     tips = payload.get("improvement_tips", "Keep practising.")
+    sources = ", ".join(str(source) for source in payload.get("sources", [])) or "No sources returned"
     return f"""
     <div class="card">
       <strong>Score:</strong> {score}<br>
       <strong>Feedback:</strong> {feedback}<br>
       <strong>Improvement tips:</strong> {tips}
+    <br><strong>Grounding confidence:</strong> {escape(payload.get("confidence", "unknown"))}
+    <br><strong>Sources:</strong> {escape(sources)}
     </div>
     """
 
