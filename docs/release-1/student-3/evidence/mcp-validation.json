@@ -1,0 +1,25 @@
+{
+  "mode": "mcp",
+  "workflow": [
+    "DESIGN",
+    "IMPLEMENT",
+    "EXECUTE",
+    "CAPTURE EVIDENCE",
+    "REVIEW",
+    "IMPROVE"
+  ],
+  "checks": [
+    {
+      "protocol": "MCP",
+      "status": 200,
+      "tools": 1,
+      "has_result": true
+    }
+  ],
+  "review": {
+    "passed": true
+  },
+  "improve": {
+    "next_step": "Refresh the RAG corpus or add MCP tools when a check fails."
+  }
+}
