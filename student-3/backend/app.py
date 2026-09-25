@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 from pathlib import Path
@@ -17,6 +18,10 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
 PORT = int(os.getenv("PORT", "5001"))
 DATABASE_TIMEOUT = float(os.getenv("DATABASE_TIMEOUT_SECONDS", "5"))
 OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "180"))
+MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://127.0.0.1:8765").rstrip("/")
+RAG_BASE_URL = os.getenv("RAG_BASE_URL", "http://127.0.0.1:8766").rstrip("/")
+SHARED_AI_TIMEOUT = float(os.getenv("SHARED_AI_TIMEOUT_SECONDS", "5"))
+AI_SERVICES_ENABLED = os.getenv("AI_SERVICES_ENABLED", "false").lower() in {"1", "true", "yes"}
 
 app = Flask(__name__)
 session = requests.Session()
@@ -117,6 +122,57 @@ def proxy_database(method: str, path: str, *, json_body: dict[str, Any] | None =
     return jsonify(payload), status
 
 
+def shared_ai_context(*, target_role: str, interview_type: str, query: str) -> dict[str, Any]:
+    if not AI_SERVICES_ENABLED:
+        return {"mcp": {}, "retrieved_context": [], "sources": [], "confidence": "disabled"}
+    try:
+        mcp_payload = asyncio.run(call_mcp_tool(target_role, interview_type))
+        rag_response = session.post(
+            f"{RAG_BASE_URL}/retrieve",
+            json={"query": query, "top_k": 3},
+            timeout=SHARED_AI_TIMEOUT,
+        )
+        rag_response.raise_for_status()
+        rag_payload = rag_response.json()
+    except (ImportError, asyncio.TimeoutError, requests.Timeout, requests.RequestException, ValueError) as error:
+        raise DependencyError("shared-ai-services", "MCP or RAG service is unavailable.") from error
+
+    results = rag_payload.get("results", []) if isinstance(rag_payload, dict) else []
+    if not isinstance(results, list):
+        results = []
+    return {
+        "mcp": mcp_payload.get("content", {}) if isinstance(mcp_payload, dict) else {},
+        "retrieved_context": [item.get("text", "") for item in results if isinstance(item, dict)],
+        "sources": [item.get("source") for item in results if isinstance(item, dict) and item.get("source")],
+        "confidence": rag_payload.get("confidence", "low") if isinstance(rag_payload, dict) else "low",
+    }
+
+
+async def call_mcp_tool(target_role: str, interview_type: str) -> dict[str, Any]:
+    from fastmcp import Client
+
+    async with Client(f"{MCP_BASE_URL}/mcp", timeout=SHARED_AI_TIMEOUT) as client:
+        result = await client.call_tool(
+            "interview_context",
+            arguments={"target_role": target_role, "interview_type": interview_type},
+            timeout=SHARED_AI_TIMEOUT,
+        )
+    structured = getattr(result, "structured_content", None) or getattr(result, "structuredContent", None)
+    if isinstance(structured, dict):
+        return structured
+    for content in getattr(result, "content", []):
+        text = getattr(content, "text", "")
+        if text:
+            parsed = json.loads(text)
+            if isinstance(parsed, dict):
+                return parsed
+    raise ValueError("MCP returned no structured interview context.")
+
+
+def grounding_prompt(context: dict[str, Any]) -> str:
+    return "\n\nGROUNDED CONTEXT\n" + json.dumps(context, ensure_ascii=False, indent=2)
+
+
 def get_ollama_models() -> list[str]:
     try:
         response = session.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=OLLAMA_TIMEOUT)
@@ -201,6 +257,9 @@ def ai_status():
         "configured_model": OLLAMA_MODEL,
         "configured_model_available": OLLAMA_MODEL in models,
         "installed_models": models,
+        "shared_ai_services_enabled": AI_SERVICES_ENABLED,
+        "mcp_server_url": MCP_BASE_URL,
+        "rag_server_url": RAG_BASE_URL,
     }), 200
 
 
@@ -242,7 +301,8 @@ def generate_questions_for_session(session_id: int):
     if question_count < 1 or question_count > 10:
         raise ClientInputError("question_count must be between 1 and 10.")
 
-    prompt = f"{load_prompt('question_generation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'session_id': session_id, 'target_role': role, 'interview_type': interview_type, 'question_count': question_count}, ensure_ascii=False, indent=2)}"
+    context = shared_ai_context(target_role=role, interview_type=interview_type, query=f"{role} {interview_type} interview questions")
+    prompt = f"{load_prompt('question_generation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'session_id': session_id, 'target_role': role, 'interview_type': interview_type, 'question_count': question_count}, ensure_ascii=False, indent=2)}{grounding_prompt(context)}"
     model_output = call_ollama(load_prompt('system_prompt.txt'), prompt)
     parsed = parse_json_text(model_output)
     items = parsed.get("questions", []) if isinstance(parsed, dict) else []
@@ -272,6 +332,8 @@ def generate_questions_for_session(session_id: int):
         "questions": created_questions,
         "generated_questions": created_questions,
         "count": len(created_questions),
+        "sources": context["sources"],
+        "confidence": context["confidence"],
     }), 200
 
 
@@ -314,7 +376,10 @@ def evaluate_answer(question_id: int):
     if session_status != 200:
         return jsonify(session_payload), session_status
 
-    prompt = f"{load_prompt('response_evaluation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'target_role': session_payload.get('target_role', 'General'), 'question': question_payload.get('question_text', ''), 'candidate_answer': candidate_answer}, ensure_ascii=False, indent=2)}"
+    target_role = session_payload.get("target_role", "General")
+    interview_type = session_payload.get("interview_type", "general")
+    context = shared_ai_context(target_role=target_role, interview_type=interview_type, query=f"{target_role} {question_payload.get('question_text', '')} interview evaluation")
+    prompt = f"{load_prompt('response_evaluation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'target_role': target_role, 'question': question_payload.get('question_text', ''), 'candidate_answer': candidate_answer}, ensure_ascii=False, indent=2)}{grounding_prompt(context)}"
     model_output = call_ollama(load_prompt('system_prompt.txt'), prompt)
     parsed = parse_json_text(model_output)
     if not isinstance(parsed, dict):
@@ -360,6 +425,8 @@ def evaluate_answer(question_id: int):
         "feedback": str(feedback).strip(),
         "improvement_tips": str(tips).strip(),
         "response": response_payload,
+        "sources": context["sources"],
+        "confidence": context["confidence"],
     }), 200
 
 
