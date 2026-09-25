@@ -15,6 +15,27 @@ An integrated Agentic AI application that helps users discover jobs, improve res
 
 > The project specification assumes a five-person team. This repository currently reflects a four-person team and requires tutor approval for that exception.
 
+## Release 1 scope
+
+- One shared, local AI Mode extended with MCP and RAG modes
+- One shared non-containerized local FastMCP server used by all student features
+- One shared non-containerized local RAG server used by all student features
+- Student backends expose MCP and RAG capabilities to their frontends through their existing APIs
+- Grounded AI responses include retrieved context, source citations, and a low, medium, or high confidence category
+- Release 0 Docker Compose continues to run only the containerized feature microservices; AI Mode, FastMCP, RAG, and the agentic loop remain local processes
+- Student GitHub Actions workflows disable AI Mode, MCP, and RAG during CI/CD
+- One shared local agentic loop supports Release 0, MCP, and RAG validation modes and captures JSON evidence
+
+The shared local services are started separately from the repository root:
+
+```bash
+python -m pip install -r ai-services/requirements.txt
+python ai-services/mcp_server.py --transport streamable-http
+python ai-services/rag_server.py
+```
+
+Use `python ai-services/agentic_loop.py --mode all --evidence-file docs/release-1/student-3/evidence/ai-validation.json` to validate the local modes and capture evidence. Enable shared grounding for a feature backend with `AI_SERVICES_ENABLED=true`.
+
 ## Feature ownership
 
 | Student | Feature | Frontend responsibility | Backend/API responsibility | Database responsibility |
@@ -45,7 +66,7 @@ Microservices must access another feature's data through its exposed API. They m
 ```text
 .
 |-- .github/workflows/       Student CI workflows
-|-- ai-services/             Shared AI Mode and Ollama integration
+|-- ai-services/             Shared AI Mode, FastMCP, RAG, and agentic loop
 |-- docs/
 |   |-- architecture/        Architecture diagrams
 |   `-- reports/             Technical report material
