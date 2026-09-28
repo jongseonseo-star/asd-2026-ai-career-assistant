@@ -8,6 +8,15 @@
         hx-disabled-elt="find button"
         hx-indicator="#ai-loader">
         <div class="form-grid">
+            <label class="form-span-2">
+                <span>Analysis mode</span>
+                <select name="mode">
+                    <option value="release0" {% if not shared_enabled %}selected{% endif %}>AI Mode — original feedback</option>
+                    <option value="mcp" {% if not shared_enabled %}disabled{% endif %}>MCP — inspect candidate records</option>
+                    <option value="mcp-rag" {% if shared_enabled %}selected{% else %}disabled{% endif %}>RAG — feedback with sources</option>
+                </select>
+                <small>MCP shows current records without generating an answer. RAG uses those records and retrieved guidance. AI Mode keeps the original workflow.</small>
+            </label>
             <label>
                 <span>Candidate profile</span>
                 <select
@@ -37,6 +46,11 @@
                     evidence about the candidate.
                 </small>
             </label>
+            <label class="form-span-2">
+                <span>Resume guidance query (optional)</span>
+                <input name="rag_query" maxlength="20000" placeholder="For example: resume achievements and skill evidence">
+                <small>Leave blank to use the target role and job requirements. If no relevant guidance is found, no AI feedback will be generated.</small>
+            </label>
         </div>
 
         <div class="ai-actions">
@@ -44,7 +58,7 @@
                 Generate AI Feedback
             </button>
             <span id="ai-loader" class="htmx-indicator ai-loader">
-                Ollama is analysing grounded candidate evidence…
+                Checking the selected evidence…
             </span>
         </div>
     </form>
@@ -54,7 +68,7 @@
             <span class="ai-placeholder__icon">AI</span>
             <div>
                 <h3>Ready for analysis</h3>
-                <p>Select a profile and resume, then generate local AI feedback.</p>
+                <p>Select a profile and resume, then generate local AI feedback. With shared AI enabled, results include MCP candidate records and retrieved resume guidance.</p>
             </div>
         </div>
     </div>

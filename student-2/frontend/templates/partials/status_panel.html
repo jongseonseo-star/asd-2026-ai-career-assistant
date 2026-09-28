@@ -1,6 +1,6 @@
 <div class="status-card">
     <div class="status-card__header">
-        <span>Live service status</span>
+        <span>Backend and local model checks</span>
         <span class="status-dot {% if backend_ready and database_ready and ai_ready %}is-online{% else %}is-offline{% endif %}"></span>
     </div>
     <div class="status-grid">
@@ -17,12 +17,13 @@
             </strong>
         </div>
         <div>
-            <span class="status-label">AI Model</span>
+            <span class="status-label">Release 0 model</span>
             <strong class="status-value {% if ai_ready %}is-good{% else %}is-bad{% endif %}">
                 {{ model }}
             </strong>
         </div>
     </div>
+    <p class="status-message">MCP/RAG connections are checked when generating feedback. Each response shows the model used for that result.</p>
     {% if status_message %}
     <p class="status-message">{{ status_message }}</p>
     {% endif %}

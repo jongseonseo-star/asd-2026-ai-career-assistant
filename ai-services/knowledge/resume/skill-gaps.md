@@ -1,0 +1,3 @@
+# Compare skills with the supplied target role
+
+Compare each explicit job requirement against candidate evidence in the resume, profile and skills. Report a skill gap when supporting evidence is absent, and cite both the relevant requirement and the available candidate context. If no job description is supplied, label any comparison with the target role as general guidance and ask for actual requirements before making precise matching claims. Recommend a small practice project or documented example for a missing skill; do not claim that completing it guarantees employment. This guidance is authored for this project.
