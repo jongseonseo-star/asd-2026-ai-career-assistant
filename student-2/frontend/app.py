@@ -12,7 +12,7 @@ BACKEND_API_URL = os.getenv(
 ).rstrip("/")
 PORT = int(os.getenv("PORT", "8082"))
 BACKEND_TIMEOUT = float(os.getenv("BACKEND_TIMEOUT_SECONDS", "10"))
-AI_TIMEOUT = float(os.getenv("AI_TIMEOUT_SECONDS", "240"))
+AI_TIMEOUT = float(os.getenv("AI_TIMEOUT_SECONDS", "180"))
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -700,8 +700,6 @@ def ui_delete_skill(skill_id: int):
 @app.get("/ui/ai/form")
 def ui_ai_form():
     try:
-        service_info, _ = backend_request("GET", "/")
-        shared_enabled = isinstance(service_info, dict) and service_info.get("release") == "Release 1"
         profiles = fetch_collection("/api/v1/profiles")
         selected_profile_id = profiles[0]["id"] if profiles else None
         resumes = (
@@ -717,7 +715,6 @@ def ui_ai_form():
             profiles=profiles,
             resumes=resumes,
             selected_profile_id=selected_profile_id,
-            shared_enabled=shared_enabled,
         )
     except BackendUnavailable as error:
         return render_template(
@@ -769,13 +766,10 @@ def ui_ai_resume_feedback():
     body = {
         "profile_id": profile_id,
         "resume_id": resume_id,
-        "rag_query": request.form.get("rag_query", "").strip(),
         "job_description": request.form.get(
             "job_description", ""
         ).strip(),
     }
-    if request.form.get("mode"):
-        body["mode"] = request.form["mode"]
 
     try:
         payload, status = backend_request(
@@ -807,19 +801,10 @@ def ui_ai_resume_feedback():
         "partials/ai_result.html",
         error_message=None,
         feedback=feedback,
-        raw_feedback=payload.get("raw_feedback", feedback),
         feedback_sections=sections,
         model=payload.get("model", "Unknown model"),
         grounding=payload.get("grounding", ""),
         context_summary=payload.get("context_summary", {}),
-        cited_feedback=payload.get("feedback_sections", {}),
-        evidence_sources=payload.get("evidence_sources", []),
-        mode=payload.get("mode", "release0"),
-        confidence=payload.get("confidence", "disabled"),
-        confidence_basis=payload.get("confidence_basis", ""),
-        result_status=payload.get("status", "answered"),
-        mcp_result=payload.get("mcp_result"),
-        mcp_tool=payload.get("mcp_tool", ""),
     )
 
 

@@ -6,35 +6,17 @@
 {% elif feedback %}
 <div class="ai-result__header">
     <div>
-        <p class="eyebrow">{% if mode == "mcp-rag" %}MCP + RAG Result{% elif mode == "mcp" %}MCP Result{% else %}Release 0 Result{% endif %}</p>
-        <h3>{% if mode == "mcp" %}Candidate Records{% else %}Resume Feedback{% endif %}</h3>
+        <p class="eyebrow">Grounded Result</p>
+        <h3>Resume Feedback</h3>
     </div>
     <span class="model-badge">{{ model }}</span>
 </div>
 
-{% if result_status == "insufficient-context" %}
-<div class="notice" role="status"><strong>Insufficient context</strong><p>{{ feedback }}</p><p>The local model was not called.</p></div>
-{% elif result_status == "context-only" %}
-<div class="notice" role="status"><p>{{ feedback }}</p></div>
-{% else %}
 <div class="feedback-grid">
     {% for heading in ["Strengths", "Skill Gaps", "Recommended Actions", "Information Missing"] %}
     <section class="feedback-card feedback-card--{{ heading|lower|replace(' ', '-') }}">
         <h4>{{ heading }}</h4>
-        {% if cited_feedback and cited_feedback.get(heading) %}
-        <ul>
-            {% for item in cited_feedback.get(heading) %}
-            <li>
-                {{ item.text }}
-                <span class="feedback-citations">
-                    {% for ref in item.citations %}
-                    <a href="#evidence-{{ ref }}" aria-label="View evidence {{ ref }}">[{{ ref }}]</a>
-                    {% endfor %}
-                </span>
-            </li>
-            {% endfor %}
-        </ul>
-        {% elif feedback_sections.get(heading) %}
+        {% if feedback_sections.get(heading) %}
         <ul>
             {% for item in feedback_sections.get(heading) %}
             <li>{{ item }}</li>
@@ -46,8 +28,6 @@
     </section>
     {% endfor %}
 </div>
-
-{% endif %}
 
 <div class="evidence-strip">
     <div>
@@ -69,39 +49,8 @@
 </div>
 
 <p class="grounding-note">{{ grounding }}</p>
-{% if mode == "mcp-rag" %}
-<div class="grounding-review" role="note">
-    <p><strong>Guidance retrieval confidence: {{ confidence|capitalize }}</strong></p>
-    <p>{{ confidence_basis }}</p>
-    {% if result_status != "insufficient-context" %}<p>References have been checked against the supplied sources. Review the claims against the excerpts before using the feedback.</p>{% endif %}
-    {% if context_summary.get("guidance_records", 0) == 0 %}
-    <p>No matching guidance was retrieved. Please refine the guidance query or add reviewed knowledge.</p>
-    {% endif %}
-</div>
-{% endif %}
-{% if mcp_result %}
-<details class="raw-feedback" {% if mode == "mcp" %}open{% endif %}>
-    <summary>View MCP tool result: {{ mcp_tool }}</summary>
-    <pre>{{ mcp_result|tojson(indent=2) }}</pre>
-</details>
-{% endif %}
-{% if evidence_sources %}
-<section class="feedback-evidence" aria-label="Evidence sources">
-    <h4>Sources supplied to the analysis</h4>
-    <p>Candidate records are self-reported evidence. Job requirements are comparison criteria; guidance is general advice.</p>
-    {% for source in evidence_sources %}
-    <details class="evidence-source" id="evidence-{{ source.id }}">
-        <summary>[{{ source.id }}] {{ source.title }} · {{ source.kind }}</summary>
-        <p class="source-identifier">{{ source.source }}</p>
-        <pre>{{ source.text }}</pre>
-    </details>
-    {% endfor %}
-</section>
-{% endif %}
-{% if result_status not in ["insufficient-context", "context-only"] %}
 <details class="raw-feedback">
     <summary>View raw model response</summary>
-    <pre>{{ raw_feedback }}</pre>
+    <pre>{{ feedback }}</pre>
 </details>
-{% endif %}
 {% endif %}

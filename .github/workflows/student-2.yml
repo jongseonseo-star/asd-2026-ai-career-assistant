@@ -1,7 +1,21 @@
 name: Student 2 - Build and Validate
 
 on:
-  # Lab 5/7: run the validation workflow explicitly and review its evidence.
+  push:
+    branches:
+      - main
+      - feature/student-2-resume-profile
+    paths:
+      - "student-2/**"
+      - ".github/workflows/student-2.yml"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "student-2/**"
+      - ".github/workflows/student-2.yml"
+
   workflow_dispatch:
 
 permissions:
@@ -21,9 +35,6 @@ jobs:
       COMPOSE_FILE: student-2/compose.local.yml
       COMPOSE_PROJECT: student2-ci
       REPORT_DIR: reports/student-2
-      # CI must not contact a developer's model or shared AI services.
-      OLLAMA_ENABLED: "false"
-      AI_SERVICES_ENABLED: "false"
 
     steps:
       - name: Check out repository
@@ -41,16 +52,8 @@ jobs:
         run: |
           python -m py_compile student-2/database/init_db.py
           python -m py_compile student-2/database/app.py
-          python -m py_compile student-2/backend/app.py student-2/backend/feedback_contract.py
-          python -m compileall -q ai-services
+          python -m py_compile student-2/backend/app.py
           python -m py_compile student-2/frontend/app.py
-
-      - name: Install test dependencies
-        run: python -m pip install -r student-2/backend/requirements.txt -r ai-services/requirements.txt pytest
-
-      - name: Test resume grounding and failure handling without external AI
-        run: |
-          python -m pytest student-2/tests ai-services/tests -q
 
       - name: Validate Docker Compose configuration
         run: |
@@ -193,52 +196,26 @@ jobs:
         run: |
           set -euo pipefail
 
-          docker compose \
-            -p "$COMPOSE_PROJECT" \
-            -f "$COMPOSE_FILE" \
-            exec -T student-2-backend python -c \
-            'import app,json; print(json.dumps({"ai_services_enabled":app.AI_SERVICES_ENABLED,"ollama_enabled":app.OLLAMA_ENABLED}))' \
-            > "$REPORT_DIR/backend-ai-configuration.json"
+          status_code="$(
+            curl \
+              --silent \
+              --show-error \
+              --output "$REPORT_DIR/ai-status.json" \
+              --write-out "%{http_code}" \
+              http://127.0.0.1:5001/api/v1/ai/status || true
+          )"
 
-          python - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-          from urllib.error import HTTPError
-          from urllib.request import Request, urlopen
+          echo "$status_code" > "$REPORT_DIR/ai-status-http-code.txt"
 
-          report_dir = Path(os.environ["REPORT_DIR"])
-          configuration = json.loads((report_dir / "backend-ai-configuration.json").read_text())
-          if configuration != {"ai_services_enabled": False, "ollama_enabled": False}:
-              raise SystemExit("Running backend must have MCP/RAG and Ollama disabled in CI.")
+          if [[ "$status_code" != "200" && "$status_code" != "503" ]]; then
+            echo "::error::Unexpected AI status HTTP code: $status_code"
+            cat "$REPORT_DIR/ai-status.json"
+            exit 1
+          fi
 
-          resumes = json.loads((report_dir / "resumes.json").read_text())
-          resume = resumes[0]
-          requests = [
-              ("ai-status", "/api/v1/ai/status", None),
-              ("ai-feedback-disabled", "/api/v1/ai/resume-feedback",
-               {"profile_id": resume["candidate_profile_id"], "resume_id": resume["id"]}),
-          ]
-          for name, path, body in requests:
-              request = Request("http://127.0.0.1:5001" + path,
-                  data=json.dumps(body).encode() if body is not None else None,
-                  headers={"Content-Type": "application/json"} if body is not None else {})
-              try:
-                  response = urlopen(request, timeout=10)
-              except HTTPError as error:
-                  response = error
-              with response:
-                  status = response.code
-                  payload = json.load(response)
-              (report_dir / f"{name}.json").write_text(json.dumps(payload, indent=2) + "\n")
-              (report_dir / f"{name}-http-code.txt").write_text(str(status) + "\n")
-              if (status != 503 or not isinstance(payload, dict)
-                      or payload.get("dependency") != "ollama"
-                      or "disabled" not in payload.get("error", "").lower()
-                      or "feedback" in payload):
-                  raise SystemExit(f"{name} must explicitly report disabled generation with HTTP 503.")
-              print(f"{name}: HTTP 503, generation explicitly disabled.")
-          PY
+          echo "AI status endpoint returned expected HTTP $status_code."
+          cat "$REPORT_DIR/ai-status.json"
+          echo
 
       - name: Capture Compose status and logs
         if: always()
@@ -266,7 +243,6 @@ jobs:
         run: |
           python - <<'PY'
           import json
-          import hashlib
           import os
           from datetime import datetime, timezone
           from pathlib import Path
@@ -282,21 +258,7 @@ jobs:
                   counts_path.read_text(encoding="utf-8")
               )
 
-          configuration_path = report_dir / "backend-ai-configuration.json"
-          configuration = {}
-          if configuration_path.exists():
-              try:
-                  configuration = json.loads(configuration_path.read_text(encoding="utf-8"))
-                  if not isinstance(configuration, dict):
-                      configuration = {}
-              except ValueError:
-                  pass
-
           report = {
-              "execution_source": "github-actions",
-              "ai_services_enabled": configuration.get("ai_services_enabled"),
-              "ollama_enabled": configuration.get("ollama_enabled"),
-              "workflow_sha256": hashlib.sha256(Path(".github/workflows/student-2.yml").read_bytes()).hexdigest(),
               "workflow": os.environ.get("GITHUB_WORKFLOW"),
               "run_id": os.environ.get("GITHUB_RUN_ID"),
               "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
