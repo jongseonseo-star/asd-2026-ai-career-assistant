@@ -27,6 +27,11 @@ services:
       DATABASE_API_URL: http://student-2-database:5002
       OLLAMA_BASE_URL: http://host.docker.internal:11434
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:0.5b}
+      AI_SERVICES_ENABLED: ${AI_SERVICES_ENABLED:-false}
+      OLLAMA_ENABLED: ${OLLAMA_ENABLED:-true}
+      MCP_BASE_URL: ${MCP_BASE_URL:-http://host.docker.internal:8765}
+      RAG_BASE_URL: ${RAG_BASE_URL:-http://host.docker.internal:8766}
+      RAG_GENERATION_TIMEOUT_SECONDS: ${RAG_GENERATION_TIMEOUT_SECONDS:-210}
     ports: ["5001:5001"]
     extra_hosts: ["host.docker.internal:host-gateway"]
     depends_on:
@@ -35,7 +40,10 @@ services:
 
   student-2-frontend:
     build: ./student-2/frontend
-    environment: {PORT: "8082", BACKEND_API_URL: "http://student-2-backend:5001"}
+    environment:
+      PORT: "8082"
+      BACKEND_API_URL: http://student-2-backend:5001
+      AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-240}
     ports: ["8082:8082"]
     depends_on: [student-2-backend]
     networks: [career-assistant-network]
