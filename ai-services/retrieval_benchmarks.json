@@ -1,0 +1,47 @@
+[
+  {
+    "name": "resume-achievements",
+    "feature": "resume",
+    "query": "How can I write verifiable resume achievements?",
+    "expected_relevant_chunks": ["resume:achievement-writing:1"],
+    "reason": "The achievement-writing document directly describes action, context, results and avoiding invented metrics."
+  },
+  {
+    "name": "resume-skill-comparison",
+    "feature": "resume",
+    "query": "How do I compare job requirements against candidate skills?",
+    "expected_relevant_chunks": ["resume:skill-gaps:1", "resume:evidence-boundaries:1"],
+    "reason": "These chunks explain comparing requirements with candidate evidence without treating job requirements as achievements."
+  },
+  {
+    "name": "resume-citations",
+    "feature": "resume",
+    "query": "How should resume feedback cite source evidence?",
+    "expected_relevant_chunks": ["resume:citations-and-uncertainty:1"],
+    "reason": "This document directly describes source identity, citation support and uncertainty."
+  },
+  {
+    "name": "interview-api",
+    "feature": "interview",
+    "query": "What should an API design interview answer discuss?",
+    "expected_relevant_chunks": ["interview:api-design:1"],
+    "reason": "API guidance lists validation, security, error handling and performance trade-offs."
+  },
+  {
+    "name": "interview-star",
+    "feature": "interview",
+    "query": "How should I structure a behavioural interview response using STAR?",
+    "expected_relevant_chunks": ["interview:interview-star:1"],
+    "reason": "The STAR chunk explains situation, task, action and measurable result."
+  },
+  {
+    "name": "interview-communication",
+    "feature": "interview",
+    "query": "How can I communicate assumptions and justify technical decisions?",
+    "expected_relevant_chunks": ["interview:technical-communication:1"],
+    "reason": "The communication chunk describes assumptions, alternatives and justification."
+  },
+  {"name": "no-weather", "feature": "resume", "query": "What is the weather in Sydney?", "expected_relevant_chunks": [], "reason": "Weather is outside the approved corpus."},
+  {"name": "no-coffee", "feature": "resume", "query": "Where is the nearest coffee shop?", "expected_relevant_chunks": [], "reason": "Local business locations are outside the approved corpus."},
+  {"name": "no-geography", "feature": "interview", "query": "What is the capital of Japan?", "expected_relevant_chunks": [], "reason": "Geographic facts are outside the approved corpus."}
+]
