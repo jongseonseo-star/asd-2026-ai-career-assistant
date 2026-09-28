@@ -1,1 +1,0 @@
-Scope: Student 2 database through its owning live API. Check required fields, real record counts, positive unique IDs, and profile ownership of resumes and skills. Use the deterministic full-data relation result; samples are only examples. Do not ask the backend to read SQLite directly or change unrelated endpoints.

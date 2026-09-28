@@ -1,1 +1,0 @@
-Scope: live Student 2 frontend readiness, backend/database response equality, invalid-input rejection, and 19 of 20 GET responses within 500 ms. This latency goal is for the measured non-AI GET route only. Do not infer all UI interactions or CRUD operations were tested.

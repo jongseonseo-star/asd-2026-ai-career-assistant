@@ -1,1 +1,0 @@
-Scope: Student 2 workflow structure, actual CI artifacts and runtime-disabled AI flags. Check build/start/smoke/evidence/always-teardown and artifact upload. A sequential single-job workflow may preserve the taught ordering. Local-ci-equivalent evidence is not a GitHub Actions run. Missing/failed/stale artifacts cannot be approved. Never invent a run URL or commit.

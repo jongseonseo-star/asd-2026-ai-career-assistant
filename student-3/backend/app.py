@@ -141,7 +141,7 @@ def shared_ai_context(*, target_role: str, interview_type: str, query: str) -> d
     if not isinstance(results, list):
         results = []
     return {
-        "mcp": mcp_payload if isinstance(mcp_payload, dict) else {},
+        "mcp": mcp_payload.get("content", {}) if isinstance(mcp_payload, dict) else {},
         "retrieved_context": [item.get("text", "") for item in results if isinstance(item, dict)],
         "sources": [item.get("source") for item in results if isinstance(item, dict) and item.get("source")],
         "confidence": rag_payload.get("confidence", "low") if isinstance(rag_payload, dict) else "low",
