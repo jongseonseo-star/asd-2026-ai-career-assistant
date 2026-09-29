@@ -8,7 +8,7 @@ from flask import Flask, redirect, render_template, request, url_for
 
 BACKEND_API_URL = os.getenv("BACKEND_API_URL", "http://127.0.0.1:5401").rstrip("/")
 BACKEND_TIMEOUT = float(os.getenv("BACKEND_TIMEOUT_SECONDS", "10"))
-AI_TIMEOUT = float(os.getenv("AI_TIMEOUT_SECONDS", "180"))
+AI_TIMEOUT = float(os.getenv("AI_TIMEOUT_SECONDS", "240"))
 PORT = int(os.getenv("PORT", "8404"))
 app = Flask(__name__)
 session = requests.Session()
@@ -122,6 +122,29 @@ def ai_recommendations():
         return render_template("ai_result.html", payload=payload if response.ok else None, error=payload.get("error") if not response.ok else None)
     except requests.RequestException:
         return render_template("ai_result.html", error="Ollama or the backend is unavailable.")
+
+
+@app.post("/mcp/jobs/<int:job_id>/context")
+def mcp_context(job_id: int):
+    return shared_result(f"/api/v1/mcp/jobs/{job_id}/context", "mcp")
+
+
+@app.post("/rag/jobs/<int:job_id>/answer")
+def rag_answer(job_id: int):
+    return shared_result(f"/api/v1/rag/jobs/{job_id}/answer", "rag",
+                         {"query": request.form.get("query", "").strip()})
+
+
+def shared_result(path: str, mode: str, data: dict | None = None):
+    try:
+        response = api("POST", path, timeout=AI_TIMEOUT, json=data)
+        payload = response.json()
+        return render_template("shared_result.html", mode=mode,
+                               payload=payload if response.ok else None,
+                               error=None if response.ok else payload.get("error", "The request failed."))
+    except (requests.RequestException, ValueError):
+        return render_template("shared_result.html", mode=mode,
+                               error="The backend or shared local service is unavailable.")
 
 
 if __name__ == "__main__":

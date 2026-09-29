@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 from datetime import datetime, timezone
@@ -9,15 +10,24 @@ from typing import Any
 import requests
 from flask import Flask, jsonify, request
 
+from job_contract import validate_answer, validate_context
+
 DATABASE_API_URL = os.getenv("DATABASE_API_URL", "http://127.0.0.1:5402").rstrip("/")
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
 DATABASE_TIMEOUT = float(os.getenv("DATABASE_TIMEOUT_SECONDS", "5"))
 OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "180"))
+AI_SERVICES_ENABLED = os.getenv("AI_SERVICES_ENABLED", "false").lower() in {"true", "1", "yes"}
+OLLAMA_ENABLED = os.getenv("OLLAMA_ENABLED", "true").lower() in {"true", "1", "yes"}
+MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://127.0.0.1:8765").rstrip("/")
+RAG_BASE_URL = os.getenv("RAG_BASE_URL", "http://127.0.0.1:8766").rstrip("/")
+MCP_TIMEOUT = float(os.getenv("MCP_TIMEOUT_SECONDS", "15"))
+RAG_TIMEOUT = float(os.getenv("RAG_GENERATION_TIMEOUT_SECONDS", "210"))
 PORT = int(os.getenv("PORT", "5401"))
 PROMPTS = Path(__file__).parent / "prompts"
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 64 * 1024
 session = requests.Session()
 
 
@@ -61,6 +71,8 @@ def prompt(name: str) -> str:
 
 
 def ollama_generate(task: str, context: Any) -> str:
+    if not OLLAMA_ENABLED:
+        raise ServiceError("Local AI generation is disabled.", 503, "ollama")
     user_prompt = f"{task}\n\nCONTEXT:\n{json.dumps(context, indent=2)}"
     try:
         payload = {
@@ -70,7 +82,7 @@ def ollama_generate(task: str, context: Any) -> str:
                 {"role": "system", "content": prompt("system_prompt.txt")},
                 {"role": "user", "content": user_prompt},
             ],
-            "options": {"temperature": 0.2},
+            "options": {"temperature": 0.2, "num_predict": 800},
         }
         if "Return JSON only" in task:
             payload["format"] = "json"
@@ -165,6 +177,8 @@ def enriched_jobs():
 
 @app.get("/api/v1/ai/status")
 def ai_status():
+    if not OLLAMA_ENABLED:
+        return jsonify({"status": "disabled", "model": OLLAMA_MODEL, "runtime": "Ollama"})
     try:
         response = session.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=3)
         response.raise_for_status()
@@ -215,6 +229,75 @@ def recommendations():
         f"Compared the candidate against {len(jobs)} available jobs.",
         "Return ranked options with both match evidence and skill gaps.", result
     ))
+
+
+async def read_mcp_job(job_id: int) -> dict:
+    from fastmcp import Client
+
+    async with Client(MCP_BASE_URL + "/mcp", timeout=MCP_TIMEOUT) as client:
+        result = await client.call_tool("job_context", {"job_id": job_id}, raise_on_error=False)
+    payload = result.structured_content
+    if result.is_error:
+        status = payload.get("status_code", 503) if isinstance(payload, dict) else 503
+        if status not in {400, 404, 502, 503}:
+            status = 503
+        message = payload.get("error", "MCP tool failed.") if isinstance(payload, dict) else "MCP tool failed."
+        raise ServiceError(message, status, "mcp")
+    try:
+        validate_context(payload, job_id)
+    except ValueError as error:
+        raise ServiceError(str(error), 502, "mcp") from error
+    return payload
+
+
+def mcp_job(job_id: int) -> dict:
+    if not AI_SERVICES_ENABLED:
+        raise ServiceError("MCP and RAG are disabled. Enable local AI services to use this action.", 503, "mcp")
+    if job_id < 1:
+        raise ServiceError("job_id must be positive.", 400)
+    try:
+        return asyncio.run(asyncio.wait_for(read_mcp_job(job_id), timeout=MCP_TIMEOUT))
+    except ServiceError:
+        raise
+    except Exception as error:
+        raise ServiceError("The shared MCP server is unavailable or timed out.", 503, "mcp") from error
+
+
+@app.get("/api/v1/ai/services/status")
+def shared_services_status():
+    return jsonify({"enabled": AI_SERVICES_ENABLED, "ollama_enabled": OLLAMA_ENABLED,
+                    "status": "enabled" if AI_SERVICES_ENABLED else "disabled"})
+
+
+@app.post("/api/v1/mcp/jobs/<int:job_id>/context")
+def mcp_job_context(job_id: int):
+    return jsonify(mcp_job(job_id))
+
+
+@app.post("/api/v1/rag/jobs/<int:job_id>/answer")
+def rag_job_answer(job_id: int):
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or set(data) - {"query"}:
+        return jsonify({"error": "Provide only a query for the selected posting."}), 400
+    query = data.get("query")
+    if not isinstance(query, str) or not query.strip() or len(query) > 2000:
+        return jsonify({"error": "query must contain between 1 and 2000 characters."}), 400
+    context = mcp_job(job_id)
+    try:
+        response = session.post(RAG_BASE_URL + "/answer", timeout=RAG_TIMEOUT, json={
+            "task": "job-guidance", "feature": "jobs", "query": query.strip(),
+            "top_k": 3, "job_context": context,
+        })
+        if not response.ok:
+            raise ServiceError("The shared RAG service could not answer this question.",
+                               response.status_code if response.status_code in {400, 502, 503} else 503, "rag")
+        payload = response.json()
+        validate_answer(payload, context)
+    except requests.RequestException as error:
+        raise ServiceError("The shared RAG service is unavailable or timed out.", 503, "rag") from error
+    except ValueError as error:
+        raise ServiceError("The shared RAG service returned invalid evidence or citations.", 502, "rag") from error
+    return jsonify(payload)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ WORKDIR /app
 RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY app.py ./
+COPY app.py job_contract.py ./
 COPY prompts ./prompts
 RUN chown -R appuser:appgroup /app
 USER appuser

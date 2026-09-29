@@ -14,7 +14,7 @@
         <h1>Job Listing Management</h1>
         <p>Manage opportunities and use grounded AI to understand job fit.</p>
       </div>
-      <span class="status">Release 0</span>
+      <span class="status">Release 1</span>
     </header>
     <main>
       {% if notice %}
@@ -100,6 +100,21 @@
                 <button class="danger">Delete</button>
               </form>
             </div>
+            <details class="job-guidance">
+              <summary>Explore this job with sources</summary>
+              <p>View the stored posting details or ask a question using the shared guidance library.</p>
+              <button class="secondary" hx-post="/mcp/jobs/{{ job.id }}/context"
+                hx-target="#job-evidence-{{ job.id }}" hx-indicator="#job-loading-{{ job.id }}"
+                hx-disabled-elt="this">View job context (MCP)</button>
+              <form hx-post="/rag/jobs/{{ job.id }}/answer" hx-target="#job-evidence-{{ job.id }}"
+                hx-indicator="#job-loading-{{ job.id }}" hx-disabled-elt="find button">
+                <label for="job-query-{{ job.id }}">Question about this posting</label>
+                <textarea id="job-query-{{ job.id }}" name="query" required maxlength="2000">What does this posting say about skills, and how can I demonstrate them?</textarea>
+                <button type="submit">Ask with sources (RAG)</button>
+              </form>
+              <p id="job-loading-{{ job.id }}" class="htmx-indicator" role="status">Checking sources. Local generation may take a few minutes.</p>
+              <div id="job-evidence-{{ job.id }}" aria-live="polite"></div>
+            </details>
             <details>
               <summary>Edit job</summary>
               <form class="form-grid" method="post" action="/actions/job_postings/{{ job.id }}/update">
