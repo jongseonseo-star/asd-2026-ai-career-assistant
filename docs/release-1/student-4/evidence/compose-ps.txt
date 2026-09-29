@@ -1,0 +1,11 @@
+NAME                                                IMAGE                                             COMMAND                  SERVICE              CREATED          STATUS                     PORTS
+asd-2026-ai-career-assistant-shared-frontend-1      career-assistant-shared-frontend:release0         "/docker-entrypoint.…"   shared-frontend      16 minutes ago   Up 16 minutes              0.0.0.0:8080->80/tcp
+asd-2026-ai-career-assistant-student-2-backend-1    asd-2026-ai-career-assistant-student-2-backend    "python app.py"          student-2-backend    2 weeks ago      Exited (137) 12 days ago
+asd-2026-ai-career-assistant-student-2-database-1   asd-2026-ai-career-assistant-student-2-database   "python app.py"          student-2-database   2 weeks ago      Exited (137) 12 days ago
+asd-2026-ai-career-assistant-student-2-frontend-1   asd-2026-ai-career-assistant-student-2-frontend   "python app.py"          student-2-frontend   2 weeks ago      Exited (137) 12 days ago
+asd-2026-ai-career-assistant-student-3-backend-1    asd-2026-ai-career-assistant-student-3-backend    "python app.py"          student-3-backend    2 weeks ago      Exited (137) 12 days ago
+asd-2026-ai-career-assistant-student-3-database-1   asd-2026-ai-career-assistant-student-3-database   "python app.py"          student-3-database   2 weeks ago      Exited (137) 12 days ago
+asd-2026-ai-career-assistant-student-3-frontend-1   asd-2026-ai-career-assistant-student-3-frontend   "python app.py"          student-3-frontend   2 weeks ago      Exited (137) 12 days ago
+asd-2026-ai-career-assistant-student-4-backend-1    asd-2026-ai-career-assistant-student-4-backend    "python app.py"          student-4-backend    4 minutes ago    Up 3 minutes               0.0.0.0:5401->5401/tcp
+asd-2026-ai-career-assistant-student-4-database-1   asd-2026-ai-career-assistant-student-4-database   "python app.py"          student-4-database   4 minutes ago    Up 3 minutes (healthy)     0.0.0.0:5402->5402/tcp
+asd-2026-ai-career-assistant-student-4-frontend-1   asd-2026-ai-career-assistant-student-4-frontend   "python app.py"          student-4-frontend   3 minutes ago    Up 3 minutes               0.0.0.0:8404->8404/tcp

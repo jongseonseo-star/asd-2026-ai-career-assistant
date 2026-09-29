@@ -1,0 +1,15 @@
+{
+  "execution_source": "local-container-check",
+  "shared_status": {
+    "enabled": false,
+    "ollama_enabled": false,
+    "status": "disabled"
+  },
+  "ai_status": {
+    "model": "qwen2.5:0.5b",
+    "runtime": "Ollama",
+    "status": "disabled"
+  },
+  "mcp_status": 503,
+  "rag_status": 503
+}

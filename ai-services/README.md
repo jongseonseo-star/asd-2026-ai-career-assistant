@@ -92,7 +92,7 @@ Responses contain Strengths, Skill Gaps, Recommended Actions and Information Mis
 
 With no relevant guidance, `/answer` returns `status: "insufficient-context"`, empty generated feedback, low confidence and `generation_metadata.called: false` without calling Ollama. The UI exposes this path through its optional guidance query. `/pipeline` remains a diagnostic/extractive compatibility endpoint. `/retrieve` and `/pipeline` default to the existing interview keyword retrieval when `feature` is omitted; its ranking, source references and confidence behavior are preserved without initializing Chroma. Specify `"resume"` for Student 2's vector retrieval.
 
-`resume_generation.py` intentionally reuses `student-2/backend/feedback_contract.py` and its prompt assets as the resume feature adapter. This keeps citation rules consistent without another framework or a full shared-domain refactor. Run from a complete checkout. Other features' generation adapters and frontend integration are outside this change.
+`resume_generation.py` intentionally reuses `student-2/backend/feedback_contract.py` and its prompt assets as the resume feature adapter. This keeps citation rules consistent without another framework or a full shared-domain refactor. Run from a complete checkout. Student 4 job generation and frontend integration are described below. Interview generation remains separate.
 
 ## Retrieval evaluation and tests
 
@@ -124,7 +124,7 @@ Tests exercise temporary real Chroma indexes, controlled refresh and failure cas
 | `mcp` | Real protocol discovery and structured feature context | Implementation model, then independent review model |
 | `rag` | Active corpus, vector retrieval, generated answer with claim/source mappings, no-context behavior and RAG tool registration | Implementation model, then independent review model |
 
-`--mode release0` runs the first four modes. `--mode all` runs all six and is the default. DB, endpoint, architecture and DevOps collectors currently cover Student 2. Resume RAG is the generated task implemented here; interview RAG validation reports its missing generated task rather than claiming success.
+`--mode release0` runs the first four modes. `--mode all` runs all six and is the default. DB, endpoint, architecture and DevOps collectors currently cover Student 2. Resume and job guidance RAG are implemented; interview RAG validation reports its missing generated task rather than claiming success.
 
 For a focused live review with existing matching profile/resume IDs:
 
@@ -145,3 +145,19 @@ DevOps requires `report.json`, `profiles.json`, `resumes.json`, `skills.json`, `
 `IMPLEMENTATION_MODEL` and `REVIEW_MODEL` configure assessment roles independently of the RAG answer model. `--timeout` applies to each request, so all modes can take several minutes. `--checks-only` explicitly skips assessments for diagnostics and is not a complete agentic review. Evidence records exact model inputs/outputs, completion metadata, word counts, timing and checks. Candidate context and per-claim citation mappings stay intact in review input; bounded non-semantic excerpts are labelled.
 
 Failed deterministic checks stay failed regardless of model advice. Exit 0 means requested automated checks and required model calls completed, not semantic correctness, human approval or complete group integration. The human decision initially remains pending. After personally reviewing evidence, making any accepted improvement and retesting, record the actual decision with `human_review.py`: supply `--evidence-file`, a new `--output`, `--reviewer`, `--decision` (`accept`, `partially-accept` or `reject`), `--rationale`, and existing `--before`/`--after` files or evidence URLs. The command preserves execution evidence and records a separate decision; it never fabricates acceptance.
+
+## Student 4 job guidance
+
+Student 4 extends the same shared servers with `job_context(job_id)` and a separate
+`jobs` knowledge corpus. Set `STUDENT4_DATABASE_API_URL` to the host address of its
+database API (default `http://127.0.0.1:5402`). The tool returns only the selected
+posting, its company, its skills and their database references.
+
+`refresh_corpus` and `retrieve_context` also accept `feature="jobs"`. Shared
+`POST /answer` supports `task="job-guidance"`, `feature="jobs"`, `query`, `top_k`
+and `job_context`. The feature backend obtains that context through MCP before
+calling RAG. `job_generation.py` uses Student 4's `job_contract.py` and prompt to
+check cited claims without changing the resume answer contract.
+
+The shared loop accepts `--feature jobs --job-id <id>` in MCP and RAG modes.
+See [Student 4](../student-4/README.md) for startup, boundaries and evidence.

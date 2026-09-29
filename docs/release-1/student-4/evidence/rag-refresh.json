@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-09-29T09:04:35.903247+00:00",
+  "method": "POST",
+  "url": "http://127.0.0.1:8766/refresh",
+  "status": 200,
+  "duration_seconds": 0.031,
+  "body": {
+    "corpora": [
+      {
+        "chunk_count": 3,
+        "collection": "career-jobs-0fc9dda872a54ecc834992f0bb177067",
+        "corpus_file": "corpus/career-jobs-0fc9dda872a54ecc834992f0bb177067.jsonl",
+        "corpus_sha256": "769b6c7cc90484ce106f7e76328ad65e4972725708a5a83775fe5629df5f380e",
+        "corpus_version": "cdbf059fcfb89bbde2d20470d10c372fa43cdeb1275c79777f5e557d9b9e8b64",
+        "document_count": 3,
+        "embedding_dimensions": 256,
+        "embedding_version": "sha256-signed-token-hash-256-v1",
+        "feature": "jobs",
+        "indexed_at": "2026-09-29T09:04:35.882239+00:00",
+        "previous_collection": "career-jobs-535a477accd047bdbfffb3a7e1b4c739",
+        "status": "success",
+        "vector_store_status": "ready"
+      }
+    ],
+    "status": "success"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "captured_at": "2026-09-29T09:04:37.166378+00:00",
+  "method": "POST",
+  "url": "http://127.0.0.1:8404/mcp/jobs/2/context",
+  "status": 200,
+  "duration_seconds": 0.04,
+  "body": "<section class=\"ai-result\" aria-live=\"polite\">\n  \n  <p class=\"eyebrow\">MCP \u00b7 stored job context</p>\n  <h4>Backend Engineer</h4>\n  <p>Canva \u00b7 Sydney</p>\n  <p>Develop Python APIs and distributed services for a global design platform.</p>\n  <ul>\n    \n    <li>Flask \u2014 preferred</li>\n    \n  </ul>\n  <details>\n    <summary>Structured tool result and database references</summary>\n    <pre>{\n  \"company\": {\n    \"created_at\": \"2026-09-03 08:52:05\",\n    \"id\": 2,\n    \"industry\": \"Technology\",\n    \"location\": \"Sydney\",\n    \"name\": \"Canva\",\n    \"website\": \"https://canva.com\"\n  },\n  \"job\": {\n    \"closing_date\": \"2026-09-22\",\n    \"company_id\": 2,\n    \"created_at\": \"2026-09-03 08:52:05\",\n    \"description\": \"Develop Python APIs and distributed services for a global design platform.\",\n    \"employment_type\": \"Full-time\",\n    \"experience_level\": \"Mid\",\n    \"id\": 2,\n    \"location\": \"Sydney\",\n    \"salary_max\": 140000,\n    \"salary_min\": 110000,\n    \"status\": \"open\",\n    \"title\": \"Backend Engineer\",\n    \"updated_at\": \"2026-09-03 08:52:05\"\n  },\n  \"skills\": [\n    {\n      \"created_at\": \"2026-09-03 08:52:05\",\n      \"id\": 4,\n      \"importance\": \"preferred\",\n      \"job_posting_id\": 2,\n      \"skill_name\": \"Flask\"\n    }\n  ],\n  \"sources\": [\n    \"db://student-4/job_postings/2\",\n    \"db://student-4/companies/2\",\n    \"db://student-4/job_skills/4\"\n  ]\n}</pre>\n  </details>\n  \n</section>"
+}

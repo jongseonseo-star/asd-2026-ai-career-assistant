@@ -1,0 +1,11 @@
+{
+  "captured_at": "2026-09-29T09:04:35.943183+00:00",
+  "method": "GET",
+  "url": "http://127.0.0.1:5401/ready",
+  "status": 200,
+  "duration_seconds": 0.026,
+  "body": {
+    "service": "student-4-backend",
+    "status": "ready"
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "captured_at": "2026-09-29T09:04:40.992693+00:00",
+  "method": "POST",
+  "url": "http://127.0.0.1:5401/api/v1/rag/jobs/2/answer",
+  "status": 200,
+  "duration_seconds": 3.826,
+  "body": {
+    "answer": "The job posting does not explicitly label any skills as required.\nTo demonstrate the preferred skill of Flask, prepare examples that show your experience with Flask, such as a small practice project.",
+    "claims": [
+      {
+        "citations": [
+          "J3",
+          "G1"
+        ],
+        "text": "The job posting does not explicitly label any skills as required."
+      },
+      {
+        "citations": [
+          "J3",
+          "G2"
+        ],
+        "text": "To demonstrate the preferred skill of Flask, prepare examples that show your experience with Flask, such as a small practice project."
+      }
+    ],
+    "confidence": "medium",
+    "confidence_basis": "Evidence coverage and authority: high requires at least two distinct tier_1/tier_2 sources; medium means some relevant evidence, including project-authored tier_3 guidance; low means none. Degraded retrieval is never high. This is not a probability of factual correctness.",
+    "evidence_sources": [
+      {
+        "id": "J1",
+        "kind": "job-record",
+        "source": "db://student-4/job_postings/2",
+        "text": "{\"closing_date\": \"2026-09-22\", \"company_id\": 2, \"created_at\": \"2026-09-03 08:52:05\", \"description\": \"Develop Python APIs and distributed services for a global design platform.\", \"employment_type\": \"Full-time\", \"experience_level\": \"Mid\", \"id\": 2, \"location\": \"Sydney\", \"salary_max\": 140000, \"salary_min\": 110000, \"status\": \"open\", \"title\": \"Backend Engineer\", \"updated_at\": \"2026-09-03 08:52:05\"}",
+        "title": "job_postings"
+      },
+      {
+        "id": "J2",
+        "kind": "job-record",
+        "source": "db://student-4/companies/2",
+        "text": "{\"created_at\": \"2026-09-03 08:52:05\", \"id\": 2, \"industry\": \"Technology\", \"location\": \"Sydney\", \"name\": \"Canva\", \"website\": \"https://canva.com\"}",
+        "title": "companies"
+      },
+      {
+        "id": "J3",
+        "kind": "job-record",
+        "source": "db://student-4/job_skills/4",
+        "text": "{\"created_at\": \"2026-09-03 08:52:05\", \"id\": 4, \"importance\": \"preferred\", \"job_posting_id\": 2, \"skill_name\": \"Flask\"}",
+        "title": "job_skills"
+      },
+      {
+        "id": "G1",
+        "kind": "guidance",
+        "source": "repo://ai-services/knowledge/jobs/required-skills.md#chunk-1",
+        "text": "Read the job description and listed skills together. Required skills are stated employer requirements; preferred skills are desirable rather than mandatory. Prepare examples that demonstrate each stated skill. A missing skill label does not establish a requirement. If the posting does not distinguish required and preferred skills, explain the uncertainty rather than making that distinction yourself.",
+        "title": "Required and preferred job skills"
+      },
+      {
+        "id": "G2",
+        "kind": "guidance",
+        "source": "repo://ai-services/knowledge/jobs/preparation.md#chunk-1",
+        "text": "Prepare for a job application by matching the posting's stated responsibilities and skills to specific projects or work examples. Describe what you did and the result, using only achievements you can support. For an unfamiliar skill, plan a small practice project. General preparation advice is not an extra employer requirement and does not guarantee selection.",
+        "title": "Preparing evidence for a job application"
+      },
+      {
+        "id": "G3",
+        "kind": "guidance",
+        "source": "repo://ai-services/knowledge/jobs/posting-details.md#chunk-1",
+        "text": "Use the selected job posting for its location, employment type, experience level, salary range, closing date and status. Missing salary values mean salary is unspecified, not zero. Do not infer currency, benefits, visa sponsorship, remote work or hiring eligibility when absent. Check unclear or outdated details with the employer before relying on them.",
+        "title": "Interpreting job posting details"
+      }
+    ],
+    "generation_metadata": {
+      "called": true,
+      "done_reason": "stop",
+      "service": "shared-rag"
+    },
+    "model": "llama3.1:8b",
+    "retrieval": {
+      "confidence": "medium",
+      "confidence_basis": "Evidence coverage and authority: high requires at least two distinct tier_1/tier_2 sources; medium means some relevant evidence, including project-authored tier_3 guidance; low means none. Degraded retrieval is never high. This is not a probability of factual correctness.",
+      "corpus_version": "cdbf059fcfb89bbde2d20470d10c372fa43cdeb1275c79777f5e557d9b9e8b64",
+      "embedding_dimensions": 256,
+      "embedding_version": "sha256-signed-token-hash-256-v1",
+      "feature": "jobs",
+      "indexed_at": "2026-09-29T09:04:35.882239+00:00",
+      "query": "What does this posting say about skills, and how can I demonstrate them?",
+      "results": [
+        {
+          "authority_tier": "tier_3",
+          "chunk_id": "jobs:required-skills:1",
+          "chunk_number": 1,
+          "corpus_version": "cdbf059fcfb89bbde2d20470d10c372fa43cdeb1275c79777f5e557d9b9e8b64",
+          "distance": 0.5057724714279175,
+          "document_id": "required-skills",
+          "feature": "jobs",
+          "id": "required-skills",
+          "indexed_at": "2026-09-29T09:04:35.882239+00:00",
+          "provenance": "Project-authored guidance, not candidate evidence or an external authority.",
+          "rank": 1,
+          "score": 0.4942275285720825,
+          "source": "repo://ai-services/knowledge/jobs/required-skills.md#chunk-1",
+          "source_id": "repo://ai-services/knowledge/jobs/required-skills.md",
+          "source_version": "82d7308a4103b3e049f8e3ab62fa30e0f8d0ddadf08ae7993e0c8e487ea1c482",
+          "text": "Read the job description and listed skills together. Required skills are stated employer requirements; preferred skills are desirable rather than mandatory. Prepare examples that demonstrate each stated skill. A missing skill label does not establish a requirement. If the posting does not distinguish required and preferred skills, explain the uncertainty rather than making that distinction yourself.",
+          "title": "Required and preferred job skills",
+          "token_overlap": 3
+        },
+        {
+          "authority_tier": "tier_3",
+          "chunk_id": "jobs:preparation:1",
+          "chunk_number": 1,
+          "corpus_version": "cdbf059fcfb89bbde2d20470d10c372fa43cdeb1275c79777f5e557d9b9e8b64",
+          "distance": 0.7097206115722656,
+          "document_id": "preparation",
+          "feature": "jobs",
+          "id": "preparation",
+          "indexed_at": "2026-09-29T09:04:35.882239+00:00",
+          "provenance": "Project-authored guidance, not candidate evidence or an external authority.",
+          "rank": 2,
+          "score": 0.2902793884277344,
+          "source": "repo://ai-services/knowledge/jobs/preparation.md#chunk-1",
+          "source_id": "repo://ai-services/knowledge/jobs/preparation.md",
+          "source_version": "68da0e24be175c9c1493f41bada45e904a8585daa684e554df579a4277e825ab",
+          "text": "Prepare for a job application by matching the posting's stated responsibilities and skills to specific projects or work examples. Describe what you did and the result, using only achievements you can support. For an unfamiliar skill, plan a small practice project. General preparation advice is not an extra employer requirement and does not guarantee selection.",
+          "title": "Preparing evidence for a job application",
+          "token_overlap": 2
+        },
+        {
+          "authority_tier": "tier_3",
+          "chunk_id": "jobs:posting-details:1",
+          "chunk_number": 1,
+          "corpus_version": "cdbf059fcfb89bbde2d20470d10c372fa43cdeb1275c79777f5e557d9b9e8b64",
+          "distance": 0.875185489654541,
+          "document_id": "posting-details",
+          "feature": "jobs",
+          "id": "posting-details",
+          "indexed_at": "2026-09-29T09:04:35.882239+00:00",
+          "provenance": "Project-authored guidance, not candidate evidence or an external authority.",
+          "rank": 3,
+          "score": 0.12481451034545898,
+          "source": "repo://ai-services/knowledge/jobs/posting-details.md#chunk-1",
+          "source_id": "repo://ai-services/knowledge/jobs/posting-details.md",
+          "source_version": "29ec54eff9d5d7aa03a66c231e383231fddb9147c35e8cb843dfa9b975ed61ab",
+          "text": "Use the selected job posting for its location, employment type, experience level, salary range, closing date and status. Missing salary values mean salary is unspecified, not zero. Do not infer currency, benefits, visa sponsorship, remote work or hiring eligibility when absent. Check unclear or outdated details with the employer before relying on them.",
+          "title": "Interpreting job posting details",
+          "token_overlap": 1
+        }
+      ],
+      "retrieval_mode": "vector",
+      "retrieval_summary": {
+        "k": 3,
+        "retrieved_count": 3,
+        "top_chunk": "jobs:required-skills:1"
+      },
+      "vector_store_status": "ready"
+    },
+    "sources": [
+      "repo://ai-services/knowledge/jobs/required-skills.md#chunk-1",
+      "repo://ai-services/knowledge/jobs/preparation.md#chunk-1",
+      "repo://ai-services/knowledge/jobs/posting-details.md#chunk-1"
+    ],
+    "status": "answered"
+  }
+}
