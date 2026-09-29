@@ -25,7 +25,7 @@ EMBEDDING_DIMENSIONS = 256
 EMBEDDING_VERSION = "sha256-signed-token-hash-256-v1"
 MAX_CHUNK_WORDS = 80
 MIN_SIMILARITY = 0.08
-FEATURES = {"resume", "interview"}
+FEATURES = {"resume", "interview", "jobs"}
 STOP_WORDS = frozenset("""
 a an and are as at be been being but by can could did do does for from
 had has have how i if in into is it its me more most my not of on or our
@@ -95,7 +95,7 @@ def validate_query(query: str, top_k: int, feature: str) -> None:
     if isinstance(top_k, bool) or not isinstance(top_k, int) or not 1 <= top_k <= 5:
         raise ValueError("top_k must be an integer from 1 to 5.")
     if not isinstance(feature, str) or feature not in FEATURES:
-        raise ValueError("feature must be resume or interview.")
+        raise ValueError("feature must be resume, interview or jobs.")
 
 
 class CorpusIndex:
@@ -156,7 +156,7 @@ class CorpusIndex:
 
     def refresh(self, feature: str = "resume") -> dict:
         if not isinstance(feature, str) or feature not in FEATURES:
-            raise ValueError("feature must be resume or interview.")
+            raise ValueError("feature must be resume, interview or jobs.")
         started = time.monotonic()
         with self.lock:
             collection_name = f"career-{feature}-{uuid4().hex}"

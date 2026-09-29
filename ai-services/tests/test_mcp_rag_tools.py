@@ -78,7 +78,7 @@ def test_registered_rag_tools_have_bounded_inputs(services):
             assert schema["additionalProperties"] is False
             assert schema["properties"]["top_k"]["minimum"] == 1
             assert schema["properties"]["top_k"]["maximum"] == 5
-            assert schema["properties"]["feature"]["enum"] == ["resume", "interview"]
+            assert schema["properties"]["feature"]["enum"] == ["resume", "interview", "jobs"]
             assert schema["properties"]["query"]["maxLength"] == 20000
     asyncio.run(scenario())
 

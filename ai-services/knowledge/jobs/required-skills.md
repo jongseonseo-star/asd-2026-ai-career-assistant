@@ -1,0 +1,2 @@
+# Required and preferred job skills
+Read the job description and listed skills together. Required skills are stated employer requirements; preferred skills are desirable rather than mandatory. Prepare examples that demonstrate each stated skill. A missing skill label does not establish a requirement. If the posting does not distinguish required and preferred skills, explain the uncertainty rather than making that distinction yourself.
