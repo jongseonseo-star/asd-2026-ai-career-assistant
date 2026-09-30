@@ -1,0 +1,61 @@
+{
+  "captured_at": "2026-09-29T09:04:41.060826+00:00",
+  "method": "POST",
+  "url": "http://127.0.0.1:5401/api/v1/rag/jobs/2/answer",
+  "status": 200,
+  "duration_seconds": 0.066,
+  "body": {
+    "answer": "Insufficient context: no relevant job guidance was found.",
+    "claims": [],
+    "confidence": "low",
+    "confidence_basis": "Evidence coverage and authority: high requires at least two distinct tier_1/tier_2 sources; medium means some relevant evidence, including project-authored tier_3 guidance; low means none. Degraded retrieval is never high. This is not a probability of factual correctness.",
+    "evidence_sources": [
+      {
+        "id": "J1",
+        "kind": "job-record",
+        "source": "db://student-4/job_postings/2",
+        "text": "{\"closing_date\": \"2026-09-22\", \"company_id\": 2, \"created_at\": \"2026-09-03 08:52:05\", \"description\": \"Develop Python APIs and distributed services for a global design platform.\", \"employment_type\": \"Full-time\", \"experience_level\": \"Mid\", \"id\": 2, \"location\": \"Sydney\", \"salary_max\": 140000, \"salary_min\": 110000, \"status\": \"open\", \"title\": \"Backend Engineer\", \"updated_at\": \"2026-09-03 08:52:05\"}",
+        "title": "job_postings"
+      },
+      {
+        "id": "J2",
+        "kind": "job-record",
+        "source": "db://student-4/companies/2",
+        "text": "{\"created_at\": \"2026-09-03 08:52:05\", \"id\": 2, \"industry\": \"Technology\", \"location\": \"Sydney\", \"name\": \"Canva\", \"website\": \"https://canva.com\"}",
+        "title": "companies"
+      },
+      {
+        "id": "J3",
+        "kind": "job-record",
+        "source": "db://student-4/job_skills/4",
+        "text": "{\"created_at\": \"2026-09-03 08:52:05\", \"id\": 4, \"importance\": \"preferred\", \"job_posting_id\": 2, \"skill_name\": \"Flask\"}",
+        "title": "job_skills"
+      }
+    ],
+    "generation_metadata": {
+      "called": false,
+      "service": "shared-rag"
+    },
+    "model": "llama3.1:8b",
+    "retrieval": {
+      "confidence": "low",
+      "confidence_basis": "Evidence coverage and authority: high requires at least two distinct tier_1/tier_2 sources; medium means some relevant evidence, including project-authored tier_3 guidance; low means none. Degraded retrieval is never high. This is not a probability of factual correctness.",
+      "corpus_version": "cdbf059fcfb89bbde2d20470d10c372fa43cdeb1275c79777f5e557d9b9e8b64",
+      "embedding_dimensions": 256,
+      "embedding_version": "sha256-signed-token-hash-256-v1",
+      "feature": "jobs",
+      "indexed_at": "2026-09-29T09:04:35.882239+00:00",
+      "query": "What is the weather in Sydney?",
+      "results": [],
+      "retrieval_mode": "vector",
+      "retrieval_summary": {
+        "k": 3,
+        "retrieved_count": 0,
+        "top_chunk": null
+      },
+      "vector_store_status": "ready"
+    },
+    "sources": [],
+    "status": "insufficient-context"
+  }
+}

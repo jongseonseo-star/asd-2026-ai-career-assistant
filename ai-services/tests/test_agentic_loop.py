@@ -248,7 +248,7 @@ def test_interview_rag_cannot_falsely_pass_extract_only_pipeline(loop, monkeypat
     monkeypatch.setattr(loop, "urlopen", transport)
     assert loop.run("rag", feature="interview", checks_only=True) == 1
     evidence = json.loads(capsys.readouterr().out)
-    assert "resume feedback only" in evidence["checks"][0]["validation_errors"][0]
+    assert "Interview RAG generation is not validated" in evidence["checks"][0]["validation_errors"][0]
     transport.assert_not_called()
 
 

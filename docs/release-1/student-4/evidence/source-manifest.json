@@ -1,0 +1,31 @@
+{
+  "captured_at": "2026-09-29T09:09:23.962606+00:00",
+  "implementation_commit": "71fbda51deb51739ea0a5722ea73d42b9248d3c7",
+  "files": {
+    ".env.example": "e5a4c06d85178ea8f64eb97cfa45ef77b2ba78391242e6566dc142cd2f06d1df",
+    ".github/workflows/student-4.yml": "b422862c988b5266f58caba2a73af0f7631549f3ab64e911706721643e1260da",
+    "ai-services/agentic_loop.py": "db1a9a37fd2e1dd5f976c9b23a065572d72dfed4368c1d4cc223e250c2d54b9c",
+    "ai-services/job_generation.py": "986a73cd4439a4e4cc4ea7d2e02c158cd95551713bf26439552a18c343040fd7",
+    "ai-services/knowledge/jobs/posting-details.md": "8650346bd681ead2870e3a68ad9f55c45f5a31a920682604900ea2a664ef7693",
+    "ai-services/knowledge/jobs/preparation.md": "4bf5ad7baab45cfd78e62a5a7e978209ea8bf38c962c58a0f183d04820c22e7f",
+    "ai-services/knowledge/jobs/required-skills.md": "6bd7a38c2ea5c8d41051b1031da1a7274d9a560137fc7e2588bc354a1ccee9b9",
+    "ai-services/loop_evidence.py": "2d9cdb8ae704ed4e4b3abfe567f9bcf275368572da1e63927021200845d87dcd",
+    "ai-services/mcp_server.py": "7ddbb86c8e35c19c6e3fbe7149e926b03bfd9ee8a141594604e41db91cace4dc",
+    "ai-services/rag_retrieval.py": "58e75c049b99d6066490da96e11de02932c47f227a25e06ef5a5cdfd3cff96ab",
+    "ai-services/rag_server.py": "ce57ce714bb74830d0154a7e7411bb1bc270f57f6c346a251e39a8edf7fa7a48",
+    "ai-services/tests/test_agentic_loop.py": "f38a9df19d44f619fd45f8460046b052feccc572722504e0d15e87a3e077a7e9",
+    "ai-services/tests/test_mcp_rag_tools.py": "a8aa2ac39ed10b180bb6ceb1aa559dcd24a1a845162483137fe9a4e234346990",
+    "docker-compose.yml": "f3caf2ce591b3585facc412cf3a7bf9575eb6a414f7b8a75d605fd6ab8370ceb",
+    "student-4/backend/Dockerfile": "82b83708c227ca39187f6ec953e2d30937e4a7d852f7294503a2b99675515b3f",
+    "student-4/backend/app.py": "f87226e8fe92df29c7262a40d8b639a634ce31a41f39663a99280e1d85add2c1",
+    "student-4/backend/job_contract.py": "a1a367c96d11cba64ff279ed63296f327548bf5a79e972b386d05eefbf790945",
+    "student-4/backend/prompts/job_guidance.txt": "d20342f5336b99d14f119d0419cb1e9095d34a42d5f9da32a9e50001055bf363",
+    "student-4/backend/requirements.txt": "efcd46f86c0a9283e1576bfd3312852c8555178fc78884a35ccadd1b014614f9",
+    "student-4/compose.local.yml": "36fe0ee45d43a2c023068661b88202609634b0928d42284fe9b4af3cbc733352",
+    "student-4/frontend/app.py": "dcfb5799d161d1b391b9190e5fd33a91f049453470380ec443c0446f0e69fc11",
+    "student-4/frontend/static/styles.css": "e649278a3ddb801335dce9315cd696c3644792b6edd41a6cc20fc34112fae04c",
+    "student-4/frontend/templates/index.html": "e99eb8a26885a36f15a22c4cc8b600efce6817b0d2dbc0c435a15caa78968f5c",
+    "student-4/frontend/templates/shared_result.html": "99df295a253bbaa0b4fdd4c9bdd81610c8c410282ea3a2a943e7e2053ae2e5ad",
+    "student-4/tests/test_release1.py": "9ce4c558e5ef47795f7d68c1ed42d2e792ed5b30ab2b51fd0570e91640f95d06"
+  }
+}

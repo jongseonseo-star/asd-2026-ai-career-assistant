@@ -1,0 +1,48 @@
+<section class="ai-result" aria-live="polite">
+  {% if error %}
+  <p class="alert error">{{ error }}</p>
+  {% elif mode == 'mcp' %}
+  <p class="eyebrow">MCP · stored job context</p>
+  <h4>{{ payload.job.title }}</h4>
+  <p>{{ payload.company.name }} · {{ payload.job.location }}</p>
+  <p>{{ payload.job.description }}</p>
+  <ul>
+    {% for skill in payload.skills %}
+    <li>{{ skill.skill_name }} — {{ skill.importance }}</li>
+    {% else %}
+    <li>No skills are listed for this posting.</li>
+    {% endfor %}
+  </ul>
+  <details>
+    <summary>Structured tool result and database references</summary>
+    <pre>{{ payload | tojson(indent=2) }}</pre>
+  </details>
+  {% else %}
+  <p class="eyebrow">RAG · guidance with sources</p>
+  <p><strong>Confidence: {{ payload.confidence | title }}</strong></p>
+  <p>{{ 'No matching guidance was found.' if payload.confidence == 'low' else 'Confidence reflects the available sources, not a guarantee that every claim is correct.' }}</p>
+  {% if payload.status == 'insufficient-context' %}
+  <p class="alert">{{ payload.answer }}</p>
+  {% else %}
+  <ul>
+    {% for claim in payload.claims %}
+    <li>{{ claim.text }} <strong>[{{ claim.citations | join(', ') }}]</strong></li>
+    {% endfor %}
+  </ul>
+  <p>Guidance supports preparation; it does not add requirements to the posting.</p>
+  {% endif %}
+  <details>
+    <summary>Sources and supporting excerpts</summary>
+    {% for source in payload.evidence_sources %}
+    <h4>{{ source.id }} · {{ source.title }}</h4>
+    <p><code>{{ source.source }}</code></p>
+    <pre>{{ source.text }}</pre>
+    {% endfor %}
+  </details>
+  <details>
+    <summary>Retrieval and generation details</summary>
+    <p>{{ payload.confidence_basis }}</p>
+    <pre>{{ payload | tojson(indent=2) }}</pre>
+  </details>
+  {% endif %}
+</section>

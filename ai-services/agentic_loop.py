@@ -17,6 +17,7 @@ SERVICE_DIR = Path(__file__).resolve().parent
 if str(SERVICE_DIR) not in sys.path:
     sys.path.insert(0, str(SERVICE_DIR))
 from loop_evidence import assessment_evidence
+from job_generation import contract as job_contract
 from loop_collectors import collect_db, collect_endpoints, collect_architecture, collect_devops
 
 LEGACY_MODES = ("db", "endpoints", "architecture", "devops")
@@ -149,9 +150,15 @@ def check(url: str, payload: dict | None = None, *, name: str = "http", validato
     return finish_check(result, errors, started)
 
 
-def validate_mcp_payload(payload, feature: str, profile_id: int, resume_id: int, target_role: str) -> list[str]:
+def validate_mcp_payload(payload, feature: str, profile_id: int, resume_id: int, target_role: str, job_id: int = 1) -> list[str]:
     if not isinstance(payload, dict) or payload.get("error") or payload.get("status_code", 200) != 200:
         return ["MCP did not return a successful structured tool result."]
+    if feature == "jobs":
+        try:
+            job_contract.validate_context(payload, job_id)
+            return []
+        except ValueError as error:
+            return [str(error)]
     if feature == "interview":
         errors = []
         if payload.get("target_role") != target_role or not nonempty(payload.get("question_guidance")):
@@ -179,10 +186,12 @@ def validate_mcp_payload(payload, feature: str, profile_id: int, resume_id: int,
 
 async def check_mcp(*, base_url: str | None = None, feature: str = "resume", profile_id: int = 1,
                     resume_id: int = 1, target_role: str = "Software Engineer", timeout: float = 180,
-                    required_tools: tuple[str, ...] = ()) -> dict:
+                    required_tools: tuple[str, ...] = (), job_id: int = 1) -> dict:
     started = time.monotonic()
-    tool_name = f"{feature}_context"
+    tool_name = "job_context" if feature == "jobs" else f"{feature}_context"
     arguments = {"profile_id": profile_id, "resume_id": resume_id} if feature == "resume" else {"target_role": target_role}
+    if feature == "jobs":
+        arguments = {"job_id": job_id}
     result = {"name": "mcp-tool-validation", "protocol": "MCP", "started_at": timestamp(),
               "url": (base_url or os.getenv("MCP_BASE_URL", "http://127.0.0.1:8765")).rstrip("/") + "/mcp",
               "request": {"tool": tool_name, "arguments": arguments}}
@@ -206,7 +215,7 @@ async def check_mcp(*, base_url: str | None = None, feature: str = "resume", pro
             result["is_error"] = bool(response.is_error)
             if result["is_error"]:
                 return ["MCP returned a tool execution error."]
-            return validate_mcp_payload(result["payload"], feature, profile_id, resume_id, target_role)
+            return validate_mcp_payload(result["payload"], feature, profile_id, resume_id, target_role, job_id)
 
     try:
         errors = await asyncio.wait_for(interaction(), timeout=timeout)
@@ -336,16 +345,27 @@ def validate_answer(payload, *, empty: bool = False, corpus_version: str | None 
     return errors
 
 
+def validate_job_answer(payload, context, *, empty=False, corpus_version=None):
+    try:
+        job_contract.validate_answer(payload, context)
+    except (ValueError, TypeError, KeyError) as error:
+        return [str(error)]
+    errors = validate_retrieval(payload["retrieval"], "jobs", empty=empty, corpus_version=corpus_version)
+    if not empty and not nonempty(payload.get("model")):
+        errors.append("The answer does not identify its generation model.")
+    return errors
+
+
 def capture_mode(mode: str, *, feature: str = "resume", profile_id: int = 1,
         resume_id: int = 1, target_role: str = "Software Engineer", query: str | None = None,
         job_description: str = "Python API development, Docker, tests, and evidence of project outcomes.",
         timeout: float = 180, checks_only: bool = False, project_root: str | None = None,
         compose_files: list[str] | None = None, compose_project: str | None = None,
-        ci_evidence_dir: str | None = None) -> dict:
-    if mode not in SINGLE_MODES or feature not in {"resume", "interview"} or not 0 < timeout <= 600:
+        ci_evidence_dir: str | None = None, job_id: int = 1) -> dict:
+    if mode not in SINGLE_MODES or feature not in {"resume", "interview", "jobs"} or not 0 < timeout <= 600:
         raise ValueError("Unsupported mode/feature or timeout outside (0, 600] seconds.")
-    if any(isinstance(value, bool) or not isinstance(value, int) or value < 1 for value in (profile_id, resume_id)):
-        raise ValueError("Profile and resume IDs must be positive integers.")
+    if any(isinstance(value, bool) or not isinstance(value, int) or value < 1 for value in (profile_id, resume_id, job_id)):
+        raise ValueError("Profile, resume and job IDs must be positive integers.")
     started_at = timestamp()
     bases = {"mcp": os.getenv("MCP_BASE_URL", "http://127.0.0.1:8765").rstrip("/"),
              "rag": os.getenv("RAG_BASE_URL", "http://127.0.0.1:8766").rstrip("/"),
@@ -369,16 +389,21 @@ def capture_mode(mode: str, *, feature: str = "resume", profile_id: int = 1,
         checks = collect_architecture(root, compose_paths, compose_project, timeout)
     elif mode == "devops":
         checks = collect_devops(root, reports)
+    required_tools = ()
+    if mode == "rag":
+        required_tools = ("refresh_corpus", "retrieve_context")
+        if feature == "resume":
+            required_tools += ("answer_question",)
     mcp_result = None
-    if mode == "mcp" or (mode == "rag" and feature == "resume"):
+    if mode == "mcp" or (mode == "rag" and feature in {"resume", "jobs"}):
         mcp_result = asyncio.run(check_mcp(base_url=bases["mcp"], feature=feature, profile_id=profile_id,
-                                         resume_id=resume_id, target_role=target_role, timeout=timeout,
-                                         required_tools=("refresh_corpus", "retrieve_context", "answer_question") if mode == "rag" else ()))
+                                         resume_id=resume_id, target_role=target_role, timeout=timeout, job_id=job_id,
+                                         required_tools=required_tools))
         checks.append(mcp_result)
     if mode == "rag":
-        if feature != "resume":
+        if feature not in {"resume", "jobs"}:
             checks.append({"name": "rag-generated-answer", "passed": False, "validation_errors": [
-                "The shared /answer service currently implements resume feedback only. Interview RAG generation is not validated by this loop."]})
+                "The shared /answer service currently implements resume feedback and job guidance. Interview RAG generation is not validated by this loop."]})
         elif not mcp_result["passed"]:
             checks.append({"name": "rag-generated-answer", "passed": False, "validation_errors": [
                 "RAG generation was not attempted because valid candidate context could not be obtained through MCP."]})
@@ -387,15 +412,22 @@ def capture_mode(mode: str, *, feature: str = "resume", profile_id: int = 1,
                            validator=lambda body: validate_corpus(body, feature), timeout=timeout)
             checks.append(corpus)
             corpus_version = corpus["payload"]["corpora"][feature]["corpus_version"] if corpus["passed"] else None
-            query = query or "resume skills evidence outcomes"
+            query = query or ("required job skills preparation evidence" if feature == "jobs" else "resume skills evidence outcomes")
             request = {"query": query, "feature": feature, "top_k": 3}
             checks.append(check(bases["rag"] + "/retrieve", request, name="rag-retrieval",
                                 validator=lambda body: validate_retrieval(body, feature, corpus_version=corpus_version), timeout=timeout))
-            request = {**request, "task": "resume-feedback", "candidate_context": mcp_result["payload"], "job_description": job_description}
+            if feature == "jobs":
+                request = {**request, "task": "job-guidance", "job_context": mcp_result["payload"]}
+                def answer_validator(body, empty=False):
+                    return validate_job_answer(body, mcp_result["payload"], empty=empty, corpus_version=corpus_version)
+            else:
+                request = {**request, "task": "resume-feedback", "candidate_context": mcp_result["payload"], "job_description": job_description}
+                def answer_validator(body, empty=False):
+                    return validate_answer(body, empty=empty, corpus_version=corpus_version)
             checks.append(check(bases["rag"] + "/answer", request, name="rag-generated-answer",
-                                validator=lambda body: validate_answer(body, corpus_version=corpus_version), timeout=timeout))
+                                validator=answer_validator, timeout=timeout))
             checks.append(check(bases["rag"] + "/answer", {**request, "query": NO_CONTEXT_QUERY},
-                                name="rag-insufficient-context", validator=lambda body: validate_answer(body, empty=True, corpus_version=corpus_version), timeout=timeout))
+                                name="rag-insufficient-context", validator=lambda body: answer_validator(body, empty=True), timeout=timeout))
     checks_passed = bool(checks) and all(item["passed"] for item in checks)
     if checks_only:
         assessments = {"status": "skipped", "reason": "Explicit checks-only run; not a full agentic review."}
@@ -403,7 +435,7 @@ def capture_mode(mode: str, *, feature: str = "resume", profile_id: int = 1,
         assessments = assess_checks(mode, feature, checks, base_url=bases["ollama"], timeout=timeout)
     automation_passed = checks_passed and (checks_only or assessments["status"] == "completed")
     evidence = {"mode": mode, "feature": feature, "started_at": started_at, "finished_at": timestamp(),
-                "configuration": {"base_urls": bases, "timeout_seconds": timeout, "profile_id": profile_id, "resume_id": resume_id,
+                "configuration": {"base_urls": bases, "timeout_seconds": timeout, "profile_id": profile_id, "resume_id": resume_id, "job_id": job_id,
                                   "project_root": str(root), "compose_project": compose_project,
                                   "compose_files": [str(path) for path in compose_paths], "ci_evidence_dir": str(reports)},
                 "workflow": ["OBSERVE", "IMPLEMENTATION ASSESSMENT"] + ([] if mode in {"db", "endpoints"} else ["REVIEW ASSESSMENT"]) + ["HUMAN DECISION", "IMPROVE AND RETEST"],
@@ -448,7 +480,8 @@ def run(mode: str, evidence_file: str | None = None, **options) -> int:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Capture course DB/endpoints/architecture/DevOps/MCP/RAG checks and model assessments.")
     parser.add_argument("--mode", choices=sorted(MODES), default="all")
-    parser.add_argument("--feature", choices=["resume", "interview"], default="resume")
+    parser.add_argument("--feature", choices=["resume", "interview", "jobs"], default="resume")
+    parser.add_argument("--job-id", type=int, default=1)
     parser.add_argument("--profile-id", type=int, default=1)
     parser.add_argument("--resume-id", type=int, default=1)
     parser.add_argument("--target-role", default="Software Engineer")
@@ -462,6 +495,6 @@ if __name__ == "__main__":
     parser.add_argument("--compose-project", help="Running Compose project name; no containers are changed.")
     parser.add_argument("--ci-evidence-dir", help="Directory containing actual workflow artifacts and report.json.")
     args = parser.parse_args()
-    if not 0 < args.timeout <= 600 or args.profile_id < 1 or args.resume_id < 1:
+    if not 0 < args.timeout <= 600 or args.profile_id < 1 or args.resume_id < 1 or args.job_id < 1:
         parser.error("Use positive IDs and a timeout greater than 0 and at most 600 seconds.")
     sys.exit(run(**vars(args)))

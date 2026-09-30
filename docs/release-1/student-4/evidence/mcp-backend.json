@@ -1,0 +1,46 @@
+{
+  "captured_at": "2026-09-29T09:04:37.125674+00:00",
+  "method": "POST",
+  "url": "http://127.0.0.1:5401/api/v1/mcp/jobs/2/context",
+  "status": 200,
+  "duration_seconds": 1.147,
+  "body": {
+    "company": {
+      "created_at": "2026-09-03 08:52:05",
+      "id": 2,
+      "industry": "Technology",
+      "location": "Sydney",
+      "name": "Canva",
+      "website": "https://canva.com"
+    },
+    "job": {
+      "closing_date": "2026-09-22",
+      "company_id": 2,
+      "created_at": "2026-09-03 08:52:05",
+      "description": "Develop Python APIs and distributed services for a global design platform.",
+      "employment_type": "Full-time",
+      "experience_level": "Mid",
+      "id": 2,
+      "location": "Sydney",
+      "salary_max": 140000,
+      "salary_min": 110000,
+      "status": "open",
+      "title": "Backend Engineer",
+      "updated_at": "2026-09-03 08:52:05"
+    },
+    "skills": [
+      {
+        "created_at": "2026-09-03 08:52:05",
+        "id": 4,
+        "importance": "preferred",
+        "job_posting_id": 2,
+        "skill_name": "Flask"
+      }
+    ],
+    "sources": [
+      "db://student-4/job_postings/2",
+      "db://student-4/companies/2",
+      "db://student-4/job_skills/4"
+    ]
+  }
+}

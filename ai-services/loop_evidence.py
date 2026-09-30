@@ -78,7 +78,15 @@ def assessment_evidence(mode, feature, checks):
             if candidate not in candidates:
                 candidates.append(candidate)
             entry["candidate_context_index"] = candidates.index(candidate)
-        if isinstance(payload, dict) and "feedback_sections" in payload:
+        if feature == "jobs":
+            job_context = payload if isinstance(payload, dict) and "job" in payload else body.get("job_context") if isinstance(body, dict) else None
+            if isinstance(job_context, dict):
+                entry["job_context"] = job_context
+        if isinstance(payload, dict) and "claims" in payload and feature == "jobs":
+            entry["answer"] = {key: payload.get(key) for key in (
+                "status", "claims", "evidence_sources", "confidence", "confidence_basis", "generation_metadata")}
+            entry["result_truncated"] = False
+        elif isinstance(payload, dict) and "feedback_sections" in payload:
             source_map = {}
             for source in payload.get("evidence_sources", []):
                 if not isinstance(source, dict):

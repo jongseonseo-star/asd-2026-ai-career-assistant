@@ -16,6 +16,10 @@ _retrieval_spec = importlib.util.spec_from_file_location("local_rag_retrieval", 
 rag_retrieval = importlib.util.module_from_spec(_retrieval_spec)
 _retrieval_spec.loader.exec_module(rag_retrieval)
 
+_job_spec = importlib.util.spec_from_file_location("rag_job_generation", Path(__file__).resolve().parent / "job_generation.py")
+job_generation = importlib.util.module_from_spec(_job_spec)
+_job_spec.loader.exec_module(job_generation)
+
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 128 * 1024
 PORT = int(os.getenv("RAG_PORT", "8766"))
@@ -52,9 +56,12 @@ DOCUMENTS = [
 def load_documents(feature: str = "interview") -> list[dict[str, Any]]:
     if feature == "interview":
         return DOCUMENTS
+    if feature not in {"resume", "jobs"}:
+        raise ValueError("Unsupported knowledge source.")
+    knowledge_dir = KNOWLEDGE_DIR if feature == "resume" else Path(__file__).resolve().parent / "knowledge" / "jobs"
     documents = []
-    for path in sorted(KNOWLEDGE_DIR.glob("*.md")):
-        if path.is_symlink() or not path.resolve().is_relative_to(KNOWLEDGE_DIR.resolve()):
+    for path in sorted(knowledge_dir.glob("*.md")):
+        if path.is_symlink() or not path.resolve().is_relative_to(knowledge_dir.resolve()):
             raise rag_retrieval.CorpusError("Knowledge sources must be regular files in the approved directory.")
         raw = path.read_text(encoding="utf-8").strip()
         title, _, body = raw.partition("\n")
@@ -62,8 +69,8 @@ def load_documents(feature: str = "interview") -> list[dict[str, Any]]:
             "id": path.stem,
             "title": title.lstrip("# ").strip(),
             "text": body.strip(),
-            "source": f"repo://ai-services/knowledge/resume/{path.name}",
-            "feature": "resume",
+            "source": f"repo://ai-services/knowledge/{feature}/{path.name}",
+            "feature": feature,
             "authority_tier": "tier_3",
             "provenance": "Project-authored guidance, not candidate evidence or an external authority.",
         })
@@ -110,7 +117,7 @@ def run_pipeline(query: str, top_k: int = 3, feature: str = "interview") -> dict
     return {
         "refresh": {**get_index().status()[feature], "status": "validated-active"},
         "retrieve": retrieved,
-        "answer": {"text": answer, "sources": [item["source"] for item in context], "method": "diagnostic extraction only; resume model generation is available through /answer"},
+        "answer": {"text": answer, "sources": [item["source"] for item in context], "method": "diagnostic extraction only; model generation is available through /answer"},
         "validate": {"grounded": bool(context), "has_sources": bool(context) and all(item.get("source") for item in context)},
         "review": {"confidence": retrieved["confidence"], "result_count": len(context), "confidence_basis": CONFIDENCE_BASIS},
         "improve": {"recommendation": "Add more relevant reviewed guidance." if not context else "Review source coverage and generated claims against the retrieved evidence."},
@@ -122,12 +129,12 @@ def validated_payload():
     if not isinstance(payload, dict) or not isinstance(payload.get("query"), str) or not payload["query"].strip():
         raise ValueError("query is required.")
     feature = payload.get("feature", "interview")
-    if feature not in ("interview", "resume"):
-        raise ValueError("feature must be interview or resume.")
-    if feature == "resume" and len(payload["query"]) > 20000:
+    if feature not in ("interview", "resume", "jobs"):
+        raise ValueError("feature must be interview, resume or jobs.")
+    if feature in {"resume", "jobs"} and len(payload["query"]) > 20000:
         raise ValueError("query must not exceed 20000 characters.")
     top_k = payload.get("top_k", 3)
-    if feature == "resume" and (isinstance(top_k, bool) or not isinstance(top_k, int) or not 1 <= top_k <= 5):
+    if feature in {"resume", "jobs"} and (isinstance(top_k, bool) or not isinstance(top_k, int) or not 1 <= top_k <= 5):
         raise ValueError("top_k must be an integer from 1 to 5.")
     if feature == "interview" and (isinstance(top_k, bool) or not isinstance(top_k, int) or top_k < 1):
         raise ValueError("top_k must be a positive integer.")
@@ -136,7 +143,7 @@ def validated_payload():
 
 @app.get("/health")
 def health():
-    return jsonify({"status": "healthy", "service": "shared-rag-server", "documents": len(DOCUMENTS) + len(load_documents("resume")),
+    return jsonify({"status": "healthy", "service": "shared-rag-server", "documents": len(DOCUMENTS) + len(load_documents("resume")) + len(load_documents("jobs")),
                     "retrieval_engine": "local-chroma", "embedding_dimensions": 256}), 200
 
 
@@ -149,11 +156,11 @@ def corpus_status():
 def refresh_corpus():
     payload = request.get_json(silent=True)
     if not isinstance(payload, dict) or set(payload) - {"feature"}:
-        return jsonify({"error": "Refresh accepts only an optional feature (resume or interview)."}), 400
+        return jsonify({"error": "Refresh accepts only an optional feature (resume, interview or jobs)."}), 400
     feature = payload.get("feature")
-    if feature is not None and (not isinstance(feature, str) or feature not in ("resume", "interview")):
-        return jsonify({"error": "feature must be resume or interview."}), 400
-    results = [get_index().refresh(name) for name in ([feature] if feature else ["resume", "interview"])]
+    if feature is not None and (not isinstance(feature, str) or feature not in ("resume", "interview", "jobs")):
+        return jsonify({"error": "feature must be resume, interview or jobs."}), 400
+    results = [get_index().refresh(name) for name in ([feature] if feature else ["resume", "interview", "jobs"])]
     return jsonify({"status": "success", "corpora": results}), 200
 
 
@@ -185,8 +192,13 @@ def answer_route():
     try:
         query, top_k, feature = validated_payload()
         payload = request.get_json()
+        if feature == "jobs":
+            if payload.get("task") != "job-guidance" or set(payload) - {"task", "feature", "query", "top_k", "job_context"}:
+                raise ValueError("Job guidance accepts only task, feature, query, top_k and job_context.")
+            job_generation.contract.validate_context(payload.get("job_context"))
+            return jsonify(job_generation.answer(payload, retrieve(query, top_k, feature))), 200
         if feature != "resume" or payload.get("task") != "resume-feedback":
-            raise ValueError("Supported answer task: resume-feedback with feature resume.")
+            raise ValueError("Supported tasks are resume-feedback (resume) and job-guidance (jobs).")
         allowed = {"task", "feature", "query", "top_k", "candidate_context", "job_description"}
         if set(payload) - allowed:
             raise ValueError("Unsupported answer fields. Model settings and prompts are server-controlled.")
@@ -195,7 +207,7 @@ def answer_route():
         return jsonify(result), 200
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
-    except resume_generation.GenerationError as error:
+    except (resume_generation.GenerationError, job_generation.GenerationError) as error:
         return jsonify({"error": error.message, "dependency": error.dependency}), error.status_code
 
 

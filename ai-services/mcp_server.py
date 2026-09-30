@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import importlib.util
+from pathlib import Path
 import os
 from typing import Annotated, Literal
 from urllib.error import HTTPError, URLError
@@ -27,12 +29,19 @@ class BoundedToolInputErrors(Middleware):
         try:
             return await call_next(context)
         except ValidationError:
+            if context.message.name == "job_context":
+                return tool_error("Provide only job_id as a positive integer.", 400)
             if context.message.name == "resume_context":
                 return tool_error("Provide only profile_id and resume_id as positive integers.", 400)
             if context.message.name in {"refresh_corpus", "retrieve_context", "answer_question"}:
                 return tool_error("Tool arguments must match the declared feature, query, ID and top_k limits.", 400)
             raise
 
+
+_job_spec = importlib.util.spec_from_file_location("mcp_job_contract", Path(__file__).resolve().parents[1] / "student-4/backend/job_contract.py")
+job_contract = importlib.util.module_from_spec(_job_spec)
+_job_spec.loader.exec_module(job_contract)
+JOB_DATABASE_API_URL = os.getenv("STUDENT4_DATABASE_API_URL", "http://127.0.0.1:5402").rstrip("/")
 
 mcp = FastMCP("shared-career-assistant", middleware=[BoundedToolInputErrors()])
 DATABASE_API_URL = os.getenv("STUDENT2_DATABASE_API_URL", "http://127.0.0.1:5002").rstrip("/")
@@ -85,6 +94,48 @@ def resume_context(
     })
 
 
+def job_database_get(path: str):
+    try:
+        with urlopen(JOB_DATABASE_API_URL + path, timeout=DATABASE_TIMEOUT) as response:
+            return json.load(response), response.status
+    except HTTPError as error:
+        status = 404 if error.code == 404 else 503
+        return {"error": "Job record was not found." if status == 404 else "Job database request failed."}, status
+    except (URLError, TimeoutError, OSError, ValueError):
+        return {"error": "Job database is unavailable or returned invalid data."}, 503
+
+
+@mcp.tool()
+def job_context(job_id: Annotated[int, Field(strict=True, ge=1)]) -> ToolResult:
+    """Read one posting, its company and skills through the Student 4 database API."""
+    if not job_contract.positive_id(job_id):
+        return tool_error("job_id must be a positive integer.", 400)
+    job, status = job_database_get(f"/api/v1/job_postings/{job_id}")
+    if status != 200:
+        return tool_error(job["error"], status)
+    if not isinstance(job, dict) or job.get("id") != job_id or not job_contract.positive_id(job.get("company_id")):
+        return tool_error("Job database returned an invalid posting.", 502)
+    company, status = job_database_get(f"/api/v1/companies/{job['company_id']}")
+    if status != 200:
+        return tool_error(company["error"], status)
+    skills, status = job_database_get("/api/v1/job_skills")
+    if status != 200:
+        return tool_error(skills["error"], status)
+    if not isinstance(skills, list) or any(not isinstance(skill, dict) for skill in skills):
+        return tool_error("Job database returned invalid skill records.", 502)
+    skills = [skill for skill in skills if skill.get("job_posting_id") == job_id]
+    context = {
+        "job": job, "company": company, "skills": skills,
+        "sources": [f"db://student-4/job_postings/{job_id}", f"db://student-4/companies/{job['company_id']}"]
+        + [f"db://student-4/job_skills/{skill.get('id')}" for skill in skills],
+    }
+    try:
+        job_contract.validate_context(context, job_id)
+    except ValueError as error:
+        return tool_error(str(error), 502)
+    return ToolResult(structured_content=context)
+
+
 @mcp.tool()
 def interview_context(target_role: str, interview_type: str = "general") -> dict[str, object]:
     """Build structured interview context for a target role and interview type."""
@@ -130,7 +181,7 @@ def rag_request(path: str, payload: dict) -> ToolResult:
 
 
 @mcp.tool()
-def refresh_corpus(feature: Literal["resume", "interview"] = "resume") -> ToolResult:
+def refresh_corpus(feature: Literal["resume", "interview", "jobs"] = "resume") -> ToolResult:
     """Refresh one approved local corpus; no arbitrary file paths or sources are accepted."""
     return rag_request("/refresh", {"feature": feature})
 
@@ -139,7 +190,7 @@ def refresh_corpus(feature: Literal["resume", "interview"] = "resume") -> ToolRe
 def retrieve_context(
     query: Annotated[str, Field(min_length=1, max_length=20000)],
     top_k: Annotated[int, Field(strict=True, ge=1, le=5)] = 3,
-    feature: Literal["resume", "interview"] = "resume",
+    feature: Literal["resume", "interview", "jobs"] = "resume",
 ) -> ToolResult:
     """Retrieve cited context from an approved corpus through the shared RAG service."""
     if not query.strip():

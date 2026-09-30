@@ -1,0 +1,119 @@
+student-4-frontend-1  |  * Serving Flask app 'app'
+student-4-database-1  |  * Serving Flask app 'app'
+student-4-backend-1   |  * Serving Flask app 'app'
+student-4-backend-1   |  * Debug mode: off
+student-4-backend-1   | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+student-4-backend-1   |  * Running on all addresses (0.0.0.0)
+student-4-backend-1   |  * Running on http://127.0.0.1:5401
+student-4-backend-1   |  * Running on http://172.23.0.4:5401
+student-4-database-1  |  * Debug mode: off
+student-4-database-1  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+student-4-database-1  |  * Running on all addresses (0.0.0.0)
+student-4-database-1  |  * Running on http://127.0.0.1:5402
+student-4-database-1  |  * Running on http://172.23.0.2:5402
+student-4-database-1  | [33mPress CTRL+C to quit[0m
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:04:18] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:04:24] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:04:29] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:04:34] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:35] "GET /api/v1/stats HTTP/1.1" 200 -
+student-4-backend-1   | [33mPress CTRL+C to quit[0m
+student-4-backend-1   | 192.168.65.1 - - [29/Sep/2026 09:04:35] "GET /ready HTTP/1.1" 200 -
+student-4-backend-1   | 172.23.0.5 - - [29/Sep/2026 09:04:35] "GET /ready HTTP/1.1" 200 -
+student-4-frontend-1  |  * Debug mode: off
+student-4-frontend-1  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+student-4-frontend-1  |  * Running on all addresses (0.0.0.0)
+student-4-frontend-1  |  * Running on http://127.0.0.1:8404
+student-4-frontend-1  |  * Running on http://172.23.0.5:8404
+student-4-frontend-1  | [33mPress CTRL+C to quit[0m
+student-4-frontend-1  | 192.168.65.1 - - [29/Sep/2026 09:04:35] "GET /ready HTTP/1.1" 200 -
+student-4-frontend-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "POST /mcp/jobs/2/context HTTP/1.1" 200 -
+student-4-frontend-1  | 192.168.65.1 - - [29/Sep/2026 09:04:44] "POST /rag/jobs/2/answer HTTP/1.1" 200 -
+student-4-backend-1   | 192.168.65.1 - - [29/Sep/2026 09:04:37] "POST /api/v1/mcp/jobs/2/context HTTP/1.1" 200 -
+student-4-backend-1   | 172.23.0.5 - - [29/Sep/2026 09:04:37] "POST /api/v1/mcp/jobs/2/context HTTP/1.1" 200 -
+student-4-backend-1   | 192.168.65.1 - - [29/Sep/2026 09:04:40] "POST /api/v1/rag/jobs/2/answer HTTP/1.1" 200 -
+student-4-backend-1   | 192.168.65.1 - - [29/Sep/2026 09:04:41] "POST /api/v1/rag/jobs/2/answer HTTP/1.1" 200 -
+student-4-backend-1   | 172.23.0.5 - - [29/Sep/2026 09:04:44] "POST /api/v1/rag/jobs/2/answer HTTP/1.1" 200 -
+student-4-backend-1   | 192.168.65.1 - - [29/Sep/2026 09:04:51] "POST /api/v1/ai/jobs/2/summary HTTP/1.1" 200 -
+student-4-backend-1   | 172.23.0.5 - - [29/Sep/2026 09:05:17] "GET /api/v1/companies HTTP/1.1" 200 -
+student-4-backend-1   | 172.23.0.5 - - [29/Sep/2026 09:05:17] "GET /api/v1/jobs/enriched HTTP/1.1" 200 -
+student-4-backend-1   | 172.23.0.5 - - [29/Sep/2026 09:05:17] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-backend-1   | 172.23.0.5 - - [29/Sep/2026 09:05:22] "POST /api/v1/rag/jobs/2/answer HTTP/1.1" 200 -
+student-4-backend-1   | 172.23.0.5 - - [29/Sep/2026 09:06:50] "POST /api/v1/rag/jobs/2/answer HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:04:35] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:04:35] "GET /health HTTP/1.1" 200 -
+student-4-frontend-1  | 192.168.65.1 - - [29/Sep/2026 09:05:17] "GET / HTTP/1.1" 200 -
+student-4-frontend-1  | 192.168.65.1 - - [29/Sep/2026 09:05:17] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+student-4-frontend-1  | 192.168.65.1 - - [29/Sep/2026 09:05:22] "POST /rag/jobs/2/answer HTTP/1.1" 200 -
+student-4-frontend-1  | 192.168.65.1 - - [29/Sep/2026 09:06:50] "POST /rag/jobs/2/answer HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "GET /api/v1/job_postings/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "GET /api/v1/companies/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "GET /api/v1/job_postings/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "GET /api/v1/companies/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "GET /api/v1/job_postings/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "GET /api/v1/companies/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:37] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:04:40] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:41] "GET /api/v1/job_postings/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:41] "GET /api/v1/companies/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:41] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:41] "GET /api/v1/job_postings/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:41] "GET /api/v1/companies/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:41] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:41] "GET /api/v1/job_postings/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:41] "GET /api/v1/companies/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:04:41] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:04:44] "GET /api/v1/job_postings/2 HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:04:44] "GET /api/v1/companies HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:04:44] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:04:45] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:04:50] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:04:56] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:01] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:06] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:12] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:17] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:05:17] "GET /api/v1/companies HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:05:17] "GET /api/v1/job_postings HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:05:17] "GET /api/v1/companies HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:05:17] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 172.23.0.4 - - [29/Sep/2026 09:05:17] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:05:18] "GET /api/v1/job_postings/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:05:18] "GET /api/v1/companies/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:05:18] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:22] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:27] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:33] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:38] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:43] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:49] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:54] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:05:59] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:04] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:10] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:15] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:20] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:25] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:31] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:36] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:41] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:47] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:06:50] "GET /api/v1/job_postings/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:06:50] "GET /api/v1/companies/2 HTTP/1.1" 200 -
+student-4-database-1  | 192.168.65.1 - - [29/Sep/2026 09:06:50] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:52] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:06:57] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:03] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:08] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:13] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:18] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:23] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:29] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:34] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:39] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:44] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:49] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:07:55] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [29/Sep/2026 09:08:00] "GET /health HTTP/1.1" 200 -

@@ -1,0 +1,2 @@
+# Preparing evidence for a job application
+Prepare for a job application by matching the posting's stated responsibilities and skills to specific projects or work examples. Describe what you did and the result, using only achievements you can support. For an unfamiliar skill, plan a small practice project. General preparation advice is not an extra employer requirement and does not guarantee selection.

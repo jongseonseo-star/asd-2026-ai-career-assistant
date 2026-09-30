@@ -32,6 +32,11 @@ services:
       OLLAMA_BASE_URL: http://host.docker.internal:11434
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:0.5b}
       OLLAMA_TIMEOUT_SECONDS: "180"
+      OLLAMA_ENABLED: ${OLLAMA_ENABLED:-true}
+      AI_SERVICES_ENABLED: ${AI_SERVICES_ENABLED:-false}
+      MCP_BASE_URL: ${MCP_BASE_URL:-http://host.docker.internal:8765}
+      RAG_BASE_URL: ${RAG_BASE_URL:-http://host.docker.internal:8766}
+      RAG_GENERATION_TIMEOUT_SECONDS: "210"
     ports: ["5401:5401"]
     extra_hosts: ["host.docker.internal:host-gateway"]
     depends_on:
@@ -56,7 +61,7 @@ services:
     environment:
       PORT: "8404"
       BACKEND_API_URL: http://student-4-backend:5401
-      AI_TIMEOUT_SECONDS: "180"
+      AI_TIMEOUT_SECONDS: "240"
     ports: ["8404:8404"]
     depends_on:
       student-4-backend: { condition: service_healthy }
