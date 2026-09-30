@@ -227,6 +227,11 @@ def ui_sessions():
           <td>
             <form hx-post="/ui/questions/generate" hx-target="#session-{session['id']}" hx-swap="innerHTML">
               <input type="hidden" name="session_id" value="{session['id']}">
+                            <select name="mode" aria-label="Question generation mode">
+                                <option value="mcp-rag">MCP + RAG</option>
+                                <option value="mcp">MCP only</option>
+                                <option value="ai">AI Mode</option>
+                            </select>
               <button type="submit">Generate questions</button>
             </form>
           </td>
@@ -288,7 +293,7 @@ def ui_generate_questions():
         payload, status = backend_request(
             "POST",
             f"/api/v1/interview-sessions/{int(session_id)}/generate-questions",
-            json_body={"question_count": 3},
+            json_body={"question_count": 3, "mode": request.form.get("mode", "mcp-rag")},
             timeout=AI_TIMEOUT,
         )
     except BackendUnavailable as error:
@@ -297,6 +302,8 @@ def ui_generate_questions():
         message = payload.get("error", "Questions could not be generated.") if isinstance(payload, dict) else "Questions could not be generated."
         return f'<div class="card">{message}</div>'
 
+    if payload.get("status") == "context-only":
+        return f'<div class="card"><strong>MCP context</strong><br>{escape(payload.get("feedback", "Context retrieved."))}<pre>{escape(str(payload.get("mcp_result", {})))}</pre></div>'
     questions = payload.get("generated_questions", [])
     rows = "".join(
         f"""
@@ -304,6 +311,7 @@ def ui_generate_questions():
           <strong>Q{idx + 1}.</strong> {q.get('question_text', q.get('question', 'Question'))}
           <form hx-post="/ui/questions/{q['id']}/evaluate" hx-target="#response-{q['id']}" hx-swap="innerHTML" style="margin-top:.6rem;">
             <textarea name="answer" placeholder="Type your answer here" required></textarea>
+                        <select name="mode" aria-label="Answer evaluation mode"><option value="mcp-rag">MCP + RAG</option><option value="mcp">MCP only</option><option value="ai">AI Mode</option></select>
             <button type="submit">Evaluate answer</button>
           </form>
           <div id="response-{q['id']}"></div>
@@ -323,7 +331,7 @@ def ui_evaluate_answer(question_id: int):
         payload, status = backend_request(
             "POST",
             f"/api/v1/interview-questions/{question_id}/evaluate-answer",
-            json_body={"answer": answer},
+            json_body={"answer": answer, "mode": request.form.get("mode", "mcp-rag")},
             timeout=AI_TIMEOUT,
         )
     except BackendUnavailable as error:
@@ -332,6 +340,8 @@ def ui_evaluate_answer(question_id: int):
         message = payload.get("error", "The answer could not be evaluated.") if isinstance(payload, dict) else "The answer could not be evaluated."
         return f'<div class="card">{message}</div>'
 
+    if payload.get("status") == "context-only":
+        return f'<div class="card"><strong>MCP context</strong><br>{escape(payload.get("feedback", "Context retrieved."))}<pre>{escape(str(payload.get("mcp_result", {})))}</pre></div>'
     score = payload.get("score", 0)
     feedback = payload.get("feedback", "No feedback returned.")
     tips = payload.get("improvement_tips", "Keep practising.")

@@ -88,6 +88,15 @@ def require_positive_integer(data: dict[str, Any], field: str) -> int:
     return value
 
 
+def requested_ai_mode(data: dict[str, Any]) -> str:
+    mode = data.get("mode", "mcp-rag" if AI_SERVICES_ENABLED else "ai")
+    if mode not in {"mcp", "mcp-rag", "ai"}:
+        raise ClientInputError("mode must be mcp, mcp-rag, or ai.")
+    if mode in {"mcp", "mcp-rag"} and not AI_SERVICES_ENABLED:
+        raise DependencyError("shared-ai", "MCP and RAG modes are disabled in this environment.")
+    return mode
+
+
 def load_prompt(file_name: str) -> str:
     try:
         text = (PROMPTS_DIR / file_name).read_text(encoding="utf-8").strip()
@@ -129,7 +138,7 @@ def shared_ai_context(*, target_role: str, interview_type: str, query: str) -> d
         mcp_payload = asyncio.run(call_mcp_tool(target_role, interview_type))
         rag_response = session.post(
             f"{RAG_BASE_URL}/retrieve",
-            json={"query": query, "top_k": 3},
+            json={"query": query, "top_k": 3, "feature": "interview"},
             timeout=SHARED_AI_TIMEOUT,
         )
         rag_response.raise_for_status()
@@ -288,6 +297,7 @@ def interview_session_questions(session_id: int):
 @app.route("/api/v1/interview-sessions/<int:session_id>/generate-questions", methods=["POST"])
 def generate_questions_for_session(session_id: int):
     data = require_json_object()
+    mode = requested_ai_mode(data)
     session_payload, status = database_request("GET", f"/api/v1/interview-sessions/{session_id}")
     if status != 200:
         return jsonify(session_payload), status
@@ -301,7 +311,24 @@ def generate_questions_for_session(session_id: int):
     if question_count < 1 or question_count > 10:
         raise ClientInputError("question_count must be between 1 and 10.")
 
-    context = shared_ai_context(target_role=role, interview_type=interview_type, query=f"{role} {interview_type} interview questions")
+    if mode == "mcp":
+        mcp_context = asyncio.run(call_mcp_tool(role, interview_type))
+        questions_payload, questions_status = database_request("GET", f"/api/v1/interview-sessions/{session_id}/questions")
+        if questions_status != 200:
+            return jsonify(questions_payload), questions_status
+        return jsonify({
+            "session_id": session_id,
+            "mode": "mcp",
+            "status": "context-only",
+            "model": "Not called",
+            "generation_metadata": {"called": False},
+            "interview_session": session_payload,
+            "questions": questions_payload,
+            "mcp_result": mcp_context,
+            "feedback": "Current interview records and MCP context retrieved. No model was called.",
+        }), 200
+
+    context = shared_ai_context(target_role=role, interview_type=interview_type, query=f"{role} {interview_type} interview questions") if mode == "mcp-rag" else {"mcp": {}, "retrieved_context": [], "sources": [], "confidence": "disabled"}
     prompt = f"{load_prompt('question_generation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'session_id': session_id, 'target_role': role, 'interview_type': interview_type, 'question_count': question_count}, ensure_ascii=False, indent=2)}{grounding_prompt(context)}"
     model_output = call_ollama(load_prompt('system_prompt.txt'), prompt)
     parsed = parse_json_text(model_output)
@@ -332,6 +359,7 @@ def generate_questions_for_session(session_id: int):
         "questions": created_questions,
         "generated_questions": created_questions,
         "count": len(created_questions),
+        "mode": mode,
         "sources": context["sources"],
         "confidence": context["confidence"],
     }), 200
@@ -364,6 +392,7 @@ def interview_responses_collection():
 @app.route("/api/v1/interview-questions/<int:question_id>/evaluate-answer", methods=["POST"])
 def evaluate_answer(question_id: int):
     data = require_json_object()
+    mode = requested_ai_mode(data)
     if "answer" in data:
         candidate_answer = require_text(data, "answer", 12000)
     else:
@@ -378,7 +407,22 @@ def evaluate_answer(question_id: int):
 
     target_role = session_payload.get("target_role", "General")
     interview_type = session_payload.get("interview_type", "general")
-    context = shared_ai_context(target_role=target_role, interview_type=interview_type, query=f"{target_role} {question_payload.get('question_text', '')} interview evaluation")
+    if mode == "mcp":
+        mcp_context = asyncio.run(call_mcp_tool(target_role, interview_type))
+        return jsonify({
+            "session_id": session_id,
+            "question_id": question_id,
+            "mode": "mcp",
+            "status": "context-only",
+            "model": "Not called",
+            "generation_metadata": {"called": False},
+            "question": question_payload,
+            "interview_session": session_payload,
+            "mcp_result": mcp_context,
+            "feedback": "Current interview records and MCP context retrieved. No model was called.",
+        }), 200
+
+    context = shared_ai_context(target_role=target_role, interview_type=interview_type, query=f"{target_role} {question_payload.get('question_text', '')} interview evaluation") if mode == "mcp-rag" else {"mcp": {}, "retrieved_context": [], "sources": [], "confidence": "disabled"}
     prompt = f"{load_prompt('response_evaluation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'target_role': target_role, 'question': question_payload.get('question_text', ''), 'candidate_answer': candidate_answer}, ensure_ascii=False, indent=2)}{grounding_prompt(context)}"
     model_output = call_ollama(load_prompt('system_prompt.txt'), prompt)
     parsed = parse_json_text(model_output)
@@ -421,6 +465,7 @@ def evaluate_answer(question_id: int):
     return jsonify({
         "session_id": session_id,
         "question_id": question_id,
+        "mode": mode,
         "score": round(score, 2),
         "feedback": str(feedback).strip(),
         "improvement_tips": str(tips).strip(),
