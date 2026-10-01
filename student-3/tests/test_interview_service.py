@@ -1,15 +1,17 @@
 import importlib.util
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 
 def load_backend_module():
     backend_file = Path(__file__).resolve().parents[1] / "backend" / "app.py"
     spec = importlib.util.spec_from_file_location("student3_backend", backend_file)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Unable to load the Student-3 backend module.")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module
+    return module  # type: ignore[return-value]
 
 
 class InterviewServiceContractTests(unittest.TestCase):
