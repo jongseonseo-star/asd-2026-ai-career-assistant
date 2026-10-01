@@ -39,6 +39,8 @@ class BoundedToolInputErrors(Middleware):
 
 
 _job_spec = importlib.util.spec_from_file_location("mcp_job_contract", Path(__file__).resolve().parents[1] / "student-4/backend/job_contract.py")
+if _job_spec is None or _job_spec.loader is None:
+    raise RuntimeError("Unable to load the Student-4 job contract module.")
 job_contract = importlib.util.module_from_spec(_job_spec)
 _job_spec.loader.exec_module(job_contract)
 JOB_DATABASE_API_URL = os.getenv("STUDENT4_DATABASE_API_URL", "http://127.0.0.1:5402").rstrip("/")
@@ -221,8 +223,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the shared local MCP server.")
     parser.add_argument("--transport", choices=["stdio", "sse", "streamable-http"], default="streamable-http")
     args = parser.parse_args()
-    mcp.run(
-        transport=args.transport,
-        host=os.getenv("AI_SERVICES_HOST", "127.0.0.1"),
-        port=int(os.getenv("MCP_PORT", "8765")),
-    )
+    try:
+        mcp.run(
+            transport=args.transport,
+            host=os.getenv("AI_SERVICES_HOST", "127.0.0.1"),
+            port=int(os.getenv("MCP_PORT", "8765")),
+        )
+    except KeyboardInterrupt:
+        pass
