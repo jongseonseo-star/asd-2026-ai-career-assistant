@@ -55,6 +55,56 @@ class InterviewServiceContractTests(unittest.TestCase):
                 self.assertEqual(len(payload["questions"]), 2)
                 self.assertIn("generated_questions", payload)
 
+    def test_shared_context_preserves_structured_mcp_metadata(self):
+        backend = load_backend_module()
+        setattr(backend, "AI_SERVICES_ENABLED", True)
+        rag_response = Mock()
+        rag_response.raise_for_status.return_value = None
+        rag_response.json.return_value = {
+            "results": [{"text": "Use STAR answers.", "source": "repo://interview"}],
+            "confidence": "medium",
+        }
+
+        with patch.object(backend, "call_mcp_tool", return_value={
+            "target_role": "Python Engineer",
+            "evaluation_dimensions": ["clarity"],
+        }), patch.object(backend.session, "post", return_value=rag_response):
+            context = backend.shared_ai_context(
+                target_role="Python Engineer",
+                interview_type="technical",
+                query="Python Engineer technical interview questions",
+            )
+
+        self.assertEqual(context["mcp"]["target_role"], "Python Engineer")
+        self.assertEqual(context["sources"], ["repo://interview"])
+
+    def test_empty_retrieval_skips_question_generation(self):
+        backend = load_backend_module()
+        setattr(backend, "AI_SERVICES_ENABLED", True)
+        app = backend.app
+        app.config["TESTING"] = True
+
+        with app.test_client() as client:
+            with patch.object(backend, "database_request", return_value=(
+                {"id": 1, "target_role": "Python Backend Engineer", "interview_type": "Technical"}, 200
+            )), patch.object(backend, "shared_ai_context", return_value={
+                "mcp": {"target_role": "Python Backend Engineer"},
+                "retrieved_context": [],
+                "sources": [],
+                "confidence": "low",
+            }), patch.object(backend, "call_ollama") as mocked_ollama:
+                response = client.post(
+                    "/api/v1/interview-sessions/1/generate-questions",
+                    json={"mode": "mcp-rag", "question_count": 2},
+                )
+
+        self.assertEqual(response.status_code, 200)
+        payload = response.get_json()
+        self.assertEqual(payload["status"], "insufficient-context")
+        self.assertFalse(payload["generation_metadata"]["called"])
+        mocked_ollama.assert_not_called()
+        self.assertEqual(payload["mcp_result"]["target_role"], "Python Backend Engineer")
+
     def test_evaluate_answer_accepts_user_answer_alias(self):
         backend = load_backend_module()
         app = backend.app
