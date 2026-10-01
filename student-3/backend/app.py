@@ -150,10 +150,25 @@ def shared_ai_context(*, target_role: str, interview_type: str, query: str) -> d
     if not isinstance(results, list):
         results = []
     return {
-        "mcp": mcp_payload.get("content", {}) if isinstance(mcp_payload, dict) else {},
+        "mcp": mcp_payload if isinstance(mcp_payload, dict) else {},
         "retrieved_context": [item.get("text", "") for item in results if isinstance(item, dict)],
         "sources": [item.get("source") for item in results if isinstance(item, dict) and item.get("source")],
         "confidence": rag_payload.get("confidence", "low") if isinstance(rag_payload, dict) else "low",
+    }
+
+
+def insufficient_context_response(*, mode: str, context: dict[str, Any], **extra: Any) -> dict[str, Any]:
+    return {
+        **extra,
+        "mode": mode,
+        "status": "insufficient-context",
+        "model": "Not called",
+        "generation_metadata": {"called": False},
+        "mcp_result": context["mcp"],
+        "retrieved_context": context["retrieved_context"],
+        "sources": context["sources"],
+        "confidence": context["confidence"],
+        "feedback": "No approved interview guidance matched this request. No model was called.",
     }
 
 
@@ -329,6 +344,16 @@ def generate_questions_for_session(session_id: int):
         }), 200
 
     context = shared_ai_context(target_role=role, interview_type=interview_type, query=f"{role} {interview_type} interview questions") if mode == "mcp-rag" else {"mcp": {}, "retrieved_context": [], "sources": [], "confidence": "disabled"}
+    if mode == "mcp-rag" and not context["retrieved_context"]:
+        return jsonify(insufficient_context_response(
+            mode=mode,
+            context=context,
+            session_id=session_id,
+            questions=[],
+            generated_questions=[],
+            count=0,
+        )), 200
+
     prompt = f"{load_prompt('question_generation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'session_id': session_id, 'target_role': role, 'interview_type': interview_type, 'question_count': question_count}, ensure_ascii=False, indent=2)}{grounding_prompt(context)}"
     model_output = call_ollama(load_prompt('system_prompt.txt'), prompt)
     parsed = parse_json_text(model_output)
@@ -423,6 +448,16 @@ def evaluate_answer(question_id: int):
         }), 200
 
     context = shared_ai_context(target_role=target_role, interview_type=interview_type, query=f"{target_role} {question_payload.get('question_text', '')} interview evaluation") if mode == "mcp-rag" else {"mcp": {}, "retrieved_context": [], "sources": [], "confidence": "disabled"}
+    if mode == "mcp-rag" and not context["retrieved_context"]:
+        return jsonify(insufficient_context_response(
+            mode=mode,
+            context=context,
+            session_id=session_id,
+            question_id=question_id,
+            question=question_payload,
+            interview_session=session_payload,
+        )), 200
+
     prompt = f"{load_prompt('response_evaluation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'target_role': target_role, 'question': question_payload.get('question_text', ''), 'candidate_answer': candidate_answer}, ensure_ascii=False, indent=2)}{grounding_prompt(context)}"
     model_output = call_ollama(load_prompt('system_prompt.txt'), prompt)
     parsed = parse_json_text(model_output)
