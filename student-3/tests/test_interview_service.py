@@ -136,6 +136,104 @@ class InterviewServiceContractTests(unittest.TestCase):
                 self.assertEqual(payload["score"], 85.0)
                 self.assertIn("feedback", payload)
 
+    def test_fetch_mcp_context_error_mapping(self):
+        backend = load_backend_module()
+        with patch.object(backend, "call_mcp_tool", side_effect=RuntimeError("connection refused")):
+            with self.assertRaises(backend.DependencyError) as context:
+                backend.fetch_mcp_context("Developer", "technical")
+            self.assertEqual(context.exception.dependency, "shared-ai-services")
+            self.assertIn("MCP service is unavailable", context.exception.message)
+
+    def test_shared_context_extracts_source_uri_and_filters_blank_chunks(self):
+        backend = load_backend_module()
+        setattr(backend, "AI_SERVICES_ENABLED", True)
+        rag_response = Mock()
+        rag_response.raise_for_status.return_value = None
+        rag_response.json.return_value = {
+            "results": [
+                {"text": "   ", "source_uri": "repo://doc1", "chunk_id": "c1"},
+                {"text": "Valid interview guidance.", "source_uri": "repo://doc2", "chunk_id": "c2"},
+                {"text": "", "chunk_id": "c3"},
+            ],
+            "confidence": "high",
+        }
+
+        with patch.object(backend, "fetch_mcp_context", return_value={"target_role": "Tester"}), \
+             patch.object(backend.session, "post", return_value=rag_response):
+            context = backend.shared_ai_context(
+                target_role="Tester",
+                interview_type="technical",
+                query="Tester technical interview",
+            )
+
+        self.assertEqual(context["retrieved_context"], ["Valid interview guidance."])
+        self.assertEqual(context["sources"], ["repo://doc1", "repo://doc2", "c3"])
+
+    def test_bad_model_json_raises_dependency_error_502(self):
+        backend = load_backend_module()
+        with self.assertRaises(backend.DependencyError) as cm:
+            backend.parse_json_text("not json at all")
+        self.assertEqual(cm.exception.dependency, "ollama")
+        self.assertEqual(cm.exception.status_code, 502)
+        self.assertEqual(cm.exception.message, "Model returned invalid JSON.")
+
+        app = backend.app
+        app.config["TESTING"] = True
+        with app.test_client() as client:
+            with patch.object(backend, "database_request", return_value=(
+                {"id": 1, "target_role": "Python Backend Engineer", "interview_type": "Technical"}, 200
+            )), patch.object(backend, "shared_ai_context", return_value={
+                "mcp": {},
+                "retrieved_context": ["Grounded text"],
+                "sources": ["source1"],
+                "confidence": "high",
+            }), patch.object(backend, "call_ollama", return_value="Invalid json response"):
+                response = client.post(
+                    "/api/v1/interview-sessions/1/generate-questions",
+                    json={"question_count": 2},
+                )
+                self.assertEqual(response.status_code, 502)
+                data = response.get_json()
+                self.assertEqual(data["dependency"], "ollama")
+                self.assertEqual(data["error"], "Model returned invalid JSON.")
+
+    def test_ai_status_reports_dependencies_without_503_when_ollama_down(self):
+        backend = load_backend_module()
+        app = backend.app
+        app.config["TESTING"] = True
+
+        with app.test_client() as client:
+            with patch.object(backend, "get_ollama_models", side_effect=backend.DependencyError("ollama", "Down")):
+                response = client.get("/api/v1/ai/status")
+                self.assertEqual(response.status_code, 200)
+                data = response.get_json()
+                self.assertIn("dependencies", data)
+                self.assertEqual(data["dependencies"]["ollama"]["status"], "unavailable")
+                self.assertIn("mcp", data["dependencies"])
+                self.assertIn("rag", data["dependencies"])
+
+    def test_service_information_reports_release_1(self):
+        backend = load_backend_module()
+        app = backend.app
+        app.config["TESTING"] = True
+
+        with app.test_client() as client:
+            response = client.get("/")
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.get_json()["release"], "Release 1")
+
+    def test_mcp_inputs_are_capped(self):
+        backend = load_backend_module()
+        long_role = "R" * 300
+        long_type = "T" * 200
+
+        with patch.object(backend, "call_mcp_tool", return_value={"ok": True}) as mock_call:
+            backend.fetch_mcp_context(long_role, long_type)
+            mock_call.assert_called_once()
+            passed_role, passed_type = mock_call.call_args[0]
+            self.assertEqual(len(passed_role), 200)
+            self.assertEqual(len(passed_type), 80)
+
 
 if __name__ == "__main__":
     unittest.main()
