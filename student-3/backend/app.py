@@ -131,11 +131,43 @@ def proxy_database(method: str, path: str, *, json_body: dict[str, Any] | None =
     return jsonify(payload), status
 
 
+async def call_mcp_tool(target_role: str, interview_type: str) -> dict[str, Any]:
+    from fastmcp import Client
+
+    clean_role = str(target_role).strip()[:200] or "General role"
+    clean_type = str(interview_type).strip()[:80] or "general"
+    async with Client(f"{MCP_BASE_URL}/mcp", timeout=SHARED_AI_TIMEOUT) as client:
+        result = await client.call_tool(
+            "interview_context",
+            arguments={"target_role": clean_role, "interview_type": clean_type},
+            timeout=SHARED_AI_TIMEOUT,
+        )
+    structured = getattr(result, "structured_content", None) or getattr(result, "structuredContent", None)
+    if isinstance(structured, dict):
+        return structured
+    for content in getattr(result, "content", []):
+        text = getattr(content, "text", "")
+        if text:
+            parsed = json.loads(text)
+            if isinstance(parsed, dict):
+                return parsed
+    raise ValueError("MCP returned no structured interview context.")
+
+
+def fetch_mcp_context(target_role: str, interview_type: str) -> dict[str, Any]:
+    clean_role = str(target_role).strip()[:200] or "General role"
+    clean_type = str(interview_type).strip()[:80] or "general"
+    try:
+        return asyncio.run(call_mcp_tool(clean_role, clean_type))
+    except Exception as error:
+        raise DependencyError("shared-ai-services", "MCP service is unavailable or rejected the request.") from error
+
+
 def shared_ai_context(*, target_role: str, interview_type: str, query: str) -> dict[str, Any]:
     if not AI_SERVICES_ENABLED:
         return {"mcp": {}, "retrieved_context": [], "sources": [], "confidence": "disabled"}
+    mcp_payload = fetch_mcp_context(target_role, interview_type)
     try:
-        mcp_payload = asyncio.run(call_mcp_tool(target_role, interview_type))
         rag_response = session.post(
             f"{RAG_BASE_URL}/retrieve",
             json={"query": query, "top_k": 3, "feature": "interview"},
@@ -149,10 +181,16 @@ def shared_ai_context(*, target_role: str, interview_type: str, query: str) -> d
     results = rag_payload.get("results", []) if isinstance(rag_payload, dict) else []
     if not isinstance(results, list):
         results = []
+    texts = [item.get("text", "").strip() for item in results if isinstance(item, dict)]
+    sources = [
+        item.get("source") or item.get("source_uri") or item.get("chunk_id")
+        for item in results
+        if isinstance(item, dict) and (item.get("source") or item.get("source_uri") or item.get("chunk_id"))
+    ]
     return {
         "mcp": mcp_payload if isinstance(mcp_payload, dict) else {},
-        "retrieved_context": [item.get("text", "") for item in results if isinstance(item, dict)],
-        "sources": [item.get("source") for item in results if isinstance(item, dict) and item.get("source")],
+        "retrieved_context": [t for t in texts if t],
+        "sources": sources,
         "confidence": rag_payload.get("confidence", "low") if isinstance(rag_payload, dict) else "low",
     }
 
@@ -172,34 +210,14 @@ def insufficient_context_response(*, mode: str, context: dict[str, Any], **extra
     }
 
 
-async def call_mcp_tool(target_role: str, interview_type: str) -> dict[str, Any]:
-    from fastmcp import Client
-
-    async with Client(f"{MCP_BASE_URL}/mcp", timeout=SHARED_AI_TIMEOUT) as client:
-        result = await client.call_tool(
-            "interview_context",
-            arguments={"target_role": target_role, "interview_type": interview_type},
-            timeout=SHARED_AI_TIMEOUT,
-        )
-    structured = getattr(result, "structured_content", None) or getattr(result, "structuredContent", None)
-    if isinstance(structured, dict):
-        return structured
-    for content in getattr(result, "content", []):
-        text = getattr(content, "text", "")
-        if text:
-            parsed = json.loads(text)
-            if isinstance(parsed, dict):
-                return parsed
-    raise ValueError("MCP returned no structured interview context.")
-
-
 def grounding_prompt(context: dict[str, Any]) -> str:
     return "\n\nGROUNDED CONTEXT\n" + json.dumps(context, ensure_ascii=False, indent=2)
 
 
-def get_ollama_models() -> list[str]:
+def get_ollama_models(timeout: float | None = None) -> list[str]:
+    request_timeout = timeout if timeout is not None else OLLAMA_TIMEOUT
     try:
-        response = session.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=OLLAMA_TIMEOUT)
+        response = session.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=request_timeout)
         response.raise_for_status()
         payload = response.json()
     except requests.Timeout as error:
@@ -245,7 +263,10 @@ def parse_json_text(raw_text: str) -> Any:
         cleaned = cleaned.strip("`")
         if cleaned.lower().startswith("json"):
             cleaned = cleaned[4:].lstrip()
-    return json.loads(cleaned)
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError as error:
+        raise DependencyError("ollama", "Model returned invalid JSON.", 502) from error
 
 
 @app.get("/")
@@ -253,7 +274,7 @@ def service_information():
     return jsonify({
         "service": "student-3-backend",
         "feature": "Interview Preparation Management",
-        "release": "Release 0",
+        "release": "Release 1",
         "database_api_url": DATABASE_API_URL,
         "ollama_model": OLLAMA_MODEL,
     }), 200
@@ -274,16 +295,66 @@ def readiness():
 
 @app.get("/api/v1/ai/status")
 def ai_status():
-    models = get_ollama_models()
+    ollama_ok = False
+    models: list[str] = []
+    try:
+        models = get_ollama_models(timeout=min(DATABASE_TIMEOUT, 3.0))
+        ollama_ok = True
+    except Exception:
+        ollama_ok = False
+
+    configured_model_available = OLLAMA_MODEL in models if ollama_ok else False
+
+    mcp_status = "disabled"
+    if AI_SERVICES_ENABLED:
+        try:
+            mcp_res = session.get(f"{MCP_BASE_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 1.0))
+            mcp_status = "available" if mcp_res.status_code in {200, 204, 400, 404, 405} else "unavailable"
+        except Exception:
+            try:
+                mcp_res = session.get(f"{MCP_BASE_URL}/mcp", timeout=min(SHARED_AI_TIMEOUT, 1.0))
+                mcp_status = "available" if mcp_res.status_code in {200, 204, 400, 404, 405} else "unavailable"
+            except Exception:
+                mcp_status = "unavailable"
+
+    rag_status = "disabled"
+    if AI_SERVICES_ENABLED:
+        try:
+            rag_res = session.get(f"{RAG_BASE_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 1.0))
+            rag_status = "available" if rag_res.status_code == 200 else "unavailable"
+        except Exception:
+            rag_status = "unavailable"
+
+    dependencies = {
+        "ollama": {
+            "status": "available" if ollama_ok else "unavailable",
+            "runtime": "Ollama",
+            "configured_model": OLLAMA_MODEL,
+            "configured_model_available": configured_model_available,
+            "installed_models": models,
+        },
+        "mcp": {
+            "status": mcp_status,
+            "enabled": AI_SERVICES_ENABLED,
+            "url": MCP_BASE_URL,
+        },
+        "rag": {
+            "status": rag_status,
+            "enabled": AI_SERVICES_ENABLED,
+            "url": RAG_BASE_URL,
+        },
+    }
+
     return jsonify({
-        "status": "available",
+        "status": "available" if ollama_ok else "unavailable",
         "runtime": "Ollama",
         "configured_model": OLLAMA_MODEL,
-        "configured_model_available": OLLAMA_MODEL in models,
+        "configured_model_available": configured_model_available,
         "installed_models": models,
         "shared_ai_services_enabled": AI_SERVICES_ENABLED,
         "mcp_server_url": MCP_BASE_URL,
         "rag_server_url": RAG_BASE_URL,
+        "dependencies": dependencies,
     }), 200
 
 
@@ -317,9 +388,12 @@ def generate_questions_for_session(session_id: int):
     if status != 200:
         return jsonify(session_payload), status
 
-    role = require_text(data, "target_role", 200) if "target_role" in data else str(session_payload.get("target_role", "General role")).strip()
+    if "target_role" in data:
+        role = require_text(data, "target_role", 200)
+    else:
+        role = str(session_payload.get("target_role", "General role")).strip()[:200] or "General role"
     raw_interview_type = data.get("interview_type", session_payload.get("interview_type", "general"))
-    interview_type = str(raw_interview_type).strip() or "general"
+    interview_type = str(raw_interview_type).strip()[:80] or "general"
     question_count = data.get("question_count", 5)
     if isinstance(question_count, bool) or not isinstance(question_count, int):
         raise ClientInputError("question_count must be an integer.")
@@ -327,7 +401,7 @@ def generate_questions_for_session(session_id: int):
         raise ClientInputError("question_count must be between 1 and 10.")
 
     if mode == "mcp":
-        mcp_context = asyncio.run(call_mcp_tool(role, interview_type))
+        mcp_context = fetch_mcp_context(role, interview_type)
         questions_payload, questions_status = database_request("GET", f"/api/v1/interview-sessions/{session_id}/questions")
         if questions_status != 200:
             return jsonify(questions_payload), questions_status
@@ -430,10 +504,10 @@ def evaluate_answer(question_id: int):
     if session_status != 200:
         return jsonify(session_payload), session_status
 
-    target_role = session_payload.get("target_role", "General")
-    interview_type = session_payload.get("interview_type", "general")
+    target_role = str(session_payload.get("target_role", "General")).strip()[:200] or "General"
+    interview_type = str(session_payload.get("interview_type", "general")).strip()[:80] or "general"
     if mode == "mcp":
-        mcp_context = asyncio.run(call_mcp_tool(target_role, interview_type))
+        mcp_context = fetch_mcp_context(target_role, interview_type)
         return jsonify({
             "session_id": session_id,
             "question_id": question_id,
