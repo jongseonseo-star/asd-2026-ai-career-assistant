@@ -73,6 +73,7 @@ services:
       AI_SERVICES_ENABLED: ${AI_SERVICES_ENABLED:-false}
       MCP_BASE_URL: ${MCP_BASE_URL:-http://host.docker.internal:8765}
       RAG_BASE_URL: ${RAG_BASE_URL:-http://host.docker.internal:8766}
+      MULTI_AGENT_SERVER_URL: ${MULTI_AGENT_SERVER_URL:-http://host.docker.internal:8767}
       SHARED_AI_TIMEOUT_SECONDS: ${SHARED_AI_TIMEOUT_SECONDS:-10}
     ports: ["5301:5001"]
     extra_hosts: ["host.docker.internal:host-gateway"]
