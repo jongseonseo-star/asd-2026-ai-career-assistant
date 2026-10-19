@@ -161,3 +161,50 @@ check cited claims without changing the resume answer contract.
 
 The shared loop accepts `--feature jobs --job-id <id>` in MCP and RAG modes.
 See [Student 4](../student-4/README.md) for startup, boundaries and evidence.
+
+## Release 2 Shared Multi-Agent Server
+
+`multi_agent_server.py` implements a shared non-containerised local Multi-Agent Server coordinating three specialized agents:
+- **Planner Agent**: Analyzes the problem domain, decomposes tasks into ordered execution steps, and formulates measurable evaluation rubrics.
+- **Worker Agent**: Generates tailored deliverables (e.g. interview questions, criteria, and response evaluations) following the planner's blueprint.
+- **Reviewer Agent**: Critically audits worker deliverables against the planner's criteria, scoring quality (0-100), deciding verdict (`approved` / `needs_revision`), and providing actionable critique.
+- **Coordinator**: Orchestrates the Planner -> Worker -> Reviewer execution loop, incorporating feedback into revisions and recording the full execution trajectory.
+
+### Start the Multi-Agent Server
+
+Run as a host service on port `8767`:
+
+```bash
+python ai-services/multi_agent_server.py --serve --port 8767
+```
+
+| Connection | Default address |
+| --- | --- |
+| Host to Multi-Agent Server HTTP API | `http://127.0.0.1:8767` |
+| Feature containers to Multi-Agent Server | `http://host.docker.internal:8767` |
+
+### Call from the terminal (CLI)
+
+The server can be invoked directly from the terminal without starting the background server:
+
+```bash
+# Interview preparation coordination
+python ai-services/multi_agent_server.py --cli --role "Senior Python Developer" --type "technical" --count 3
+
+# Interview answer evaluation coordination
+python ai-services/multi_agent_server.py --evaluate --role "Backend Developer" --question "How do you handle API rate limiting?" --answer "We use token bucket backed by Redis."
+
+# Output structured JSON for piping
+python ai-services/multi_agent_server.py --cli --role "Security Engineer" --count 2 --json
+```
+
+### HTTP Endpoints
+- `GET /health`: Server health, release identifier (`Release 2`), and active agents.
+- `GET /agents`: Metadata on Planner, Worker, and Reviewer agents.
+- `POST /agent/plan`: Direct planner invocation.
+- `POST /agent/work`: Direct worker invocation.
+- `POST /agent/review`: Direct reviewer invocation.
+- `POST /agent/coordinate`: Generic multi-agent coordination.
+- `POST /interview/prep`: Coordinated interview preparation workflow.
+- `POST /interview/evaluate`: Coordinated interview answer evaluation workflow.
+
