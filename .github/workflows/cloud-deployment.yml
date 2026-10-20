@@ -2,7 +2,7 @@ name: Cloud Deployment
 
 on:
   push:
-    branches: [main, feature/release2-aws-runtime]
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -46,7 +46,7 @@ jobs:
         run: docker compose --env-file .env.cloud -f docker-compose.cloud.yml down -v
 
   deploy:
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/release2-aws-runtime' || github.event_name == 'workflow_dispatch'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [student-2, student-3, student-4, validate-cloud]
     runs-on: ubuntu-latest
     timeout-minutes: 30
