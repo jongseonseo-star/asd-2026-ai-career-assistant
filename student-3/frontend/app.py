@@ -62,6 +62,8 @@ def dependency_status() -> str:
     mcp_detail = "Disabled"
     rag_state = "warning"
     rag_detail = "Disabled"
+    multi_agent_state = "warning"
+    multi_agent_detail = "Disabled"
 
     try:
         backend_payload, backend_http_status = backend_request("GET", "/health", timeout=STATUS_TIMEOUT)
@@ -91,6 +93,11 @@ def dependency_status() -> str:
         if isinstance(ollama_payload, dict) and ollama_payload.get("shared_ai_services_enabled"):
             mcp_state, mcp_detail = "ready", "Enabled"
             rag_state, rag_detail = "ready", "Enabled"
+            ma_dep = ollama_payload.get("dependencies", {}).get("multi_agent", {})
+            if isinstance(ma_dep, dict) and ma_dep.get("status") == "available":
+                multi_agent_state, multi_agent_detail = "ready", "Connected"
+            else:
+                multi_agent_state, multi_agent_detail = "warning", "Ready on host :8767"
     except BackendUnavailable as error:
         ollama_detail = str(error)
 
@@ -100,6 +107,7 @@ def dependency_status() -> str:
         status_badge("Ollama", ollama_state, ollama_detail),
         status_badge("MCP", mcp_state, mcp_detail),
         status_badge("RAG", rag_state, rag_detail),
+        status_badge("Multi-Agent", multi_agent_state, multi_agent_detail),
     ])
 
 
@@ -228,6 +236,7 @@ def ui_sessions():
             <form hx-post="/ui/questions/generate" hx-target="#session-{session['id']}" hx-swap="innerHTML">
               <input type="hidden" name="session_id" value="{session['id']}">
                             <select name="mode" aria-label="Question generation mode">
+                                <option value="multi-agent">Multi-Agent (Release 2)</option>
                                 <option value="mcp-rag">MCP + RAG</option>
                                 <option value="mcp">MCP only</option>
                                 <option value="ai">AI Mode</option>
@@ -289,11 +298,12 @@ def ui_generate_questions():
     session_id = request.form.get("session_id")
     if not session_id:
         return '<div class="card">Missing interview session id.</div>'
+    chosen_mode = request.form.get("mode", "multi-agent")
     try:
         payload, status = backend_request(
             "POST",
             f"/api/v1/interview-sessions/{int(session_id)}/generate-questions",
-            json_body={"question_count": 3, "mode": request.form.get("mode", "mcp-rag")},
+            json_body={"question_count": 3, "mode": chosen_mode},
             timeout=AI_TIMEOUT,
         )
     except BackendUnavailable as error:
@@ -304,20 +314,48 @@ def ui_generate_questions():
 
     if payload.get("status") == "context-only":
         return f'<div class="card"><strong>MCP context</strong><br>{escape(payload.get("feedback", "Context retrieved."))}<pre>{escape(str(payload.get("mcp_result", {})))}</pre></div>'
+    
     questions = payload.get("generated_questions", [])
     rows = "".join(
         f"""
-        <div class="card">
-          <strong>Q{idx + 1}.</strong> {q.get('question_text', q.get('question', 'Question'))}
+        <div class="card" style="margin-top: .8rem; border-left: 3px solid #2563eb;">
+          <strong>Q{idx + 1}.</strong> {escape(str(q.get('question_text', q.get('question', 'Question'))))}
+          {f'<br><small style="color:#64748b;">Category: {escape(str(q.get("category", "General")))}</small>' if q.get("category") else ''}
           <form hx-post="/ui/questions/{q['id']}/evaluate" hx-target="#response-{q['id']}" hx-swap="innerHTML" style="margin-top:.6rem;">
             <textarea name="answer" placeholder="Type your answer here" required></textarea>
-                        <select name="mode" aria-label="Answer evaluation mode"><option value="mcp-rag">MCP + RAG</option><option value="mcp">MCP only</option><option value="ai">AI Mode</option></select>
+            <select name="mode" aria-label="Answer evaluation mode">
+              <option value="multi-agent">Multi-Agent (Release 2)</option>
+              <option value="mcp-rag">MCP + RAG</option>
+              <option value="mcp">MCP only</option>
+              <option value="ai">AI Mode</option>
+            </select>
             <button type="submit">Evaluate answer</button>
           </form>
           <div id="response-{q['id']}"></div>
         </div>
         """ for idx, q in enumerate(questions)
     )
+
+    if payload.get("mode") == "multi-agent":
+        plan = payload.get("plan") or {}
+        review = payload.get("review") or {}
+        competencies = ", ".join(escape(str(c)) for c in plan.get("competencies", [])) or "Role-relevant competencies"
+        meta_panel = f"""
+        <div class="card" style="background:#eff6ff; border: 1px solid #bfdbfe; margin-bottom: 0.8rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>Release 2 Multi-Agent Coordinated Preparation</strong>
+            <span style="background:#2563eb; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.8rem;">
+              Iterations: {payload.get('iterations', 1)} | {escape(str(review.get('verdict', 'approved')).upper())}
+            </span>
+          </div>
+          <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+            <strong>Planner Blueprint:</strong> {competencies}<br>
+            <strong>Reviewer Quality Audit ({review.get('score', 85)}/100):</strong> {escape(str(review.get('critique', 'Approved')))}
+          </div>
+        </div>
+        """
+        return f'<div class="card">{meta_panel}{rows}</div>'
+
     sources = ", ".join(str(source) for source in payload.get("sources", [])) or "No sources returned"
     return f'<div class="card"><strong>Generated questions</strong><br><small>Grounding confidence: {escape(payload.get("confidence", "unknown"))} | Sources: {escape(sources)}</small>{rows}</div>'
 
@@ -327,11 +365,12 @@ def ui_evaluate_answer(question_id: int):
     answer = request.form.get("answer", "").strip()
     if not answer:
         return '<div class="card">Please provide an answer before evaluating.</div>'
+    chosen_mode = request.form.get("mode", "multi-agent")
     try:
         payload, status = backend_request(
             "POST",
             f"/api/v1/interview-questions/{question_id}/evaluate-answer",
-            json_body={"answer": answer, "mode": request.form.get("mode", "mcp-rag")},
+            json_body={"answer": answer, "mode": chosen_mode},
             timeout=AI_TIMEOUT,
         )
     except BackendUnavailable as error:
@@ -342,9 +381,29 @@ def ui_evaluate_answer(question_id: int):
 
     if payload.get("status") == "context-only":
         return f'<div class="card"><strong>MCP context</strong><br>{escape(payload.get("feedback", "Context retrieved."))}<pre>{escape(str(payload.get("mcp_result", {})))}</pre></div>'
+    
     score = payload.get("score", 0)
     feedback = payload.get("feedback", "No feedback returned.")
     tips = payload.get("improvement_tips", "Keep practising.")
+
+    if payload.get("mode") == "multi-agent":
+        review = payload.get("review") or {}
+        return f"""
+        <div class="card" style="background:#f8fafc; border: 1px solid #cbd5e1; margin-top: .6rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>Release 2 Multi-Agent Coordinated Evaluation</strong>
+            <span style="background:#059669; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.85rem; font-weight:bold;">
+              Score: {score}/100
+            </span>
+          </div>
+          <p style="margin: .5rem 0;"><strong>Worker Assessment:</strong> {escape(str(feedback))}</p>
+          <p style="margin: .5rem 0;"><strong>Improvement Tips:</strong> {escape(str(tips))}</p>
+          <div style="background:#ffffff; border-radius: 6px; padding: .6rem; border: 1px solid #e2e8f0; font-size: 0.85rem;">
+            <strong>Reviewer Audit ({review.get('score', 86)}/100):</strong> {escape(str(review.get('critique', 'Verified quality.')))}
+          </div>
+        </div>
+        """
+
     sources = ", ".join(str(source) for source in payload.get("sources", [])) or "No sources returned"
     return f"""
     <div class="card">

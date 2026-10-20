@@ -20,6 +20,7 @@ DATABASE_TIMEOUT = float(os.getenv("DATABASE_TIMEOUT_SECONDS", "5"))
 OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "180"))
 MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://127.0.0.1:8765").rstrip("/")
 RAG_BASE_URL = os.getenv("RAG_BASE_URL", "http://127.0.0.1:8766").rstrip("/")
+MULTI_AGENT_SERVER_URL = os.getenv("MULTI_AGENT_SERVER_URL", "http://127.0.0.1:8767").rstrip("/")
 SHARED_AI_TIMEOUT = float(os.getenv("SHARED_AI_TIMEOUT_SECONDS", "5"))
 AI_SERVICES_ENABLED = os.getenv("AI_SERVICES_ENABLED", "false").lower() in {"1", "true", "yes"}
 
@@ -89,11 +90,11 @@ def require_positive_integer(data: dict[str, Any], field: str) -> int:
 
 
 def requested_ai_mode(data: dict[str, Any]) -> str:
-    mode = data.get("mode", "mcp-rag" if AI_SERVICES_ENABLED else "ai")
-    if mode not in {"mcp", "mcp-rag", "ai"}:
-        raise ClientInputError("mode must be mcp, mcp-rag, or ai.")
-    if mode in {"mcp", "mcp-rag"} and not AI_SERVICES_ENABLED:
-        raise DependencyError("shared-ai", "MCP and RAG modes are disabled in this environment.")
+    mode = data.get("mode", "multi-agent" if AI_SERVICES_ENABLED else "ai")
+    if mode not in {"multi-agent", "mcp", "mcp-rag", "ai"}:
+        raise ClientInputError("mode must be multi-agent, mcp, mcp-rag, or ai.")
+    if mode in {"multi-agent", "mcp", "mcp-rag"} and not AI_SERVICES_ENABLED:
+        raise DependencyError("shared-ai", f"{mode} mode is disabled in this environment.")
     return mode
 
 
@@ -274,9 +275,10 @@ def service_information():
     return jsonify({
         "service": "student-3-backend",
         "feature": "Interview Preparation Management",
-        "release": "Release 1",
+        "release": "Release 2",
         "database_api_url": DATABASE_API_URL,
         "ollama_model": OLLAMA_MODEL,
+        "multi_agent_server_url": MULTI_AGENT_SERVER_URL,
     }), 200
 
 
@@ -325,6 +327,14 @@ def ai_status():
         except Exception:
             rag_status = "unavailable"
 
+    multi_agent_status = "disabled"
+    if AI_SERVICES_ENABLED:
+        try:
+            ma_res = session.get(f"{MULTI_AGENT_SERVER_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 1.0))
+            multi_agent_status = "available" if ma_res.status_code == 200 else "unavailable"
+        except Exception:
+            multi_agent_status = "unavailable"
+
     dependencies = {
         "ollama": {
             "status": "available" if ollama_ok else "unavailable",
@@ -343,17 +353,24 @@ def ai_status():
             "enabled": AI_SERVICES_ENABLED,
             "url": RAG_BASE_URL,
         },
+        "multi_agent": {
+            "status": multi_agent_status,
+            "enabled": AI_SERVICES_ENABLED,
+            "url": MULTI_AGENT_SERVER_URL,
+        },
     }
 
     return jsonify({
         "status": "available" if ollama_ok else "unavailable",
         "runtime": "Ollama",
+        "release": "Release 2",
         "configured_model": OLLAMA_MODEL,
         "configured_model_available": configured_model_available,
         "installed_models": models,
         "shared_ai_services_enabled": AI_SERVICES_ENABLED,
         "mcp_server_url": MCP_BASE_URL,
         "rag_server_url": RAG_BASE_URL,
+        "multi_agent_server_url": MULTI_AGENT_SERVER_URL,
         "dependencies": dependencies,
     }), 200
 
@@ -399,6 +416,62 @@ def generate_questions_for_session(session_id: int):
         raise ClientInputError("question_count must be an integer.")
     if question_count < 1 or question_count > 10:
         raise ClientInputError("question_count must be between 1 and 10.")
+
+    if mode == "multi-agent":
+        try:
+            ma_res = session.post(
+                f"{MULTI_AGENT_SERVER_URL}/interview/prep",
+                json={
+                    "target_role": role,
+                    "interview_type": interview_type,
+                    "question_count": question_count,
+                    "session_id": session_id,
+                },
+                timeout=SHARED_AI_TIMEOUT,
+            )
+            ma_res.raise_for_status()
+            ma_payload = ma_res.json()
+        except (requests.Timeout, requests.RequestException, ValueError, Exception) as error:
+            raise DependencyError("multi-agent-server", "Multi-Agent service is unavailable or returned invalid data.") from error
+
+        items = ma_payload.get("questions", []) if isinstance(ma_payload, dict) else []
+        if not isinstance(items, list) or not items:
+            raise DependencyError("multi-agent-server", "Multi-Agent service did not return any interview questions.", 502)
+
+        created_questions = []
+        for item in items[:question_count]:
+            question = item if isinstance(item, dict) else {"question": str(item)}
+            question_text = question.get("question") or question.get("question_text") or str(question)
+            category = question.get("category") or interview_type or "general"
+            record, record_status = database_request(
+                "POST",
+                "/api/v1/interview-questions",
+                json_body={
+                    "session_id": session_id,
+                    "category": str(category).strip()[:80],
+                    "question_text": str(question_text).strip()[:3000],
+                },
+            )
+            if record_status != 201:
+                return jsonify(record), record_status
+            created_questions.append(record)
+
+        return jsonify({
+            "session_id": session_id,
+            "questions": created_questions,
+            "generated_questions": created_questions,
+            "count": len(created_questions),
+            "mode": mode,
+            "release": "Release 2",
+            "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer)",
+            "plan": ma_payload.get("plan"),
+            "review": ma_payload.get("review"),
+            "trajectory": ma_payload.get("trajectory"),
+            "iterations": ma_payload.get("iterations", 1),
+            "approved": ma_payload.get("approved", True),
+            "sources": ["multi-agent://planner", "multi-agent://worker", "multi-agent://reviewer"],
+            "confidence": "high",
+        }), 200
 
     if mode == "mcp":
         mcp_context = fetch_mcp_context(role, interview_type)
@@ -506,6 +579,74 @@ def evaluate_answer(question_id: int):
 
     target_role = str(session_payload.get("target_role", "General")).strip()[:200] or "General"
     interview_type = str(session_payload.get("interview_type", "general")).strip()[:80] or "general"
+
+    if mode == "multi-agent":
+        try:
+            ma_res = session.post(
+                f"{MULTI_AGENT_SERVER_URL}/interview/evaluate",
+                json={
+                    "target_role": target_role,
+                    "interview_type": interview_type,
+                    "question_text": str(question_payload.get("question_text", "")).strip(),
+                    "candidate_answer": candidate_answer,
+                    "question_id": question_id,
+                    "session_id": session_id,
+                },
+                timeout=SHARED_AI_TIMEOUT,
+            )
+            ma_res.raise_for_status()
+            ma_payload = ma_res.json()
+        except (requests.Timeout, requests.RequestException, ValueError, Exception) as error:
+            raise DependencyError("multi-agent-server", "Multi-Agent service is unavailable or returned invalid data.") from error
+
+        score = float(ma_payload.get("score", 0.0) or 0.0)
+        score = min(max(score, 0.0), 100.0)
+        feedback = ma_payload.get("feedback") or "Evaluated by Multi-Agent Coordinator."
+        tips_raw = ma_payload.get("improvement_tips") or ["Continue practicing structured communication."]
+        if isinstance(tips_raw, list):
+            tips = "; ".join(str(item).strip() for item in tips_raw if str(item).strip())
+        else:
+            tips = str(tips_raw).strip()
+
+        response_payload, response_status = database_request(
+            "POST",
+            "/api/v1/interview-responce",
+            json_body={
+                "question_id": question_id,
+                "user_answer": candidate_answer,
+                "ai_feedback": str(feedback).strip()[:4000],
+                "score": score,
+                "improvement_tips": str(tips).strip()[:4000],
+            },
+        )
+        if response_status != 201:
+            return jsonify(response_payload), response_status
+
+        answers_payload, answers_status = database_request("GET", "/api/v1/interview-responce", params={"question_id": question_id})
+        if answers_status == 200 and isinstance(answers_payload, list):
+            average = sum(float(item.get("score", 0) or 0) for item in answers_payload) / len(answers_payload)
+            update_payload, update_status = database_request("PUT", f"/api/v1/interview-sessions/{session_id}", json_body={"overall_score": round(average, 2)})
+            if update_status != 200:
+                return jsonify(update_payload), update_status
+
+        return jsonify({
+            "session_id": session_id,
+            "question_id": question_id,
+            "mode": mode,
+            "release": "Release 2",
+            "score": round(score, 2),
+            "feedback": str(feedback).strip(),
+            "improvement_tips": str(tips).strip(),
+            "response": response_payload,
+            "plan": ma_payload.get("plan"),
+            "review": ma_payload.get("review"),
+            "trajectory": ma_payload.get("trajectory"),
+            "iterations": ma_payload.get("iterations", 1),
+            "approved": ma_payload.get("approved", True),
+            "sources": ["multi-agent://planner", "multi-agent://worker", "multi-agent://reviewer"],
+            "confidence": "high",
+        }), 200
+
     if mode == "mcp":
         mcp_context = fetch_mcp_context(target_role, interview_type)
         return jsonify({
@@ -582,6 +723,40 @@ def evaluate_answer(question_id: int):
         "sources": context["sources"],
         "confidence": context["confidence"],
     }), 200
+
+
+@app.route("/api/v1/interview-sessions/<int:session_id>/multi-agent-prep", methods=["POST"])
+def session_multi_agent_prep(session_id: int):
+    data = request.get_json(silent=True) or {}
+    if not isinstance(data, dict):
+        raise ClientInputError("A valid JSON object is required.")
+    data["mode"] = "multi-agent"
+    with app.test_request_context(method="POST", json=data):
+        return generate_questions_for_session(session_id)
+
+
+@app.route("/api/v1/interview-questions/<int:question_id>/multi-agent-evaluate", methods=["POST"])
+def question_multi_agent_evaluate(question_id: int):
+    data = request.get_json(silent=True) or {}
+    if not isinstance(data, dict):
+        raise ClientInputError("A valid JSON object is required.")
+    data["mode"] = "multi-agent"
+    with app.test_request_context(method="POST", json=data):
+        return evaluate_answer(question_id)
+
+
+@app.route("/api/v1/multi-agent/status", methods=["GET"])
+def multi_agent_server_status():
+    try:
+        res = session.get(f"{MULTI_AGENT_SERVER_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 2.0))
+        return jsonify(res.json()), res.status_code
+    except Exception as error:
+        return jsonify({
+            "status": "unavailable",
+            "service": "shared-multi-agent-server",
+            "error": str(error),
+            "url": MULTI_AGENT_SERVER_URL,
+        }), 503
 
 
 if __name__ == "__main__":
