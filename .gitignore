@@ -44,5 +44,8 @@ build/
 /output/
 
 # Local scripts and reports
-/scripts/
+/scripts/*
+!/scripts/lab11/
+/scripts/lab11/*
+!/scripts/lab11/deploy-ec2.sh
 /reports/

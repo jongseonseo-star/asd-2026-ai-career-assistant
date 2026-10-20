@@ -10,6 +10,7 @@ on:
       - 'student-3/**'
       - '.github/workflows/student-3.yml'
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   validate-and-test:

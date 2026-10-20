@@ -3,6 +3,7 @@ name: Student 2 - Build and Validate
 on:
   # Lab 5/7: run the validation workflow explicitly and review its evidence.
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read

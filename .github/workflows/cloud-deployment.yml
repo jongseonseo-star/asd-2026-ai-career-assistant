@@ -1,0 +1,112 @@
+name: Cloud Deployment
+
+on:
+  push:
+    branches: [main, feature/release2-aws-runtime]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloud-deployment-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  student-2:
+    uses: ./.github/workflows/student-2.yml
+
+  student-3:
+    uses: ./.github/workflows/student-3.yml
+
+  student-4:
+    uses: ./.github/workflows/student-4.yml
+
+  validate-cloud:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      COMPOSE_PROJECT_NAME: asd-cloud-ci
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build and check the cloud runtime
+        run: bash scripts/lab11/deploy-ec2.sh
+      - name: Run Lab 11 API tests
+        run: |
+          docker run --rm \
+            --network "${COMPOSE_PROJECT_NAME}_career-assistant-network" \
+            --mount "type=bind,source=$PWD/tests/lab11,target=/tests,readonly" \
+            -e INTERVIEW_SERVICE_URL=http://student-3-backend:5001 \
+            python:3.12-slim \
+            sh -c 'pip install -q -r /tests/requirements.txt && python -m pytest -p no:cacheprovider /tests/post_commit/test_api_cloud_runtime.py -v'
+      - name: Stop CI containers
+        if: always()
+        run: docker compose --env-file .env.cloud -f docker-compose.cloud.yml down -v
+
+  deploy:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/release2-aws-runtime' || github.event_name == 'workflow_dispatch'
+    needs: [student-2, student-3, student-4, validate-cloud]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USER: ${{ secrets.EC2_USER }}
+      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+      EC2_KNOWN_HOSTS: ${{ secrets.EC2_KNOWN_HOSTS }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Deploy the tested commit to EC2
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${EC2_HOST:?Set the EC2_HOST repository secret.}"
+          : "${EC2_USER:?Set the EC2_USER repository secret.}"
+          : "${EC2_SSH_KEY:?Set the EC2_SSH_KEY repository secret.}"
+          : "${EC2_KNOWN_HOSTS:?Set the EC2_KNOWN_HOSTS repository secret.}"
+
+          printf '%s\n' "$EC2_SSH_KEY" > "$RUNNER_TEMP/ec2-key"
+          printf '%s\n' "$EC2_KNOWN_HOSTS" > "$RUNNER_TEMP/ec2-known-hosts"
+          chmod 600 "$RUNNER_TEMP/ec2-key" "$RUNNER_TEMP/ec2-known-hosts"
+          ssh_options=(
+            -i "$RUNNER_TEMP/ec2-key"
+            -o "UserKnownHostsFile=$RUNNER_TEMP/ec2-known-hosts"
+            -o StrictHostKeyChecking=yes
+            -o BatchMode=yes
+            -o ConnectTimeout=15
+          )
+          remote="$EC2_USER@$EC2_HOST"
+
+          git archive --format=tar.gz --output="$RUNNER_TEMP/app.tar.gz" "$GITHUB_SHA" \
+            .env.cloud.example docker-compose.cloud.yml shared/frontend \
+            student-2/backend student-2/frontend student-2/database \
+            student-3/backend student-3/frontend student-3/database \
+            student-4/backend student-4/frontend student-4/database \
+            scripts/lab11/deploy-ec2.sh
+          ssh "${ssh_options[@]}" "$remote" 'mkdir -p "$HOME/asd-release2/releases"'
+          scp "${ssh_options[@]}" "$RUNNER_TEMP/app.tar.gz" "$remote:asd-release2/$GITHUB_SHA.tar.gz"
+          ssh "${ssh_options[@]}" "$remote" bash -s -- "$GITHUB_SHA" <<'REMOTE'
+          set -euo pipefail
+          release_dir="$HOME/asd-release2/releases/$1"
+          mkdir -p "$release_dir"
+          tar -xzf "$HOME/asd-release2/$1.tar.gz" -C "$release_dir"
+          if [[ ! -f "$HOME/asd-release2/.env.cloud" ]]; then
+              cp "$release_dir/.env.cloud.example" "$HOME/asd-release2/.env.cloud"
+          fi
+          ln -sfn "$HOME/asd-release2/.env.cloud" "$release_dir/.env.cloud"
+          cd "$release_dir"
+          bash scripts/lab11/deploy-ec2.sh
+          ln -sfn "$release_dir" "$HOME/asd-release2/current"
+          rm "$HOME/asd-release2/$1.tar.gz"
+          REMOTE
+      - name: Check public access
+        run: |
+          for path in / /resume/ /interviews/ /jobs/; do
+            curl --fail --silent --show-error --location \
+              --retry 5 --retry-delay 5 --retry-connrefused --max-time 30 \
+              "http://$EC2_HOST$path" --output /dev/null
+          done
+      - name: Remove the SSH key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/ec2-key" "$RUNNER_TEMP/ec2-known-hosts"
