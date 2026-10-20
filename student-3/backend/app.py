@@ -23,6 +23,8 @@ RAG_BASE_URL = os.getenv("RAG_BASE_URL", "http://127.0.0.1:8766").rstrip("/")
 MULTI_AGENT_SERVER_URL = os.getenv("MULTI_AGENT_SERVER_URL", "http://127.0.0.1:8767").rstrip("/")
 SHARED_AI_TIMEOUT = float(os.getenv("SHARED_AI_TIMEOUT_SECONDS", "5"))
 AI_SERVICES_ENABLED = os.getenv("AI_SERVICES_ENABLED", "false").lower() in {"1", "true", "yes"}
+OLLAMA_ENABLED = os.getenv("OLLAMA_ENABLED", "true").lower() in {"1", "true", "yes"}
+MULTI_AGENT_ENABLED = os.getenv("MULTI_AGENT_ENABLED", "true").lower() in {"1", "true", "yes"}
 
 app = Flask(__name__)
 session = requests.Session()
@@ -95,6 +97,10 @@ def requested_ai_mode(data: dict[str, Any]) -> str:
         raise ClientInputError("mode must be multi-agent, mcp, mcp-rag, or ai.")
     if mode in {"multi-agent", "mcp", "mcp-rag"} and not AI_SERVICES_ENABLED:
         raise DependencyError("shared-ai", f"{mode} mode is disabled in this environment.")
+    if mode == "multi-agent" and not MULTI_AGENT_ENABLED:
+        raise DependencyError("multi-agent-server", "Multi-Agent service is disabled in this environment.")
+    if mode in {"ai", "mcp-rag"} and not OLLAMA_ENABLED:
+        raise DependencyError("ollama", "AI generation is disabled in this environment.")
     return mode
 
 
@@ -216,6 +222,8 @@ def grounding_prompt(context: dict[str, Any]) -> str:
 
 
 def get_ollama_models(timeout: float | None = None) -> list[str]:
+    if not OLLAMA_ENABLED:
+        raise DependencyError("ollama", "AI generation is disabled in this environment.")
     request_timeout = timeout if timeout is not None else OLLAMA_TIMEOUT
     try:
         response = session.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=request_timeout)
@@ -229,6 +237,8 @@ def get_ollama_models(timeout: float | None = None) -> list[str]:
 
 
 def call_ollama(system_prompt: str, user_prompt: str) -> str:
+    if not OLLAMA_ENABLED:
+        raise DependencyError("ollama", "AI generation is disabled in this environment.")
     body = {
         "model": OLLAMA_MODEL,
         "stream": False,
@@ -328,7 +338,7 @@ def ai_status():
             rag_status = "unavailable"
 
     multi_agent_status = "disabled"
-    if AI_SERVICES_ENABLED:
+    if AI_SERVICES_ENABLED and MULTI_AGENT_ENABLED:
         try:
             ma_res = session.get(f"{MULTI_AGENT_SERVER_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 1.0))
             multi_agent_status = "available" if ma_res.status_code == 200 else "unavailable"
@@ -337,7 +347,7 @@ def ai_status():
 
     dependencies = {
         "ollama": {
-            "status": "available" if ollama_ok else "unavailable",
+            "status": "disabled" if not OLLAMA_ENABLED else "available" if ollama_ok else "unavailable",
             "runtime": "Ollama",
             "configured_model": OLLAMA_MODEL,
             "configured_model_available": configured_model_available,
@@ -355,13 +365,13 @@ def ai_status():
         },
         "multi_agent": {
             "status": multi_agent_status,
-            "enabled": AI_SERVICES_ENABLED,
+            "enabled": AI_SERVICES_ENABLED and MULTI_AGENT_ENABLED,
             "url": MULTI_AGENT_SERVER_URL,
         },
     }
 
     return jsonify({
-        "status": "available" if ollama_ok else "unavailable",
+        "status": "disabled" if not OLLAMA_ENABLED else "available" if ollama_ok else "unavailable",
         "runtime": "Ollama",
         "release": "Release 2",
         "configured_model": OLLAMA_MODEL,
@@ -747,6 +757,12 @@ def question_multi_agent_evaluate(question_id: int):
 
 @app.route("/api/v1/multi-agent/status", methods=["GET"])
 def multi_agent_server_status():
+    if not AI_SERVICES_ENABLED or not MULTI_AGENT_ENABLED:
+        return jsonify({
+            "status": "disabled",
+            "service": "shared-multi-agent-server",
+            "url": MULTI_AGENT_SERVER_URL,
+        }), 200
     try:
         res = session.get(f"{MULTI_AGENT_SERVER_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 2.0))
         return jsonify(res.json()), res.status_code

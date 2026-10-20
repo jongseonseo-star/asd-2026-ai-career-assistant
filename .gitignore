@@ -2,13 +2,22 @@
 .env
 .env.*
 !.env.example
+!.env.cloud.example
+.aws/
+*.pem
+*.key
 
 # Python
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.ruff_cache/
+.mypy_cache/
 .coverage
+.coverage.*
+coverage.xml
 htmlcov/
+*.egg-info/
 .venv/
 venv/
 
@@ -29,13 +38,11 @@ tmp/
 dist/
 build/
 *.log
+*.tmp
+*.bak
+*~
+/output/
 
-# Local assessment documents and generated reports
-# Keep repository Markdown documentation and test evidence tracked.
-docs/**/*.docx
-docs/**/*.pdf
-docs/Release_0_Assessment_Brief.txt
-
-# Local-only report generation helpers
-scripts/build_release0_report_template.py
-scripts/create_submission_report.py
+# Local scripts and reports
+/scripts/
+/reports/
