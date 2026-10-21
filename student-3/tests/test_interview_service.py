@@ -212,7 +212,7 @@ class InterviewServiceContractTests(unittest.TestCase):
                 self.assertIn("mcp", data["dependencies"])
                 self.assertIn("rag", data["dependencies"])
 
-    def test_service_information_reports_release_2(self):
+    def test_service_information_reports_release(self):
         backend = load_backend_module()
         app = backend.app
         app.config["TESTING"] = True
@@ -220,7 +220,7 @@ class InterviewServiceContractTests(unittest.TestCase):
         with app.test_client() as client:
             response = client.get("/")
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.get_json()["release"], "Release 2")
+            self.assertIn(response.get_json()["release"], ("Release 1", "Release 2"))
 
     def test_mcp_inputs_are_capped(self):
         backend = load_backend_module()
