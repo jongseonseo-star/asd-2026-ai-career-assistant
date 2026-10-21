@@ -15,7 +15,7 @@ services:
     networks:
       - student-3-network
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5002/health', timeout=3)"]
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5002/health', timeout=3)" ]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -35,6 +35,7 @@ services:
       AI_SERVICES_ENABLED: "${AI_SERVICES_ENABLED:-false}"
       MCP_BASE_URL: "${MCP_BASE_URL:-http://host.docker.internal:8765}"
       RAG_BASE_URL: "${RAG_BASE_URL:-http://host.docker.internal:8766}"
+      MULTI_AGENT_SERVER_URL: "${MULTI_AGENT_SERVER_URL:-http://host.docker.internal:8767}"
       SHARED_AI_TIMEOUT_SECONDS: "${SHARED_AI_TIMEOUT_SECONDS:-10}"
     ports:
       - "5301:5001"
@@ -46,7 +47,7 @@ services:
     networks:
       - student-3-network
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/ready', timeout=3)"]
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/ready', timeout=3)" ]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -69,7 +70,7 @@ services:
     networks:
       - student-3-network
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8083/health', timeout=3)"]
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8083/health', timeout=3)" ]
       interval: 5s
       timeout: 3s
       retries: 10
