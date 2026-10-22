@@ -438,6 +438,7 @@ def generate_questions_for_session(session_id: int):
                     "interview_type": interview_type,
                     "question_count": question_count,
                     "session_id": session_id,
+                    "max_iterations": 15,
                 },
                 timeout=MULTI_AGENT_TIMEOUT,
             )
@@ -603,6 +604,7 @@ def evaluate_answer(question_id: int):
                     "candidate_answer": candidate_answer,
                     "question_id": question_id,
                     "session_id": session_id,
+                    "max_iterations": 15,
                 },
                 timeout=MULTI_AGENT_TIMEOUT,
             )
@@ -613,8 +615,26 @@ def evaluate_answer(question_id: int):
 
         score = float(ma_payload.get("score", 0.0) or 0.0)
         score = min(max(score, 0.0), 100.0)
-        feedback = ma_payload.get("feedback") or "Evaluated by Multi-Agent Coordinator."
-        tips_raw = ma_payload.get("improvement_tips") or ["Continue practicing structured communication."]
+        feedback_raw = ma_payload.get("feedback") or "Evaluated by Multi-Agent Coordinator."
+        tips_raw = ma_payload.get("improvement_tips")
+
+        if isinstance(feedback_raw, dict):
+            summary = feedback_raw.get("summary") or feedback_raw.get("assessment") or feedback_raw.get("feedback")
+            if not summary:
+                parts = []
+                if feedback_raw.get("strengths"):
+                    parts.append("Strengths: " + "; ".join(str(s) for s in feedback_raw["strengths"]))
+                if feedback_raw.get("gaps"):
+                    parts.append("Areas for improvement: " + "; ".join(str(g) for g in feedback_raw["gaps"]))
+                summary = " | ".join(parts) if parts else "Candidate response evaluated against rubric."
+            if not tips_raw and feedback_raw.get("improvement_tips"):
+                tips_raw = feedback_raw.get("improvement_tips")
+            feedback = str(summary)
+        else:
+            feedback = str(feedback_raw)
+
+        if not tips_raw:
+            tips_raw = ["Continue practicing structured communication."]
         if isinstance(tips_raw, list):
             tips = "; ".join(str(item).strip() for item in tips_raw if str(item).strip())
         else:
