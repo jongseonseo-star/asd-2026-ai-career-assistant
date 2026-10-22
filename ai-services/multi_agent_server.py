@@ -77,6 +77,43 @@ def parse_json_from_text(raw_text: str) -> dict[str, Any] | None:
     return None
 
 
+def check_answer_addresses_question(question: str, candidate_answer: str) -> tuple[bool, str]:
+    """
+    Does the answer address the question asked? If not, score 0 and stop.
+    """
+    cleaned = (candidate_answer or "").strip()
+    if not cleaned:
+        return False, "No answer was provided."
+
+    lowered = cleaned.lower()
+
+    # Direct refusal, non-answers, or evasive phrases
+    refusal_phrases = {
+        "no", "no.", "nope", "nah", "pass", "skip", "n/a", "na", "none",
+        "idk", "i don't know", "dont know", "i dont know", "no idea",
+        "i don't care", "whatever", "i refuse", "refuse", "not answering"
+    }
+    stripped_punct = lowered.strip(".!? ")
+    if stripped_punct in refusal_phrases or any(lowered.startswith(r) for r in ["no,", "no.", "no ", "refuse", "i refuse", "i will not"]):
+        return False, "Answer refuses or fails to address the interview question asked."
+
+    # Very short responses (< 6 words) must contain at least one meaningful keyword from the question
+    words = [w.strip(".,!?\"'()") for w in lowered.split() if len(w.strip(".,!?\"'()")) > 2]
+    q_tokens = {w.strip(".,!?\"'()").lower() for w in question.split() if len(w.strip(".,!?\"'()")) > 2}
+    stop_words = {
+        "what", "your", "with", "from", "have", "been", "that", "this",
+        "they", "them", "will", "would", "about", "describe", "explain",
+        "tell", "which", "when", "where", "does", "done", "some", "more"
+    }
+    q_keywords = q_tokens - stop_words
+
+    if len(words) < 6:
+        if not set(words).intersection(q_keywords):
+            return False, "Answer is too brief and does not address the question asked."
+
+    return True, ""
+
+
 def call_ollama(model: str, system_prompt: str, user_prompt: str, timeout: float | None = None, response_format: dict | None = None) -> str | None:
     if not OLLAMA_ENABLED:
         return None
@@ -336,6 +373,18 @@ class WorkerAgent:
         candidate_answer: str,
         reviewer_feedback: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
+        addresses, reason = check_answer_addresses_question(question, candidate_answer)
+        if not addresses:
+            return {
+                "work_id": f"work-{int(time.time())}",
+                "score": 0.0,
+                "feedback": f"The answer does not address the question asked. {reason}".strip(),
+                "strengths": [],
+                "gaps": ["Fails to address the interview question asked.", reason],
+                "improvement_tips": ["Directly address the question asked in a professional manner."],
+                "generated_by": f"{self.name} (relevance-gate: Does the answer address the question asked? If not, score 0 and stop.)",
+            }
+
         user_prompt = json.dumps({
             "task": "execute_answer_evaluation",
             "plan": plan,
@@ -343,11 +392,12 @@ class WorkerAgent:
             "candidate_answer": candidate_answer,
             "reviewer_feedback": reviewer_feedback,
             "instructions": (
-                "Evaluate the candidate answer against the plan's criteria and any reviewer feedback. "
+                "FIRST AND MANDATORY RULE: Does the answer address the question asked? If not, score 0 and stop. "
+                "If the answer fails to address the question, is abusive, hostile, or an evasion, return score: 0. "
+                "Otherwise, evaluate the candidate answer against the plan's criteria and any reviewer feedback. "
                 "Provide an objective assessment of the CANDIDATE's answer (do not write about what 'the worker' should do). "
                 "If reviewer_feedback is provided, adjust your score and assessment of the candidate accordingly. "
                 "If the candidate's answer is strong and role-aligned, award a high score (85-95). "
-                "If the candidate's answer is unprofessional, negative, dismissive, or fails to address the question, score it between 0 and 30. "
                 "Return JSON with 'work_id', 'score' (0-100), 'feedback' (a clear text summary of candidate performance, not an object), 'strengths' (list of candidate strengths), 'gaps' (list of candidate gaps), 'improvement_tips' (list of actionable tips for the candidate)."
             ),
         })
@@ -456,9 +506,10 @@ class ReviewerAgent:
         if is_answer_eval:
             review_instructions = (
                 "You are auditing the Worker Agent's EVALUATION of a candidate's answer (do not confuse the candidate's answer with the worker's work). "
+                "FIRST AND MANDATORY RULE: Does the answer address the question asked? If not, the candidate answer MUST be scored 0. "
                 "Audit whether the Worker's awarded score, assessment, and improvement tips are fair, accurate, and constructive. "
                 "Do NOT demand that the Worker rewrite or change the candidate's answer. "
-                "If the Worker's evaluation is sound and justified, score it >= 80 and set verdict to 'approved'. "
+                "If the Worker correctly scored a non-responsive answer as 0, or if a valid answer is evaluated soundly, score >= 80 and set verdict to 'approved'. "
                 "Return JSON with 'review_id', 'verdict', 'score', 'strengths', 'weaknesses', 'critique', 'revision_recommendations'."
             )
         else:
@@ -655,6 +706,67 @@ class MultiAgentCoordinator:
     ) -> dict[str, Any]:
         started = time.monotonic()
         trajectory: list[dict[str, Any]] = []
+
+        # Core Rule: Does the answer address the question asked? If not, score 0 and stop.
+        addresses, reason = check_answer_addresses_question(question, candidate_answer)
+        if not addresses:
+            zero_work = {
+                "work_id": f"work-{int(time.time())}",
+                "score": 0.0,
+                "feedback": f"The answer does not address the question asked. {reason}".strip(),
+                "strengths": [],
+                "gaps": ["Candidate answer does not address the question asked.", reason],
+                "improvement_tips": [
+                    "Directly address the question asked in a professional and constructive manner.",
+                    "Provide concrete examples of your relevant experience using the STAR method."
+                ],
+                "generated_by": f"{self.worker.name} (Relevance Gate: Does the answer address the question asked? If not, score 0 and stop.)"
+            }
+            zero_review = {
+                "review_id": f"review-{int(time.time())}",
+                "verdict": "approved",
+                "score": 100.0,
+                "critique": "Verified: Answer does not address the question asked. Scored 0 and stopped as required.",
+                "strengths": ["Correctly evaluated non-responsive candidate answer."],
+                "weaknesses": [],
+                "revision_recommendations": [],
+                "generated_by": f"{self.reviewer.name} (Relevance Gate)"
+            }
+            human_decision = {
+                "role": "Human — Final Decision Maker",
+                "decision": "Reject",
+                "available_decisions": ["Accept", "Partially Accept", "Reject"],
+                "authority": "Grants final approval decision (Accept, Partially Accept, or Reject).",
+            }
+            trajectory.append({
+                "stage": "answer_relevance_gate",
+                "agent": "Coordinator",
+                "timestamp": utc_now_iso(),
+                "action": "Checked: Does the answer address the question asked? Result: No -> Scored 0 and stopped.",
+                "output_summary": reason,
+                "details": zero_work,
+            })
+            duration = round(time.monotonic() - started, 3)
+            return {
+                "status": "completed",
+                "release": "Release 2",
+                "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human)",
+                "target_role": target_role,
+                "question": question,
+                "iterations": 1,
+                "approved": True,
+                "score": 0.0,
+                "feedback": zero_work["feedback"],
+                "improvement_tips": zero_work["improvement_tips"],
+                "strengths": zero_work["strengths"],
+                "gaps": zero_work["gaps"],
+                "plan": self.planner.plan_answer_evaluation(target_role, question, candidate_answer, context),
+                "work": zero_work,
+                "review": zero_review,
+                "human_decision": human_decision,
+                "trajectory": trajectory,
+                "duration_seconds": duration,
+            }
 
         # Step 1: Planner creates evaluation dimensions
         plan = self.planner.plan_answer_evaluation(target_role, question, candidate_answer, context)
