@@ -30,7 +30,7 @@ OLLAMA_ENABLED = os.getenv("OLLAMA_ENABLED", "true").lower() in {"1", "true", "y
 PLANNER_MODEL = os.getenv("PLANNER_MODEL", os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b"))
 WORKER_MODEL = os.getenv("WORKER_MODEL", os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b"))
 REVIEWER_MODEL = os.getenv("REVIEWER_MODEL", os.getenv("OLLAMA_REVIEW_MODEL", "llama3.1:8b"))
-OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "3.0"))
+OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "120.0"))
 MULTI_AGENT_PORT = int(os.getenv("MULTI_AGENT_PORT", "8767"))
 AI_SERVICES_HOST = os.getenv("AI_SERVICES_HOST", "127.0.0.1")
 
