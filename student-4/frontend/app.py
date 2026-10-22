@@ -148,4 +148,4 @@ def shared_result(path: str, mode: str, data: dict | None = None):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host="0.0.0.0", port=PORT)  # noqa: S104 - Docker forwards the frontend port to this service.

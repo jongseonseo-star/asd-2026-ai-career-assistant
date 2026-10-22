@@ -301,4 +301,4 @@ def rag_job_answer(job_id: int):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host="0.0.0.0", port=PORT)  # noqa: S104 - Other Docker containers must reach this service.

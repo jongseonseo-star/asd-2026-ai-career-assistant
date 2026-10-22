@@ -1,0 +1,12 @@
+Student 4 and shared AI regression tests
+Python 3.12; OLLAMA_ENABLED=false; AI_SERVICES_ENABLED=false
+
+$ /private/tmp/asd-student4-tests-py312/bin/python -m pytest -p no:cacheprovider student-4/tests ai-services/tests -q
+
+...................................................................... [ 32%]
+........................................................................ [ 65%]
+........................................................................ [ 98%]
+...                                                                      [100%]
+217 passed, 2 subtests passed in 14.60s
+
+Exit code: 0

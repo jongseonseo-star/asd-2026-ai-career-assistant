@@ -66,7 +66,12 @@ def test_mcp_reads_only_selected_job_and_company(monkeypatch, context):
     assert get.call_count == 3
 
 
-@pytest.mark.parametrize("arguments", [{"job_id": 0}, {"job_id": True}, {"job_id": "1"}, {"job_id": 1, "path": "/tmp"}])
+@pytest.mark.parametrize("arguments", [
+    {"job_id": 0},
+    {"job_id": True},
+    {"job_id": "1"},
+    {"job_id": 1, "path": "unexpected-path"},
+])
 def test_mcp_rejects_invalid_arguments_before_reading(monkeypatch, arguments):
     get = Mock()
     monkeypatch.setattr(mcp, "job_database_get", get)

@@ -1,0 +1,20 @@
+Student 4 Ruff security scan - before
+ruff 0.17.1; baseline 5e901ea
+
+$ /private/tmp/asd-student4-security-review/bin/ruff check --no-cache --select S --per-file-ignores student-4/tests/*:S101 --output-format concise student-4
+
+student-4/backend/app.py:304:18: S104 Possible binding to all interfaces
+student-4/database/app.py:95:39: S608 Possible SQL injection vector through string-based query construction
+student-4/database/app.py:127:21: S608 Possible SQL injection vector through string-based query construction
+student-4/database/app.py:138:13: S608 Possible SQL injection vector through string-based query construction
+student-4/database/app.py:140:34: S608 Possible SQL injection vector through string-based query construction
+student-4/database/app.py:150:39: S608 Possible SQL injection vector through string-based query construction
+student-4/database/app.py:156:32: S608 Possible SQL injection vector through string-based query construction
+student-4/database/app.py:159:28: S608 Possible SQL injection vector through string-based query construction
+student-4/database/app.py:160:38: S608 Possible SQL injection vector through string-based query construction
+student-4/database/app.py:167:18: S104 Possible binding to all interfaces
+student-4/frontend/app.py:151:18: S104 Possible binding to all interfaces
+student-4/tests/test_release1.py:69:112: S108 Probable insecure usage of temporary file or directory: "/tmp"
+Found 12 errors.
+
+Exit code: 1

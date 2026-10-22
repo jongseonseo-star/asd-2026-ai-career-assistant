@@ -41,7 +41,7 @@ class DatabaseApiTests(unittest.TestCase):
 
     def test_job_and_skill_crud(self):
         job = {
-            "company_id": 1, "title": "Test Engineer", "location": "Sydney",
+            "company_id": 1, "title": "Test Engineer ' OR 1=1 --", "location": "Sydney",
             "employment_type": "Full-time", "experience_level": "Junior",
             "description": "Test APIs and user journeys.", "salary_min": 70000,
             "salary_max": 90000, "closing_date": "2026-10-01", "status": "open",
@@ -49,6 +49,11 @@ class DatabaseApiTests(unittest.TestCase):
         created_job = self.client.post("/api/v1/job_postings", json=job)
         self.assertEqual(created_job.status_code, 201)
         job_id = created_job.get_json()["id"]
+        self.assertEqual(created_job.get_json()["title"], job["title"])
+        matches = self.client.get(
+            "/api/v1/job_postings", query_string={"q": job["title"]}
+        ).get_json()
+        self.assertEqual([record["id"] for record in matches], [job_id])
         skill = {"job_posting_id": job_id, "skill_name": "Pytest", "importance": "required"}
         created_skill = self.client.post("/api/v1/job_skills", json=skill)
         self.assertEqual(created_skill.status_code, 201)
@@ -56,9 +61,23 @@ class DatabaseApiTests(unittest.TestCase):
         skill["importance"] = "preferred"
         self.assertEqual(self.client.put(f"/api/v1/job_skills/{skill_id}", json=skill).get_json()["importance"], "preferred")
         job["status"] = "closed"
-        self.assertEqual(self.client.put(f"/api/v1/job_postings/{job_id}", json=job).get_json()["status"], "closed")
+        updated = self.client.put(f"/api/v1/job_postings/{job_id}", json=job).get_json()
+        self.assertEqual(updated["status"], "closed")
+        self.assertEqual(updated["title"], job["title"])
         self.assertEqual(self.client.delete(f"/api/v1/job_postings/{job_id}").status_code, 204)
         self.assertEqual(self.client.get(f"/api/v1/job_skills/{skill_id}").status_code, 404)
+
+    def test_unknown_resources_are_rejected(self):
+        before = self.client.get("/api/v1/stats").get_json()
+        for resource in ("sqlite_master", "companies;DROP TABLE companies;--"):
+            with self.subTest(resource=resource):
+                collection = f"/api/v1/{resource}"
+                item = f"{collection}/1"
+                for method in ("GET", "POST"):
+                    self.assertEqual(self.client.open(collection, method=method).status_code, 404)
+                for method in ("GET", "PUT", "DELETE"):
+                    self.assertEqual(self.client.open(item, method=method).status_code, 404)
+        self.assertEqual(self.client.get("/api/v1/stats").get_json(), before)
 
     def test_validation_rejects_bad_salary(self):
         payload = {

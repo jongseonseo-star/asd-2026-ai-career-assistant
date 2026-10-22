@@ -92,27 +92,55 @@ def health():
 def stats():
     with connect() as connection:
         counts = {
-            table: connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-            for table in ("companies", "job_postings", "job_skills")
+            "companies": connection.execute("SELECT COUNT(*) FROM companies").fetchone()[0],
+            "job_postings": connection.execute("SELECT COUNT(*) FROM job_postings").fetchone()[0],
+            "job_skills": connection.execute("SELECT COUNT(*) FROM job_skills").fetchone()[0],
         }
     return jsonify(counts)
 
 
 RESOURCE_CONFIG = {
     "companies": {
-        "columns": "name, industry, location, website",
         "payload": company_payload,
-        "update": "name=?, industry=?, location=?, website=?",
+        "select": "SELECT * FROM companies",
+        "select_by_id": "SELECT * FROM companies WHERE id=?",
+        "insert": (
+            "INSERT INTO companies (name, industry, location, website) "
+            "VALUES (?, ?, ?, ?)"
+        ),
+        "update": "UPDATE companies SET name=?, industry=?, location=?, website=? WHERE id=?",
+        "delete": "DELETE FROM companies WHERE id=?",
     },
     "job_postings": {
-        "columns": "company_id, title, location, employment_type, experience_level, description, salary_min, salary_max, closing_date, status",
         "payload": job_payload,
-        "update": "company_id=?, title=?, location=?, employment_type=?, experience_level=?, description=?, salary_min=?, salary_max=?, closing_date=?, status=?, updated_at=CURRENT_TIMESTAMP",
+        "select": "SELECT * FROM job_postings",
+        "select_by_id": "SELECT * FROM job_postings WHERE id=?",
+        "insert": (
+            "INSERT INTO job_postings "
+            "(company_id, title, location, employment_type, experience_level, "
+            "description, salary_min, salary_max, closing_date, status) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        ),
+        "update": (
+            "UPDATE job_postings SET company_id=?, title=?, location=?, "
+            "employment_type=?, experience_level=?, description=?, salary_min=?, "
+            "salary_max=?, closing_date=?, status=?, updated_at=CURRENT_TIMESTAMP "
+            "WHERE id=?"
+        ),
+        "delete": "DELETE FROM job_postings WHERE id=?",
     },
     "job_skills": {
-        "columns": "job_posting_id, skill_name, importance",
         "payload": skill_payload,
-        "update": "job_posting_id=?, skill_name=?, importance=?",
+        "select": "SELECT * FROM job_skills",
+        "select_by_id": "SELECT * FROM job_skills WHERE id=?",
+        "insert": (
+            "INSERT INTO job_skills (job_posting_id, skill_name, importance) "
+            "VALUES (?, ?, ?)"
+        ),
+        "update": (
+            "UPDATE job_skills SET job_posting_id=?, skill_name=?, importance=? WHERE id=?"
+        ),
+        "delete": "DELETE FROM job_skills WHERE id=?",
     },
 }
 
@@ -124,7 +152,7 @@ def collection(resource: str):
         return jsonify({"error": "Resource not found."}), 404
     with connect() as connection:
         if request.method == "GET":
-            query = f"SELECT * FROM {resource}"
+            query = config["select"]
             params: list[Any] = []
             if resource == "job_postings" and request.args.get("q"):
                 term = f"%{request.args['q'].strip()}%"
@@ -133,11 +161,8 @@ def collection(resource: str):
             rows = connection.execute(query + " ORDER BY id", params).fetchall()
             return jsonify([dict(row) for row in rows])
         values = config["payload"](body())
-        placeholders = ",".join("?" for _ in values)
-        cursor = connection.execute(
-            f"INSERT INTO {resource} ({config['columns']}) VALUES ({placeholders})", values
-        )
-        row = connection.execute(f"SELECT * FROM {resource} WHERE id=?", (cursor.lastrowid,)).fetchone()
+        cursor = connection.execute(config["insert"], values)
+        row = connection.execute(config["select_by_id"], (cursor.lastrowid,)).fetchone()
         return jsonify(dict(row)), 201
 
 
@@ -147,21 +172,21 @@ def item(resource: str, item_id: int):
     if config is None:
         return jsonify({"error": "Resource not found."}), 404
     with connect() as connection:
-        existing = connection.execute(f"SELECT * FROM {resource} WHERE id=?", (item_id,)).fetchone()
+        existing = connection.execute(config["select_by_id"], (item_id,)).fetchone()
         if existing is None:
             return jsonify({"error": "Record not found."}), 404
         if request.method == "GET":
             return jsonify(dict(existing))
         if request.method == "DELETE":
-            connection.execute(f"DELETE FROM {resource} WHERE id=?", (item_id,))
+            connection.execute(config["delete"], (item_id,))
             return "", 204
         values = config["payload"](body())
-        connection.execute(f"UPDATE {resource} SET {config['update']} WHERE id=?", (*values, item_id))
-        updated = connection.execute(f"SELECT * FROM {resource} WHERE id=?", (item_id,)).fetchone()
+        connection.execute(config["update"], (*values, item_id))
+        updated = connection.execute(config["select_by_id"], (item_id,)).fetchone()
         return jsonify(dict(updated))
 
 
 initialise_database(DB_PATH)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host="0.0.0.0", port=PORT)  # noqa: S104 - Other Docker containers must reach this service.

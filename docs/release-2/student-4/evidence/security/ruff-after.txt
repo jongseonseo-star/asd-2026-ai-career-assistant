@@ -1,0 +1,19 @@
+Student 4 Ruff security scan - after
+ruff 0.17.1
+
+$ /private/tmp/asd-student4-security-review/bin/ruff check --no-cache --select S --per-file-ignores student-4/tests/*:S101 --output-format concise student-4
+
+All checks passed!
+Exit code: 0
+
+Reviewed Docker exceptions (line-specific S104 comments):
+$ /private/tmp/asd-student4-security-review/bin/ruff check --no-cache --select S --per-file-ignores student-4/tests/*:S101 --output-format concise student-4 --ignore-noqa
+
+student-4/backend/app.py:304:18: S104 Possible binding to all interfaces
+student-4/database/app.py:192:18: S104 Possible binding to all interfaces
+student-4/frontend/app.py:151:18: S104 Possible binding to all interfaces
+Found 3 errors.
+Exit code: 1
+
+S104: Docker services must accept container-network connections.
+S101: pytest assert statements are excluded from both scans.
