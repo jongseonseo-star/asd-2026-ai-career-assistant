@@ -344,9 +344,11 @@ class WorkerAgent:
             "reviewer_feedback": reviewer_feedback,
             "instructions": (
                 "Evaluate the candidate answer against the plan's criteria and any reviewer feedback. "
-                "If reviewer_feedback is provided, explicitly correct your previous evaluation and address each critique. "
+                "Provide an objective assessment of the CANDIDATE's answer (do not write about what 'the worker' should do). "
+                "If reviewer_feedback is provided, adjust your score and assessment of the candidate accordingly. "
+                "If the candidate's answer is strong and role-aligned, award a high score (85-95). "
                 "If the candidate's answer is unprofessional, negative, dismissive, or fails to address the question, score it between 0 and 30. "
-                "Return JSON with 'work_id', 'score' (0-100), 'feedback' (a clear text summary string, not an object), 'strengths' (list of strings), 'gaps' (list of strings), 'improvement_tips' (list of strings)."
+                "Return JSON with 'work_id', 'score' (0-100), 'feedback' (a clear text summary of candidate performance, not an object), 'strengths' (list of candidate strengths), 'gaps' (list of candidate gaps), 'improvement_tips' (list of actionable tips for the candidate)."
             ),
         })
 
@@ -450,23 +452,40 @@ class ReviewerAgent:
         iteration: int = 1,
         max_iterations: int = 15,
     ) -> dict[str, Any]:
+        is_answer_eval = "score" in work
+        if is_answer_eval:
+            review_instructions = (
+                "You are auditing the Worker Agent's EVALUATION of a candidate's answer (do not confuse the candidate's answer with the worker's work). "
+                "Audit whether the Worker's awarded score, assessment, and improvement tips are fair, accurate, and constructive. "
+                "Do NOT demand that the Worker rewrite or change the candidate's answer. "
+                "If the Worker's evaluation is sound and justified, score it >= 80 and set verdict to 'approved'. "
+                "Return JSON with 'review_id', 'verdict', 'score', 'strengths', 'weaknesses', 'critique', 'revision_recommendations'."
+            )
+        else:
+            review_instructions = (
+                "Audit the deliverable against the plan's rubric and criteria. "
+                "If deliverables are high quality and role-aligned, score >= 80 and set verdict to 'approved'. "
+                "If needs_revision, provide actionable revision_recommendations. "
+                "Return JSON with 'review_id', 'verdict', 'score', 'strengths', 'weaknesses', 'critique', 'revision_recommendations'."
+            )
+
         user_prompt = json.dumps({
             "task": "review_deliverable",
             "iteration": iteration,
             "max_iterations": max_iterations,
             "plan": plan,
             "work": work,
-            "instructions": (
-                "Audit the deliverable against the plan's rubric and criteria. "
-                "Provide an audit score (0-100), strengths, weaknesses, critique, and verdict ('approved' or 'needs_revision'). "
-                "If needs_revision, provide actionable revision_recommendations. "
-                "Return JSON with 'review_id', 'verdict', 'score', 'strengths', 'weaknesses', 'critique', 'revision_recommendations'."
-            ),
+            "instructions": review_instructions,
         })
 
         output_text = call_ollama(self.model, self.system_prompt, user_prompt)
         parsed = parse_json_from_text(output_text) if output_text else None
         if parsed and "verdict" in parsed and "score" in parsed:
+            try:
+                if float(parsed["score"]) >= 80.0:
+                    parsed["verdict"] = "approved"
+            except (ValueError, TypeError):
+                pass
             parsed.setdefault("review_id", f"review-{int(time.time())}")
             parsed["generated_by"] = f"{self.name} ({self.model})"
             return parsed
@@ -586,7 +605,8 @@ class MultiAgentCoordinator:
             })
             final_review = review
 
-            if review.get("verdict") == "approved":
+            if review.get("verdict") == "approved" or float(review.get("score", 0)) >= 80.0:
+                review["verdict"] = "approved"
                 break
 
             reviewer_feedback = review
@@ -679,7 +699,8 @@ class MultiAgentCoordinator:
             })
             final_review = review
 
-            if review.get("verdict") == "approved":
+            if review.get("verdict") == "approved" or float(review.get("score", 0)) >= 80.0:
+                review["verdict"] = "approved"
                 break
 
             reviewer_feedback = review
