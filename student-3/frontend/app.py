@@ -155,6 +155,44 @@ def index():
         .status-dot.warning { background:#fcd34d; }
         @media (max-width: 700px) { .status-grid { grid-template-columns:1fr; } }
         .card { background: #f9fafb; border: 1px solid #edf0f4; border-radius: 10px; padding: .8rem; margin-top: .8rem; }
+        /* HTMX Loading States */
+        .htmx-indicator { display: none; }
+        .htmx-request.htmx-indicator,
+        .htmx-request .htmx-indicator { display: flex; }
+        .loading-indicator {
+          align-items: center;
+          gap: 0.6rem;
+          margin-top: 0.6rem;
+          padding: 0.6rem 0.9rem;
+          background: #eff6ff;
+          border: 1px solid #bfdbfe;
+          border-radius: 8px;
+          color: #1e40af;
+          font-size: 0.85rem;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+          animation: pulse-bg 2s infinite ease-in-out;
+        }
+        .spinner {
+          width: 16px;
+          height: 16px;
+          border: 2px solid #bfdbfe;
+          border-top: 2px solid #1d4ed8;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+          flex-shrink: 0;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes pulse-bg {
+          0%, 100% { background: #eff6ff; }
+          50% { background: #dbeafe; }
+        }
+        button:disabled, button[disabled], .htmx-request button[type="submit"] {
+          opacity: 0.65;
+          cursor: not-allowed;
+        }
       </style>
     </head>
     <body>
@@ -172,7 +210,7 @@ def index():
         <div class="grid">
           <section class="panel">
             <h2>Create session</h2>
-            <form hx-post="/ui/sessions" hx-target="#sessions-list" hx-swap="innerHTML">
+            <form hx-post="/ui/sessions" hx-target="#sessions-list" hx-swap="innerHTML" hx-indicator="#loading-create-session" hx-disabled-elt="find button">
               <input name="candidate_name" placeholder="Candidate name" required>
               <input name="target_role" placeholder="Target role" required>
               <select name="interview_type">
@@ -183,6 +221,10 @@ def index():
               </select>
               <textarea name="notes" placeholder="Session notes"></textarea>
               <button type="submit">Create session</button>
+              <div id="loading-create-session" class="htmx-indicator loading-indicator">
+                <span class="spinner"></span>
+                <span>Creating interview session...</span>
+              </div>
             </form>
           </section>
 
@@ -234,22 +276,38 @@ def ui_sessions():
           <td>{session.get('status', 'draft')}</td>
           <td>{session.get('overall_score', 0)}</td>
           <td>
-            <form hx-post="/ui/questions/generate" hx-target="#session-{session['id']}" hx-swap="innerHTML">
+            <form hx-post="/ui/questions/generate" hx-target="#session-{session['id']}" hx-swap="innerHTML" hx-indicator="#loading-gen-{session['id']}, #loading-gen-row-{session['id']}" hx-disabled-elt="find button">
               <input type="hidden" name="session_id" value="{session['id']}">
-                            <select name="mode" aria-label="Question generation mode">
-                                <option value="multi-agent">Multi-Agent (Release 2)</option>
-                                <option value="mcp-rag">MCP + RAG</option>
-                                <option value="mcp">MCP only</option>
-                                <option value="ai">AI Mode</option>
-                            </select>
+              <select name="mode" aria-label="Question generation mode">
+                <option value="multi-agent">Multi-Agent (Release 2)</option>
+                <option value="mcp-rag">MCP + RAG</option>
+                <option value="mcp">MCP only</option>
+                <option value="ai">AI Mode</option>
+              </select>
               <button type="submit">Generate questions</button>
+              <div id="loading-gen-{session['id']}" class="htmx-indicator loading-indicator" style="margin-top:.4rem; font-size:0.78rem; padding: 0.4rem 0.6rem;">
+                <span class="spinner"></span> <span>Generating...</span>
+              </div>
             </form>
           </td>
           <td>
             <button hx-delete="/ui/sessions/{session['id']}" hx-target="#sessions-list" hx-swap="innerHTML">Delete</button>
           </td>
         </tr>
-        <tr id="session-{session['id']}"><td colspan="7"><div class='card'>Session detail panel pending.</div></td></tr>
+        <tr id="session-{session['id']}">
+          <td colspan="7">
+            <div id="loading-gen-row-{session['id']}" class="htmx-indicator loading-indicator" style="padding: 1rem; margin: 0.5rem 0;">
+              <span class="spinner"></span>
+              <div>
+                <strong>Coordinating Multi-Agent Preparation...</strong>
+                <div style="font-size: 0.8rem; color: #475569; margin-top: 3px;">
+                  Planner is designing blueprint &bull; Worker is synthesizing questions &bull; Reviewer is auditing quality. Please wait...
+                </div>
+              </div>
+            </div>
+            <div class='card'>Session detail panel pending.</div>
+          </td>
+        </tr>
         """ for session in sessions
     )
 
@@ -322,15 +380,26 @@ def ui_generate_questions():
         <div class="card" style="margin-top: .8rem; border-left: 3px solid #2563eb;">
           <strong>Q{idx + 1}.</strong> {escape(str(q.get('question_text', q.get('question', 'Question'))))}
           {f'<br><small style="color:#64748b;">Category: {escape(str(q.get("category", "General")))}</small>' if q.get("category") else ''}
-          <form hx-post="/ui/questions/{q['id']}/evaluate" hx-target="#response-{q['id']}" hx-swap="innerHTML" style="margin-top:.6rem;">
+          <form hx-post="/ui/questions/{q['id']}/evaluate" hx-target="#response-{q['id']}" hx-swap="innerHTML" hx-indicator="#loading-eval-{q['id']}" hx-disabled-elt="find button" style="margin-top:.6rem;">
             <textarea name="answer" placeholder="Type your answer here" required></textarea>
-            <select name="mode" aria-label="Answer evaluation mode">
-              <option value="multi-agent">Multi-Agent (Release 2)</option>
-              <option value="mcp-rag">MCP + RAG</option>
-              <option value="mcp">MCP only</option>
-              <option value="ai">AI Mode</option>
-            </select>
-            <button type="submit">Evaluate answer</button>
+            <div style="display:flex; gap:.5rem; align-items:center; margin-top:.4rem; flex-wrap:wrap;">
+              <select name="mode" aria-label="Answer evaluation mode" style="width:auto; flex:1; min-width:180px;">
+                <option value="multi-agent">Multi-Agent (Release 2)</option>
+                <option value="mcp-rag">MCP + RAG</option>
+                <option value="mcp">MCP only</option>
+                <option value="ai">AI Mode</option>
+              </select>
+              <button type="submit" style="white-space:nowrap;">Evaluate answer</button>
+            </div>
+            <div id="loading-eval-{q['id']}" class="htmx-indicator loading-indicator">
+              <span class="spinner"></span>
+              <div>
+                <strong>Evaluating answer...</strong>
+                <div style="font-size:0.8rem; color:#475569; margin-top:2px;">
+                  Coordinating Multi-Agent evaluation (Worker scoring &amp; Reviewer quality audit). Please wait...
+                </div>
+              </div>
+            </div>
           </form>
           <div id="response-{q['id']}"></div>
         </div>
@@ -340,7 +409,20 @@ def ui_generate_questions():
     if payload.get("mode") == "multi-agent":
         plan = payload.get("plan") or {}
         review = payload.get("review") or {}
-        competencies = ", ".join(escape(str(c)) for c in plan.get("competencies", [])) or "Role-relevant competencies"
+        competency_items = []
+        for c in plan.get("competencies", []):
+            if isinstance(c, dict):
+                name = c.get("name") or c.get("title") or c.get("competency")
+                desc = c.get("description") or c.get("desc")
+                if name and desc:
+                    competency_items.append(f'<span title="{escape(str(desc))}">{escape(str(name))}</span>')
+                elif name:
+                    competency_items.append(escape(str(name)))
+                else:
+                    competency_items.append(escape(str(c)))
+            else:
+                competency_items.append(escape(str(c)))
+        competencies = ", ".join(competency_items) or "Role-relevant competencies"
         meta_panel = f"""
         <div class="card" style="background:#eff6ff; border: 1px solid #bfdbfe; margin-bottom: 0.8rem;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
