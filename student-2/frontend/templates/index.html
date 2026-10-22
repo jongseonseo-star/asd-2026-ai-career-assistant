@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script
         src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
-        integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
+        integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" {# pragma: allowlist secret - Public htmx integrity checksum, not a credential. #}
         crossorigin="anonymous">
     </script>
     <script defer src="{{ url_for('static', filename='app.js') }}"></script>
@@ -57,6 +57,10 @@
                 aria-controls="ai-mode-panel"
                 data-tab-target="ai-mode-panel">
                 AI Mode
+            </button>
+            <button type="button" class="tab-button" role="tab" aria-selected="false"
+                    aria-controls="multi-agent-panel" data-tab-target="multi-agent-panel">
+                Multi-Agent Review
             </button>
         </nav>
 
@@ -125,7 +129,117 @@
                 <div class="loading-card">Preparing AI Mode…</div>
             </div>
         </section>
+        <section id="multi-agent-panel" class="tab-panel" role="tabpanel" hidden>
+            <div class="section-heading">
+                <div><p class="eyebrow">Release 2</p><h2>Review a resume together</h2></div>
+                <p>Planner → Worker → Reviewer → Your decision. Review the evidence before accepting any advice.</p>
+            </div>
+            <form id="multi-agent-form" class="card">
+                <fieldset id="multi-agent-controls" disabled aria-label="Start a resume review" style="border:0;margin:0;padding:0;min-width:0">
+                <label for="multi-profile">Candidate profile</label>
+                <select id="multi-profile" name="profile_id" required><option value="">Loading profiles…</option></select>
+                <label for="multi-resume">Resume</label>
+                <select id="multi-resume" name="resume_id" required><option value="">Select a profile</option></select>
+                <label for="multi-job">Job requirements (optional)</label>
+                <textarea id="multi-job" name="job_description" rows="3" maxlength="6000"></textarea>
+                <button type="submit" id="multi-run">Start review</button>
+                </fieldset>
+            </form>
+            <p id="multi-status" role="status" aria-live="polite">Checking Multi-Agent availability…</p>
+            <div id="multi-results" hidden>
+                <details open><summary>Planner — review plan</summary><pre id="multi-plan" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre></details>
+                <details open><summary>Worker — evidence-based findings</summary><pre id="multi-work" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre></details>
+                <details open><summary>Reviewer — checks and recommendations</summary><pre id="multi-review" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre></details>
+                <details><summary>Evidence and full workflow history</summary><pre id="multi-history" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre></details>
+            </div>
+            <form id="multi-human-form" class="card" hidden>
+                <h3>Your decision</h3>
+                <p>Recording a correction preserves your text; it does not change the saved resume.</p>
+                <label for="multi-decision">Decision</label>
+                <select id="multi-decision" required>
+                    <option value="">Choose after reviewing the result</option>
+                    <option value="accept">Accept</option><option value="partially_accept">Partially accept</option>
+                    <option value="correct">Record a correction</option><option value="reject">Reject</option>
+                </select>
+                <label for="multi-reviewer">Your name</label><input id="multi-reviewer" maxlength="200" required>
+                <label for="multi-rationale">Reason for your decision</label><textarea id="multi-rationale" maxlength="4000" rows="2" required></textarea>
+                <label for="multi-correction">Correction (required when recording a correction)</label><textarea id="multi-correction" maxlength="12000" rows="3"></textarea>
+                <button type="submit" id="multi-save-decision">Record my decision</button>
+            </form>
+        </section>
     </main>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const byId = id => document.getElementById(id);
+        let resumes = [];
+        let currentWorkflow = null;
+        const status = message => { byId("multi-status").textContent = message; };
+        const populateResumes = () => {
+            const select = byId("multi-resume");
+            select.replaceChildren(new Option("Select a resume", ""));
+            resumes.filter(item => String(item.candidate_profile_id) === byId("multi-profile").value)
+                .forEach(item => select.add(new Option(item.title || `Resume ${item.id}`, item.id)));
+        };
+        const show = data => {
+            currentWorkflow = data.workflow_id || null;
+            byId("multi-results").hidden = false;
+            for (const stage of ["plan", "work", "review"]) {
+                byId(`multi-${stage}`).textContent = data[stage] ? JSON.stringify(data[stage], null, 2) : "Not completed.";
+            }
+            byId("multi-history").textContent = JSON.stringify(data, null, 2);
+            byId("multi-human-form").hidden = data.status !== "pending_human_review";
+            const label = (data.status || "unavailable").replaceAll("_", " ");
+            status(`${label}${currentWorkflow ? ` — Workflow ${currentWorkflow}` : ""}${data.error ? `: ${data.error}` : ""}`);
+        };
+        const api = async (path, body) => {
+            const response = await fetch(path, body === undefined ? {} : {
+                method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)
+            });
+            const data = await response.json();
+            if (!response.ok && !data.workflow_id) throw new Error(data.error || "Request failed.");
+            return data;
+        };
+        api("/ui/multi-agent/options").then(data => {
+            if (data.enabled !== true) {
+                status(data.message || "Multi-Agent review is unavailable.");
+                return;
+            }
+            resumes = data.resumes;
+            byId("multi-profile").replaceChildren(new Option("Select a profile", ""));
+            data.profiles.forEach(profile => byId("multi-profile").add(new Option(profile.full_name || `Profile ${profile.id}`, profile.id)));
+            byId("multi-agent-controls").disabled = false;
+            status("Select a candidate and resume to begin.");
+        }).catch(error => status(error.message));
+        byId("multi-profile").addEventListener("change", populateResumes);
+        byId("multi-agent-form").addEventListener("submit", async event => {
+            event.preventDefault();
+            byId("multi-run").disabled = true;
+            byId("multi-human-form").hidden = true;
+            currentWorkflow = null;
+            status("Running Planner, Worker and Reviewer. Local models may take several minutes.");
+            try {
+                show(await api("/ui/multi-agent/run", {
+                    profile_id: Number(byId("multi-profile").value), resume_id: Number(byId("multi-resume").value),
+                    job_description: byId("multi-job").value
+                }));
+            } catch (error) { status(error.message); }
+            finally { byId("multi-run").disabled = false; }
+        });
+        byId("multi-human-form").addEventListener("submit", async event => {
+            event.preventDefault();
+            if (!currentWorkflow) return;
+            byId("multi-save-decision").disabled = true;
+            try {
+                show(await api(`/ui/multi-agent/workflows/${currentWorkflow}/human-review`, {
+                    decision: byId("multi-decision").value, reviewer: byId("multi-reviewer").value,
+                    rationale: byId("multi-rationale").value, correction: byId("multi-correction").value
+                }));
+            } catch (error) { status(error.message); }
+            finally { byId("multi-save-decision").disabled = false; }
+        });
+    });
+    </script>
 
     <footer class="page-footer">
         <span>Student 2 · Tomohisa Tamao · Resume &amp; Profile Management</span>

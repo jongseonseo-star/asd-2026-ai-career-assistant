@@ -4,6 +4,7 @@ import asyncio
 import importlib.util
 import json
 import os
+import re
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +37,9 @@ RAG_GENERATION_TIMEOUT = float(os.getenv("RAG_GENERATION_TIMEOUT_SECONDS", "210"
 SHARED_AI_TIMEOUT = float(os.getenv("SHARED_AI_TIMEOUT_SECONDS", "10"))
 AI_SERVICES_ENABLED = os.getenv("AI_SERVICES_ENABLED", "false").lower() in {"1", "true", "yes"}
 OLLAMA_ENABLED = os.getenv("OLLAMA_ENABLED", "true").lower() in {"1", "true", "yes"}
+MULTI_AGENT_ENABLED = os.getenv("MULTI_AGENT_ENABLED", "false").lower() in {"1", "true", "yes"}
+MULTI_AGENT_SERVER_URL = os.getenv("MULTI_AGENT_SERVER_URL", "http://127.0.0.1:8767").rstrip("/")
+MULTI_AGENT_TIMEOUT = float(os.getenv("MULTI_AGENT_TIMEOUT_SECONDS", "360"))
 
 app = Flask(__name__)
 session = requests.Session()
@@ -473,7 +477,7 @@ def service_information():
         {
             "service": "student-2-backend",
             "feature": "Resume and Profile Management",
-            "release": "Release 1" if AI_SERVICES_ENABLED else "Release 0",
+            "release": "Release 2" if AI_SERVICES_ENABLED and MULTI_AGENT_ENABLED else "Release 1" if AI_SERVICES_ENABLED else "Release 0",
             "database_api_url": DATABASE_API_URL,
             "ollama_model": OLLAMA_MODEL,
         }
@@ -609,6 +613,67 @@ def skill_item(skill_id: int):
     )
 
 
+def multi_agent_request(method: str, path: str, body: dict[str, Any] | None = None):
+    if not AI_SERVICES_ENABLED or not MULTI_AGENT_ENABLED:
+        raise DependencyError("multi-agent", "Multi-Agent is disabled in this environment.")
+    try:
+        response = session.request(method, MULTI_AGENT_SERVER_URL + path, json=body, timeout=MULTI_AGENT_TIMEOUT)
+        payload = response.json()
+    except requests.Timeout as error:
+        raise DependencyError("multi-agent", "Multi-Agent request timed out. Inspect the shared server history before starting another run.") from error
+    except requests.RequestException as error:
+        raise DependencyError("multi-agent", "The shared Multi-Agent server is unavailable.") from error
+    except ValueError as error:
+        raise DependencyError("multi-agent", "The shared Multi-Agent server returned invalid JSON.", 502) from error
+    if not isinstance(payload, dict):
+        raise DependencyError("multi-agent", "The shared Multi-Agent server returned an invalid response.", 502)
+    return jsonify(payload), response.status_code
+
+
+@app.post("/api/v1/ai/multi-agent/resume-review")
+def multi_agent_resume_review():
+    if not AI_SERVICES_ENABLED or not MULTI_AGENT_ENABLED:
+        raise DependencyError("multi-agent", "Multi-Agent is disabled in this environment.")
+    data = require_json_object()
+    profile_id = require_positive_integer(data, "profile_id")
+    resume_id = require_positive_integer(data, "resume_id")
+    job = data.get("job_description", "")
+    if not isinstance(job, str) or len(job) > 6000:
+        raise ClientInputError("job_description must be text of at most 6000 characters.")
+    # Candidate evidence is loaded by the API, never accepted as facts from the UI.
+    profile, status = database_request("GET", f"/api/v1/profiles/{profile_id}")
+    if status != 200:
+        return jsonify(profile), status
+    resume, status = database_request("GET", f"/api/v1/resumes/{resume_id}")
+    if status != 200:
+        return jsonify(resume), status
+    skills, status = database_request("GET", "/api/v1/skills", params={"candidate_profile_id": profile_id})
+    if status != 200:
+        return jsonify(skills), status
+    validate_candidate_context(profile, resume, skills, profile_id, resume_id)
+    return multi_agent_request("POST", "/resume/review", {
+        "candidate_context": {"candidate_profile": profile, "resume": resume, "candidate_skills": skills},
+        "job_description": job.strip(),
+    })
+
+
+@app.route("/api/v1/ai/multi-agent/workflows/<workflow_id>", methods=["GET"])
+def multi_agent_history(workflow_id):
+    if not re.fullmatch(r"[a-f0-9]{32}", workflow_id):
+        raise ClientInputError("Invalid workflow ID.")
+    return multi_agent_request("GET", f"/resume/workflows/{workflow_id}")
+
+
+@app.post("/api/v1/ai/multi-agent/workflows/<workflow_id>/human-review")
+def multi_agent_human_review(workflow_id):
+    if not re.fullmatch(r"[a-f0-9]{32}", workflow_id):
+        raise ClientInputError("Invalid workflow ID.")
+    data = require_json_object()
+    return multi_agent_request("POST", f"/resume/workflows/{workflow_id}/human-review", {
+        field: data.get(field, "") for field in ("decision", "reviewer", "rationale", "correction")
+    })
+
+
 @app.post("/api/v1/ai/resume-feedback")
 def resume_feedback():
     data = require_json_object()
@@ -725,4 +790,4 @@ def resume_feedback():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT, debug=False)
+    app.run(host="0.0.0.0", port=PORT, debug=False)  # noqa: S104 - Docker requires container-wide binding.

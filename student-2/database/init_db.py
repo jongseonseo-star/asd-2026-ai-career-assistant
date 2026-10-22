@@ -378,7 +378,7 @@ def print_summary(connection):
     for label, table_name in tables:
 
         count = connection.execute(
-            f"SELECT COUNT(*) FROM {table_name}"
+            f"SELECT COUNT(*) FROM {table_name}"  # noqa: S608 - Table names come only from the fixed list above.
         ).fetchone()[0]
 
         print(f"{label}: {count} records")

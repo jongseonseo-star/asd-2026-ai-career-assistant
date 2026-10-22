@@ -45,6 +45,11 @@ build/
 
 # Local scripts and reports
 /scripts/*
+!/scripts/security_checks.py
+!/scripts/security-ruff.toml
+!/scripts/security_scope_tests.py
+!/scripts/start_student2_demo.py
+!/scripts/start_student2_demo.sh
 !/scripts/lab11/
 /scripts/lab11/*
 !/scripts/lab11/deploy-ec2.sh

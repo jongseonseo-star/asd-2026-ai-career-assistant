@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "prepared_at_utc": "2026-10-22T04:17:43.845836+00:00",
+  "purpose": "Selected historical evidence for the repository and report; not a new execution or approval.",
+  "file_count": 10,
+  "original_files_modified": false,
+  "embedded_evidence_sha256_policy": "Embedded evidence SHA-256 values remain historical hashes of the original evidence. They are not recomputed to match sanitized copies; use each manifest entry copy_sha256 for the delivered file.",
+  "preserved_results": "All FAIL, pending, reject, partially-accept and other recorded outcomes, decisions, rationales and model outputs are preserved except explicit local-path redaction.",
+  "files": [
+    {
+      "source_repo_relative_path": "reports/demo-20261022/runtime-security/student-2/security/ruff.json",
+      "copy_filename": "security-ruff.json",
+      "copy_type": "verbatim_copy",
+      "original_sha256": "a6cff2cc280cd9e38fef6bf3ba706a352dd8fbcbb0a5f124e2536aad6baf7549",
+      "copy_sha256": "a6cff2cc280cd9e38fef6bf3ba706a352dd8fbcbb0a5f124e2536aad6baf7549",
+      "original_bytes": 7127,
+      "copy_bytes": 7127,
+      "replacement_policy": [
+        {
+          "rule": "No replacement; byte-for-byte original copy."
+        }
+      ]
+    },
+    {
+      "source_repo_relative_path": "reports/demo-20261022/runtime-security/student-2/security/secrets.json",
+      "copy_filename": "security-secrets.json",
+      "copy_type": "verbatim_copy",
+      "original_sha256": "e8410dd4b993d686aceef4a8e0e9b7474c806be87fe6b29c71f5db417a300eb7",
+      "copy_sha256": "e8410dd4b993d686aceef4a8e0e9b7474c806be87fe6b29c71f5db417a300eb7",
+      "original_bytes": 7129,
+      "copy_bytes": 7129,
+      "replacement_policy": [
+        {
+          "rule": "No replacement; byte-for-byte original copy."
+        }
+      ]
+    },
+    {
+      "source_repo_relative_path": "reports/demo-20261022/runtime-security/student-2/security/dependencies.json",
+      "copy_filename": "security-dependencies.json",
+      "copy_type": "verbatim_copy",
+      "original_sha256": "042d8f30c8ec5da67305b9a4e371645d2c9dfabbf183153651d9f02d9c1225b6",
+      "copy_sha256": "042d8f30c8ec5da67305b9a4e371645d2c9dfabbf183153651d9f02d9c1225b6",
+      "original_bytes": 23405,
+      "copy_bytes": 23405,
+      "replacement_policy": [
+        {
+          "rule": "No replacement; byte-for-byte original copy."
+        }
+      ]
+    },
+    {
+      "source_repo_relative_path": "reports/demo-20261022/pre-test-live.json",
+      "copy_filename": "pre-test-live.json",
+      "copy_type": "sanitized",
+      "original_sha256": "5b29f1ab64e7a739dccd7b2f56cb83cfe83a3db75f9436b4e351ee998ede6490",
+      "copy_sha256": "f0a28d3a9fa7c62e272da05e713b6e667e3aea4ff51f4912c112fad5606e08dd",
+      "original_bytes": 95752,
+      "copy_bytes": 94096,
+      "replacement_policy": [
+        {
+          "rule": "Replace the absolute local repository prefix with <REPO_ROOT>.",
+          "occurrences": 15
+        },
+        {
+          "rule": "Replace another absolute user-local temporary or filesystem path.",
+          "placeholder": "<LOCAL_TEMP_PATH_04>",
+          "occurrences": 3
+        },
+        {
+          "rule": "Replace another absolute user-local temporary or filesystem path.",
+          "placeholder": "<LOCAL_TEMP_PATH_03>",
+          "occurrences": 3
+        },
+        {
+          "rule": "Replace another absolute user-local temporary or filesystem path.",
+          "placeholder": "<LOCAL_TEMP_PATH_01>",
+          "occurrences": 3
+        },
+        {
+          "rule": "Replace another absolute user-local temporary or filesystem path.",
+          "placeholder": "<LOCAL_TEMP_PATH_02>",
+          "occurrences": 3
+        }
+      ]
+    },
+    {
+      "source_repo_relative_path": "reports/demo-20261022/pre-test-human-decision.json",
+      "copy_filename": "pre-test-human-decision.json",
+      "copy_type": "sanitized",
+      "original_sha256": "136b380723f4f34e6c4fc86f54a2312fb1fc36b2ff01c749bb16a2acf0a88059",
+      "copy_sha256": "fe264ce6a4da816c1206a793272b186ffdc9265f1772c5a5a03f3e6878adfe40",
+      "original_bytes": 1938,
+      "copy_bytes": 1659,
+      "replacement_policy": [
+        {
+          "rule": "Replace the absolute local repository prefix with <REPO_ROOT>.",
+          "occurrences": 3
+        }
+      ]
+    },
+    {
+      "source_repo_relative_path": "reports/demo-20261022/pre-test-post-review-evidence-check.json",
+      "copy_filename": "pre-test-post-review-evidence-check.json",
+      "copy_type": "sanitized",
+      "original_sha256": "25e82b56c0d4ca9272e25146736945247e131fb395b1690768376277f46612ca",
+      "copy_sha256": "c137ad78c3aeede8649905a62e3a80c8a793daebe239c59502263f3f0684e9d0",
+      "original_bytes": 31660,
+      "copy_bytes": 30922,
+      "replacement_policy": [
+        {
+          "rule": "Replace the absolute local repository prefix with <REPO_ROOT>.",
+          "occurrences": 7
+        },
+        {
+          "rule": "Replace another absolute user-local temporary or filesystem path.",
+          "placeholder": "<LOCAL_TEMP_PATH_04>",
+          "occurrences": 1
+        },
+        {
+          "rule": "Replace another absolute user-local temporary or filesystem path.",
+          "placeholder": "<LOCAL_TEMP_PATH_03>",
+          "occurrences": 1
+        },
+        {
+          "rule": "Replace another absolute user-local temporary or filesystem path.",
+          "placeholder": "<LOCAL_TEMP_PATH_01>",
+          "occurrences": 1
+        },
+        {
+          "rule": "Replace another absolute user-local temporary or filesystem path.",
+          "placeholder": "<LOCAL_TEMP_PATH_02>",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "source_repo_relative_path": "reports/demo-20261022/runtime-junit.xml",
+      "copy_filename": "runtime-junit.xml",
+      "copy_type": "sanitized",
+      "original_sha256": "29d67175a7e0eacdba4e34016b153e057e24225d5b4187cb25db8e2e02665f32",
+      "copy_sha256": "51deca486bd3b1b537694cbeb0c2d8decc028b0b25e55d25d37b3008b44a3ca7",
+      "original_bytes": 70543,
+      "copy_bytes": 70554,
+      "replacement_policy": [
+        {
+          "rule": "Replace the JUnit hostname attribute with <LOCAL_HOST> (XML escaped).",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "source_repo_relative_path": "ai-services/logs/multi-agent/resume/e8238b4a64494961b474cfea0d6e94c6.json",
+      "copy_filename": "multi-agent-resume-e8238b4a64494961b474cfea0d6e94c6.json",
+      "copy_type": "verbatim_copy",
+      "original_sha256": "fae7e4e32a30100b4ff18f1dcc154979b9a1e52a0f12c460098e77c62b3c55b2",
+      "copy_sha256": "fae7e4e32a30100b4ff18f1dcc154979b9a1e52a0f12c460098e77c62b3c55b2",
+      "original_bytes": 9357,
+      "copy_bytes": 9357,
+      "replacement_policy": [
+        {
+          "rule": "No replacement; byte-for-byte original copy."
+        }
+      ]
+    },
+    {
+      "source_repo_relative_path": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/execution.json",
+      "copy_filename": "multi-agent-terminal-execution.json",
+      "copy_type": "verbatim_copy",
+      "original_sha256": "8458901593c6c5e56070778bfe71138be380ce1639d004230392247b909e0daf",
+      "copy_sha256": "8458901593c6c5e56070778bfe71138be380ce1639d004230392247b909e0daf",
+      "original_bytes": 2570,
+      "copy_bytes": 2570,
+      "replacement_policy": [
+        {
+          "rule": "No replacement; byte-for-byte original copy."
+        }
+      ]
+    },
+    {
+      "source_repo_relative_path": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/human-review-20261022T061518Z-459e93f2/verification.json",
+      "copy_filename": "multi-agent-terminal-human-review.json",
+      "copy_type": "verbatim_copy",
+      "original_sha256": "d8c15b528488f28c4d1c7bf4c7a5bff365162720ea57883ee53bc805f7a7d9cb",
+      "copy_sha256": "d8c15b528488f28c4d1c7bf4c7a5bff365162720ea57883ee53bc805f7a7d9cb",
+      "original_bytes": 2259,
+      "copy_bytes": 2259,
+      "replacement_policy": [
+        {
+          "rule": "No replacement; byte-for-byte original copy."
+        }
+      ]
+    }
+  ],
+  "updated_at_utc": "2026-10-22T06:49:35.810822+00:00",
+  "additional_collection_scope": "Ten existing evidence files selected without changing their bytes or rerunning tests, scans or models. Excluded originals remain local.",
+  "referenced_artifact_limit": "Not all raw HTTP responses, helpers, authorization records or intermediate snapshots referenced by embedded hashes are included in this compact bundle.",
+  "integration_limit": "The recorded 322-test run and model/security records are historical. This candidate commit has no GitHub CI or CI/CD Review result yet. The later ordinary commit attempt ended with incomplete dependency audits (JSONDecodeError), not a new completed vulnerability audit.",
+  "selection_date": "2026-10-22"
+}

@@ -1,0 +1,12 @@
+# Lab 11: security checks only; no formatting or automatic fixes.
+target-version = "py312"
+
+[lint]
+select = ["S"]
+
+[lint.per-file-ignores]
+# Assertions express test expectations, not production access controls.
+# security_checks.py invokes Ruff with an explicit config from the repository root.
+"tests/**" = ["S101"]
+"student-2/tests/**" = ["S101"]
+"security_checks.py" = ["S101"]

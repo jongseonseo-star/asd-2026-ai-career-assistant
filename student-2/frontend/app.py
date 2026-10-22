@@ -12,7 +12,7 @@ BACKEND_API_URL = os.getenv(
 ).rstrip("/")
 PORT = int(os.getenv("PORT", "8082"))
 BACKEND_TIMEOUT = float(os.getenv("BACKEND_TIMEOUT_SECONDS", "10"))
-AI_TIMEOUT = float(os.getenv("AI_TIMEOUT_SECONDS", "240"))
+AI_TIMEOUT = float(os.getenv("AI_TIMEOUT_SECONDS", "400"))
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -701,7 +701,7 @@ def ui_delete_skill(skill_id: int):
 def ui_ai_form():
     try:
         service_info, _ = backend_request("GET", "/")
-        shared_enabled = isinstance(service_info, dict) and service_info.get("release") == "Release 1"
+        shared_enabled = isinstance(service_info, dict) and service_info.get("release") in {"Release 1", "Release 2"}
         profiles = fetch_collection("/api/v1/profiles")
         selected_profile_id = profiles[0]["id"] if profiles else None
         resumes = (
@@ -823,6 +823,51 @@ def ui_ai_resume_feedback():
     )
 
 
+@app.get("/ui/multi-agent/options")
+def ui_multi_agent_options():
+    try:
+        service_info, status = backend_request("GET", "/")
+        if status != 200 or not isinstance(service_info, dict) or "release" not in service_info:
+            raise BackendUnavailable("Unable to check whether Multi-Agent review is enabled.")
+        if service_info["release"] != "Release 2":
+            return jsonify({"enabled": False, "profiles": [], "resumes": [],
+                            "message": "Multi-Agent review is disabled in this environment."})
+        return jsonify({"enabled": True, "profiles": fetch_collection("/api/v1/profiles"),
+                        "resumes": fetch_collection("/api/v1/resumes")})
+    except BackendUnavailable as error:
+        return jsonify({"error": str(error)}), 503
+
+
+@app.post("/ui/multi-agent/run")
+def ui_multi_agent_run():
+    body = request.get_json(silent=True)
+    if not isinstance(body, dict):
+        return jsonify({"error": "A JSON object is required."}), 400
+    try:
+        payload, status = backend_request("POST", "/api/v1/ai/multi-agent/resume-review", json_body=body, timeout=AI_TIMEOUT)
+        return jsonify(payload), status
+    except BackendUnavailable as error:
+        return jsonify({"error": str(error)}), 503
+
+
+@app.route("/ui/multi-agent/workflows/<workflow_id>", methods=["GET"])
+@app.route("/ui/multi-agent/workflows/<workflow_id>/human-review", methods=["POST"])
+def ui_multi_agent_workflow(workflow_id):
+    # Keep the identifier a single path segment; the backend validates its UUID form.
+    path = f"/api/v1/ai/multi-agent/workflows/{workflow_id}"
+    body = None
+    if request.method == "POST":
+        body = request.get_json(silent=True)
+        if not isinstance(body, dict):
+            return jsonify({"error": "A JSON object is required."}), 400
+        path += "/human-review"
+    try:
+        payload, status = backend_request(request.method, path, json_body=body, timeout=AI_TIMEOUT)
+        return jsonify(payload), status
+    except BackendUnavailable as error:
+        return jsonify({"error": str(error)}), 503
+
+
 @app.errorhandler(404)
 def not_found(_error):
     return jsonify({"error": "Frontend route not found."}), 404
@@ -834,4 +879,4 @@ def method_not_allowed(_error):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT, debug=False)
+    app.run(host="0.0.0.0", port=PORT, debug=False)  # noqa: S104 - Docker requires container-wide binding.

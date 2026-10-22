@@ -1,0 +1,9 @@
+# Shared security-only policy. No formatting, fixes, or production-rule waivers.
+target-version = "py312"
+
+[lint]
+select = ["S"]
+
+[lint.per-file-ignores]
+# Assertions express test expectations, not production access controls.
+"**/tests/**" = ["S101"]

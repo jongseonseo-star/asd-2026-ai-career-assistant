@@ -202,6 +202,51 @@ class ResumeGroundingTests(unittest.TestCase):
         self.network.assert_not_called()
 
 
+class ProfilesEndpointTests(unittest.TestCase):
+    def setUp(self):
+        self.enterContext(patch.dict(backend.app.config, {"TESTING": True}))
+        self.client = backend.app.test_client()
+        self.database_response = Mock(status_code=200)
+        self.database_http = self.enterContext(
+            patch.object(backend.session, "request", return_value=self.database_response)
+        )
+
+    def test_profiles_returns_database_records(self):
+        profiles = [copy.deepcopy(CONTEXT["candidate_profile"])]
+        self.database_response.json.return_value = profiles
+
+        response = self.client.get("/api/v1/profiles")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), profiles)
+        self.database_http.assert_called_once_with(
+            "GET",
+            backend.DATABASE_API_URL + "/api/v1/profiles",
+            json=None,
+            params=None,
+            timeout=backend.DATABASE_TIMEOUT,
+        )
+
+    def test_profiles_returns_empty_list_when_database_has_no_records(self):
+        self.database_response.json.return_value = []
+
+        response = self.client.get("/api/v1/profiles")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), [])
+
+    def test_profiles_database_connection_failure_returns_503(self):
+        self.database_http.side_effect = requests.ConnectionError("private detail")
+
+        response = self.client.get("/api/v1/profiles")
+
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.get_json(), {
+            "error": "Database service is unavailable.",
+            "dependency": "student-2-database",
+        })
+
+
 class MCPClientTests(unittest.TestCase):
     def test_mcp_sdk_calls_resume_tool_with_selected_ids(self):
         client = AsyncMock()

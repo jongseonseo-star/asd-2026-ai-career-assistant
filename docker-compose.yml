@@ -29,6 +29,9 @@ services:
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:0.5b}
       AI_SERVICES_ENABLED: ${AI_SERVICES_ENABLED:-false}
       OLLAMA_ENABLED: ${OLLAMA_ENABLED:-true}
+      MULTI_AGENT_ENABLED: ${MULTI_AGENT_ENABLED:-false}
+      MULTI_AGENT_SERVER_URL: ${MULTI_AGENT_SERVER_URL:-http://host.docker.internal:8767}
+      MULTI_AGENT_TIMEOUT_SECONDS: ${MULTI_AGENT_TIMEOUT_SECONDS:-360}
       MCP_BASE_URL: ${MCP_BASE_URL:-http://host.docker.internal:8765}
       RAG_BASE_URL: ${RAG_BASE_URL:-http://host.docker.internal:8766}
       RAG_GENERATION_TIMEOUT_SECONDS: ${RAG_GENERATION_TIMEOUT_SECONDS:-210}
@@ -43,7 +46,7 @@ services:
     environment:
       PORT: "8082"
       BACKEND_API_URL: http://student-2-backend:5001
-      AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-240}
+      AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-420}
     ports: ["8082:8082"]
     depends_on: [student-2-backend]
     networks: [career-assistant-network]

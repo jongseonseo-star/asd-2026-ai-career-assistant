@@ -18,6 +18,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from flask import Flask, jsonify, request
+from resume_multi_agent import register_resume_routes
 
 import job_multi_agent
 
@@ -728,6 +729,9 @@ def service_info():
             "POST /interview/evaluate",
             "POST /jobs/analyse",
             "POST /jobs/<job_id>/runs/<run_id>/decision",
+            "POST /resume/review",
+            "GET /resume/workflows/<workflow_id>",
+            "POST /resume/workflows/<workflow_id>/human-review",
         ],
     }), 200
 
@@ -1042,6 +1046,14 @@ def main():
     print(f"Starting Shared Multi-Agent Server (Release 2) on http://{args.host}:{args.port}")
     print(f"Planner Model: {PLANNER_MODEL} | Worker Model: {WORKER_MODEL} | Reviewer Model: {REVIEWER_MODEL}")
     app.run(host=args.host, port=args.port, debug=False)
+
+
+register_resume_routes(
+    app,
+    lambda model, system, user: call_ollama(model, system, user),
+    parse_json_from_text,
+    {"Planner": PLANNER_MODEL, "Worker": WORKER_MODEL, "Reviewer": REVIEWER_MODEL},
+)
 
 
 if __name__ == "__main__":

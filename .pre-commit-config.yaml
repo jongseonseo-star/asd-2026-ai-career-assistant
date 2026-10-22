@@ -1,0 +1,31 @@
+# Lab 11 pre-commit scans for all three active students. Each receives separate reports.
+repos:
+  - repo: local
+    hooks:
+      - id: group-ruff-scan
+        name: Group - Ruff security scan (Students 2, 3, 4)
+        entry: python scripts/security_checks.py --scan ruff
+        language: python
+        language_version: python3.12
+        additional_dependencies: ["pytest==9.1.1", "ruff==0.16.8"]
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+      - id: group-secrets-scan
+        name: Group - detect-secrets scan (Students 2, 3, 4)
+        entry: python scripts/security_checks.py --scan secrets
+        language: python
+        language_version: python3.12
+        additional_dependencies: ["pytest==9.1.1", "detect-secrets==1.5.0"]
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+      - id: group-dependency-audit
+        name: Group - dependency vulnerability audit (Students 2, 3, 4)
+        entry: python scripts/security_checks.py --scan dependencies
+        language: python
+        language_version: python3.12
+        additional_dependencies: ["pytest==9.1.1", "pip-audit==2.10.1"]
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]

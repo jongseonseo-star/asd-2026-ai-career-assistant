@@ -19,16 +19,28 @@ if str(SERVICE_DIR) not in sys.path:
 from loop_evidence import assessment_evidence
 from job_generation import contract as job_contract
 from loop_collectors import collect_db, collect_endpoints, collect_architecture, collect_devops
+from loop_testing import collect_testing
 
 LEGACY_MODES = ("db", "endpoints", "architecture", "devops")
 SINGLE_MODES = (*LEGACY_MODES, "mcp", "rag")
-MODES = {*SINGLE_MODES, "release0", "all"}
+TESTING_MODES = ("pre_test", "cicd_test")
+TESTING_EVIDENCE_CHAR_LIMIT = 32000
+TESTING_CONTEXT_SIZE = 32768
+TESTING_CONTEXT_RESERVE = 1024
+# Testing reviews require their own saved evidence; keep existing aggregate runs stable.
+MODES = {*SINGLE_MODES, *TESTING_MODES, "release0", "all"}
 SECTIONS = ("Strengths", "Skill Gaps", "Recommended Actions", "Information Missing")
 NO_CONTEXT_QUERY = "What is the weather in Sydney?"
 PROMPT_DIR = SERVICE_DIR / "prompts" / "loop"
 
 
 def assessment_prompt(role, mode):
+    if mode in TESTING_MODES:
+        path = SERVICE_DIR.parent / "student-2/prompts/testing" / f"{mode}_{role}.txt"
+        content = path.read_text(encoding="utf-8").strip()
+        if not content:
+            raise ValueError("An assessment prompt is empty.")
+        return content, [str(path)]
     family = "legacy_" if mode in LEGACY_MODES else ""
     paths = [PROMPT_DIR / f"{family}{role}.txt", PROMPT_DIR / f"{mode}.txt"]
     if mode == "rag" and role == "review":
@@ -39,23 +51,48 @@ def assessment_prompt(role, mode):
     return "\n\n".join(content), [str(path) for path in paths]
 
 
+def testing_context_capacity(messages):
+    """Conservative byte-based capacity check, not a measured tokenizer count."""
+    full_prompt_bytes = sum(len(message["content"].encode("utf-8")) for message in messages)
+    required = full_prompt_bytes + TESTING_CONTEXT_RESERVE
+    return {
+        "method": "Conservative UTF-8 byte upper bound for the configured Qwen/Llama byte-level tokenizers; not a measured token count.",
+        "full_prompt_utf8_bytes": full_prompt_bytes,
+        "output_and_template_reserve": TESTING_CONTEXT_RESERVE,
+        "required_capacity_upper_bound": required,
+        "configured_num_ctx": TESTING_CONTEXT_SIZE,
+        "passed": required <= TESTING_CONTEXT_SIZE,
+    }
+
+
 def call_assessment(role: str, model: str, observed: dict, *, base_url: str, timeout: float,
                     implementation: str | None = None) -> dict:
     started = time.monotonic()
     user_input = {"observed_evidence": observed}
     if implementation is not None:
         user_input["implementation_assessment"] = implementation
-    requested_word_limit = 60 if observed["mode"] in LEGACY_MODES else 80
+    requested_word_limit = ((60 if role == "implementation" else 40) if observed["mode"] in TESTING_MODES
+                            else 60 if observed["mode"] in LEGACY_MODES else 80)
     prompt, prompt_paths = assessment_prompt(role, observed["mode"])
     body = {"model": model, "stream": False,
         "messages": [{"role": "system", "content": prompt},
                      {"role": "user", "content": json.dumps(user_input, ensure_ascii=False)}],
-        "options": {"temperature": 0, "num_predict": 512, "num_ctx": 8192}}
+        "options": {"temperature": 0, "num_predict": 512,
+                    "num_ctx": TESTING_CONTEXT_SIZE if observed["mode"] in TESTING_MODES else 8192}}
     result = {"role": role, "model": model, "started_at": timestamp(), "url": base_url + "/api/chat",
               "request": body, "prompt_paths": prompt_paths, "completed": False}
-    request = Request(result["url"], data=json.dumps(body).encode(),
-                      headers={"Content-Type": "application/json"}, method="POST")
     try:
+        if observed["mode"] in TESTING_MODES:
+            capacity = testing_context_capacity(body["messages"])
+            result["context_capacity_check"] = capacity
+            if not capacity["passed"]:
+                raise ValueError(
+                    f"Complete system and user prompts contain {capacity['full_prompt_utf8_bytes']:,} UTF-8 bytes; "
+                    f"with the {TESTING_CONTEXT_RESERVE:,} output/template reserve the conservative capacity "
+                    f"requirement exceeds num_ctx={TESTING_CONTEXT_SIZE:,}. No model request was sent and no evidence was truncated."
+                )
+        request = Request(result["url"], data=json.dumps(body).encode(),
+                          headers={"Content-Type": "application/json"}, method="POST")
         with urlopen(request, timeout=timeout) as response:
             result["status"] = response.status
             payload = json.loads(response.read())
@@ -74,6 +111,8 @@ def call_assessment(role: str, model: str, observed: dict, *, base_url: str, tim
             "within_requested_word_limit": len(output.split()) <= requested_word_limit,
             "generation_metadata": {key: payload[key] for key in (
                 "model", "done", "done_reason", "prompt_eval_count", "eval_count", "total_duration") if key in payload}})
+        if observed["mode"] in TESTING_MODES and not result["within_requested_word_limit"]:
+            result.update(completed=False, error="Testing assessment exceeds the course word limit; revise before review.")
     except (HTTPError, URLError, OSError, ValueError, TypeError, AttributeError) as error:
         result["error"] = f"{type(error).__name__}: {error}"
     result.update({"finished_at": timestamp(), "duration_seconds": round(time.monotonic() - started, 3)})
@@ -83,8 +122,9 @@ def call_assessment(role: str, model: str, observed: dict, *, base_url: str, tim
 def assess_checks(mode: str, feature: str, checks: list[dict], *, base_url: str, timeout: float) -> dict:
     observed = assessment_evidence(mode, feature, checks)
     # Do not silently remove facts or citation mappings to squeeze a large case into context.
-    if len(json.dumps(observed, ensure_ascii=False)) > 24000:
-        return {"status": "failed", "error": "Complete assessment evidence exceeds the 24,000-character budget. Select a smaller case; candidate facts and citation mappings were not truncated.",
+    character_limit = TESTING_EVIDENCE_CHAR_LIMIT if mode in TESTING_MODES else 24000
+    if len(json.dumps(observed, ensure_ascii=False)) > character_limit:
+        return {"status": "failed", "error": f"Complete assessment evidence exceeds the {character_limit:,}-character budget. Select a smaller case; candidate facts and citation mappings were not truncated.",
                 "observed_evidence": observed}
     try:
         implementation = call_assessment("implementation", os.getenv("IMPLEMENTATION_MODEL", os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")),
@@ -361,8 +401,9 @@ def capture_mode(mode: str, *, feature: str = "resume", profile_id: int = 1,
         job_description: str = "Python API development, Docker, tests, and evidence of project outcomes.",
         timeout: float = 180, checks_only: bool = False, project_root: str | None = None,
         compose_files: list[str] | None = None, compose_project: str | None = None,
-        ci_evidence_dir: str | None = None, job_id: int = 1) -> dict:
-    if mode not in SINGLE_MODES or feature not in {"resume", "interview", "jobs"} or not 0 < timeout <= 600:
+        ci_evidence_dir: str | None = None, job_id: int = 1,
+        security_evidence_dir: str | None = None, expected_commit: str | None = None) -> dict:
+    if mode not in (*SINGLE_MODES, *TESTING_MODES) or feature not in {"resume", "interview", "jobs"} or not 0 < timeout <= 600:
         raise ValueError("Unsupported mode/feature or timeout outside (0, 600] seconds.")
     if any(isinstance(value, bool) or not isinstance(value, int) or value < 1 for value in (profile_id, resume_id, job_id)):
         raise ValueError("Profile, resume and job IDs must be positive integers.")
@@ -377,8 +418,14 @@ def capture_mode(mode: str, *, feature: str = "resume", profile_id: int = 1,
     compose_paths = [Path(path).resolve() for path in compose_files] if compose_files else [root / "docker-compose.yml"]
     compose_project = compose_project or os.getenv("COMPOSE_PROJECT_NAME", "asd-2026-ai-career-assistant")
     reports = Path(ci_evidence_dir).resolve() if ci_evidence_dir else root / "reports/student-2"
+    security_reports = Path(security_evidence_dir).resolve() if security_evidence_dir else root / "logs/student-2/security"
     checks = []
-    if mode in LEGACY_MODES and feature != "resume":
+    if mode in TESTING_MODES and feature != "resume":
+        raise ValueError("Testing review currently covers Student 2 (--feature resume) only.")
+    if mode in TESTING_MODES:
+        checks = collect_testing(mode, root, security_dir=security_reports, ci_dir=reports,
+                                 expected_commit=expected_commit)
+    elif mode in LEGACY_MODES and feature != "resume":
         checks = [{"name": "legacy-feature-scope", "passed": False,
                    "validation_errors": ["Release 0 collectors currently validate Student 2 only."]}]
     elif mode == "db":
@@ -449,6 +496,14 @@ def capture_mode(mode: str, *, feature: str = "resume", profile_id: int = 1,
                                 "Legacy collectors cover Student 2 only; other student integration remains separately unverified.",
                                 "Model assessments are advisory and use bounded excerpts; a human must verify claims against full evidence."],
                 "improve": {"next_step": "A human reviews checks and required assessments, then records their own decision using human_review.py with before/after evidence links."}}
+    if mode in TESTING_MODES:
+        evidence["configuration"].update(security_evidence_dir=str(security_reports), expected_commit=expected_commit)
+        evidence["review"]["meaning"] = "Saved-evidence consistency and assessment execution only; not a fresh scan, final GitHub conclusion, security exception, or human approval."
+        evidence["limitations"] = [
+            "Testing collectors read saved evidence; they do not run hooks, pytest, GitHub Actions or application services.",
+            "Historical findings and recorded-input hashes cannot establish a new security pass; run the actual hooks for the intended revision.",
+            "Complete testing evidence is supplied to both assessment stages or rejected if it exceeds the 32,000-character budget or the conservative full-prompt capacity check.",
+            "Model assessments are advisory; the human decision remains pending."]
     return evidence
 
 
@@ -478,7 +533,7 @@ def run(mode: str, evidence_file: str | None = None, **options) -> int:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Capture course DB/endpoints/architecture/DevOps/MCP/RAG checks and model assessments.")
+    parser = argparse.ArgumentParser(description="Capture course checks and optional Student 2 pre_test/cicd_test reviews.")
     parser.add_argument("--mode", choices=sorted(MODES), default="all")
     parser.add_argument("--feature", choices=["resume", "interview", "jobs"], default="resume")
     parser.add_argument("--job-id", type=int, default=1)
@@ -494,6 +549,8 @@ if __name__ == "__main__":
     parser.add_argument("--compose-file", dest="compose_files", action="append", help="Repeat for a root Compose file and port overrides.")
     parser.add_argument("--compose-project", help="Running Compose project name; no containers are changed.")
     parser.add_argument("--ci-evidence-dir", help="Directory containing actual workflow artifacts and report.json.")
+    parser.add_argument("--security-evidence-dir", help="Saved Student 2 Ruff, secret and dependency reports for testing review.")
+    parser.add_argument("--expected-commit", help="Actual commit SHA expected in the CI evidence; required to establish a match.")
     args = parser.parse_args()
     if not 0 < args.timeout <= 600 or args.profile_id < 1 or args.resume_id < 1 or args.job_id < 1:
         parser.error("Use positive IDs and a timeout greater than 0 and at most 600 seconds.")

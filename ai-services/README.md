@@ -140,7 +140,7 @@ IMPLEMENTATION_MODEL=qwen2.5:0.5b REVIEW_MODEL=llama3.1:8b OLLAMA_BASE_URL=http:
 
 For the standalone Student 2 setup, use `--compose-project student2-demo --compose-file student-2/compose.local.yml`. Repeat `--compose-file` for any port override file used to start the stack. Change `STUDENT2_DATABASE_URL`, `STUDENT2_BACKEND_URL` and `STUDENT2_FRONTEND_URL` for alternate host ports; MCP separately uses `STUDENT2_DATABASE_API_URL`. Architecture collection reads the existing configuration and containers without restarting them.
 
-DevOps requires `report.json`, `profiles.json`, `resumes.json`, `skills.json`, `database-health.json`, `backend-readiness.json`, `frontend-readiness.json`, `ai-status.json`, `compose-ps.txt` and `compose-logs.txt`. The report identifies the workflow hash, execution source, result and record counts; GitHub artifacts also identify the run URL/ID and commit. Missing or outdated artifacts fail. Clearly labelled `local-ci-equivalent` evidence is supported but is not proof of a successful GitHub run. The [current workflow](../.github/workflows/student-2.yml) is manually dispatched and disables Ollama/MCP/RAG in CI. Its presence does not establish a successful run of this revision.
+DevOps requires `report.json`, `profiles.json`, `resumes.json`, `skills.json`, `database-health.json`, `backend-readiness.json`, `frontend-readiness.json`, `ai-status.json`, `compose-ps.txt` and `compose-logs.txt`. The report identifies the workflow hash, execution source, result and record counts; GitHub artifacts also identify the run URL/ID and commit. Missing or outdated artifacts fail. Clearly labelled `local-ci-equivalent` evidence is supported but is not proof of a successful GitHub run. The [current workflow](../.github/workflows/student-2.yml) runs on scoped push and pull-request changes, retains manual dispatch and reusable workflow calls, and disables Ollama/MCP/RAG in CI. Its presence does not establish a successful run of this revision.
 
 `IMPLEMENTATION_MODEL` and `REVIEW_MODEL` configure assessment roles independently of the RAG answer model. `--timeout` applies to each request, so all modes can take several minutes. `--checks-only` explicitly skips assessments for diagnostics and is not a complete agentic review. Evidence records exact model inputs/outputs, completion metadata, word counts, timing and checks. Candidate context and per-claim citation mappings stay intact in review input; bounded non-semantic excerpts are labelled.
 
@@ -208,3 +208,31 @@ python ai-services/multi_agent_server.py --cli --role "Security Engineer" --coun
 - `POST /interview/prep`: Coordinated interview preparation workflow.
 - `POST /interview/evaluate`: Coordinated interview answer evaluation workflow.
 
+## Student 2 Release 2 testing review
+
+The shared loop also supports explicit `pre_test` and `cicd_test` modes for
+Student 2. See [the testing review instructions](../student-2/TESTING_REVIEW.md)
+for fresh security evidence, CI artifacts, model execution, and separate human
+decisions. These testing modes are not included by the legacy `all` selection.
+A recorded failed security scan remains failed after any model review.
+
+## Student 2 resume Multi-Agent: local startup
+
+Prerequisites: Python 3.12, Docker Desktop running, and native Ollama at
+`http://127.0.0.1:11434` with `qwen2.5:7b` and `llama3.1:8b` installed.
+Keep ports 18765–18767 free. From the repository root:
+
+```bash
+bash scripts/start_student2_demo.sh
+```
+
+The launcher installs Python dependencies and starts Student 2, the shared
+home, and the three local AI services with the demo timeouts configured.
+Wait for `STATUS: ready_for_ui_verification`, then open
+[Student 2](http://127.0.0.1:8082) or the [shared home](http://127.0.0.1:8080).
+In **Multi-Agent Review**, select a profile and resume, click **Start review**,
+inspect the outputs, and record the actual human decision.
+
+Keep the terminal open. Ctrl+C stops the launcher’s AI processes; Docker
+containers remain. Startup logs are under `reports/demo-runtime/`.
+This launcher covers Student 2; cloud AI remains disabled.
