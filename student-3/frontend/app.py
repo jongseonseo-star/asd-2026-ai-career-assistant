@@ -8,6 +8,7 @@ from flask import Flask, jsonify, make_response, render_template_string, request
 from markupsafe import escape
 BACKEND_API_URL = os.getenv("BACKEND_API_URL", "http://127.0.0.1:5001").rstrip("/")
 PORT = int(os.getenv("PORT", "8083"))
+HOST = os.getenv("HOST", "127.0.0.1")
 BACKEND_TIMEOUT = float(os.getenv("BACKEND_TIMEOUT_SECONDS", "10"))
 AI_TIMEOUT = float(os.getenv("AI_TIMEOUT_SECONDS", "180"))
 STATUS_TIMEOUT = float(os.getenv("STATUS_TIMEOUT_SECONDS", "5"))
@@ -427,4 +428,4 @@ def not_found(_error):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT, debug=False)
+    app.run(host=HOST, port=PORT, debug=False)

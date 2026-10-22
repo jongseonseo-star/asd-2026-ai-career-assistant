@@ -30,5 +30,23 @@ Release 2 delegates interview preparation and answer evaluation to the shared Mu
 
 ```bash
 # Run feature and multi-agent integration tests
-python -m pytest student-3/tests -q
+python -m pytest student-3/tests -v
+
+# Run Ruff security audit (Bandit rules) on Student 3
+ruff check --select S student-3
 ```
+
+## Security Review & Ruff Bandit Audit
+
+Static security analysis (`ruff check --select S student-3`) identified 7 findings across Student 3 feature services. All 7 findings have been reviewed and remediated:
+
+| Rule | Location | Finding Description | Resolution / Architectural Justification |
+| :--- | :--- | :--- | :--- |
+| **S104** | `backend/app.py` | Possible binding to all interfaces (`0.0.0.0`) | **Resolved**: Refactored host configuration to use `HOST = os.getenv("HOST", "127.0.0.1")`. Local invocation now binds securely to localhost by default. In containerized environments, `ENV HOST=0.0.0.0` is provided via `Dockerfile` and `compose.local.yml` to support Docker bridge networking. |
+| **S608** | `database/app.py` (`/api/v1/stats`) | Possible SQL injection vector via table interpolation | **Resolved**: Replaced dynamic table string interpolation with explicit static `SELECT COUNT(*)` queries for `interview_sessions`, `interview_questions`, and `interview_responce`. |
+| **S608** | `database/app.py` (`session_detail`) | Possible SQL injection vector via dynamic UPDATE clause | **Resolved**: Converted dynamic `UPDATE interview_sessions` clause assembly into a static parameterized SQL update statement that merges existing record values with supplied fields, eliminating query string construction while preserving partial update semantics. |
+| **S608** | `database/app.py` (`question_detail`) | Possible SQL injection vector via dynamic UPDATE clause | **Resolved**: Converted dynamic `UPDATE interview_questions` clause assembly into a static parameterized SQL update statement merging existing fields (`category`, `question_text`). |
+| **S608** | `database/app.py` (`response_detail`) | Possible SQL injection vector via dynamic UPDATE clause | **Resolved**: Converted dynamic `UPDATE interview_responce` clause assembly into a static parameterized SQL update statement merging existing fields (`user_answer`, `ai_feedback`, `improvement_tips`, `score`). |
+| **S104** | `database/app.py` | Possible binding to all interfaces (`0.0.0.0`) | **Resolved**: Refactored host configuration to use `HOST = os.getenv("HOST", "127.0.0.1")` with container-level override (`ENV HOST=0.0.0.0`), preventing unintended exposure on uncontainerized hosts. |
+| **S104** | `frontend/app.py` | Possible binding to all interfaces (`0.0.0.0`) | **Resolved**: Refactored host configuration to use `HOST = os.getenv("HOST", "127.0.0.1")` with container-level override (`ENV HOST=0.0.0.0`), keeping local execution bound to localhost. |
+

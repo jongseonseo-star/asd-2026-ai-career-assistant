@@ -19,6 +19,8 @@ except ImportError:  # pragma: no cover
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_DB_PATH = BASE_DIR / "data" / "interview_data.db"
 DB_PATH = Path(os.getenv("DB_PATH", str(DEFAULT_DB_PATH)))
+HOST = os.getenv("HOST", "127.0.0.1")
+PORT = int(os.getenv("PORT", "5002"))
 
 app = Flask(__name__)
 
@@ -138,13 +140,11 @@ def health():
 def stats():
     connection = get_connection()
     try:
-        counts = {}
-        for key, table in [
-            ("sessions", "interview_sessions"),
-            ("questions", "interview_questions"),
-            ("evaluations", "interview_responce"),
-        ]:
-            counts[key] = connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+        counts = {
+            "sessions": connection.execute("SELECT COUNT(*) FROM interview_sessions").fetchone()[0],
+            "questions": connection.execute("SELECT COUNT(*) FROM interview_questions").fetchone()[0],
+            "evaluations": connection.execute("SELECT COUNT(*) FROM interview_responce").fetchone()[0],
+        }
         return jsonify(counts), 200
     finally:
         connection.close()
@@ -237,25 +237,36 @@ def session_item(session_id: int):
         if data is None:
             return jsonify({"error": "A valid JSON object is required."}), 400
 
-        updates = []
-        values = []
-        for field in ["candidate_name", "target_role", "interview_type", "status", "notes"]:
-            if field in data:
-                updates.append(f"{field} = ?")
-                values.append(data[field])
+        supported_fields = ["candidate_name", "target_role", "interview_type", "status", "notes", "overall_score"]
+        if not any(field in data for field in supported_fields):
+            return jsonify({"error": "No supported fields were provided."}), 400
+
+        score = None
         if "overall_score" in data:
             score = data["overall_score"]
             if isinstance(score, bool) or not isinstance(score, (int, float)):
                 return jsonify({"error": "overall_score must be a number."}), 400
-            updates.append("overall_score = ?")
-            values.append(float(score))
-        if not updates:
-            return jsonify({"error": "No supported fields were provided."}), 400
-        updates.append("updated_at = CURRENT_TIMESTAMP")
-        values.append(session_id)
+
+        current = connection.execute(
+            "SELECT * FROM interview_sessions WHERE id = ?",
+            (session_id,),
+        ).fetchone()
+
         connection.execute(
-            f"UPDATE interview_sessions SET {', '.join(updates)} WHERE id = ?",
-            values,
+            """
+            UPDATE interview_sessions
+            SET candidate_name = ?, target_role = ?, interview_type = ?, status = ?, notes = ?, overall_score = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+            """,
+            (
+                data["candidate_name"] if "candidate_name" in data else current["candidate_name"],
+                data["target_role"] if "target_role" in data else current["target_role"],
+                data["interview_type"] if "interview_type" in data else current["interview_type"],
+                data["status"] if "status" in data else current["status"],
+                data["notes"] if "notes" in data else current["notes"],
+                float(score) if score is not None else current["overall_score"],
+                session_id,
+            ),
         )
         connection.commit()
         row = connection.execute(
@@ -361,18 +372,27 @@ def question_item(question_id: int):
         data = get_json_body()
         if data is None:
             return jsonify({"error": "A valid JSON object is required."}), 400
-        updates = []
-        values = []
-        for field in ["category", "question_text"]:
-            if field in data:
-                updates.append(f"{field} = ?")
-                values.append(data[field])
-        if not updates:
+
+        supported_fields = ["category", "question_text"]
+        if not any(field in data for field in supported_fields):
             return jsonify({"error": "No supported fields were provided."}), 400
-        values.append(question_id)
+
+        current = connection.execute(
+            "SELECT * FROM interview_questions WHERE id = ?",
+            (question_id,),
+        ).fetchone()
+
         connection.execute(
-            f"UPDATE interview_questions SET {', '.join(updates)} WHERE id = ?",
-            values,
+            """
+            UPDATE interview_questions
+            SET category = ?, question_text = ?
+            WHERE id = ?
+            """,
+            (
+                data["category"] if "category" in data else current["category"],
+                data["question_text"] if "question_text" in data else current["question_text"],
+                question_id,
+            ),
         )
         connection.commit()
         row = connection.execute(
@@ -466,24 +486,35 @@ def response_item(response_id: int):
         data = get_json_body()
         if data is None:
             return jsonify({"error": "A valid JSON object is required."}), 400
-        updates = []
-        values = []
-        for field in ["user_answer", "ai_feedback", "improvement_tips"]:
-            if field in data:
-                updates.append(f"{field} = ?")
-                values.append(data[field])
+
+        supported_fields = ["user_answer", "ai_feedback", "improvement_tips", "score"]
+        if not any(field in data for field in supported_fields):
+            return jsonify({"error": "No supported fields were provided."}), 400
+
+        score = None
         if "score" in data:
             score = data["score"]
             if isinstance(score, bool) or not isinstance(score, (int, float)):
                 return jsonify({"error": "score must be a number."}), 400
-            updates.append("score = ?")
-            values.append(float(score))
-        if not updates:
-            return jsonify({"error": "No supported fields were provided."}), 400
-        values.append(response_id)
+
+        current = connection.execute(
+            "SELECT * FROM interview_responce WHERE id = ?",
+            (response_id,),
+        ).fetchone()
+
         connection.execute(
-            f"UPDATE interview_responce SET {', '.join(updates)} WHERE id = ?",
-            values,
+            """
+            UPDATE interview_responce
+            SET user_answer = ?, ai_feedback = ?, improvement_tips = ?, score = ?
+            WHERE id = ?
+            """,
+            (
+                data["user_answer"] if "user_answer" in data else current["user_answer"],
+                data["ai_feedback"] if "ai_feedback" in data else current["ai_feedback"],
+                data["improvement_tips"] if "improvement_tips" in data else current["improvement_tips"],
+                float(score) if score is not None else current["score"],
+                response_id,
+            ),
         )
         connection.commit()
         row = connection.execute(
@@ -497,4 +528,4 @@ def response_item(response_id: int):
 
 if __name__ == "__main__":
     initialise_database()
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5002")), debug=False)
+    app.run(host=HOST, port=PORT, debug=False)

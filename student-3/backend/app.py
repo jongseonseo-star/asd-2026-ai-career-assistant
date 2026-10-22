@@ -16,6 +16,7 @@ DATABASE_API_URL = os.getenv("DATABASE_API_URL", "http://127.0.0.1:5002").rstrip
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
 PORT = int(os.getenv("PORT", "5001"))
+HOST = os.getenv("HOST", "127.0.0.1")
 DATABASE_TIMEOUT = float(os.getenv("DATABASE_TIMEOUT_SECONDS", "5"))
 OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "180"))
 MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://127.0.0.1:8765").rstrip("/")
@@ -776,4 +777,4 @@ def multi_agent_server_status():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT, debug=False)
+    app.run(host=HOST, port=PORT, debug=False)

@@ -7,6 +7,7 @@ services:
     image: student-3-database:release0
     environment:
       PORT: "5002"
+      HOST: "0.0.0.0"
       DB_PATH: /app/data/interview_data.db
     ports:
       - "5302:5002"
@@ -27,6 +28,7 @@ services:
     image: student-3-backend:release0
     environment:
       PORT: "5001"
+      HOST: "0.0.0.0"
       DATABASE_API_URL: http://student-3-database:5002
       DATABASE_TIMEOUT_SECONDS: "5"
       OLLAMA_BASE_URL: http://host.docker.internal:11434
@@ -59,6 +61,7 @@ services:
     image: student-3-frontend:release0
     environment:
       PORT: "8083"
+      HOST: "0.0.0.0"
       BACKEND_API_URL: http://student-3-backend:5001
       BACKEND_TIMEOUT_SECONDS: "10"
       AI_TIMEOUT_SECONDS: "180"
