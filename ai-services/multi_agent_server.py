@@ -343,14 +343,33 @@ class WorkerAgent:
             "candidate_answer": candidate_answer,
             "reviewer_feedback": reviewer_feedback,
             "instructions": (
-                "Evaluate the candidate answer against the plan's criteria. "
-                "Return JSON with 'work_id', 'score' (0-100), 'feedback', 'strengths', 'gaps', 'improvement_tips'."
+                "Evaluate the candidate answer against the plan's criteria and any reviewer feedback. "
+                "If reviewer_feedback is provided, explicitly correct your previous evaluation and address each critique. "
+                "If the candidate's answer is unprofessional, negative, dismissive, or fails to address the question, score it between 0 and 30. "
+                "Return JSON with 'work_id', 'score' (0-100), 'feedback' (a clear text summary string, not an object), 'strengths' (list of strings), 'gaps' (list of strings), 'improvement_tips' (list of strings)."
             ),
         })
 
         output_text = call_ollama(self.model, self.system_prompt, user_prompt)
         parsed = parse_json_from_text(output_text) if output_text else None
         if parsed and "score" in parsed and "feedback" in parsed:
+            if isinstance(parsed["feedback"], dict):
+                fb_dict = parsed["feedback"]
+                if not parsed.get("improvement_tips") and fb_dict.get("improvement_tips"):
+                    parsed["improvement_tips"] = fb_dict["improvement_tips"]
+                if not parsed.get("strengths") and fb_dict.get("strengths"):
+                    parsed["strengths"] = fb_dict["strengths"]
+                if not parsed.get("gaps") and fb_dict.get("gaps"):
+                    parsed["gaps"] = fb_dict["gaps"]
+                summary = fb_dict.get("summary") or fb_dict.get("assessment") or fb_dict.get("feedback")
+                if not summary:
+                    summary_parts = []
+                    if fb_dict.get("strengths"):
+                        summary_parts.append("Strengths: " + "; ".join(str(s) for s in fb_dict["strengths"]))
+                    if fb_dict.get("gaps"):
+                        summary_parts.append("Gaps: " + "; ".join(str(g) for g in fb_dict["gaps"]))
+                    summary = " | ".join(summary_parts) if summary_parts else "Candidate answer evaluated against rubric."
+                parsed["feedback"] = str(summary)
             parsed.setdefault("work_id", f"work-{int(time.time())}")
             parsed["generated_by"] = f"{self.name} ({self.model})"
             return parsed
@@ -367,7 +386,9 @@ class WorkerAgent:
             base_score += 10.0
         if has_tech_signals:
             base_score += 10.0
-        if word_count < 15:
+        if word_count < 5:
+            base_score = 15.0
+        elif word_count < 15:
             base_score -= 20.0
 
         score = min(max(round(base_score, 1), 20.0), 95.0)
@@ -427,7 +448,7 @@ class ReviewerAgent:
         plan: dict[str, Any],
         work: dict[str, Any],
         iteration: int = 1,
-        max_iterations: int = 2,
+        max_iterations: int = 15,
     ) -> dict[str, Any]:
         user_prompt = json.dumps({
             "task": "review_deliverable",
@@ -516,7 +537,7 @@ class MultiAgentCoordinator:
         interview_type: str = "technical",
         question_count: int = 3,
         context: dict[str, Any] | None = None,
-        max_iterations: int = 2,
+        max_iterations: int = 15,
     ) -> dict[str, Any]:
         started = time.monotonic()
         trajectory: list[dict[str, Any]] = []
@@ -610,7 +631,7 @@ class MultiAgentCoordinator:
         question: str,
         candidate_answer: str,
         context: dict[str, Any] | None = None,
-        max_iterations: int = 2,
+        max_iterations: int = 15,
     ) -> dict[str, Any]:
         started = time.monotonic()
         trajectory: list[dict[str, Any]] = []
@@ -827,7 +848,7 @@ def agent_review():
 def agent_coordinate():
     data = request.get_json(silent=True) or {}
     task_type = data.get("task_type", "interview_prep")
-    max_iter = int(data.get("max_iterations", 2))
+    max_iter = int(data.get("max_iterations", 15))
 
     if task_type == "interview_evaluation":
         role = data.get("target_role", "Software Engineer")
@@ -874,7 +895,7 @@ def interview_prep_route():
     role = str(data.get("target_role", "General role")).strip() or "General role"
     itype = str(data.get("interview_type", "general")).strip() or "general"
     q_count = max(1, min(int(data.get("question_count", 3)), 10))
-    max_iter = max(1, min(int(data.get("max_iterations", 2)), 4))
+    max_iter = max(1, min(int(data.get("max_iterations", 15)), 15))
 
     result = coordinator.coordinate_interview_prep(
         target_role=role,
@@ -892,7 +913,7 @@ def interview_evaluate_route():
     role = str(data.get("target_role", "General")).strip() or "General"
     q = str(data.get("question_text") or data.get("question") or "Interview Question").strip()
     ans = str(data.get("candidate_answer") or data.get("answer") or data.get("user_answer") or "").strip()
-    max_iter = max(1, min(int(data.get("max_iterations", 2)), 4))
+    max_iter = max(1, min(int(data.get("max_iterations", 15)), 15))
 
     if not ans:
         return jsonify({"error": "candidate_answer is required for evaluation."}), 400
@@ -1027,7 +1048,7 @@ def main():
     parser.add_argument("--evaluate", action="store_true", help="Run answer evaluation workflow")
     parser.add_argument("--question", default="Explain how you design a resilient distributed service.", help="Question to evaluate")
     parser.add_argument("--answer", default="I isolate services, use idempotent APIs, circuit breakers, and comprehensive telemetry.", help="Candidate answer to evaluate")
-    parser.add_argument("--max-iterations", type=int, default=2, help="Maximum coordinator iterations (default 2)")
+    parser.add_argument("--max-iterations", type=int, default=15, help="Maximum coordinator iterations (default 15)")
     parser.add_argument("--json", action="store_true", help="Output machine-readable JSON to stdout")
 
     args = parser.parse_args()
