@@ -2,6 +2,92 @@
 from __future__ import annotations
 
 import json
+from uuid import UUID
+
+HUMAN_DECISIONS = ["Accept", "Partially Accept", "Reject"]
+
+
+def nonempty_text(value) -> bool:
+    return isinstance(value, str) and bool(value.strip()) and len(value) <= 2000
+
+
+def text_list(value, minimum: int = 0) -> bool:
+    return isinstance(value, list) and minimum <= len(value) <= 10 and all(nonempty_text(item) for item in value)
+
+
+def agent_schema(stage: str, context: dict) -> dict:
+    text = {"type": "string", "minLength": 1, "maxLength": 600}
+    items = {"type": "array", "items": text, "minItems": 1, "maxItems": 3}
+    if stage == "plan":
+        properties = {key: items for key in ("steps", "evidence_requirements", "approval_checkpoints")}
+    elif stage == "work":
+        claim = {"type": "object", "additionalProperties": False, "required": ["text", "sources"],
+                 "properties": {"text": text, "sources": {"type": "array", "minItems": 1, "maxItems": 3,
+                    "items": {"type": "string", "enum": context["sources"]}}}}
+        properties = {"claims": {"type": "array", "minItems": 1, "maxItems": 3, "items": claim}}
+    else:
+        properties = {"verdict": {"type": "string", "enum": ["approved", "needs_revision"]}, "risk": text,
+                      "recommend_corrections": {**items, "minItems": 0}, "suggest_retests": {**items, "minItems": 0}}
+    return {"type": "object", "additionalProperties": False, "required": list(properties), "properties": properties}
+
+
+def validate_agent_stage(stage: str, output: dict, context: dict) -> None:
+    if not isinstance(output, dict):
+        raise ValueError("Agent output must be an object.")
+    if stage == "plan":
+        if any(not text_list(output.get(key), 1) for key in ("steps", "evidence_requirements", "approval_checkpoints")):
+            raise ValueError("The plan requires steps, evidence requirements and approval checkpoints.")
+    elif stage == "work":
+        claims = output.get("claims")
+        if not isinstance(claims, list) or not 1 <= len(claims) <= 6:
+            raise ValueError("The worker must provide between one and six cited claims.")
+        for claim in claims:
+            if (not isinstance(claim, dict) or not nonempty_text(claim.get("text"))
+                    or not text_list(claim.get("sources"), 1)
+                    or any(source not in context["sources"] for source in claim["sources"])):
+                raise ValueError("Worker claims must cite the selected job's database evidence.")
+    elif stage == "review":
+        if (output.get("verdict") not in ("approved", "needs_revision") or not nonempty_text(output.get("risk"))
+                or any(not text_list(output.get(key)) for key in ("recommend_corrections", "suggest_retests"))):
+            raise ValueError("The review requires a verdict, risks, corrections and retests.")
+
+
+def validate_human_decision(data: dict) -> None:
+    if (not isinstance(data, dict) or set(data) != {"decision", "reason", "evidence_used"}
+            or data.get("decision") not in HUMAN_DECISIONS
+            or not nonempty_text(data.get("reason")) or not nonempty_text(data.get("evidence_used"))):
+        raise ValueError("Select a decision and provide a reason and the evidence used (up to 2000 characters each).")
+
+
+def validate_job_analysis(payload: dict, job_id: int, context: dict | None = None) -> None:
+    if not isinstance(payload, dict) or not positive_id(payload.get("job_id")) or payload["job_id"] != job_id:
+        raise ValueError("The analysis does not match the selected job.")
+    UUID(payload.get("run_id", ""))
+    supplied = payload.get("job_context")
+    validate_context(supplied, job_id)
+    if context is not None and supplied != context:
+        raise ValueError("The analysis changed the supplied database evidence.")
+    for stage in ("plan", "work", "review"):
+        validate_agent_stage(stage, payload.get(stage), supplied)
+    human = payload.get("human_decision")
+    if (not isinstance(human, dict) or human.get("required") is not True
+            or human.get("available_decisions") != HUMAN_DECISIONS):
+        raise ValueError("The result must require human review.")
+    if payload.get("status") == "awaiting-human-review":
+        if human.get("status") != "pending" or any(human.get(key) is not None for key in ("decision", "reason", "evidence_used")):
+            raise ValueError("Agent output must not contain an automatic human decision.")
+    elif payload.get("status") == "completed" and human.get("status") == "recorded":
+        validate_human_decision({key: human.get(key) for key in ("decision", "reason", "evidence_used")})
+    else:
+        raise ValueError("Invalid job review status.")
+    trajectory = payload.get("trajectory")
+    if (not isinstance(trajectory, list) or not trajectory or len(trajectory) > 7
+            or any(not isinstance(entry, dict) or not isinstance(entry.get("output"), dict)
+                   or any(not nonempty_text(entry.get(key)) for key in ("agent", "stage", "timestamp"))
+                   for entry in trajectory)):
+        raise ValueError("The analysis is missing its agent trajectory.")
+    if not nonempty_text(payload.get("query")) or type(payload.get("iterations")) is not int or payload["iterations"] not in (1, 2):
+        raise ValueError("Invalid analysis question or iteration count.")
 
 
 def positive_id(value) -> bool:

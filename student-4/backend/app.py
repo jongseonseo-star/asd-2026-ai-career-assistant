@@ -10,7 +10,7 @@ from typing import Any
 import requests
 from flask import Flask, jsonify, request
 
-from job_contract import validate_answer, validate_context
+from job_contract import nonempty_text, validate_answer, validate_context, validate_human_decision, validate_job_analysis
 
 DATABASE_API_URL = os.getenv("DATABASE_API_URL", "http://127.0.0.1:5402").rstrip("/")
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
@@ -23,6 +23,9 @@ MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://127.0.0.1:8765").rstrip("/")
 RAG_BASE_URL = os.getenv("RAG_BASE_URL", "http://127.0.0.1:8766").rstrip("/")
 MCP_TIMEOUT = float(os.getenv("MCP_TIMEOUT_SECONDS", "15"))
 RAG_TIMEOUT = float(os.getenv("RAG_GENERATION_TIMEOUT_SECONDS", "210"))
+MULTI_AGENT_SERVER_URL = os.getenv("MULTI_AGENT_SERVER_URL", "http://127.0.0.1:8767").rstrip("/")
+MULTI_AGENT_ENABLED = os.getenv("MULTI_AGENT_ENABLED", "true").lower() in {"true", "1", "yes"}
+MULTI_AGENT_TIMEOUT = float(os.getenv("MULTI_AGENT_TIMEOUT_SECONDS", "210"))
 PORT = int(os.getenv("PORT", "5401"))
 PROMPTS = Path(__file__).parent / "prompts"
 
@@ -297,6 +300,58 @@ def rag_job_answer(job_id: int):
         raise ServiceError("The shared RAG service is unavailable or timed out.", 503, "rag") from error
     except ValueError as error:
         raise ServiceError("The shared RAG service returned invalid evidence or citations.", 502, "rag") from error
+    return jsonify(payload)
+
+
+def require_multi_agent():
+    if not (AI_SERVICES_ENABLED and MULTI_AGENT_ENABLED and OLLAMA_ENABLED):
+        raise ServiceError("Local Multi-Agent analysis is disabled.", 503, "multi-agent")
+
+
+def multi_agent_request(path: str, data: dict, job_id: int, context: dict | None = None) -> dict:
+    try:
+        response = session.post(MULTI_AGENT_SERVER_URL + path, timeout=MULTI_AGENT_TIMEOUT, json=data)
+        if not response.ok:
+            error = response.json()
+            message = error.get("error") if isinstance(error, dict) else None
+            raise ServiceError(message if nonempty_text(message) else "The local Multi-Agent request failed.",
+                               response.status_code if response.status_code in {400, 404, 409, 502, 503} else 503,
+                               "multi-agent")
+        payload = response.json()
+        validate_job_analysis(payload, job_id, context)
+        return payload
+    except requests.RequestException as error:
+        raise ServiceError("The local Multi-Agent server is unavailable or timed out.", 503, "multi-agent") from error
+    except (ValueError, TypeError, AttributeError) as error:
+        raise ServiceError("The Multi-Agent server returned invalid job evidence.", 502, "multi-agent") from error
+
+
+@app.post("/api/v1/multi-agent/jobs/<int:job_id>/analyse")
+def multi_agent_analyse(job_id: int):
+    require_multi_agent()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or set(data) != {"query"} or not nonempty_text(data.get("query")):
+        return jsonify({"error": "Provide a question of up to 2000 characters."}), 400
+    context = mcp_job(job_id)
+    payload = multi_agent_request("/jobs/analyse", {"query": data["query"].strip(), "job_context": context}, job_id, context)
+    if payload["status"] != "awaiting-human-review":
+        raise ServiceError("The analysis must await a human decision.", 502, "multi-agent")
+    return jsonify(payload)
+
+
+@app.post("/api/v1/multi-agent/jobs/<int:job_id>/runs/<uuid:run_id>/decision")
+def multi_agent_decision(job_id: int, run_id):
+    require_multi_agent()
+    data = request.get_json(silent=True)
+    try:
+        validate_human_decision(data)
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+    payload = multi_agent_request(f"/jobs/{job_id}/runs/{run_id}/decision", data, job_id)
+    human = payload["human_decision"]
+    if (payload["run_id"] != str(run_id) or payload["status"] != "completed"
+            or any(human.get(key) != value.strip() for key, value in data.items())):
+        raise ServiceError("The recorded decision does not match the submitted review.", 502, "multi-agent")
     return jsonify(payload)
 
 

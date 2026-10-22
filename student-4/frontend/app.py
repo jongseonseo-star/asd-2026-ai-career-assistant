@@ -29,8 +29,8 @@ def values(resource: str) -> dict[str, Any]:
     return data
 
 
-def fetch(resource: str) -> list[dict[str, Any]]:
-    response = api("GET", f"/api/v1/{resource}")
+def fetch(resource: str, params: dict[str, str] | None = None) -> list[dict[str, Any]]:
+    response = api("GET", f"/api/v1/{resource}", params=params)
     response.raise_for_status()
     return response.json()
 
@@ -39,16 +39,18 @@ def fetch(resource: str) -> list[dict[str, Any]]:
 def index():
     notice = request.args.get("notice")
     error = request.args.get("error")
+    query = request.args.get("q", "").strip()
     try:
         companies = fetch("companies")
         jobs = fetch("jobs/enriched")
+        filtered_jobs = fetch("jobs/enriched", params={"q": query}) if query else jobs
         skills = fetch("job_skills")
     except requests.RequestException:
-        companies, jobs, skills = [], [], []
+        companies, jobs, filtered_jobs, skills = [], [], [], []
         error = "The Job Listing API is currently unavailable."
     return render_template(
-        "index.html", companies=companies, jobs=jobs, skills=skills,
-        notice=notice, error=error, query=request.args.get("q", "")
+        "index.html", companies=companies, jobs=jobs, filtered_jobs=filtered_jobs, skills=skills,
+        notice=notice, error=error, query=query
     )
 
 
@@ -133,6 +135,30 @@ def mcp_context(job_id: int):
 def rag_answer(job_id: int):
     return shared_result(f"/api/v1/rag/jobs/{job_id}/answer", "rag",
                          {"query": request.form.get("query", "").strip()})
+
+
+@app.post("/multi-agent/jobs/<int:job_id>/analyse")
+def multi_agent_analyse(job_id: int):
+    return multi_agent_result(job_id, f"/api/v1/multi-agent/jobs/{job_id}/analyse",
+                              {"query": request.form.get("query", "").strip()})
+
+
+@app.post("/multi-agent/jobs/<int:job_id>/runs/<uuid:run_id>/decision")
+def multi_agent_decision(job_id: int, run_id):
+    return multi_agent_result(job_id, f"/api/v1/multi-agent/jobs/{job_id}/runs/{run_id}/decision",
+                              {key: request.form.get(key, "").strip() for key in ("decision", "reason", "evidence_used")})
+
+
+def multi_agent_result(job_id: int, path: str, data: dict):
+    try:
+        response = api("POST", path, timeout=AI_TIMEOUT, json=data)
+        payload = response.json()
+        return render_template("multi_agent_result.html", job_id=job_id,
+                               payload=payload if response.ok else None,
+                               error=None if response.ok else payload.get("error", "The request failed."))
+    except (requests.RequestException, ValueError):
+        return render_template("multi_agent_result.html", job_id=job_id,
+                               error="The backend or local Multi-Agent server is unavailable.")
 
 
 def shared_result(path: str, mode: str, data: dict | None = None):

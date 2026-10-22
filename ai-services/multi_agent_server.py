@@ -19,6 +19,8 @@ from urllib.request import Request, urlopen
 
 from flask import Flask, jsonify, request
 
+import job_multi_agent
+
 BASE_DIR = Path(__file__).resolve().parent
 PROMPTS_DIR = BASE_DIR / "prompts" / "multi_agent"
 
@@ -74,7 +76,7 @@ def parse_json_from_text(raw_text: str) -> dict[str, Any] | None:
     return None
 
 
-def call_ollama(model: str, system_prompt: str, user_prompt: str, timeout: float | None = None) -> str | None:
+def call_ollama(model: str, system_prompt: str, user_prompt: str, timeout: float | None = None, response_format: dict | None = None) -> str | None:
     if not OLLAMA_ENABLED:
         return None
     request_timeout = timeout or OLLAMA_TIMEOUT
@@ -88,6 +90,8 @@ def call_ollama(model: str, system_prompt: str, user_prompt: str, timeout: float
         ],
         "options": {"temperature": 0.2, "num_predict": 1024},
     }
+    if response_format is not None:
+        body["format"] = response_format
     req = Request(url, data=json.dumps(body).encode("utf-8"), headers={"Content-Type": "application/json"}, method="POST")
     try:
         with urlopen(req, timeout=request_timeout) as resp:
@@ -722,6 +726,8 @@ def service_info():
             "POST /agent/coordinate",
             "POST /interview/prep",
             "POST /interview/evaluate",
+            "POST /jobs/analyse",
+            "POST /jobs/<job_id>/runs/<run_id>/decision",
         ],
     }), 200
 
@@ -831,6 +837,31 @@ def agent_coordinate():
         result = coordinator.coordinate_interview_prep(role, itype, q_count, data.get("context"), max_iterations=max_iter)
 
     return jsonify(result), 200
+
+
+@app.post("/jobs/analyse")
+def job_analysis_route():
+    data = request.get_json(silent=True)
+    try:
+        if (not isinstance(data, dict) or set(data) != {"query", "job_context"}
+                or not job_multi_agent.contract.nonempty_text(data.get("query"))):
+            raise ValueError("Provide a job context and a question of up to 2000 characters.")
+        result = job_multi_agent.coordinate(data["job_context"], data["query"].strip(), coordinator, call_ollama)
+        return jsonify(result)
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+    except job_multi_agent.JobWorkflowError as error:
+        return jsonify({"error": error.message, "dependency": "multi-agent"}), error.status
+
+
+@app.post("/jobs/<int:job_id>/runs/<uuid:run_id>/decision")
+def job_decision_route(job_id: int, run_id):
+    try:
+        return jsonify(job_multi_agent.record_decision(job_id, str(run_id), request.get_json(silent=True)))
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+    except job_multi_agent.JobWorkflowError as error:
+        return jsonify({"error": error.message}), error.status
 
 
 @app.post("/interview/prep")

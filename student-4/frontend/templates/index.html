@@ -14,7 +14,7 @@
         <h1>Job Listing Management</h1>
         <p>Manage opportunities and use grounded AI to understand job fit.</p>
       </div>
-      <span class="status">Release 1</span>
+      <span class="status">Release 2</span>
     </header>
     <main>
       {% if notice %}
@@ -48,8 +48,18 @@
             <p class="eyebrow">Core feature</p>
             <h2>Job postings</h2>
           </div>
-          <span>{{ jobs|length }} records</span>
+          <span>{{ filtered_jobs|length }} records</span>
         </div>
+        <form class="form-grid" method="get" action="{{ url_for('index') }}">
+          <label for="job-search">Search jobs
+            <input id="job-search" type="search" name="q" value="{{ query }}"
+              placeholder="Title, company, location or skill" />
+          </label>
+          <div class="actions">
+            <button type="submit">Search</button>
+            {% if query %}<a href="{{ url_for('index') }}">Clear search</a>{% endif %}
+          </div>
+        </form>
         <details>
           <summary>Add a job posting</summary>
           <form class="form-grid" method="post" action="/actions/job_postings/create">
@@ -78,7 +88,7 @@
           </form>
         </details>
         <div class="cards">
-          {% for job in jobs %}
+          {% for job in filtered_jobs %}
           <article class="job-card">
             <div>
               <p class="eyebrow">{{ job.company.name if job.company else 'Unknown company' }}</p>
@@ -115,6 +125,17 @@
               <p id="job-loading-{{ job.id }}" class="htmx-indicator" role="status">Checking sources. Local generation may take a few minutes.</p>
               <div id="job-evidence-{{ job.id }}" aria-live="polite"></div>
             </details>
+            <details class="job-guidance">
+              <summary>Review this job with multiple agents</summary>
+              <form hx-post="/multi-agent/jobs/{{ job.id }}/analyse" hx-target="#job-agents-{{ job.id }}"
+                hx-indicator="#job-agents-loading-{{ job.id }}" hx-disabled-elt="find button">
+                <label for="job-agent-query-{{ job.id }}">Question about this posting</label>
+                <textarea id="job-agent-query-{{ job.id }}" name="query" required maxlength="2000">Explain the required skills and suggest how to prepare for this role.</textarea>
+                <button type="submit">Run Planner, Worker and Reviewer</button>
+              </form>
+              <p id="job-agents-loading-{{ job.id }}" class="htmx-indicator" role="status">Analysing the posting. Local generation may take a few minutes.</p>
+              <div id="job-agents-{{ job.id }}" aria-live="polite"></div>
+            </details>
             <details>
               <summary>Edit job</summary>
               <form class="form-grid" method="post" action="/actions/job_postings/{{ job.id }}/update">
@@ -146,6 +167,8 @@
               </form>
             </details>
           </article>
+          {% else %}
+          <p>No job postings found.</p>
           {% endfor %}
         </div>
       </section>

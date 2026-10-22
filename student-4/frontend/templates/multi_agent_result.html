@@ -1,0 +1,52 @@
+{% if error %}
+<p class="alert error">{{ error }}</p>
+{% elif payload %}
+<h4>Job analysis</h4>
+<p>Review {{ payload.run_id }} · {{ payload.iterations }} iteration(s) · Human review: {{ payload.human_decision.status }}</p>
+<h4>Planner</h4>
+<ol>{% for step in payload.plan.steps %}<li>{{ step }}</li>{% endfor %}</ol>
+<details>
+  <summary>Evidence and approval checkpoints</summary>
+  <ul>{% for item in payload.plan.evidence_requirements %}<li>{{ item }}</li>{% endfor %}</ul>
+  <ul>{% for item in payload.plan.approval_checkpoints %}<li>{{ item }}</li>{% endfor %}</ul>
+</details>
+<h4>Worker</h4>
+{% for claim in payload.work.claims %}
+<p>{{ claim.text }}</p>
+<ul>{% for source in claim.sources %}<li><code>{{ source }}</code></li>{% endfor %}</ul>
+{% endfor %}
+<h4>Reviewer · {{ payload.review.verdict|replace('_', ' ') }}</h4>
+<p>{{ payload.review.risk }}</p>
+<p>Recommended corrections</p>
+<ul>{% for item in payload.review.recommend_corrections %}<li>{{ item }}</li>{% else %}<li>None suggested.</li>{% endfor %}</ul>
+<p>Suggested retests</p>
+<ul>{% for item in payload.review.suggest_retests %}<li>{{ item }}</li>{% else %}<li>None suggested.</li>{% endfor %}</ul>
+<details>
+  <summary>Database evidence and agent trajectory</summary>
+  <pre>{{ payload.job_context|tojson(indent=2) }}</pre>
+  {% for entry in payload.trajectory %}
+  <p>{{ entry.agent }} · {{ entry.stage }} · {{ entry.timestamp }}</p>
+  <pre>{{ entry.output|tojson(indent=2) }}</pre>
+  {% endfor %}
+</details>
+<h4>Human decision</h4>
+{% if payload.human_decision.status == 'pending' %}
+<p>Read the evidence and review before recording your decision. This analysis does not change the posting.</p>
+<form hx-post="/multi-agent/jobs/{{ job_id }}/runs/{{ payload.run_id }}/decision"
+  hx-target="#job-agents-{{ job_id }}" hx-disabled-elt="find button">
+  <label for="job-decision-{{ job_id }}">Decision</label>
+  <select id="job-decision-{{ job_id }}" name="decision" required>
+    <option value="">Choose a decision</option>
+    {% for choice in payload.human_decision.available_decisions %}<option>{{ choice }}</option>{% endfor %}
+  </select>
+  <label>Reason<textarea name="reason" required maxlength="2000"></textarea></label>
+  <label>Evidence used<textarea name="evidence_used" required maxlength="2000"
+    placeholder="Which records and review findings support your decision?"></textarea></label>
+  <button type="submit">Record my decision</button>
+</form>
+{% else %}
+<p><strong>{{ payload.human_decision.decision }}</strong></p>
+<p>Reason: {{ payload.human_decision.reason }}</p>
+<p>Evidence used: {{ payload.human_decision.evidence_used }}</p>
+{% endif %}
+{% endif %}
