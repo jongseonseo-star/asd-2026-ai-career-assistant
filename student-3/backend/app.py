@@ -23,6 +23,7 @@ MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://127.0.0.1:8765").rstrip("/")
 RAG_BASE_URL = os.getenv("RAG_BASE_URL", "http://127.0.0.1:8766").rstrip("/")
 MULTI_AGENT_SERVER_URL = os.getenv("MULTI_AGENT_SERVER_URL", "http://127.0.0.1:8767").rstrip("/")
 SHARED_AI_TIMEOUT = float(os.getenv("SHARED_AI_TIMEOUT_SECONDS", "5"))
+MULTI_AGENT_TIMEOUT = float(os.getenv("MULTI_AGENT_TIMEOUT_SECONDS", "180"))
 AI_SERVICES_ENABLED = os.getenv("AI_SERVICES_ENABLED", "false").lower() in {"1", "true", "yes"}
 OLLAMA_ENABLED = os.getenv("OLLAMA_ENABLED", "true").lower() in {"1", "true", "yes"}
 MULTI_AGENT_ENABLED = os.getenv("MULTI_AGENT_ENABLED", "true").lower() in {"1", "true", "yes"}
@@ -438,7 +439,7 @@ def generate_questions_for_session(session_id: int):
                     "question_count": question_count,
                     "session_id": session_id,
                 },
-                timeout=SHARED_AI_TIMEOUT,
+                timeout=MULTI_AGENT_TIMEOUT,
             )
             ma_res.raise_for_status()
             ma_payload = ma_res.json()
@@ -603,7 +604,7 @@ def evaluate_answer(question_id: int):
                     "question_id": question_id,
                     "session_id": session_id,
                 },
-                timeout=SHARED_AI_TIMEOUT,
+                timeout=MULTI_AGENT_TIMEOUT,
             )
             ma_res.raise_for_status()
             ma_payload = ma_res.json()
