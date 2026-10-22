@@ -118,6 +118,20 @@ class MultiAgentServerUnitTests(unittest.TestCase):
         self.assertIn("feedback", result)
         self.assertIn("trajectory", result)
 
+    def test_non_responsive_answer_scores_zero_and_stops(self):
+        result = self.coordinator.coordinate_answer_evaluation(
+            target_role="Full Stack Engineer",
+            question="What are your strengths and areas for improvement?",
+            candidate_answer="No, I refuse to answer.",
+            max_iterations=15,
+        )
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(result["score"], 0.0)
+        self.assertEqual(result["iterations"], 1)
+        self.assertTrue(result["approved"])
+        self.assertIn("does not address the question", result["feedback"].lower())
+        self.assertEqual(result["human_decision"]["decision"], "Reject")
+
     def test_http_health_check(self):
         response = self.client.get("/health")
         self.assertEqual(response.status_code, 200)
