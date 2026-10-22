@@ -443,6 +443,60 @@ def ui_generate_questions():
     return f'<div class="card"><strong>Generated questions</strong><br><small>Grounding confidence: {escape(payload.get("confidence", "unknown"))} | Sources: {escape(sources)}</small>{rows}</div>'
 
 
+def format_assessment_content(raw_feedback: Any, default_tips: Any = None) -> tuple[str, str]:
+    fb = raw_feedback
+    extracted_tips = default_tips
+
+    if isinstance(fb, str):
+        trimmed = fb.strip()
+        if trimmed.startswith("{") and trimmed.endswith("}"):
+            try:
+                import json
+                fb = json.loads(trimmed)
+            except Exception:
+                try:
+                    import ast
+                    fb = ast.literal_eval(trimmed)
+                except Exception:
+                    pass
+
+    if isinstance(fb, dict):
+        parts = []
+        summary = fb.get("summary") or fb.get("assessment") or fb.get("feedback")
+        if summary and isinstance(summary, str):
+            parts.append(f"<p style='margin: 0.3rem 0;'>{escape(summary)}</p>")
+
+        strengths = fb.get("strengths")
+        if isinstance(strengths, list) and strengths:
+            items = "".join(f"<li>{escape(str(s))}</li>" for s in strengths if str(s).strip())
+            if items:
+                parts.append(f"<div style='margin-top:0.4rem;'><strong>Strengths:</strong><ul style='margin:0.2rem 0 0.4rem 1.2rem; padding:0;'>{items}</ul></div>")
+
+        gaps = fb.get("gaps")
+        if isinstance(gaps, list) and gaps:
+            items = "".join(f"<li>{escape(str(g))}</li>" for g in gaps if str(g).strip())
+            if items:
+                parts.append(f"<div style='margin-top:0.4rem;'><strong>Areas for Improvement:</strong><ul style='margin:0.2rem 0 0.4rem 1.2rem; padding:0;'>{items}</ul></div>")
+
+        tips_in_fb = fb.get("improvement_tips")
+        if tips_in_fb and (not extracted_tips or extracted_tips in {"Keep practising.", "Continue practicing structured communication."}):
+            if isinstance(tips_in_fb, list):
+                extracted_tips = "; ".join(str(t).strip() for t in tips_in_fb if str(t).strip())
+            else:
+                extracted_tips = str(tips_in_fb).strip()
+
+        formatted_fb = "".join(parts) if parts else escape(str(raw_feedback))
+    else:
+        formatted_fb = escape(str(raw_feedback))
+
+    if isinstance(extracted_tips, list):
+        formatted_tips = "; ".join(str(t).strip() for t in extracted_tips if str(t).strip())
+    else:
+        formatted_tips = str(extracted_tips or "Keep practising.").strip()
+
+    return formatted_fb, formatted_tips
+
+
 @app.post("/ui/questions/<int:question_id>/evaluate")
 def ui_evaluate_answer(question_id: int):
     answer = request.form.get("answer", "").strip()
@@ -466,21 +520,30 @@ def ui_evaluate_answer(question_id: int):
         return f'<div class="card"><strong>MCP context</strong><br>{escape(payload.get("feedback", "Context retrieved."))}<pre>{escape(str(payload.get("mcp_result", {})))}</pre></div>'
     
     score = payload.get("score", 0)
-    feedback = payload.get("feedback", "No feedback returned.")
-    tips = payload.get("improvement_tips", "Keep practising.")
+    raw_feedback = payload.get("feedback", "No feedback returned.")
+    raw_tips = payload.get("improvement_tips", "Keep practising.")
+    formatted_fb, formatted_tips = format_assessment_content(raw_feedback, raw_tips)
 
     if payload.get("mode") == "multi-agent":
         review = payload.get("review") or {}
+        iterations = payload.get("iterations", 1)
+        verdict = str(review.get("verdict", "approved")).upper()
+        verdict_color = "#059669" if verdict == "APPROVED" else "#d97706"
         return f"""
         <div class="card" style="background:#f8fafc; border: 1px solid #cbd5e1; margin-top: .6rem;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <strong>Release 2 Multi-Agent Coordinated Evaluation</strong>
-            <span style="background:#059669; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.85rem; font-weight:bold;">
-              Score: {score}/100
-            </span>
+            <div>
+              <span style="background:{verdict_color}; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; margin-right: 4px;">
+                Iterations: {iterations} | {escape(verdict)}
+              </span>
+              <span style="background:#059669; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.85rem; font-weight:bold;">
+                Score: {score}/100
+              </span>
+            </div>
           </div>
-          <p style="margin: .5rem 0;"><strong>Worker Assessment:</strong> {escape(str(feedback))}</p>
-          <p style="margin: .5rem 0;"><strong>Improvement Tips:</strong> {escape(str(tips))}</p>
+          <div style="margin: .5rem 0;"><strong>Worker Assessment:</strong> {formatted_fb}</div>
+          <p style="margin: .5rem 0;"><strong>Improvement Tips:</strong> {escape(formatted_tips)}</p>
           <div style="background:#ffffff; border-radius: 6px; padding: .6rem; border: 1px solid #e2e8f0; font-size: 0.85rem;">
             <strong>Reviewer Audit ({review.get('score', 86)}/100):</strong> {escape(str(review.get('critique', 'Verified quality.')))}
           </div>
