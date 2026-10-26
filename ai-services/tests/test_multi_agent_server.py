@@ -235,6 +235,35 @@ class MultiAgentServerUnitTests(unittest.TestCase):
             self.assertEqual(review["verdict"], "approved")
             self.assertEqual(review["score"], 94.0)
 
+    def test_fifteen_iterations_require_human_review(self):
+        result = self.coordinator.coordinate_interview_prep(
+            target_role="Site Reliability Engineer",
+            interview_type="technical",
+            question_count=2,
+            context={"force_iterations": 15},
+            max_iterations=15,
+        )
+        self.assertEqual(result["status"], "pending_human_review")
+        self.assertEqual(result["iterations"], 15)
+        self.assertFalse(result["approved"])
+        self.assertEqual(result["human_decision"]["status"], "pending")
+        self.assertIsNone(result["human_decision"]["decision"])
+        stages = [t["stage"] for t in result["trajectory"]]
+        self.assertIn("execution_iteration_15", stages)
+        self.assertIn("review_iteration_15", stages)
+        self.assertIn("human_governance", stages)
+
+        decision_result = self.coordinator.record_human_decision(
+            run_id=result["run_id"],
+            decision="Accept",
+            reviewer="User",
+            rationale="Approved by user after manual review.",
+        )
+        self.assertEqual(decision_result["status"], "completed")
+        self.assertTrue(decision_result["approved"])
+        self.assertEqual(decision_result["human_decision"]["decision"], "Accept")
+        self.assertEqual(decision_result["human_decision"]["status"], "recorded")
+        self.assertEqual(decision_result["human_decision"]["reviewer"], "User")
     def test_cli_runners_execute_cleanly(self):
         with patch("sys.stdout"):
             run_cli_interview_prep("Platform Engineer", "technical", 2, max_iter=1, as_json=False)
