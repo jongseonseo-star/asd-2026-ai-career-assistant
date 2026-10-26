@@ -95,11 +95,11 @@ def require_positive_integer(data: dict[str, Any], field: str) -> int:
 
 def requested_ai_mode(data: dict[str, Any]) -> str:
     mode = data.get("mode", "multi-agent" if AI_SERVICES_ENABLED else "ai")
-    if mode not in {"multi-agent", "mcp", "mcp-rag", "ai"}:
+    if mode not in {"multi-agent", "multi-agent-loop15", "mcp", "mcp-rag", "ai"}:
         raise ClientInputError("mode must be multi-agent, mcp, mcp-rag, or ai.")
-    if mode in {"multi-agent", "mcp", "mcp-rag"} and not AI_SERVICES_ENABLED:
+    if mode in {"multi-agent", "multi-agent-loop15", "mcp", "mcp-rag"} and not AI_SERVICES_ENABLED:
         raise DependencyError("shared-ai", f"{mode} mode is disabled in this environment.")
-    if mode == "multi-agent" and not MULTI_AGENT_ENABLED:
+    if mode in {"multi-agent", "multi-agent-loop15"} and not MULTI_AGENT_ENABLED:
         raise DependencyError("multi-agent-server", "Multi-Agent service is disabled in this environment.")
     if mode in {"ai", "mcp-rag"} and not OLLAMA_ENABLED:
         raise DependencyError("ollama", "AI generation is disabled in this environment.")
@@ -429,17 +429,23 @@ def generate_questions_for_session(session_id: int):
     if question_count < 1 or question_count > 10:
         raise ClientInputError("question_count must be between 1 and 10.")
 
-    if mode == "multi-agent":
+    if mode in {"multi-agent", "multi-agent-loop15"}:
+        force_iter = 15 if mode == "multi-agent-loop15" or data.get("force_iterations") == 15 else data.get("force_iterations")
+        prep_body = {
+            "target_role": role,
+            "interview_type": interview_type,
+            "question_count": question_count,
+            "session_id": session_id,
+            "max_iterations": 15,
+        }
+        if force_iter:
+            prep_body["force_iterations"] = force_iter
+            prep_body["context"] = {"force_iterations": force_iter}
+
         try:
             ma_res = session.post(
                 f"{MULTI_AGENT_SERVER_URL}/interview/prep",
-                json={
-                    "target_role": role,
-                    "interview_type": interview_type,
-                    "question_count": question_count,
-                    "session_id": session_id,
-                    "max_iterations": 15,
-                },
+                json=prep_body,
                 timeout=MULTI_AGENT_TIMEOUT,
             )
             ma_res.raise_for_status()
@@ -451,38 +457,56 @@ def generate_questions_for_session(session_id: int):
         if not isinstance(items, list) or not items:
             raise DependencyError("multi-agent-server", "Multi-Agent service did not return any interview questions.", 502)
 
+        is_pending_review = ma_payload.get("status") == "pending_human_review" or not ma_payload.get("approved", True)
+
         created_questions = []
-        for item in items[:question_count]:
-            question = item if isinstance(item, dict) else {"question": str(item)}
-            question_text = question.get("question") or question.get("question_text") or str(question)
-            category = question.get("category") or interview_type or "general"
-            record, record_status = database_request(
-                "POST",
-                "/api/v1/interview-questions",
-                json_body={
+        if not is_pending_review:
+            for item in items[:question_count]:
+                question = item if isinstance(item, dict) else {"question": str(item)}
+                question_text = question.get("question") or question.get("question_text") or str(question)
+                category = question.get("category") or interview_type or "general"
+                record, record_status = database_request(
+                    "POST",
+                    "/api/v1/interview-questions",
+                    json_body={
+                        "session_id": session_id,
+                        "category": str(category).strip()[:80],
+                        "question_text": str(question_text).strip()[:3000],
+                    },
+                )
+                if record_status != 201:
+                    return jsonify(record), record_status
+                created_questions.append(record)
+        else:
+            for idx, item in enumerate(items[:question_count]):
+                q_dict = item if isinstance(item, dict) else {"question": str(item)}
+                q_text = q_dict.get("question") or q_dict.get("question_text") or str(q_dict)
+                cat = q_dict.get("category") or interview_type or "general"
+                created_questions.append({
+                    "id": f"proposed-{idx + 1}",
                     "session_id": session_id,
-                    "category": str(category).strip()[:80],
-                    "question_text": str(question_text).strip()[:3000],
-                },
-            )
-            if record_status != 201:
-                return jsonify(record), record_status
-            created_questions.append(record)
+                    "category": str(cat).strip()[:80],
+                    "question_text": str(q_text).strip()[:3000],
+                    "proposed": True,
+                })
 
         return jsonify({
             "session_id": session_id,
+            "status": ma_payload.get("status", "completed" if not is_pending_review else "pending_human_review"),
+            "run_id": ma_payload.get("run_id"),
             "questions": created_questions,
             "generated_questions": created_questions,
             "count": len(created_questions),
             "mode": mode,
             "release": "Release 2",
-            "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer)",
+            "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human Review)",
             "plan": ma_payload.get("plan"),
             "review": ma_payload.get("review"),
             "trajectory": ma_payload.get("trajectory"),
             "iterations": ma_payload.get("iterations", 1),
-            "approved": ma_payload.get("approved", True),
-            "sources": ["multi-agent://planner", "multi-agent://worker", "multi-agent://reviewer"],
+            "approved": not is_pending_review,
+            "human_decision": ma_payload.get("human_decision"),
+            "sources": ["multi-agent://planner", "multi-agent://worker", "multi-agent://reviewer", "multi-agent://human-review"],
             "confidence": "high",
         }), 200
 
@@ -593,19 +617,25 @@ def evaluate_answer(question_id: int):
     target_role = str(session_payload.get("target_role", "General")).strip()[:200] or "General"
     interview_type = str(session_payload.get("interview_type", "general")).strip()[:80] or "general"
 
-    if mode == "multi-agent":
+    if mode in {"multi-agent", "multi-agent-loop15"}:
+        force_iter = 15 if mode == "multi-agent-loop15" or data.get("force_iterations") == 15 else data.get("force_iterations")
+        eval_body = {
+            "target_role": target_role,
+            "interview_type": interview_type,
+            "question_text": str(question_payload.get("question_text", "")).strip(),
+            "candidate_answer": candidate_answer,
+            "question_id": question_id,
+            "session_id": session_id,
+            "max_iterations": 15,
+        }
+        if force_iter:
+            eval_body["force_iterations"] = force_iter
+            eval_body["context"] = {"force_iterations": force_iter}
+
         try:
             ma_res = session.post(
                 f"{MULTI_AGENT_SERVER_URL}/interview/evaluate",
-                json={
-                    "target_role": target_role,
-                    "interview_type": interview_type,
-                    "question_text": str(question_payload.get("question_text", "")).strip(),
-                    "candidate_answer": candidate_answer,
-                    "question_id": question_id,
-                    "session_id": session_id,
-                    "max_iterations": 15,
-                },
+                json=eval_body,
                 timeout=MULTI_AGENT_TIMEOUT,
             )
             ma_res.raise_for_status()
@@ -640,30 +670,46 @@ def evaluate_answer(question_id: int):
         else:
             tips = str(tips_raw).strip()
 
-        response_payload, response_status = database_request(
-            "POST",
-            "/api/v1/interview-responce",
-            json_body={
+        is_pending_review = ma_payload.get("status") == "pending_human_review" or not ma_payload.get("approved", True)
+
+        response_payload = None
+        if not is_pending_review:
+            response_payload, response_status = database_request(
+                "POST",
+                "/api/v1/interview-responce",
+                json_body={
+                    "question_id": question_id,
+                    "user_answer": candidate_answer,
+                    "ai_feedback": str(feedback).strip()[:4000],
+                    "score": score,
+                    "improvement_tips": str(tips).strip()[:4000],
+                },
+            )
+            if response_status != 201:
+                return jsonify(response_payload), response_status
+
+            answers_payload, answers_status = database_request("GET", "/api/v1/interview-responce", params={"question_id": question_id})
+            if answers_status == 200 and isinstance(answers_payload, list):
+                average = sum(float(item.get("score", 0) or 0) for item in answers_payload) / len(answers_payload)
+                update_payload, update_status = database_request("PUT", f"/api/v1/interview-sessions/{session_id}", json_body={"overall_score": round(average, 2)})
+                if update_status != 200:
+                    return jsonify(update_payload), update_status
+        else:
+            response_payload = {
                 "question_id": question_id,
                 "user_answer": candidate_answer,
                 "ai_feedback": str(feedback).strip()[:4000],
                 "score": score,
                 "improvement_tips": str(tips).strip()[:4000],
-            },
-        )
-        if response_status != 201:
-            return jsonify(response_payload), response_status
-
-        answers_payload, answers_status = database_request("GET", "/api/v1/interview-responce", params={"question_id": question_id})
-        if answers_status == 200 and isinstance(answers_payload, list):
-            average = sum(float(item.get("score", 0) or 0) for item in answers_payload) / len(answers_payload)
-            update_payload, update_status = database_request("PUT", f"/api/v1/interview-sessions/{session_id}", json_body={"overall_score": round(average, 2)})
-            if update_status != 200:
-                return jsonify(update_payload), update_status
+                "pending_review": True,
+            }
 
         return jsonify({
             "session_id": session_id,
             "question_id": question_id,
+            "candidate_answer": candidate_answer,
+            "status": ma_payload.get("status", "completed" if not is_pending_review else "pending_human_review"),
+            "run_id": ma_payload.get("run_id"),
             "mode": mode,
             "release": "Release 2",
             "score": round(score, 2),
@@ -674,8 +720,9 @@ def evaluate_answer(question_id: int):
             "review": ma_payload.get("review"),
             "trajectory": ma_payload.get("trajectory"),
             "iterations": ma_payload.get("iterations", 1),
-            "approved": ma_payload.get("approved", True),
-            "sources": ["multi-agent://planner", "multi-agent://worker", "multi-agent://reviewer"],
+            "approved": not is_pending_review,
+            "human_decision": ma_payload.get("human_decision"),
+            "sources": ["multi-agent://planner", "multi-agent://worker", "multi-agent://reviewer", "multi-agent://human-review"],
             "confidence": "high",
         }), 200
 
@@ -767,6 +814,81 @@ def session_multi_agent_prep(session_id: int):
         return generate_questions_for_session(session_id)
 
 
+@app.route("/api/v1/interview-sessions/<int:session_id>/human-review", methods=["POST"])
+def session_human_review(session_id: int):
+    data = require_json_object()
+    decision = data.get("decision", "Accept")
+    if decision not in {"Accept", "Partially Accept", "Reject"}:
+        raise ClientInputError("decision must be Accept, Partially Accept, or Reject.")
+    reviewer = str(data.get("reviewer", "User")).strip()[:200] or "User"
+    rationale = str(data.get("rationale") or data.get("reason", "")).strip()[:4000]
+    run_id = data.get("run_id")
+    raw_questions = data.get("questions") or []
+
+    session_payload, session_status = database_request("GET", f"/api/v1/interview-sessions/{session_id}")
+    if session_status != 200:
+        return jsonify(session_payload), session_status
+
+    ma_payload = {}
+    try:
+        ma_res = session.post(
+            f"{MULTI_AGENT_SERVER_URL}/interview/prep/decision",
+            json={
+                "run_id": run_id,
+                "session_id": session_id,
+                "decision": decision,
+                "reviewer": reviewer,
+                "rationale": rationale,
+                "questions": raw_questions,
+            },
+            timeout=MULTI_AGENT_TIMEOUT,
+        )
+        if ma_res.status_code == 200:
+            ma_payload = ma_res.json()
+    except Exception:
+        ma_payload = {}
+
+    created_questions = []
+    if decision in {"Accept", "Partially Accept"} and raw_questions:
+        for item in raw_questions:
+            q_dict = item if isinstance(item, dict) else {"question": str(item)}
+            q_text = q_dict.get("question_text") or q_dict.get("question") or str(q_dict)
+            cat = q_dict.get("category") or session_payload.get("interview_type") or "general"
+            record, record_status = database_request(
+                "POST",
+                "/api/v1/interview-questions",
+                json_body={
+                    "session_id": session_id,
+                    "category": str(cat).strip()[:80],
+                    "question_text": str(q_text).strip()[:3000],
+                },
+            )
+            if record_status == 201:
+                created_questions.append(record)
+
+    human_decision = {
+        "status": "recorded",
+        "role": f"Human — Final Decision Maker ({reviewer})",
+        "decision": decision,
+        "reviewer": reviewer,
+        "rationale": rationale,
+    }
+
+    return jsonify({
+        "session_id": session_id,
+        "status": "completed" if decision in {"Accept", "Partially Accept"} else "rejected",
+        "approved": decision in {"Accept", "Partially Accept"},
+        "decision": decision,
+        "human_decision": human_decision,
+        "questions": created_questions,
+        "count": len(created_questions),
+        "trajectory": ma_payload.get("trajectory", []),
+        "mode": "multi-agent",
+        "release": "Release 2",
+        "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human Review)",
+    }), 200
+
+
 @app.route("/api/v1/interview-questions/<int:question_id>/multi-agent-evaluate", methods=["POST"])
 def question_multi_agent_evaluate(question_id: int):
     data = request.get_json(silent=True) or {}
@@ -775,6 +897,96 @@ def question_multi_agent_evaluate(question_id: int):
     data["mode"] = "multi-agent"
     with app.test_request_context(method="POST", json=data):
         return evaluate_answer(question_id)
+
+
+@app.route("/api/v1/interview-questions/<int:question_id>/human-review", methods=["POST"])
+def question_human_review(question_id: int):
+    data = require_json_object()
+    decision = data.get("decision", "Accept")
+    if decision not in {"Accept", "Partially Accept", "Reject"}:
+        raise ClientInputError("decision must be Accept, Partially Accept, or Reject.")
+    reviewer = str(data.get("reviewer", "User")).strip()[:200] or "User"
+    rationale = str(data.get("rationale") or data.get("reason", "")).strip()[:4000]
+    candidate_answer = str(data.get("candidate_answer") or data.get("user_answer") or data.get("answer") or "").strip()[:12000]
+    feedback = str(data.get("feedback") or "Evaluated by user.").strip()[:4000]
+    tips = str(data.get("improvement_tips") or "").strip()[:4000]
+    score = float(data.get("score", 75.0))
+    score = min(max(score, 0.0), 100.0)
+    run_id = data.get("run_id")
+
+    question_payload, question_status = database_request("GET", f"/api/v1/interview-questions/{question_id}")
+    if question_status != 200:
+        return jsonify(question_payload), question_status
+    session_id = question_payload.get("session_id")
+
+    ma_payload = {}
+    try:
+        ma_res = session.post(
+            f"{MULTI_AGENT_SERVER_URL}/interview/evaluate/decision",
+            json={
+                "run_id": run_id,
+                "question_id": question_id,
+                "session_id": session_id,
+                "decision": decision,
+                "reviewer": reviewer,
+                "rationale": rationale,
+                "score": score,
+            },
+            timeout=MULTI_AGENT_TIMEOUT,
+        )
+        if ma_res.status_code == 200:
+            ma_payload = ma_res.json()
+    except Exception:
+        ma_payload = {}
+
+    response_payload = None
+    if decision in {"Accept", "Partially Accept"}:
+        response_payload, response_status = database_request(
+            "POST",
+            "/api/v1/interview-responce",
+            json_body={
+                "question_id": question_id,
+                "user_answer": candidate_answer,
+                "ai_feedback": str(feedback).strip()[:4000],
+                "score": score,
+                "improvement_tips": str(tips).strip()[:4000],
+            },
+        )
+        if response_status != 201:
+            return jsonify(response_payload), response_status
+
+        answers_payload, answers_status = database_request("GET", "/api/v1/interview-responce", params={"question_id": question_id})
+        if answers_status == 200 and isinstance(answers_payload, list):
+            average = sum(float(item.get("score", 0) or 0) for item in answers_payload) / len(answers_payload)
+            update_payload, update_status = database_request("PUT", f"/api/v1/interview-sessions/{session_id}", json_body={"overall_score": round(average, 2)})
+            if update_status != 200:
+                return jsonify(update_payload), update_status
+
+    human_decision = {
+        "status": "recorded",
+        "role": f"Human — Final Decision Maker ({reviewer})",
+        "decision": decision,
+        "reviewer": reviewer,
+        "rationale": rationale,
+        "score": score,
+    }
+
+    return jsonify({
+        "session_id": session_id,
+        "question_id": question_id,
+        "status": "completed" if decision in {"Accept", "Partially Accept"} else "rejected",
+        "approved": decision in {"Accept", "Partially Accept"},
+        "decision": decision,
+        "human_decision": human_decision,
+        "score": score,
+        "feedback": feedback,
+        "improvement_tips": tips,
+        "response": response_payload,
+        "trajectory": ma_payload.get("trajectory", []),
+        "mode": "multi-agent",
+        "release": "Release 2",
+        "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human Review)",
+    }), 200
 
 
 @app.route("/api/v1/multi-agent/status", methods=["GET"])

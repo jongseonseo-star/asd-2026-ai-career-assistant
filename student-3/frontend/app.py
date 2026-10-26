@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 from typing import Any
 
@@ -280,6 +281,7 @@ def ui_sessions():
               <input type="hidden" name="session_id" value="{session['id']}">
               <select name="mode" aria-label="Question generation mode">
                 <option value="multi-agent">Multi-Agent (Release 2)</option>
+                <option value="multi-agent-loop15">Multi-Agent (15 Iterations → Human Review)</option>
                 <option value="mcp-rag">MCP + RAG</option>
                 <option value="mcp">MCP only</option>
                 <option value="ai">AI Mode</option>
@@ -373,40 +375,76 @@ def ui_generate_questions():
 
     if payload.get("status") == "context-only":
         return f'<div class="card"><strong>MCP context</strong><br>{escape(payload.get("feedback", "Context retrieved."))}<pre>{escape(str(payload.get("mcp_result", {})))}</pre></div>'
-    
-    questions = payload.get("generated_questions", [])
-    rows = "".join(
-        f"""
-        <div class="card" style="margin-top: .8rem; border-left: 3px solid #2563eb;">
-          <strong>Q{idx + 1}.</strong> {escape(str(q.get('question_text', q.get('question', 'Question'))))}
-          {f'<br><small style="color:#64748b;">Category: {escape(str(q.get("category", "General")))}</small>' if q.get("category") else ''}
-          <form hx-post="/ui/questions/{q['id']}/evaluate" hx-target="#response-{q['id']}" hx-swap="innerHTML" hx-indicator="#loading-eval-{q['id']}" hx-disabled-elt="find button" style="margin-top:.6rem;">
-            <textarea name="answer" placeholder="Type your answer here" required></textarea>
-            <div style="display:flex; gap:.5rem; align-items:center; margin-top:.4rem; flex-wrap:wrap;">
-              <select name="mode" aria-label="Answer evaluation mode" style="width:auto; flex:1; min-width:180px;">
-                <option value="multi-agent">Multi-Agent (Release 2)</option>
-                <option value="mcp-rag">MCP + RAG</option>
-                <option value="mcp">MCP only</option>
-                <option value="ai">AI Mode</option>
-              </select>
-              <button type="submit" style="white-space:nowrap;">Evaluate answer</button>
-            </div>
-            <div id="loading-eval-{q['id']}" class="htmx-indicator loading-indicator">
-              <span class="spinner"></span>
-              <div>
-                <strong>Evaluating answer...</strong>
-                <div style="font-size:0.8rem; color:#475569; margin-top:2px;">
-                  Coordinating Multi-Agent evaluation (Worker scoring &amp; Reviewer quality audit). Please wait...
-                </div>
+
+    questions = payload.get("generated_questions") or payload.get("questions") or []
+
+    if payload.get("status") == "pending_human_review":
+        run_id = payload.get("run_id", "")
+        review = payload.get("review") or {}
+        iterations = payload.get("iterations", 15)
+        critique = review.get("critique", "Quality audit threshold not met after maximum iterations.")
+        score = review.get("score", 70)
+        proposed_items = "".join(
+            f"""
+            <li style="margin-bottom: 0.5rem;">
+              <strong>Q{idx + 1}.</strong> {escape(str(q.get('question_text', q.get('question', 'Question'))))}
+              {f'<br><small style="color:#64748b;">Category: {escape(str(q.get("category", "General")))}</small>' if q.get("category") else ''}
+            </li>
+            """ for idx, q in enumerate(questions)
+        )
+        questions_json_str = json.dumps(questions)
+
+        return f"""
+        <div class="card" style="border: 2px solid #f59e0b; background: #fffbeb; margin-top: .8rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:#b45309; font-size:1.05rem;">⚠️ Human Review Required (15 Iterations Complete)</strong>
+            <span style="background:#d97706; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; font-weight:bold;">
+              Iterations: {iterations} | NEEDS REVISION
+            </span>
+          </div>
+          <div style="margin-top: 0.6rem; font-size: 0.9rem; color: #78350f;">
+            The Multi-Agent coordinator reached the maximum limit of {iterations} iterations between Planner and Worker.
+            Reviewer scored this {score}/100 with critique: <em>"{escape(str(critique))}"</em>.
+            Human review is now required before these questions can be approved and added to the session.
+          </div>
+          <div style="background:white; border: 1px solid #fed7aa; border-radius:6px; padding:0.8rem; margin: 0.8rem 0;">
+            <strong style="color:#9a3412;">Proposed Questions ({len(questions)}):</strong>
+            <ol style="margin: 0.4rem 0 0.4rem 1.2rem; padding: 0;">
+              {proposed_items}
+            </ol>
+          </div>
+          <form hx-post="/ui/sessions/{session_id}/human-review" hx-target="#session-{session_id}" hx-swap="innerHTML" style="margin-top: 0.8rem;">
+            <input type="hidden" name="session_id" value="{session_id}">
+            <input type="hidden" name="run_id" value="{escape(str(run_id))}">
+            <input type="hidden" name="questions_json" value="{escape(questions_json_str)}">
+            <div style="display:flex; gap: 1rem; flex-wrap:wrap; margin-bottom: 0.6rem;">
+              <div style="flex:1; min-width:180px;">
+                <label style="font-weight:bold; font-size:0.85rem; display:block; margin-bottom:2px;">Reviewer:</label>
+                <input type="text" name="reviewer" value="User" style="width:100%; padding: 5px 8px;">
+              </div>
+              <div style="flex:1; min-width:180px;">
+                <label style="font-weight:bold; font-size:0.85rem; display:block; margin-bottom:2px;">Human Decision:</label>
+                <select name="decision" style="width:100%; padding: 5px 8px;">
+                  <option value="Accept">Accept (Approve all proposed questions)</option>
+                  <option value="Partially Accept">Partially Accept</option>
+                  <option value="Reject">Reject (Discard proposed questions)</option>
+                </select>
               </div>
             </div>
+            <div style="margin-bottom: 0.6rem;">
+              <label style="font-weight:bold; font-size:0.85rem; display:block; margin-bottom:2px;">Review Rationale / Notes:</label>
+              <textarea name="rationale" placeholder="Explain your decision..." style="width:100%; min-height:50px;">Approved after 15 iterations of multi-agent review.</textarea>
+            </div>
+            <button type="submit" style="background:#d97706; color:white; font-weight:bold; padding: 7px 16px; border:none; border-radius:4px; cursor:pointer;">
+              Submit Human Review Decision
+            </button>
           </form>
-          <div id="response-{q['id']}"></div>
         </div>
-        """ for idx, q in enumerate(questions)
-    )
+        """
 
-    if payload.get("mode") == "multi-agent":
+    rows = render_question_cards(questions)
+
+    if payload.get("mode") in {"multi-agent", "multi-agent-loop15"}:
         plan = payload.get("plan") or {}
         review = payload.get("review") or {}
         competency_items = []
@@ -443,6 +481,102 @@ def ui_generate_questions():
     return f'<div class="card"><strong>Generated questions</strong><br><small>Grounding confidence: {escape(payload.get("confidence", "unknown"))} | Sources: {escape(sources)}</small>{rows}</div>'
 
 
+def render_question_cards(questions: list[dict[str, Any]]) -> str:
+    return "".join(
+        f"""
+        <div class="card" style="margin-top: .8rem; border-left: 3px solid #2563eb;">
+          <strong>Q{idx + 1}.</strong> {escape(str(q.get('question_text', q.get('question', 'Question'))))}
+          {f'<br><small style="color:#64748b;">Category: {escape(str(q.get("category", "General")))}</small>' if q.get("category") else ''}
+          <form hx-post="/ui/questions/{q['id']}/evaluate" hx-target="#response-{q['id']}" hx-swap="innerHTML" hx-indicator="#loading-eval-{q['id']}" hx-disabled-elt="find button" style="margin-top:.6rem;">
+            <textarea name="answer" placeholder="Type your answer here" required></textarea>
+            <div style="display:flex; gap:.5rem; align-items:center; margin-top:.4rem; flex-wrap:wrap;">
+              <select name="mode" aria-label="Answer evaluation mode" style="width:auto; flex:1; min-width:180px;">
+                <option value="multi-agent">Multi-Agent (Release 2)</option>
+                <option value="multi-agent-loop15">Multi-Agent (15 Iterations → Human Review)</option>
+                <option value="mcp-rag">MCP + RAG</option>
+                <option value="mcp">MCP only</option>
+                <option value="ai">AI Mode</option>
+              </select>
+              <button type="submit" style="white-space:nowrap;">Evaluate answer</button>
+            </div>
+            <div id="loading-eval-{q['id']}" class="htmx-indicator loading-indicator">
+              <span class="spinner"></span>
+              <div>
+                <strong>Evaluating answer...</strong>
+                <div style="font-size:0.8rem; color:#475569; margin-top:2px;">
+                  Coordinating Multi-Agent evaluation (Worker scoring &amp; Reviewer quality audit). Please wait...
+                </div>
+              </div>
+            </div>
+          </form>
+          <div id="response-{q['id']}"></div>
+        </div>
+        """ for idx, q in enumerate(questions)
+    )
+
+
+@app.post("/ui/sessions/<int:session_id>/human-review")
+def ui_session_human_review(session_id: int):
+    decision = request.form.get("decision", "Accept")
+    reviewer = request.form.get("reviewer", "User").strip() or "User"
+    rationale = request.form.get("rationale", "").strip()
+    run_id = request.form.get("run_id", "").strip()
+    questions_raw = request.form.get("questions_json", "[]")
+    try:
+        questions = json.loads(questions_raw)
+    except Exception:
+        questions = []
+
+    try:
+        payload, status = backend_request(
+            "POST",
+            f"/api/v1/interview-sessions/{session_id}/human-review",
+            json_body={
+                "run_id": run_id,
+                "decision": decision,
+                "reviewer": reviewer,
+                "rationale": rationale,
+                "questions": questions,
+            },
+            timeout=AI_TIMEOUT,
+        )
+    except BackendUnavailable as error:
+        return f'<div class="card">{error}</div>'
+
+    if status != 200:
+        message = payload.get("error", "Human review could not be recorded.") if isinstance(payload, dict) else "Human review failed."
+        return f'<div class="card">{message}</div>'
+
+    if decision == "Reject":
+        return f"""
+        <div class="card" style="border-left: 4px solid #ef4444; background:#fef2f2; margin-top: .8rem;">
+          <strong style="color:#b91c1c;">❌ Human Review: Rejected</strong>
+          <p style="margin: 0.4rem 0 0 0; font-size: 0.9rem;">
+            Decision recorded by <strong>{escape(reviewer)}</strong>: {escape(rationale or 'Proposed questions discarded.')}.
+            No questions were added to this interview session.
+          </p>
+        </div>
+        """
+
+    saved_questions = payload.get("questions", [])
+    rows = render_question_cards(saved_questions)
+    decision_banner = f"""
+    <div class="card" style="background:#ecfdf5; border: 1px solid #a7f3d0; border-left: 4px solid #059669; margin-bottom: 0.8rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong style="color:#065f46;">✅ Human Review Completed ({escape(decision)})</strong>
+        <span style="background:#059669; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; font-weight:bold;">
+          Reviewer: {escape(reviewer)}
+        </span>
+      </div>
+      <div style="margin-top: 0.4rem; font-size: 0.9rem; color:#064e3b;">
+        <strong>Reviewer Rationale:</strong> {escape(rationale or 'Questions approved after review.')}<br>
+        Questions have been persisted and are ready for candidate practice below.
+      </div>
+    </div>
+    """
+    return f'<div class="card">{decision_banner}{rows}</div>'
+
+
 def format_assessment_content(raw_feedback: Any, default_tips: Any = None) -> tuple[str, str]:
     fb = raw_feedback
     extracted_tips = default_tips
@@ -451,14 +585,13 @@ def format_assessment_content(raw_feedback: Any, default_tips: Any = None) -> tu
         trimmed = fb.strip()
         if trimmed.startswith("{") and trimmed.endswith("}"):
             try:
-                import json
                 fb = json.loads(trimmed)
             except Exception:
                 try:
                     import ast
                     fb = ast.literal_eval(trimmed)
                 except Exception:
-                    pass
+                    fb = raw_feedback
 
     if isinstance(fb, dict):
         parts = []
@@ -518,13 +651,80 @@ def ui_evaluate_answer(question_id: int):
 
     if payload.get("status") == "context-only":
         return f'<div class="card"><strong>MCP context</strong><br>{escape(payload.get("feedback", "Context retrieved."))}<pre>{escape(str(payload.get("mcp_result", {})))}</pre></div>'
-    
+
     score = payload.get("score", 0)
     raw_feedback = payload.get("feedback", "No feedback returned.")
     raw_tips = payload.get("improvement_tips", "Keep practising.")
     formatted_fb, formatted_tips = format_assessment_content(raw_feedback, raw_tips)
 
-    if payload.get("mode") == "multi-agent":
+    if payload.get("status") == "pending_human_review":
+        run_id = payload.get("run_id", "")
+        review = payload.get("review") or {}
+        iterations = payload.get("iterations", 15)
+        critique = review.get("critique", "Quality audit threshold not met after maximum iterations.")
+        raw_feedback_str = str(raw_feedback) if not isinstance(raw_feedback, (dict, list)) else json.dumps(raw_feedback)
+        raw_tips_str = str(raw_tips) if not isinstance(raw_tips, list) else "; ".join(str(t) for t in raw_tips)
+
+        return f"""
+        <div class="card" style="border: 2px solid #f59e0b; background: #fffbeb; margin-top: .6rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:#b45309;">⚠️ Human Review Required (15 Iterations Complete)</strong>
+            <span style="background:#d97706; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; font-weight:bold;">
+              Iterations: {iterations} | NEEDS REVISION
+            </span>
+          </div>
+          <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #78350f;">
+            Multi-agent answer evaluation reached the maximum of {iterations} iterations.
+            Reviewer scored worker output {review.get('score', 75)}/100 with critique: <em>"{escape(str(critique))}"</em>.
+            Human review is now required.
+          </div>
+          <div style="background:white; border: 1px solid #fed7aa; border-radius: 6px; padding: .6rem; margin: .6rem 0; font-size: 0.9rem;">
+            <strong>Worker Proposed Score:</strong> {score}/100<br>
+            <strong>Worker Proposed Feedback:</strong> {formatted_fb}<br>
+            <strong>Worker Proposed Tips:</strong> {escape(formatted_tips)}
+          </div>
+          <form hx-post="/ui/questions/{question_id}/human-review" hx-target="#response-{question_id}" hx-swap="innerHTML" style="margin-top: .6rem;">
+            <input type="hidden" name="question_id" value="{question_id}">
+            <input type="hidden" name="run_id" value="{escape(str(run_id))}">
+            <input type="hidden" name="candidate_answer" value="{escape(answer)}">
+            <div style="display:flex; gap: 0.8rem; flex-wrap:wrap; margin-bottom: 0.5rem;">
+              <div style="flex:1; min-width:140px;">
+                <label style="font-weight:bold; font-size:0.85rem; display:block;">Reviewer:</label>
+                <input type="text" name="reviewer" value="User" style="width:100%; padding: 4px 6px;">
+              </div>
+              <div style="flex:1; min-width:140px;">
+                <label style="font-weight:bold; font-size:0.85rem; display:block;">Decision:</label>
+                <select name="decision" style="width:100%; padding: 4px 6px;">
+                  <option value="Accept">Accept</option>
+                  <option value="Partially Accept">Partially Accept</option>
+                  <option value="Reject">Reject</option>
+                </select>
+              </div>
+              <div style="width:100px;">
+                <label style="font-weight:bold; font-size:0.85rem; display:block;">Score (0-100):</label>
+                <input type="number" name="score" min="0" max="100" value="{score}" style="width:100%; padding: 4px 6px;">
+              </div>
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+              <label style="font-weight:bold; font-size:0.85rem; display:block;">Final Feedback:</label>
+              <textarea name="feedback" style="width:100%; min-height:45px;">{escape(raw_feedback_str)}</textarea>
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+              <label style="font-weight:bold; font-size:0.85rem; display:block;">Improvement Tips:</label>
+              <input type="text" name="improvement_tips" value="{escape(raw_tips_str)}" style="width:100%; padding: 4px 6px;">
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+              <label style="font-weight:bold; font-size:0.85rem; display:block;">Reviewer Notes / Rationale:</label>
+              <input type="text" name="rationale" value="Approved by user after 15 iterations." style="width:100%; padding: 4px 6px;">
+            </div>
+            <button type="submit" style="background:#d97706; color:white; font-weight:bold; padding: 6px 14px; border:none; border-radius:4px; cursor:pointer;">
+              Submit Human Evaluation Decision
+            </button>
+          </form>
+        </div>
+        """
+
+    if payload.get("mode") in {"multi-agent", "multi-agent-loop15"}:
         review = payload.get("review") or {}
         iterations = payload.get("iterations", 1)
         verdict = str(review.get("verdict", "approved")).upper()
@@ -554,10 +754,78 @@ def ui_evaluate_answer(question_id: int):
     return f"""
     <div class="card">
       <strong>Score:</strong> {score}<br>
-      <strong>Feedback:</strong> {feedback}<br>
-      <strong>Improvement tips:</strong> {tips}
+      <strong>Feedback:</strong> {formatted_fb}<br>
+      <strong>Improvement tips:</strong> {formatted_tips}
     <br><strong>Grounding confidence:</strong> {escape(payload.get("confidence", "unknown"))}
     <br><strong>Sources:</strong> {escape(sources)}
+    </div>
+    """
+
+
+@app.post("/ui/questions/<int:question_id>/human-review")
+def ui_question_human_review(question_id: int):
+    decision = request.form.get("decision", "Accept")
+    reviewer = request.form.get("reviewer", "User").strip() or "User"
+    rationale = request.form.get("rationale", "").strip()
+    run_id = request.form.get("run_id", "").strip()
+    candidate_answer = request.form.get("candidate_answer", "").strip()
+    feedback = request.form.get("feedback", "").strip()
+    tips = request.form.get("improvement_tips", "").strip()
+    score = float(request.form.get("score", 75))
+
+    try:
+        payload, status = backend_request(
+            "POST",
+            f"/api/v1/interview-questions/{question_id}/human-review",
+            json_body={
+                "run_id": run_id,
+                "decision": decision,
+                "reviewer": reviewer,
+                "rationale": rationale,
+                "candidate_answer": candidate_answer,
+                "feedback": feedback,
+                "improvement_tips": tips,
+                "score": score,
+            },
+            timeout=AI_TIMEOUT,
+        )
+    except BackendUnavailable as error:
+        return f'<div class="card">{error}</div>'
+
+    if status != 200:
+        message = payload.get("error", "Human review could not be recorded.") if isinstance(payload, dict) else "Human review failed."
+        return f'<div class="card">{message}</div>'
+
+    if decision == "Reject":
+        return f"""
+        <div class="card" style="border-left: 4px solid #ef4444; background:#fef2f2; margin-top: .6rem;">
+          <strong style="color:#b91c1c;">❌ Evaluation Rejected by Human Reviewer ({escape(reviewer)})</strong>
+          <p style="margin: 0.3rem 0 0 0; font-size: 0.9rem;">
+            {escape(rationale or 'Evaluation discarded. You may re-submit your answer.')}
+          </p>
+        </div>
+        """
+
+    final_score = payload.get("score", score)
+    formatted_fb, formatted_tips = format_assessment_content(payload.get("feedback", feedback), payload.get("improvement_tips", tips))
+    return f"""
+    <div class="card" style="background:#f8fafc; border: 1px solid #cbd5e1; margin-top: .6rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong>Release 2 Multi-Agent Coordinated Evaluation</strong>
+        <div>
+          <span style="background:#059669; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; margin-right: 4px;">
+            Human Review: {escape(decision.upper())}
+          </span>
+          <span style="background:#059669; color:white; padding: 2px 8px; border-radius: 999px; font-size: 0.85rem; font-weight:bold;">
+            Score: {final_score}/100
+          </span>
+        </div>
+      </div>
+      <div style="margin: .5rem 0;"><strong>Final Feedback:</strong> {formatted_fb}</div>
+      <p style="margin: .5rem 0;"><strong>Improvement Tips:</strong> {escape(formatted_tips)}</p>
+      <div style="background:#ecfdf5; border-radius: 6px; padding: .6rem; border: 1px solid #a7f3d0; font-size: 0.85rem;">
+        <strong>Human Decision ({escape(reviewer)}):</strong> {escape(rationale or 'Approved by human reviewer.')}
+      </div>
     </div>
     """
 
