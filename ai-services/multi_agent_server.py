@@ -542,9 +542,13 @@ class ReviewerAgent:
             return parsed
 
         # Deterministic evaluation logic
-        # If iteration > 1, or deliverables are already high quality, approve.
         is_question_prep = "questions" in work
         is_answer_eval = "score" in work
+        force_iter = int(
+            (plan.get("force_iterations") if isinstance(plan, dict) else 0)
+            or (work.get("force_iterations") if isinstance(work, dict) else 0)
+            or 0
+        )
 
         if is_question_prep:
             questions = work.get("questions", [])
@@ -552,8 +556,16 @@ class ReviewerAgent:
             has_key_points = all("key_points" in q for q in questions if isinstance(q, dict))
             is_valid = len(questions) > 0 and has_categories and has_key_points
 
-            score = 88.0 if is_valid else 68.0
-            verdict = "approved" if (score >= 80.0 or iteration >= max_iterations) else "needs_revision"
+            if force_iter > 0 and iteration < force_iter:
+                score = min(65.0 + (iteration * 0.7), 75.0)
+                verdict = "needs_revision"
+            elif force_iter > 0 and iteration >= force_iter:
+                score = 76.0
+                verdict = "needs_revision"
+            else:
+                score = 88.0 if is_valid else 68.0
+                verdict = "approved" if score >= 80.0 else "needs_revision"
+
             strengths = [
                 "Role alignment is clear and targets core competencies.",
                 "Questions contain clear evaluation criteria and focus areas.",
@@ -562,8 +574,16 @@ class ReviewerAgent:
             recs = ["Ensure candidate answers are prompted for measurable metrics and technical edge cases."]
         else:
             cand_score = work.get("score", 70.0)
-            score = 86.0 if cand_score > 0 else 60.0
-            verdict = "approved" if (score >= 80.0 or iteration >= max_iterations) else "needs_revision"
+            if force_iter > 0 and iteration < force_iter:
+                score = min(60.0 + (iteration * 0.8), 75.0)
+                verdict = "needs_revision"
+            elif force_iter > 0 and iteration >= force_iter:
+                score = 76.0
+                verdict = "needs_revision"
+            else:
+                score = 86.0 if cand_score > 0 else 60.0
+                verdict = "approved" if score >= 80.0 else "needs_revision"
+
             strengths = [
                 "Evaluation includes balanced strengths and actionable improvement tips.",
                 "Scoring aligns with rubric dimensions.",
@@ -593,6 +613,9 @@ class ReviewerAgent:
 
 
 # Multi-Agent Coordinator
+coordinator_runs: dict[str, dict[str, Any]] = {}
+
+
 class MultiAgentCoordinator:
     """Coordinates the Planner -> Worker -> Reviewer execution loop."""
 
@@ -600,6 +623,56 @@ class MultiAgentCoordinator:
         self.planner = planner or PlannerAgent()
         self.worker = worker or WorkerAgent()
         self.reviewer = reviewer or ReviewerAgent()
+
+    def record_human_decision(
+        self,
+        run_id: str | None,
+        decision: str,
+        reviewer: str = "User",
+        rationale: str = "",
+        correction: str = "",
+        fallback_data: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        result = coordinator_runs.get(run_id) if run_id else None
+        if result is None:
+            if fallback_data and isinstance(fallback_data, dict):
+                result = dict(fallback_data)
+                result.setdefault("trajectory", [])
+            else:
+                result = {
+                    "run_id": run_id or f"run-{int(time.time() * 1000)}",
+                    "status": "completed",
+                    "approved": decision in {"Accept", "Partially Accept"},
+                    "trajectory": [],
+                }
+
+        is_approved = decision in {"Accept", "Partially Accept"}
+        human_decision = {
+            "status": "recorded",
+            "role": f"Human — Final Decision Maker ({reviewer})",
+            "decision": decision,
+            "reviewer": reviewer,
+            "rationale": rationale,
+            "correction": correction,
+            "recorded_at": utc_now_iso(),
+            "available_decisions": ["Accept", "Partially Accept", "Reject"],
+            "authority": "Grants final approval decision (Accept, Partially Accept, or Reject).",
+        }
+        result["human_decision"] = human_decision
+        result["status"] = "completed" if is_approved else "rejected"
+        result["approved"] = is_approved
+
+        result.setdefault("trajectory", []).append({
+            "stage": "human_governance",
+            "agent": f"Human — Final Decision Maker ({reviewer})",
+            "timestamp": utc_now_iso(),
+            "action": f"Recorded human review decision: {decision}",
+            "output_summary": rationale or f"User decision: {decision}",
+            "details": human_decision,
+        })
+        if run_id:
+            coordinator_runs[run_id] = result
+        return result
 
     def coordinate_interview_prep(
         self,
@@ -614,6 +687,9 @@ class MultiAgentCoordinator:
 
         # Step 1: Planner creates the preparation curriculum plan
         plan = self.planner.plan_interview_prep(target_role, interview_type, question_count, context)
+        if isinstance(context, dict) and "force_iterations" in context:
+            plan["force_iterations"] = int(context["force_iterations"])
+
         trajectory.append({
             "stage": "planning",
             "agent": self.planner.name,
@@ -634,6 +710,8 @@ class MultiAgentCoordinator:
 
             # Worker executes
             work = self.worker.execute_interview_prep(plan, question_count, reviewer_feedback)
+            if "force_iterations" in plan:
+                work["force_iterations"] = plan["force_iterations"]
             trajectory.append({
                 "stage": f"execution_iteration_{iteration}",
                 "agent": self.worker.name,
@@ -663,30 +741,49 @@ class MultiAgentCoordinator:
             reviewer_feedback = review
 
         duration = round(time.monotonic() - started, 3)
-        human_status = "Accept" if final_review.get("verdict") == "approved" else "Partially Accept"
-        human_decision = {
-            "role": "Human — Final Decision Maker",
-            "decision": human_status,
-            "available_decisions": ["Accept", "Partially Accept", "Reject"],
-            "authority": "Grants final approval decision (Accept, Partially Accept, or Reject).",
-        }
+        is_approved = final_review.get("verdict") == "approved" or float(final_review.get("score", 0)) >= 80.0
+        run_id = f"prep-{int(time.time() * 1000)}"
+
+        if is_approved:
+            workflow_status = "completed"
+            human_decision = {
+                "status": "recorded",
+                "role": "Human — Final Decision Maker",
+                "decision": "Accept",
+                "available_decisions": ["Accept", "Partially Accept", "Reject"],
+                "authority": "Grants final approval decision (Accept, Partially Accept, or Reject).",
+            }
+            action_desc = "Presented to Human Decision Maker: decision=Accept"
+        else:
+            workflow_status = "pending_human_review"
+            human_decision = {
+                "status": "pending",
+                "role": "Human — Final Decision Maker (User)",
+                "decision": None,
+                "available_decisions": ["Accept", "Partially Accept", "Reject"],
+                "authority": "Grants final approval decision (Accept, Partially Accept, or Reject). Must be reviewed by user.",
+                "reason": f"Deliverables still need review after {iteration} iterations (score={final_review.get('score')}). User review required.",
+            }
+            action_desc = f"Deliverables still need review after {iteration} iterations: Escalated to user for Human Review."
+
         trajectory.append({
             "stage": "human_governance",
             "agent": "Human — Final Decision Maker",
             "timestamp": utc_now_iso(),
-            "action": f"Presented to Human Decision Maker: decision={human_status}",
+            "action": action_desc,
             "output_summary": human_decision["authority"],
             "details": human_decision,
         })
 
-        return {
-            "status": "completed",
+        result = {
+            "run_id": run_id,
+            "status": workflow_status,
             "release": "Release 2",
-            "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human)",
+            "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human Review)",
             "target_role": target_role,
             "interview_type": interview_type,
             "iterations": iteration,
-            "approved": final_review.get("verdict") == "approved",
+            "approved": is_approved,
             "plan": plan,
             "work": final_work,
             "review": final_review,
@@ -695,6 +792,8 @@ class MultiAgentCoordinator:
             "trajectory": trajectory,
             "duration_seconds": duration,
         }
+        coordinator_runs[run_id] = result
+        return result
 
     def coordinate_answer_evaluation(
         self,
@@ -779,6 +878,9 @@ class MultiAgentCoordinator:
             "details": plan,
         })
 
+        if isinstance(context, dict) and "force_iterations" in context:
+            plan["force_iterations"] = int(context["force_iterations"])
+
         iteration = 0
         reviewer_feedback: dict[str, Any] | None = None
         final_work: dict[str, Any] = {}
@@ -789,6 +891,8 @@ class MultiAgentCoordinator:
 
             # Worker evaluates
             work = self.worker.execute_answer_evaluation(plan, question, candidate_answer, reviewer_feedback)
+            if "force_iterations" in plan:
+                work["force_iterations"] = plan["force_iterations"]
             trajectory.append({
                 "stage": f"execution_iteration_{iteration}",
                 "agent": self.worker.name,
@@ -818,30 +922,49 @@ class MultiAgentCoordinator:
             reviewer_feedback = review
 
         duration = round(time.monotonic() - started, 3)
-        human_status = "Accept" if final_review.get("verdict") == "approved" else "Partially Accept"
-        human_decision = {
-            "role": "Human — Final Decision Maker",
-            "decision": human_status,
-            "available_decisions": ["Accept", "Partially Accept", "Reject"],
-            "authority": "Grants final approval decision (Accept, Partially Accept, or Reject).",
-        }
+        is_approved = final_review.get("verdict") == "approved" or float(final_review.get("score", 0)) >= 80.0
+        run_id = f"eval-{int(time.time() * 1000)}"
+
+        if is_approved:
+            workflow_status = "completed"
+            human_decision = {
+                "status": "recorded",
+                "role": "Human — Final Decision Maker",
+                "decision": "Accept",
+                "available_decisions": ["Accept", "Partially Accept", "Reject"],
+                "authority": "Grants final approval decision (Accept, Partially Accept, or Reject).",
+            }
+            action_desc = "Presented to Human Decision Maker: decision=Accept"
+        else:
+            workflow_status = "pending_human_review"
+            human_decision = {
+                "status": "pending",
+                "role": "Human — Final Decision Maker (User)",
+                "decision": None,
+                "available_decisions": ["Accept", "Partially Accept", "Reject"],
+                "authority": "Grants final approval decision (Accept, Partially Accept, or Reject). Must be reviewed by user.",
+                "reason": f"Evaluation still needs review after {iteration} iterations (score={final_review.get('score')}). User review required.",
+            }
+            action_desc = f"Evaluation still needs review after {iteration} iterations: Escalated to user for Human Review."
+
         trajectory.append({
             "stage": "human_governance",
             "agent": "Human — Final Decision Maker",
             "timestamp": utc_now_iso(),
-            "action": f"Presented to Human Decision Maker: decision={human_status}",
+            "action": action_desc,
             "output_summary": human_decision["authority"],
             "details": human_decision,
         })
 
-        return {
-            "status": "completed",
+        result = {
+            "run_id": run_id,
+            "status": workflow_status,
             "release": "Release 2",
-            "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human)",
+            "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human Review)",
             "target_role": target_role,
             "question": question,
             "iterations": iteration,
-            "approved": final_review.get("verdict") == "approved",
+            "approved": is_approved,
             "score": final_work.get("score", 75.0),
             "feedback": final_work.get("feedback", ""),
             "improvement_tips": final_work.get("improvement_tips", []),
@@ -852,6 +975,8 @@ class MultiAgentCoordinator:
             "trajectory": trajectory,
             "duration_seconds": duration,
         }
+        coordinator_runs[run_id] = result
+        return result
 
 
 coordinator = MultiAgentCoordinator()
@@ -1030,13 +1155,34 @@ def interview_prep_route():
     q_count = max(1, min(int(data.get("question_count", 3)), 10))
     max_iter = max(1, min(int(data.get("max_iterations", 15)), 15))
 
+    context = data.get("context") or {}
+    if not isinstance(context, dict):
+        context = {}
+    if "force_iterations" in data:
+        context["force_iterations"] = int(data["force_iterations"])
+    if "needs_revision" in data:
+        context["needs_revision"] = bool(data["needs_revision"])
+
     result = coordinator.coordinate_interview_prep(
         target_role=role,
         interview_type=itype,
         question_count=q_count,
-        context=data.get("context"),
+        context=context,
         max_iterations=max_iter,
     )
+    return jsonify(result), 200
+
+
+@app.post("/interview/prep/decision")
+@app.post("/interview/prep/<run_id>/decision")
+def interview_prep_decision_route(run_id: str | None = None):
+    data = request.get_json(silent=True) or {}
+    rid = run_id or data.get("run_id")
+    decision = data.get("decision", "Accept")
+    reviewer = data.get("reviewer", "Candidate")
+    rationale = data.get("rationale") or data.get("reason", "")
+    correction = data.get("correction", "")
+    result = coordinator.record_human_decision(rid, decision, reviewer, rationale, correction, fallback_data=data)
     return jsonify(result), 200
 
 
@@ -1051,13 +1197,34 @@ def interview_evaluate_route():
     if not ans:
         return jsonify({"error": "candidate_answer is required for evaluation."}), 400
 
+    context = data.get("context") or {}
+    if not isinstance(context, dict):
+        context = {}
+    if "force_iterations" in data:
+        context["force_iterations"] = int(data["force_iterations"])
+    if "needs_revision" in data:
+        context["needs_revision"] = bool(data["needs_revision"])
+
     result = coordinator.coordinate_answer_evaluation(
         target_role=role,
         question=q,
         candidate_answer=ans,
-        context=data.get("context"),
+        context=context,
         max_iterations=max_iter,
     )
+    return jsonify(result), 200
+
+
+@app.post("/interview/evaluate/decision")
+@app.post("/interview/evaluate/<run_id>/decision")
+def interview_evaluate_decision_route(run_id: str | None = None):
+    data = request.get_json(silent=True) or {}
+    rid = run_id or data.get("run_id")
+    decision = data.get("decision", "Accept")
+    reviewer = data.get("reviewer", "Evaluator")
+    rationale = data.get("rationale") or data.get("reason", "")
+    correction = data.get("correction", "")
+    result = coordinator.record_human_decision(rid, decision, reviewer, rationale, correction, fallback_data=data)
     return jsonify(result), 200
 
 
