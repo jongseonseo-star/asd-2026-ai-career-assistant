@@ -1,0 +1,17 @@
+{
+  "verified_at_utc": "2026-10-22T05:42:22.879821+00:00",
+  "workflow_id": "5bb2a18dab9b4355ba0a7b9b790edb6f",
+  "source": "ai-services/logs/multi-agent/resume/5bb2a18dab9b4355ba0a7b9b790edb6f.json",
+  "source_sha256": "f6f2fbf5cb7041aeab60163e2eb8cc344a2fcc91a2a0be86264d6735810c0d80",
+  "status": "rejected",
+  "human_decision": {
+    "status": "recorded",
+    "decision": "reject",
+    "reviewer": "Tomohisa Tamao",
+    "rationale": "I reject this output because the Worker treats missing evidence of Django or FastAPI experience as proof that the candidate lacks that experience. The Reviewer also attributes a claim about experience beyond Flask to the candidate, although no such claim appears in the supplied records. The assessment should distinguish missing information from a confirmed skill gap.",
+    "correction": "",
+    "recorded_at_utc": "2026-10-22T05:41:48.563929+00:00"
+  },
+  "method": "User-approved decision submitted via Safari UI; rejected status and persisted workflow record verified.",
+  "new_model_run_by_assistant": false
+}

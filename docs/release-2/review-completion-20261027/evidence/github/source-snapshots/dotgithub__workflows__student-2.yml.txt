@@ -1,0 +1,416 @@
+name: Student 2 - Build and Validate
+
+on:
+  # Release 2: validate each relevant push/PR and retain manual/reusable entry points.
+  push:
+    paths:
+      - "student-2/**"
+      - "ai-services/**"
+      - ".github/workflows/student-2.yml"
+      - ".pre-commit-config.yaml"
+      - "scripts/security_checks.py"
+      - "scripts/security-ruff.toml"
+      - "scripts/security_scope_tests.py"
+      - "docker-compose.yml"
+  pull_request:
+    paths:
+      - "student-2/**"
+      - "ai-services/**"
+      - ".github/workflows/student-2.yml"
+      - ".pre-commit-config.yaml"
+      - "scripts/security_checks.py"
+      - "scripts/security-ruff.toml"
+      - "scripts/security_scope_tests.py"
+      - "docker-compose.yml"
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: student-2-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-student-2:
+    name: Build, smoke-test, and collect evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      COMPOSE_FILE: student-2/compose.local.yml
+      COMPOSE_PROJECT: student2-ci
+      REPORT_DIR: reports/student-2
+      # CI must not contact a developer's model or shared AI services.
+      OLLAMA_ENABLED: "false"
+      AI_SERVICES_ENABLED: "false"
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Prepare evidence directory
+        run: mkdir -p "$REPORT_DIR"
+
+      - name: Validate Python syntax
+        run: |
+          python -m py_compile student-2/database/init_db.py
+          python -m py_compile student-2/database/app.py
+          python -m py_compile student-2/backend/app.py student-2/backend/feedback_contract.py
+          python -m compileall -q ai-services
+          python -m py_compile student-2/frontend/app.py
+
+      - name: Install test dependencies
+        run: python -m pip install -r student-2/backend/requirements.txt -r ai-services/requirements.txt pytest
+
+      - name: Test resume grounding and failure handling without external AI
+        id: pytest
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m pytest student-2/tests ai-services/tests -q \
+            --junitxml="$REPORT_DIR/pytest-results.xml" 2>&1 | tee "$REPORT_DIR/pytest.log"
+
+      - name: Validate Docker Compose configuration
+        run: |
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            config -q
+
+      - name: Build Student 2 Docker images
+        run: |
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            build
+
+      - name: Start Student 2 services
+        run: |
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            up -d
+
+      - name: Run retry-based smoke checks
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wait_for_url() {
+            local service_name="$1"
+            local url="$2"
+            local output_file="$3"
+            local attempts=8
+            local delay_seconds=2
+            local status_code=""
+
+            for attempt in $(seq 1 "$attempts"); do
+              status_code="$(
+                curl \
+                  --silent \
+                  --show-error \
+                  --output "$output_file" \
+                  --write-out "%{http_code}" \
+                  "$url" || true
+              )"
+
+              if [[ "$status_code" == "200" ]]; then
+                echo "$service_name is ready on attempt $attempt."
+                cat "$output_file"
+                echo
+                return 0
+              fi
+
+              echo \
+                "$service_name is not ready yet " \
+                "(HTTP ${status_code:-000}, attempt $attempt/$attempts)."
+
+              sleep "$delay_seconds"
+            done
+
+            echo "::error::$service_name did not become ready."
+            return 1
+          }
+
+          wait_for_url \
+            "Student 2 Database" \
+            "http://127.0.0.1:5002/health" \
+            "$REPORT_DIR/database-health.json"
+
+          wait_for_url \
+            "Student 2 Backend" \
+            "http://127.0.0.1:5001/ready" \
+            "$REPORT_DIR/backend-readiness.json"
+
+          wait_for_url \
+            "Student 2 Frontend" \
+            "http://127.0.0.1:8082/ready" \
+            "$REPORT_DIR/frontend-readiness.json"
+
+      - name: Validate seed records and API responses
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -fsS \
+            http://127.0.0.1:5001/api/v1/profiles \
+            > "$REPORT_DIR/profiles.json"
+
+          curl -fsS \
+            http://127.0.0.1:5001/api/v1/resumes \
+            > "$REPORT_DIR/resumes.json"
+
+          curl -fsS \
+            http://127.0.0.1:5001/api/v1/skills \
+            > "$REPORT_DIR/skills.json"
+
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          report_dir = Path(os.environ["REPORT_DIR"])
+
+          minimums = {
+              "profiles": 10,
+              "resumes": 10,
+              "skills": 10,
+          }
+
+          counts = {}
+
+          for resource, minimum in minimums.items():
+              file_path = report_dir / f"{resource}.json"
+              records = json.loads(file_path.read_text(encoding="utf-8"))
+
+              if not isinstance(records, list):
+                  raise SystemExit(
+                      f"{resource} endpoint did not return a JSON list."
+                  )
+
+              count = len(records)
+              counts[resource] = count
+
+              if count < minimum:
+                  raise SystemExit(
+                      f"{resource} has {count} records; "
+                      f"minimum required is {minimum}."
+                  )
+
+          output = report_dir / "seed-counts.json"
+          output.write_text(
+              json.dumps(counts, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          print(json.dumps(counts, indent=2))
+          PY
+
+      - name: Validate AI dependency status handling
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            exec -T student-2-backend python -c \
+            'import app,json; print(json.dumps({"ai_services_enabled":app.AI_SERVICES_ENABLED,"ollama_enabled":app.OLLAMA_ENABLED}))' \
+            > "$REPORT_DIR/backend-ai-configuration.json"
+
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from urllib.error import HTTPError
+          from urllib.request import Request, urlopen
+
+          report_dir = Path(os.environ["REPORT_DIR"])
+          configuration = json.loads((report_dir / "backend-ai-configuration.json").read_text())
+          if configuration != {"ai_services_enabled": False, "ollama_enabled": False}:
+              raise SystemExit("Running backend must have MCP/RAG and Ollama disabled in CI.")
+
+          resumes = json.loads((report_dir / "resumes.json").read_text())
+          resume = resumes[0]
+          requests = [
+              ("ai-status", "/api/v1/ai/status", None),
+              ("ai-feedback-disabled", "/api/v1/ai/resume-feedback",
+               {"profile_id": resume["candidate_profile_id"], "resume_id": resume["id"]}),
+          ]
+          for name, path, body in requests:
+              request = Request("http://127.0.0.1:5001" + path,
+                  data=json.dumps(body).encode() if body is not None else None,
+                  headers={"Content-Type": "application/json"} if body is not None else {})
+              try:
+                  response = urlopen(request, timeout=10)
+              except HTTPError as error:
+                  response = error
+              with response:
+                  status = response.code
+                  payload = json.load(response)
+              (report_dir / f"{name}.json").write_text(json.dumps(payload, indent=2) + "\n")
+              (report_dir / f"{name}-http-code.txt").write_text(str(status) + "\n")
+              if (status != 503 or not isinstance(payload, dict)
+                      or payload.get("dependency") != "ollama"
+                      or "disabled" not in payload.get("error", "").lower()
+                      or "feedback" in payload):
+                  raise SystemExit(f"{name} must explicitly report disabled generation with HTTP 503.")
+              print(f"{name}: HTTP 503, generation explicitly disabled.")
+          PY
+
+      - name: Capture Compose status and logs
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "$REPORT_DIR"
+
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            ps --all \
+            > "$REPORT_DIR/compose-ps.txt" 2>&1 || true
+
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            logs --no-color \
+            > "$REPORT_DIR/compose-logs.txt" 2>&1 || true
+
+      - name: Create CI evidence summary
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+          PYTEST_OUTCOME: ${{ steps.pytest.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json
+          import hashlib
+          import os
+          import sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          sys.path.insert(0, str(Path("student-2").resolve()))
+          from testing_review import read_junit
+
+          report_dir = Path(os.environ["REPORT_DIR"])
+          report_dir.mkdir(parents=True, exist_ok=True)
+
+          pytest_result = read_junit(report_dir / "pytest-results.xml")
+          pytest_result["step_outcome"] = os.environ.get("PYTEST_OUTCOME") or "not-recorded"
+          if pytest_result["step_outcome"] == "failure":
+              pytest_result["status"] = "FAIL"
+          elif pytest_result["step_outcome"] != "success":
+              pytest_result["status"] = "INCOMPLETE"
+
+          counts_path = report_dir / "seed-counts.json"
+          counts = {}
+
+          if counts_path.exists():
+              counts = json.loads(
+                  counts_path.read_text(encoding="utf-8")
+              )
+
+          configuration_path = report_dir / "backend-ai-configuration.json"
+          configuration = {}
+          if configuration_path.exists():
+              try:
+                  configuration = json.loads(configuration_path.read_text(encoding="utf-8"))
+                  if not isinstance(configuration, dict):
+                      configuration = {}
+              except ValueError:
+                  pass
+
+          report = {
+              "execution_source": "github-actions",
+              "ai_services_enabled": configuration.get("ai_services_enabled"),
+              "ollama_enabled": configuration.get("ollama_enabled"),
+              "workflow_sha256": hashlib.sha256(Path(".github/workflows/student-2.yml").read_bytes()).hexdigest(),
+              "workflow": os.environ.get("GITHUB_WORKFLOW"),
+              "run_id": os.environ.get("GITHUB_RUN_ID"),
+              "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+              "run_url": os.environ.get("RUN_URL"),
+              "repository": os.environ.get("GITHUB_REPOSITORY"),
+              "commit_sha": os.environ.get("GITHUB_SHA"),
+              "ref_name": os.environ.get("GITHUB_REF_NAME"),
+              "event_name": os.environ.get("GITHUB_EVENT_NAME"),
+              "job_status": os.environ.get("JOB_STATUS"),
+              "job_status_scope": "Snapshot before teardown and artifact upload; verify the final GitHub run conclusion.",
+              "pytest": pytest_result,
+              "security_gate_status": "not-evaluated-in-this-workflow",
+              "generated_at_utc": datetime.now(
+                  timezone.utc
+              ).isoformat(),
+              "record_counts": counts,
+          }
+
+          (report_dir / "report.json").write_text(
+              json.dumps(report, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          markdown = f"""# Student 2 CI Evidence
+
+          - Workflow: {report['workflow']}
+          - Run ID: {report['run_id']}
+          - Run attempt: {report['run_attempt']}
+          - Commit SHA: {report['commit_sha']}
+          - Branch or ref: {report['ref_name']}
+          - Event: {report['event_name']}
+          - Job status: {report['job_status']}
+          - Status scope: {report['job_status_scope']}
+          - Pytest outcome: {pytest_result['step_outcome']}
+          - Pytest evidence: {pytest_result['status']}
+          - Tests: {pytest_result.get('tests', 'not recorded')}
+          - Failures: {pytest_result.get('failures', 'not recorded')}
+          - Errors: {pytest_result.get('errors', 'not recorded')}
+          - Skipped: {pytest_result.get('skipped', 'not recorded')}
+          - Security gate: not evaluated here; CI success does not waive pre-commit findings.
+          - Generated at: {report['generated_at_utc']}
+          - Profiles: {counts.get('profiles', 'not recorded')}
+          - Resumes: {counts.get('resumes', 'not recorded')}
+          - Skills: {counts.get('skills', 'not recorded')}
+          """
+
+          (report_dir / "report.md").write_text(
+              markdown,
+              encoding="utf-8",
+          )
+
+          # Lab 11 evidence names; this isolated artifact contains one run snapshot.
+          (report_dir / "test-results.md").write_text(markdown, encoding="utf-8")
+          (report_dir / "test-audit.jsonl").write_text(
+              json.dumps(report) + "\n", encoding="utf-8"
+          )
+
+          (report_dir / "run-view.md").write_text(
+              f"# GitHub Actions Run\n\n{report['run_url']}\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Tear down Student 2 services
+        if: always()
+        run: |
+          docker compose \
+            -p "$COMPOSE_PROJECT" \
+            -f "$COMPOSE_FILE" \
+            down -v --remove-orphans
+
+      - name: Upload Student 2 CI evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: student-2-ci-evidence-${{ github.run_id }}
+          path: reports/student-2/
+          if-no-files-found: error
+          retention-days: 14
+

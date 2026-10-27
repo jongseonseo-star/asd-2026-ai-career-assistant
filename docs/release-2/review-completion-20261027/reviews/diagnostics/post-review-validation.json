@@ -1,0 +1,455 @@
+{
+  "kind": "post_review_validation_of_saved_real_executions",
+  "generated_at_utc": "2026-10-27T00:12:50.325167+00:00",
+  "application_evidence_target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "auditor_scope": "Read saved files, verify hashes/request contents/completion guards, copy current security records. No model, hook, scan, fix, commit or publication was executed by this audit.",
+  "executions": [
+    {
+      "mode": "ma_workflow",
+      "output_path": "reviews/output/ma_workflow.json",
+      "output_sha256": "363f5e99191c45dab3d1b2678742d40d73916f9fdf7cb8b621ce0307143ec854",
+      "manifest_path": "reviews/input/ma_workflow.json",
+      "manifest_sha256": "b39138d209ab6047ec27b39ca45c15d64997f0ff9a10f44e40d277e9671230ad",
+      "report_path": "reviews/input/ma_workflow-report.txt",
+      "report_sha256": "5e6086b01f0c80f2518a5d4fec6686b7b783f4194438c49e58aa4a70e25ce9d0",
+      "started_at": "2026-10-26T23:56:27.620646+00:00",
+      "finished_at": "2026-10-26T23:57:08.047583+00:00",
+      "root_verified_process_exit_code": 0,
+      "exit_code_verification_source": "Parent agent execution results; no independent process rerun by this auditor.",
+      "agent_assessments_status": "completed",
+      "review": {
+        "passed": true,
+        "checks_passed": true,
+        "meaning": "Selected report/reference integrity and required model completion only; not a PASS for source tests or security findings, a fresh execution, or human release approval."
+      },
+      "scope": [
+        "student-2"
+      ],
+      "integrity_checks": {
+        "manifest_hash_matches_frozen_execution": true,
+        "report_hash_matches_manifest": true,
+        "report_hash_matches_frozen_execution": true,
+        "complete_report_text_unchanged": true,
+        "same_observed_evidence_for_both_models": true,
+        "reviewer_received_actual_first_assessment": true,
+        "checks_digest_matches_both_requests": true,
+        "all_reference_hashes_match": true,
+        "source_test_pass_not_claimed_by_execution_status": true,
+        "raw_execution_human_decision_stays_pending": true
+      },
+      "reference_checks": [
+        {
+          "label": "historical local/security inventory",
+          "path": "evidence/inventory-local-and-security.json",
+          "current_sha256": "7311d0541263c778e951cb2adb93d876c1adc8da526e909e97797c81f7100fcb",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "e823 final persisted workflow with human Reject",
+          "path": "evidence/local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/workflow.json",
+          "current_sha256": "fae7e4e32a30100b4ff18f1dcc154979b9a1e52a0f12c460098e77c62b3c55b2",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "e823 original terminal execution metadata",
+          "path": "evidence/local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/terminal-execution.json",
+          "current_sha256": "8458901593c6c5e56070778bfe71138be380ce1639d004230392247b909e0daf",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "UI/failure records and target source snapshot",
+          "path": "reviews/input/ma_workflow-supporting-snapshot.json",
+          "current_sha256": "591f4781ca75da99ea8f9d9a6e2c898472f548613b40757896597703d48f30e4",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        }
+      ],
+      "assessments": {
+        "implementation": {
+          "model": "qwen2.5:7b",
+          "http_status": 200,
+          "completed": true,
+          "word_count": 23,
+          "actual_word_count": 23,
+          "requested_word_limit": 80,
+          "within_requested_word_limit": true,
+          "generation_done": true,
+          "generation_done_reason": "stop",
+          "context_guard_passed": true,
+          "context_guard_byte_count_matches": true,
+          "context_guard_capacity_matches": true,
+          "configured_context_matches_request": true,
+          "complete_report_identical_to_current_saved_report": true,
+          "raw_output_truncated": false
+        },
+        "review": {
+          "model": "llama3.1:8b",
+          "http_status": 200,
+          "completed": true,
+          "word_count": 61,
+          "actual_word_count": 61,
+          "requested_word_limit": 80,
+          "within_requested_word_limit": true,
+          "generation_done": true,
+          "generation_done_reason": "stop",
+          "context_guard_passed": true,
+          "context_guard_byte_count_matches": true,
+          "context_guard_capacity_matches": true,
+          "configured_context_matches_request": true,
+          "complete_report_identical_to_current_saved_report": true,
+          "raw_output_truncated": false
+        }
+      },
+      "observed_evidence_utf8_bytes": 11399,
+      "report_input_byte_guard_passed": true,
+      "mechanical_validation_passed": true
+    },
+    {
+      "mode": "testing_report",
+      "output_path": "reviews/output/testing_report-attempt2.json",
+      "output_sha256": "be6cf572a12eb0e557dc3f4b4ce27cc68cffd24f797b2d147c23e891e8a71d6b",
+      "manifest_path": "reviews/input/testing_report-attempt2.json",
+      "manifest_sha256": "ff93734db893a46bfefc130f92643a06bdec57432ae091fd881435282f4ef481",
+      "report_path": "reviews/input/testing_report-attempt2-report.txt",
+      "report_sha256": "a03e6395366b7e6e99d69e2b0a9c2d5f6fe19719f21bb63e9a6486bbed522889",
+      "started_at": "2026-10-27T00:09:01.487219+00:00",
+      "finished_at": "2026-10-27T00:09:55.627081+00:00",
+      "root_verified_process_exit_code": 0,
+      "exit_code_verification_source": "Parent agent execution results; no independent process rerun by this auditor.",
+      "agent_assessments_status": "completed",
+      "review": {
+        "passed": true,
+        "checks_passed": true,
+        "meaning": "Selected report/reference integrity and required model completion only; not a PASS for source tests or security findings, a fresh execution, or human release approval."
+      },
+      "scope": [
+        "student-2",
+        "student-3",
+        "student-4"
+      ],
+      "integrity_checks": {
+        "manifest_hash_matches_frozen_execution": true,
+        "report_hash_matches_manifest": true,
+        "report_hash_matches_frozen_execution": true,
+        "complete_report_text_unchanged": true,
+        "same_observed_evidence_for_both_models": true,
+        "reviewer_received_actual_first_assessment": true,
+        "checks_digest_matches_both_requests": true,
+        "all_reference_hashes_match": true,
+        "source_test_pass_not_claimed_by_execution_status": true,
+        "raw_execution_human_decision_stays_pending": true
+      },
+      "reference_checks": [
+        {
+          "label": "historical local/security inventory",
+          "path": "evidence/inventory-local-and-security.json",
+          "current_sha256": "7311d0541263c778e951cb2adb93d876c1adc8da526e909e97797c81f7100fcb",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "six endpoint source/execution mapping",
+          "path": "evidence/github/endpoint-test-mapping.json",
+          "current_sha256": "ef389dde110f3d4ae98d5ee7b30b88c44377c3acd381254025acc8d230b54816",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "quantified immutable JUnit audit",
+          "path": "evidence/github/junit-count-audit.json",
+          "current_sha256": "30f2181d285e385ec09ec637d9c79a2848f97121767b5b0845a43d943d244c6b",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "run jobs and artifact summary",
+          "path": "evidence/github/run-summary.json",
+          "current_sha256": "689d2d104605a1e4eb5b9204c0f9d5d77a9c7e43f3651c4624e94111b69905c5",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "GitHub collection provenance",
+          "path": "evidence/github/collection-provenance.json",
+          "current_sha256": "c5e9493dafb504d9a563956fbad5db04e0434b1be94421497e213cdbb6ab6834",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "historical security records and findings",
+          "path": "evidence/github/historical-security-summary.json",
+          "current_sha256": "1c5d142cb8976dabd4f7f8b33113ac36586e01e21e8e233bd9bb3ff4c4eb49bb",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "downloaded artifact integrity",
+          "path": "evidence/github/artifact-download-results.json",
+          "current_sha256": "83a17805600421eb509e6fcca4d40608deb955a6887bb4e437b37f391c5674b8",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "fresh Student 2 plus shared scan and baseline source audit",
+          "path": "evidence/github/shared-source-scan-audit.json",
+          "current_sha256": "5d267c5dea6750b878df7037d38032488db0738df1d5cdb932c7f9a4eefe0b54",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        }
+      ],
+      "assessments": {
+        "implementation": {
+          "model": "qwen2.5:7b",
+          "http_status": 200,
+          "completed": true,
+          "word_count": 17,
+          "actual_word_count": 17,
+          "requested_word_limit": 80,
+          "within_requested_word_limit": true,
+          "generation_done": true,
+          "generation_done_reason": "stop",
+          "context_guard_passed": true,
+          "context_guard_byte_count_matches": true,
+          "context_guard_capacity_matches": true,
+          "configured_context_matches_request": true,
+          "complete_report_identical_to_current_saved_report": true,
+          "raw_output_truncated": false
+        },
+        "review": {
+          "model": "llama3.1:8b",
+          "http_status": 200,
+          "completed": true,
+          "word_count": 58,
+          "actual_word_count": 58,
+          "requested_word_limit": 80,
+          "within_requested_word_limit": true,
+          "generation_done": true,
+          "generation_done_reason": "stop",
+          "context_guard_passed": true,
+          "context_guard_byte_count_matches": true,
+          "context_guard_capacity_matches": true,
+          "configured_context_matches_request": true,
+          "complete_report_identical_to_current_saved_report": true,
+          "raw_output_truncated": false
+        }
+      },
+      "observed_evidence_utf8_bytes": 15832,
+      "report_input_byte_guard_passed": true,
+      "mechanical_validation_passed": true
+    },
+    {
+      "mode": "cloud_deployment",
+      "output_path": "reviews/output/cloud_deployment-attempt2.json",
+      "output_sha256": "7acf95e798adb5f46367da0b56f1880767e9b6a5a01bc3ee140b9b17a1177ad7",
+      "manifest_path": "reviews/input/cloud_deployment.json",
+      "manifest_sha256": "1852ffeb7c9a489fbff4f579415dc09d1785a131c780c683c80752c5ccd9804f",
+      "report_path": "reviews/input/cloud_deployment-report.txt",
+      "report_sha256": "a830544999f3b5f15f8ca666f931342f2101e4672f4612f008fc0b7efcc6d74f",
+      "started_at": "2026-10-26T23:59:09.490484+00:00",
+      "finished_at": "2026-10-26T23:59:54.431259+00:00",
+      "root_verified_process_exit_code": 0,
+      "exit_code_verification_source": "Parent agent execution results; no independent process rerun by this auditor.",
+      "agent_assessments_status": "completed",
+      "review": {
+        "passed": true,
+        "checks_passed": true,
+        "meaning": "Selected report/reference integrity and required model completion only; not a PASS for source tests or security findings, a fresh execution, or human release approval."
+      },
+      "scope": [
+        "student-2 CRUD",
+        "student-3 deployment/read checks",
+        "student-4 deployment/read checks"
+      ],
+      "integrity_checks": {
+        "manifest_hash_matches_frozen_execution": true,
+        "report_hash_matches_manifest": true,
+        "report_hash_matches_frozen_execution": true,
+        "complete_report_text_unchanged": true,
+        "same_observed_evidence_for_both_models": true,
+        "reviewer_received_actual_first_assessment": true,
+        "checks_digest_matches_both_requests": true,
+        "all_reference_hashes_match": true,
+        "source_test_pass_not_claimed_by_execution_status": true,
+        "raw_execution_human_decision_stays_pending": true
+      },
+      "reference_checks": [
+        {
+          "label": "GitHub run metadata",
+          "path": "evidence/github/cloud-run-40402532547.json",
+          "current_sha256": "5b597275169622538d850e832037e814a25f97036ad9020365919315c5ba69e6",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "GitHub deployment log",
+          "path": "evidence/github/job-121854242098-deploy.log",
+          "current_sha256": "3eadde43c804779240b471f71ff8429f69cfbbda48f5007beb5b655a5b4f0ff4",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "Current Safari CRUD observation",
+          "path": "evidence/cloud-ui-20261027.json",
+          "current_sha256": "3761d445950d9f2d8ba4e7f92e8bf45e27947f9658efdd12ca4222da3f31e309",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "Cloud Compose source",
+          "path": "evidence/cloud-source/docker-compose.cloud.yml",
+          "current_sha256": "23fb935cfca854d029aa94c9c849bc9e5c258faf9f9a4d05fc0fe4100d2a51b5",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "Cloud workflow source",
+          "path": "evidence/cloud-source/.github__workflows__cloud-deployment.yml",
+          "current_sha256": "a51abf5b836043eeddf2eca27cb78537d76a7c8fb2dae2037735319d4c5f4d53",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        },
+        {
+          "label": "Deployment script source",
+          "path": "evidence/cloud-source/scripts__lab11__deploy-ec2.sh",
+          "current_sha256": "eeef723e4155f9803663aab236c612985cc3111c0d357fe87c45193c5559bc73",
+          "manifest_sha256_matches": true,
+          "recorded_sha256_matches": true,
+          "recorded_hash_verified": true,
+          "raw_reference_body_supplied_to_models": false
+        }
+      ],
+      "assessments": {
+        "implementation": {
+          "model": "qwen2.5:7b",
+          "http_status": 200,
+          "completed": true,
+          "word_count": 28,
+          "actual_word_count": 28,
+          "requested_word_limit": 80,
+          "within_requested_word_limit": true,
+          "generation_done": true,
+          "generation_done_reason": "stop",
+          "context_guard_passed": true,
+          "context_guard_byte_count_matches": true,
+          "context_guard_capacity_matches": true,
+          "configured_context_matches_request": true,
+          "complete_report_identical_to_current_saved_report": true,
+          "raw_output_truncated": false
+        },
+        "review": {
+          "model": "llama3.1:8b",
+          "http_status": 200,
+          "completed": true,
+          "word_count": 61,
+          "actual_word_count": 61,
+          "requested_word_limit": 80,
+          "within_requested_word_limit": true,
+          "generation_done": true,
+          "generation_done_reason": "stop",
+          "context_guard_passed": true,
+          "context_guard_byte_count_matches": true,
+          "context_guard_capacity_matches": true,
+          "configured_context_matches_request": true,
+          "complete_report_identical_to_current_saved_report": true,
+          "raw_output_truncated": false
+        }
+      },
+      "observed_evidence_utf8_bytes": 11742,
+      "report_input_byte_guard_passed": true,
+      "mechanical_validation_passed": true
+    }
+  ],
+  "all_mechanical_validations_passed": true,
+  "initial_cloud_failure_preserved": {
+    "path": "reviews/output/cloud_deployment.json",
+    "sha256": "ddab3c4eef61f877d908fc182775ed8e96ea639addd17b0211361cd068477c94",
+    "assessment_status": "failed",
+    "review_passed": false,
+    "review_http_status": 200,
+    "review_word_count": 46,
+    "then_requested_word_limit": 40,
+    "reason": "Assessment exceeds the requested word limit; revise before review.",
+    "meaning": "Both HTTP calls returned 200, but the original reviewer exceeded an added 40-word gate. This failed attempt remains unchanged; later report modes use the existing general 80-word limit."
+  },
+  "semantic_limitations": [
+    {
+      "mode": "testing_report",
+      "issue": "The second Testing Review did not mention the fresh shared-source Ruff FAIL with 16 findings, although the complete input included it. Mechanical completion is not a complete semantic review.",
+      "evidence_path": "reviews/input/testing_report-attempt2-report.txt"
+    },
+    {
+      "mode": "testing_report",
+      "issue": "The reviewer recommended a fresh dependency scan as if this would resolve historical security issues. A scan can verify status; remediation, mitigation or an explicit human disposition is still required.",
+      "evidence_path": "reviews/output/testing_report-attempt2.json"
+    },
+    {
+      "mode": "testing_report",
+      "issue": "The new completed pre-commit dependency FAIL (122 packages per student) was absent from all frozen model inputs. It is preserved as a separate supplement; no model reassessment using these records occurred. Its scan time precedes Testing attempt 2, so it must not be described as a scan executed after that review.",
+      "evidence_path": "evidence/security-current/summary.json"
+    },
+    {
+      "mode": "all",
+      "issue": "Unchanged full report text preserves source FAIL and INCOMPLETE records, but this audit does not certify every generated statement. Reference bodies were hash-verified, not supplied to the models."
+    },
+    {
+      "mode": "cloud_deployment",
+      "issue": "Confirmed CRUD is scoped to Student 2. Other members' write CRUD and live deployed SHA remain unverified; AI dependency findings do not prove cloud installation or fix availability."
+    },
+    {
+      "mode": "ma_workflow",
+      "issue": "The application Worker/Reviewer attribution defect and human Reject remain unresolved evidence. This separate development review does not demonstrate a corrected application retest."
+    }
+  ],
+  "source_result_preservation": {
+    "original_reports_and_model_outputs_rewritten": false,
+    "source_failure_reclassified_as_pass": false,
+    "meaning": "The full selected reports are byte-equivalent text in both model requests; execution PASS means integrity/completion only. The copied latest security reports retain their recorded PASS/FAIL fields."
+  },
+  "human_release_direction": {
+    "decision_reported_by_parent_from_user": "RETURN FOR REWORK",
+    "final_traceable_record": "Maintained separately by the parent in the final report/session evidence; immutable model execution snapshots retain pending human_decision.",
+    "automatic_release_approval": false
+  },
+  "current_pre_commit_supplement": {
+    "path": "evidence/security-current/summary.json",
+    "sha256": "9c159deeef82f39181fef14ad4add5611dea61d5c870a7f05c3c7afb597f1e38"
+  },
+  "portable_navigation_note": "Paths in this validation are relative to the release2-completion package root. Preserve raw execution JSON unchanged: absolute original machine paths inside it are provenance, not portable navigation links."
+}

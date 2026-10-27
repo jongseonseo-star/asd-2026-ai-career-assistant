@@ -1,0 +1,72 @@
+{
+  "recorded_at_utc": "2026-10-22T02:40:30.666838+00:00",
+  "verification_method": "Safari UI run and Load workflow, cross-checked with persisted original JSON",
+  "startup_checks_passed": 12,
+  "workflow_id": "af142ee8d6ed4a1fa97b42ea46de8715",
+  "workflow_record": "ai-services/logs/multi-agent/resume/af142ee8d6ed4a1fa97b42ea46de8715.json",
+  "status": "rejected",
+  "elapsed_seconds": 31.73,
+  "stages": [
+    {
+      "agent": "Planner",
+      "model": "qwen2.5:7b",
+      "status": "completed",
+      "generation_source": "ollama"
+    },
+    {
+      "agent": "Worker",
+      "model": "qwen2.5:7b",
+      "status": "completed",
+      "generation_source": "ollama"
+    },
+    {
+      "agent": "Reviewer",
+      "model": "llama3.1:8b",
+      "status": "completed",
+      "generation_source": "ollama"
+    }
+  ],
+  "technical_model_workflow_verified": true,
+  "workflow_reopened_in_ui": true,
+  "feedback_semantically_accurate": false,
+  "reviewer_verdict": "needs_correction",
+  "independent_review_findings": [
+    {
+      "claim": "Candidate lacks intermediate Flask",
+      "assessment": "contradicted",
+      "evidence": "S2 records Intermediate Flask and 1.0 year; R1 also includes Flask."
+    },
+    {
+      "claim": "REST API experience is not demonstrated",
+      "assessment": "contradicted",
+      "evidence": "R1 explicitly lists REST API project experience."
+    },
+    {
+      "claim": "P1 mentions Python",
+      "assessment": "contradicted",
+      "evidence": "P1 does not mention Python; R1 and S1 do."
+    },
+    {
+      "claim": "Advanced Python proficiency",
+      "assessment": "supported",
+      "evidence": "S1 records Advanced Python and 2.0 years."
+    },
+    {
+      "claim": "Docker and automated testing experience unverified",
+      "assessment": "appropriate uncertainty",
+      "evidence": "Not included in supplied candidate records; J1 only states requirements."
+    }
+  ],
+  "human_review_recorded": true,
+  "human_decision": {
+    "status": "recorded",
+    "decision": "reject",
+    "reviewer": "Tomohisa Tamao",
+    "rationale": "I reject this AI output because it contradicts the supplied candidate evidence in two places: (1) it states that the candidate lacks intermediate proficiency in Flask, although S2 records Intermediate Flask proficiency and 1.0 year of experience; and (2) it states that REST API experience is not demonstrated, although R1 explicitly lists REST API project experience.",
+    "correction": "",
+    "recorded_at_utc": "2026-10-22T02:39:04.820069+00:00"
+  },
+  "next_step": "Startup, original AI, RAG, Multi-Agent and user-authorized rejection verification complete. Testing/security/CI preparation remains.",
+  "previous_ai_rag_verification": "reports/demo-runtime/20261022T022704Z-16843/ui-verification.json",
+  "human_review_reopened_after_page_reload": true
+}

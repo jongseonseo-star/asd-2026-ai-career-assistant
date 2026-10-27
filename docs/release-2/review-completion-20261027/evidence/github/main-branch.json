@@ -1,0 +1,100 @@
+{
+  "name": "main",
+  "commit": {
+    "sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+    "node_id": "C_kwDOT_RbrNoAKDM2NDllZDVkMjVmYTlkZTZjYzYwMWUxYTY5ZTkyMmEwMDRhODE5NDY",
+    "commit": {
+      "author": {
+        "name": "DavidGT101",
+        "email": "daviddsjny@gmail.com",
+        "date": "2026-10-26T21:13:27Z"
+      },
+      "committer": {
+        "name": "DavidGT101",
+        "email": "daviddsjny@gmail.com",
+        "date": "2026-10-26T21:13:27Z"
+      },
+      "message": "Add human review integration tests",
+      "tree": {
+        "sha": "d76244b98eaca318dbbe2c190db5289c80fe9b65",
+        "url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/git/trees/d76244b98eaca318dbbe2c190db5289c80fe9b65"
+      },
+      "url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/git/commits/3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/commits/3649ed5d25fa9de6cc601e1a69e922a004a81946",
+    "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/commit/3649ed5d25fa9de6cc601e1a69e922a004a81946",
+    "comments_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/commits/3649ed5d25fa9de6cc601e1a69e922a004a81946/comments",
+    "author": {
+      "login": "DavidGT101",
+      "id": 121147138,
+      "node_id": "U_kgDOBziPAg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/121147138?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/DavidGT101",
+      "html_url": "https://github.com/DavidGT101",
+      "followers_url": "https://api.github.com/users/DavidGT101/followers",
+      "following_url": "https://api.github.com/users/DavidGT101/following{/other_user}",
+      "gists_url": "https://api.github.com/users/DavidGT101/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/DavidGT101/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/DavidGT101/subscriptions",
+      "organizations_url": "https://api.github.com/users/DavidGT101/orgs",
+      "repos_url": "https://api.github.com/users/DavidGT101/repos",
+      "events_url": "https://api.github.com/users/DavidGT101/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/DavidGT101/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "DavidGT101",
+      "id": 121147138,
+      "node_id": "U_kgDOBziPAg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/121147138?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/DavidGT101",
+      "html_url": "https://github.com/DavidGT101",
+      "followers_url": "https://api.github.com/users/DavidGT101/followers",
+      "following_url": "https://api.github.com/users/DavidGT101/following{/other_user}",
+      "gists_url": "https://api.github.com/users/DavidGT101/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/DavidGT101/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/DavidGT101/subscriptions",
+      "organizations_url": "https://api.github.com/users/DavidGT101/orgs",
+      "repos_url": "https://api.github.com/users/DavidGT101/repos",
+      "events_url": "https://api.github.com/users/DavidGT101/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/DavidGT101/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d42f7773d11cdd4962f0f23cd6fbfec0df812f37",
+        "url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/commits/d42f7773d11cdd4962f0f23cd6fbfec0df812f37",
+        "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/commit/d42f7773d11cdd4962f0f23cd6fbfec0df812f37"
+      }
+    ]
+  },
+  "_links": {
+    "self": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/branches/main",
+    "html": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/tree/main"
+  },
+  "protected": false,
+  "protection": {
+    "enabled": false,
+    "required_status_checks": {
+      "enforcement_level": "off",
+      "contexts": [],
+      "checks": []
+    }
+  },
+  "protection_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/branches/main/protection"
+}
+

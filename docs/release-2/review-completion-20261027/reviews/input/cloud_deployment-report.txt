@@ -1,0 +1,36 @@
+Cloud deployment report for shared agentic-loop review
+Review target: application commit 3649ed5d25fa9de6cc601e1a69e922a004a81946.
+Evidence assembled on 27 October 2026 Australia/Sydney. This report distinguishes the tested deployment target from the independently observed live browser state. Review-tool changes are local and are not deployed application changes.
+
+1. Deployment and validation
+GitHub Cloud Deployment run 40402532547, attempt 1, is completed/success. All five jobs succeeded: Student 2 CI (121853157112), Student 3 CI (121853157068), Student 4 CI (121853156693), validate-cloud (121853157075), deploy (121854242098). Run source: https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547
+Student 2 actual pytest output: 314 passed, 2 subtests passed. Student 3: 12 passed. Student 4: 276 passed, 2 subtests passed. Cloud API validation: 7 passed. These are deterministic tests with model mocks/disabled AI where configured, not live model accuracy tests. Student 2's generated report.json separately says pytest INCOMPLETE because JUnit tests=316 differs from 314 testcase elements; no failure/error/skipped elements. The literal CLI result and this conservative summary discrepancy are both retained in Testing Review evidence.
+cloud-deployment.yml requires all student CI and cloud validation jobs before deploy. It archives GITHUB_SHA, transfers the archive with SSH/SCP, extracts it into a release directory named by SHA, runs scripts/lab11/deploy-ec2.sh, then updates the current symlink after success. This is reusable EC2 Docker Compose deployment; it is not ECS/Fargate, RDS or Terraform deployment.
+Actual deploy job log shows ten containers Healthy and these successful checks:
+"Frontend /: OK"
+"Frontend /resume/: OK"
+"Frontend /interviews/: OK"
+"Frontend /jobs/: OK"
+"Frontend data http://shared-frontend:8082/ui/profiles: OK"
+"Frontend data http://shared-frontend:8303/ui/sessions: OK"
+"Frontend data http://shared-frontend:8404/: OK"
+"Backend and database profiles: OK"
+"Backend and database interview-sessions: OK"
+"Backend and database job_postings: OK"
+"Cloud deployment checks passed."
+The public access step also succeeded using curl with redirects for /, /resume/, /interviews/ and /jobs/. These deployment checks establish readiness and data reads, not complete write CRUD for every feature.
+
+2. Cloud reference configuration at the target commit
+One EC2 host runs shared Nginx and the three features' frontend/backend/database containers on career-assistant-network. Shared Nginx exposes 80 and feature ports 8082, 8303 and 8404. Student 2: frontend8082 -> backend5001 -> database API5002 -> SQLite volume student-2-data. Student 3: public8303 -> frontend8083 -> backend5001 -> database API5002 -> student-3-data. Student 4: frontend8404 -> backend5401 -> database API5402 -> student-4-data. Backend and database containers have no direct host port publication in docker-compose.cloud.yml. GitHub Secrets supplies deployment credentials; secret values are not part of this report.
+All three backend service configurations set OLLAMA_ENABLED=false, AI_SERVICES_ENABLED=false and MULTI_AGENT_ENABLED=false. Local AI-Mode, MCP, RAG and Multi-Agent are retained separately. Cloud AI is an optional bonus, not the required baseline. No claim is made of HTTPS, authentication, cloud AI operation, or extra cloud security bonus evidence.
+
+3. Actual current frontend CRUD observation
+On 27 October 2026 10:44-10:48 Sydney, Codex operated Safari at http://3.107.4.185:8082/ as authorised by Tomohisa. This verification was performed by the assistant, not manually by Tomohisa. Backend and database displayed Ready; model displayed Not configured. Baseline counts were 10 profiles, 10 resumes, 20 skills.
+Created disposable profile #13 "Release2 Verification 20261027" and resume #12 associated with that profile. The UI confirmed creation. Updated the profile role to "Cloud API Tester" and summary to "Updated disposable verification record. Cloud profile update persisted." Updated resume title to "Release2 Cloud Verification Resume Updated" and content to "Updated disposable resume. Confirmed edit and reload of Python Flask REST API SQLite evidence." After a browser reload, both records and the updated fields remained visible.
+After the user's explicit approval, deleted only those two newly created records. UI messages were "Resume deleted successfully." and "Profile deleted successfully." A second reload showed the original 10 profiles, 10 resumes and 20 skills; neither temporary record remained. Create/read/update/delete/reload-retention/cleanup: PASS within Student 2 scope. No server restart was tested. No Student 3 or Student 4 write CRUD was performed in this session.
+Latest successful deployment targets 3649ed5, but the browser exposes no runtime SHA. The live filesystem/current symlink was not independently inspected. This is a dated current UI observation associated with the latest known deployment, not independent proof of the running source identity.
+
+4. Risks and final decision boundary
+Historical 22 October security audits found four distinct advisory IDs affecting chromadb 1.5.9: PYSEC-2026-311, PYSEC-2026-3813, PYSEC-2026-3814, PYSEC-2026-3815. Findings remain unresolved in the available evidence. These scans included shared AI requirements and do not by themselves prove the package is installed or exploitable in the cloud containers. No final-revision dependency clearance is claimed. CI does not rerun the three local security tools. A previous one-commit dependency-hook exception was not a release approval.
+The historical application Multi-Agent Reject and Pre-Test partial acceptance are separate decisions, not final release decisions. The current source report discrepancy, stale security evidence, unverified live SHA and missing other-feature write CRUD must remain visible when assessing release readiness. No controlled cloud fault/recovery test is claimed by this record.
+There is currently no verified final human release decision. A real person must review the outputs and determine accept, conditional/partial accept, return for changes, or reject with a reason and conditions. Do not infer approval from deployment success or from this review's execution status.

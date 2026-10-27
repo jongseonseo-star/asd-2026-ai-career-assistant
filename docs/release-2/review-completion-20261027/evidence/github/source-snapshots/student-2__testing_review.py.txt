@@ -1,0 +1,280 @@
+"""Lab 11 evidence preparation; does not run scans, models, or release decisions."""
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DESIGN_SOURCES = (
+    ".pre-commit-config.yaml", "scripts/security_checks.py", "scripts/security-ruff.toml",
+    "student-2/security_checks.py", "student-2/ruff.toml", "student-2/SECURITY.md",
+)
+
+
+def file_hash(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def read_junit(path):
+    """Read a saved pytest report; absent, empty or skipped tests are not PASS."""
+    path = Path(path)
+    result = {"file": path.name, "status": "INCOMPLETE"}
+    try:
+        raw = path.read_bytes()
+        result["sha256"] = hashlib.sha256(raw).hexdigest()
+        xml_text = raw.decode("utf-8")
+        if "<!DOCTYPE" in xml_text.upper() or "<!ENTITY" in xml_text.upper():
+            raise ValueError("DTD/entity declarations are not supported")
+        tree = ET.fromstring(xml_text)  # noqa: S314 - UTF-8 pytest artifact; DTD/entity declarations rejected.
+        if tree.tag not in {"testsuites", "testsuite"}:
+            raise ValueError("Not a JUnit report")
+        cases = list(tree.iter("testcase"))
+        counts = {"tests": len(cases), "failures": 0, "errors": 0, "skipped": 0}
+        for case in cases:
+            for name in ("failure", "error", "skipped"):
+                if case.find(name) is not None:
+                    counts[{"failure": "failures", "error": "errors", "skipped": "skipped"}[name]] += 1
+        # Compare aggregate declarations with their own descendant testcases.
+        # Collection errors can exist without a testcase, including at the root.
+        suite_problem = False
+        incomplete_totals = False
+        for suite in tree.iter():
+            if suite.tag not in {"testsuite", "testsuites"}:
+                continue
+            suite_cases = list(suite.iter("testcase"))
+            actual = {"tests": len(suite_cases)}
+            actual.update({plural: sum(case.find(tag) is not None for case in suite_cases)
+                           for tag, plural in (("failure", "failures"), ("error", "errors"), ("skipped", "skipped"))})
+            for name, count in actual.items():
+                if name not in suite.attrib:
+                    continue
+                declared = int(suite.attrib[name])
+                if declared < 0:
+                    raise ValueError("Negative JUnit count")
+                suite_problem |= name in {"failures", "errors"} and declared > 0
+                incomplete_totals |= declared != count or (name == "skipped" and declared > 0)
+        result.update(counts)
+        if suite_problem or counts["failures"] or counts["errors"]:
+            result["status"] = "FAIL"
+        elif counts["tests"] > 0 and counts["skipped"] == 0 and not incomplete_totals:
+            result["status"] = "PASS"
+        else:
+            result["reason"] = "No tests, skipped tests, or inconsistent totals require explanation."
+    except (OSError, ValueError, ET.ParseError) as error:
+        result["reason"] = f"Cannot use this JUnit report ({type(error).__name__})."
+    return result
+
+
+def read_scan(root, directory, kind):
+    path = Path(directory) / f"{kind}.json"
+    result = {"scan": kind, "file": str(path), "recorded_status": "INCOMPLETE",
+              "freshness": "UNVERIFIED"}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(data, dict) or data.get("scan") != kind or type(data.get("passed")) is not bool:
+            raise ValueError("Invalid scan record")
+        result.update(sha256=file_hash(path), generated_at_utc=data.get("generated_at_utc"),
+                      tool_version=data.get("tool_version"), exit_code=data.get("exit_code"))
+        findings = data.get("findings")
+        if kind == "dependencies":
+            packages = data.get("dependencies")
+            if not isinstance(packages, list) or not packages:
+                raise ValueError("Missing dependency inventory")
+            for package in packages:
+                if (not isinstance(package, dict) or
+                    any(not isinstance(package.get(key), str) or not package[key].strip()
+                        for key in ("name", "version")) or
+                    not isinstance(package.get("vulnerabilities"), list) or
+                    any(not isinstance(vulnerability, dict) or not vulnerability.get("id")
+                        for vulnerability in package["vulnerabilities"]) or
+                    (package.get("skip_reason") is not None and not isinstance(package["skip_reason"], str))):
+                    raise ValueError("Invalid dependency inventory entry")
+            findings = [{"name": p["name"], "version": p.get("version"),
+                         "vulnerabilities": p.get("vulnerabilities", []),
+                         "skip_reason": p.get("skip_reason")}
+                        for p in packages if p.get("vulnerabilities") or p.get("skip_reason")]
+            result["audited_package_count"] = len(packages)
+        if not isinstance(findings, list):
+            raise ValueError("Invalid findings")
+        result["findings"] = findings
+        result["recorded_status"] = "PASS" if (data["passed"] is True and
+            data.get("exit_code") == 0 and not findings and not data.get("error")) else "FAIL"
+        hashes = data.get("input_sha256")
+        if isinstance(hashes, dict) and hashes:
+            changed = []
+            for name, expected in hashes.items():
+                candidate = (root / name).resolve()
+                if not candidate.is_relative_to(root.resolve()):
+                    raise ValueError("Invalid evidence path")
+                if not candidate.is_file() or file_hash(candidate) != expected:
+                    changed.append(name)
+            result["changed_recorded_inputs"] = changed
+            result["freshness"] = "STALE" if changed else "RECORDED_INPUTS_MATCH"
+        result["freshness_limit"] = "Only recorded input hashes were compared; newly added files were not part of that scan."
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+        result.update(recorded_status="INCOMPLETE", reason=f"Cannot use scan record ({type(error).__name__}).")
+    return result
+
+
+def collect_security(root, directory):
+    scans = [read_scan(root, directory, kind) for kind in ("ruff", "secrets", "dependencies")]
+    if any(scan["recorded_status"] == "FAIL" for scan in scans):
+        status = "FAIL"
+    elif any(scan["recorded_status"] == "INCOMPLETE" for scan in scans):
+        status = "INCOMPLETE"
+    else:
+        status = "HISTORICAL_RESULTS_ONLY"
+    return {"gate_status": status, "scans": scans,
+            "meaning": "Saved observations only. Documentation and functional tests do not waive security findings. Rerun the real hooks for current commit evidence."}
+
+
+def ci_record_failed(record):
+    pytest = record.get("pytest") if isinstance(record, dict) else None
+    return isinstance(record, dict) and (record.get("job_status") == "failure" or
+        isinstance(pytest, dict) and (pytest.get("step_outcome") == "failure" or pytest.get("status") == "FAIL"))
+
+
+def read_ci_artifacts(directory, report):
+    """Keep the course-named evidence intact and compare its latest run snapshot."""
+    artifacts, issues = {}, []
+    failed = False
+    for name in ("test-results.md", "test-audit.jsonl"):
+        item = {"file": name}
+        artifacts[name] = item
+        try:
+            raw = (directory / name).read_bytes()
+            item["sha256"] = hashlib.sha256(raw).hexdigest()
+            text = raw.decode("utf-8")
+            if not text.strip():
+                raise ValueError("Empty artifact")
+            if name == "test-results.md":
+                item["text"] = text
+                lines = [line.strip() for line in text.splitlines()]
+                if "# Student 2 CI Evidence" not in lines:
+                    raise ValueError("Missing report heading")
+                pytest = report.get("pytest") if isinstance(report.get("pytest"), dict) else {}
+                expected = {"Run ID": report.get("run_id"), "Run attempt": report.get("run_attempt"),
+                    "Commit SHA": report.get("commit_sha"), "Job status": report.get("job_status"),
+                    "Generated at": report.get("generated_at_utc"),
+                    "Pytest outcome": pytest.get("step_outcome"), "Pytest evidence": pytest.get("status")}
+                expected.update({label: pytest.get(key, "not recorded") for label, key in
+                    (("Tests", "tests"), ("Failures", "failures"), ("Errors", "errors"), ("Skipped", "skipped"))})
+                if any([line for line in lines if line.startswith(f"- {label}:")] != [f"- {label}: {value}"]
+                       for label, value in expected.items()):
+                    issues.append("test-results.md identity or result summary differs from report.json.")
+            else:
+                # Parse every line: a malformed earlier record is not silently discarded.
+                item["records"] = []
+                try:
+                    for line in text.splitlines():
+                        record = json.loads(line)
+                        if not isinstance(record, dict) or not record:
+                            raise ValueError("Audit records must be non-empty JSON objects")
+                        item["records"].append(record)
+                except ValueError:
+                    item["text"] = text
+                    raise
+                failed = ci_record_failed(item["records"][-1])
+                if item["records"][-1] != report:
+                    issues.append("Latest test-audit.jsonl record differs from report.json.")
+        except (OSError, ValueError) as error:
+            item["status"] = "INCOMPLETE"
+            issues.append(f"Cannot use {name} ({type(error).__name__}).")
+    return artifacts, issues, failed
+
+
+def collect_ci(root, directory, expected_commit):
+    directory = Path(directory)
+    junit = read_junit(directory / "pytest-results.xml")
+    result = {"status": "FAIL" if junit["status"] == "FAIL" else "INCOMPLETE", "junit": junit, "issues": []}
+    try:
+        path = directory / "report.json"
+        report = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(report, dict):
+            raise ValueError("Invalid CI report")
+        if ci_record_failed(report):
+            result["status"] = "FAIL"
+        result["report_sha256"] = file_hash(path)
+        result["recorded_run"] = {key: report.get(key) for key in (
+            "execution_source", "run_url", "commit_sha", "run_id", "run_attempt",
+            "job_status", "job_status_scope", "generated_at_utc", "pytest")}
+        problems = result["issues"]
+        artifacts, artifact_issues, audit_failed = read_ci_artifacts(directory, report)
+        result["course_artifacts"] = artifacts
+        problems.extend(artifact_issues)
+        if audit_failed:
+            result["status"] = "FAIL"
+        if report.get("execution_source") != "github-actions" or not report.get("run_url") or not report.get("run_id"):
+            problems.append("An actual GitHub Actions run is not identified.")
+        if not expected_commit or report.get("commit_sha") != expected_commit:
+            problems.append("Expected commit was not supplied or does not match.")
+        if report.get("workflow_sha256") != file_hash(root / ".github/workflows/student-2.yml"):
+            problems.append("The current workflow does not match the recorded workflow.")
+        pytest = report.get("pytest")
+        if not isinstance(pytest, dict):
+            pytest = {}
+        if pytest.get("sha256") != junit.get("sha256") or not junit.get("sha256"):
+            problems.append("JUnit artifact is missing or differs from the report fingerprint.")
+        if junit["status"] != "PASS" or pytest.get("step_outcome") != "success":
+            problems.append("Successful pytest execution is not established.")
+        if any(pytest.get(key) != junit.get(key) for key in ("status", "tests", "failures", "errors", "skipped")):
+            problems.append("Recorded pytest summary does not match the JUnit artifact.")
+        if report.get("job_status") != "success":
+            problems.append("The recorded job status is not success.")
+        if result["status"] != "FAIL" and not problems:
+            result["status"] = "RECORDED_CHECKS_PASS"
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        result["issues"].append(f"Cannot use CI report ({type(error).__name__}).")
+    result["limit"] = "Report metadata is not independently authenticated. Check the linked GitHub run, final teardown/upload conclusion and artifact. CI does not prove the pre-commit security gate passed."
+    return result
+
+
+def collect(mode, root=ROOT, security_dir=None, ci_dir=None, expected_commit=None):
+    root = Path(root)
+    evidence = {"mode": mode, "execution_scope": "evidence-preparation-only",
+                "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+                "security": collect_security(root, security_dir or root / "logs/student-2/security"),
+                "agent_assessments": {"status": "not_run"},
+                "human_decision": {"status": "pending", "reviewer": None, "decision": None, "rationale": None}}
+    if mode == "pre_test":
+        evidence["design_sources"] = []
+        for name in DESIGN_SOURCES:
+            path = root / name
+            item = {"file": name}
+            try:
+                item.update(sha256=file_hash(path), text=path.read_text(encoding="utf-8"))
+            except OSError:
+                item["status"] = "MISSING"
+            evidence["design_sources"].append(item)
+    elif mode == "cicd_test":
+        evidence["ci"] = collect_ci(root, ci_dir or root / "reports/student-2", expected_commit)
+    else:
+        raise ValueError("Unsupported review mode")
+    return evidence
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--mode", choices=("pre_test", "cicd_test"), required=True)
+    parser.add_argument("--security-dir", type=Path)
+    parser.add_argument("--ci-dir", type=Path)
+    parser.add_argument("--expected-commit")
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    evidence = collect(args.mode, security_dir=args.security_dir, ci_dir=args.ci_dir, expected_commit=args.expected_commit)
+    text = json.dumps(evidence, ensure_ascii=False, indent=2) + "\n"
+    if len(text) > 32000:
+        parser.error("Evidence exceeds 32,000 characters. Review full sources and split the case; findings were not truncated.")
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(text, encoding="utf-8")
+    else:
+        print(text, end="")
+
+
+if __name__ == "__main__":
+    main()
+

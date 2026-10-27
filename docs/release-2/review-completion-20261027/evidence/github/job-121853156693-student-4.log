@@ -1,0 +1,1222 @@
+﻿2026-10-26T21:16:13.4156243Z Current runner version: '2.338.0'
+2026-10-26T21:16:13.4182257Z ##[group]Runner Image Provisioner
+2026-10-26T21:16:13.4183310Z Hosted Compute Agent
+2026-10-26T21:16:13.4184430Z Version: 20261021.618
+2026-10-26T21:16:13.4185204Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-26T21:16:13.4185966Z Build Date: 2026-10-21T00:45:21Z
+2026-10-26T21:16:13.4186663Z Worker ID: {856529af-e3b5-4078-9506-1ad59d4bb33a}
+2026-10-26T21:16:13.4187443Z Region: westus
+2026-10-26T21:16:13.4188053Z Cloud: Azure
+2026-10-26T21:16:13.4188606Z ##[endgroup]
+2026-10-26T21:16:13.4190284Z ##[group]Operating System
+2026-10-26T21:16:13.4190992Z Ubuntu
+2026-10-26T21:16:13.4191670Z 24.04.5
+2026-10-26T21:16:13.4192260Z LTS
+2026-10-26T21:16:13.4192813Z ##[endgroup]
+2026-10-26T21:16:13.4193482Z ##[group]Runner Image
+2026-10-26T21:16:13.4194417Z Image: ubuntu-24.04
+2026-10-26T21:16:13.4195044Z Version: 20261012.334.1
+2026-10-26T21:16:13.4196399Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-26T21:16:13.4198424Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-26T21:16:13.4199448Z ##[endgroup]
+2026-10-26T21:16:13.4200617Z ##[group]GITHUB_TOKEN Permissions
+2026-10-26T21:16:13.4202630Z Contents: read
+2026-10-26T21:16:13.4203361Z Metadata: read
+2026-10-26T21:16:13.4204436Z ##[endgroup]
+2026-10-26T21:16:13.4206981Z Secret source: Actions
+2026-10-26T21:16:13.4208113Z Cache mode: write
+2026-10-26T21:16:13.4209035Z Prepare workflow directory
+2026-10-26T21:16:13.4626913Z Prepare all required actions
+2026-10-26T21:16:13.4677612Z Getting action download info
+2026-10-26T21:16:13.8486464Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-26T21:16:13.9746587Z Download action repository 'actions/setup-python@v7' (SHA:6d4fd22b20465ccc0f7354476588e8df7c9ca0e0)
+2026-10-26T21:16:14.4222540Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+2026-10-26T21:16:14.6870745Z Uses: jongseonseo-star/asd-2026-ai-career-assistant/.github/workflows/student-4.yml@refs/heads/main (3649ed5d25fa9de6cc601e1a69e922a004a81946)
+2026-10-26T21:16:14.6876771Z Complete job name: student-4 / validate-student-4
+2026-10-26T21:16:14.7869253Z ##[group]Run actions/checkout@v6
+2026-10-26T21:16:14.7870579Z with:
+2026-10-26T21:16:14.7871259Z   repository: jongseonseo-star/asd-2026-ai-career-assistant
+2026-10-26T21:16:14.7876770Z   token: ***
+2026-10-26T21:16:14.7877272Z   ssh-strict: true
+2026-10-26T21:16:14.7877792Z   ssh-user: git
+2026-10-26T21:16:14.7878315Z   persist-credentials: true
+2026-10-26T21:16:14.7878883Z   clean: true
+2026-10-26T21:16:14.7879395Z   sparse-checkout-cone-mode: true
+2026-10-26T21:16:14.7880003Z   fetch-depth: 1
+2026-10-26T21:16:14.7880782Z   fetch-tags: false
+2026-10-26T21:16:14.7881406Z   show-progress: true
+2026-10-26T21:16:14.7881954Z   lfs: false
+2026-10-26T21:16:14.7882442Z   submodules: false
+2026-10-26T21:16:14.7882961Z   set-safe-directory: true
+2026-10-26T21:16:14.7883822Z   allow-unsafe-pr-checkout: false
+2026-10-26T21:16:14.7885012Z env:
+2026-10-26T21:16:14.7885510Z   OLLAMA_ENABLED: false
+2026-10-26T21:16:14.7886082Z   AI_SERVICES_ENABLED: false
+2026-10-26T21:16:14.7886708Z ##[endgroup]
+2026-10-26T21:16:14.8939936Z Syncing repository: jongseonseo-star/asd-2026-ai-career-assistant
+2026-10-26T21:16:14.8942559Z ##[group]Getting Git version info
+2026-10-26T21:16:14.8944189Z Working directory is '/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant'
+2026-10-26T21:16:14.8946272Z [command]/usr/bin/git version
+2026-10-26T21:16:14.9068571Z git version 2.55.0
+2026-10-26T21:16:14.9100907Z ##[endgroup]
+2026-10-26T21:16:14.9119842Z Temporarily overriding HOME='/home/runner/work/_temp/411f7c12-8826-4d0e-800e-ef26ad3facbb' before making global git config changes
+2026-10-26T21:16:14.9123565Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:16:14.9127621Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant
+2026-10-26T21:16:14.9186023Z Deleting the contents of '/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant'
+2026-10-26T21:16:14.9190433Z ##[group]Determining repository object format
+2026-10-26T21:16:14.9193071Z ##[endgroup]
+2026-10-26T21:16:14.9195257Z ##[group]Initializing the repository
+2026-10-26T21:16:14.9200284Z [command]/usr/bin/git init /home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant
+2026-10-26T21:16:14.9324791Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-26T21:16:14.9327015Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-26T21:16:14.9329114Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-26T21:16:14.9330679Z hint: call:
+2026-10-26T21:16:14.9331405Z hint:
+2026-10-26T21:16:14.9332413Z hint: 	git config --global init.defaultBranch <name>
+2026-10-26T21:16:14.9333915Z hint:
+2026-10-26T21:16:14.9335111Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-26T21:16:14.9337051Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-26T21:16:14.9338567Z hint:
+2026-10-26T21:16:14.9339364Z hint: 	git branch -m <name>
+2026-10-26T21:16:14.9340318Z hint:
+2026-10-26T21:16:14.9341547Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-26T21:16:14.9363311Z Initialized empty Git repository in /home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/
+2026-10-26T21:16:14.9376286Z [command]/usr/bin/git remote add origin https://github.com/jongseonseo-star/asd-2026-ai-career-assistant
+2026-10-26T21:16:14.9428503Z ##[endgroup]
+2026-10-26T21:16:14.9430023Z ##[group]Disabling automatic garbage collection
+2026-10-26T21:16:14.9434048Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-26T21:16:14.9477950Z ##[endgroup]
+2026-10-26T21:16:14.9479360Z ##[group]Setting up auth
+2026-10-26T21:16:14.9480390Z Removing SSH command configuration
+2026-10-26T21:16:14.9486155Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:16:14.9536922Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:16:14.9910301Z Removing HTTP extra header
+2026-10-26T21:16:14.9918353Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:16:14.9958547Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:16:15.0192623Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:16:15.0200001Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:16:15.0240760Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:16:15.0487348Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-26T21:16:15.0536759Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git.path /home/runner/work/_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:16:15.0577526Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:16:15.0620731Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:16:15.0661908Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:16:15.0721863Z ##[endgroup]
+2026-10-26T21:16:15.0722805Z ##[group]Fetching the repository
+2026-10-26T21:16:15.0731705Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3649ed5d25fa9de6cc601e1a69e922a004a81946:refs/remotes/origin/main
+2026-10-26T21:16:15.7438512Z From https://github.com/jongseonseo-star/asd-2026-ai-career-assistant
+2026-10-26T21:16:15.7440365Z  * [new ref]         3649ed5d25fa9de6cc601e1a69e922a004a81946 -> origin/main
+2026-10-26T21:16:15.7451429Z [command]/usr/bin/git branch --list --remote origin/main
+2026-10-26T21:16:15.7481465Z   origin/main
+2026-10-26T21:16:15.7492452Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-10-26T21:16:15.7520772Z 3649ed5d25fa9de6cc601e1a69e922a004a81946
+2026-10-26T21:16:15.7528029Z ##[endgroup]
+2026-10-26T21:16:15.7529545Z ##[group]Determining the checkout info
+2026-10-26T21:16:15.7531487Z ##[endgroup]
+2026-10-26T21:16:15.7532919Z [command]/usr/bin/git sparse-checkout disable
+2026-10-26T21:16:15.7589399Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-26T21:16:15.7624841Z ##[group]Checking out the ref
+2026-10-26T21:16:15.7627991Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-26T21:16:15.7922316Z Switched to a new branch 'main'
+2026-10-26T21:16:15.7927297Z branch 'main' set up to track 'origin/main'.
+2026-10-26T21:16:15.7936918Z ##[endgroup]
+2026-10-26T21:16:15.7986869Z [command]/usr/bin/git log -1 --format=%H
+2026-10-26T21:16:15.8019131Z 3649ed5d25fa9de6cc601e1a69e922a004a81946
+2026-10-26T21:16:15.8517389Z ##[group]Run actions/setup-python@v7
+2026-10-26T21:16:15.8518697Z with:
+2026-10-26T21:16:15.8519632Z   python-version: 3.12
+2026-10-26T21:16:15.8520678Z   check-latest: false
+2026-10-26T21:16:15.8531607Z   token: ***
+2026-10-26T21:16:15.8533028Z   mirror: https://raw.githubusercontent.com/actions/python-versions/main
+2026-10-26T21:16:15.8535205Z   update-environment: true
+2026-10-26T21:16:15.8536334Z   allow-prereleases: false
+2026-10-26T21:16:15.8537431Z   freethreaded: false
+2026-10-26T21:16:15.8538408Z env:
+2026-10-26T21:16:15.8539278Z   OLLAMA_ENABLED: false
+2026-10-26T21:16:15.8540328Z   AI_SERVICES_ENABLED: false
+2026-10-26T21:16:15.8541403Z ##[endgroup]
+2026-10-26T21:16:15.9793050Z ##[group]Installed versions
+2026-10-26T21:16:15.9880794Z Successfully set up CPython (3.12.15)
+2026-10-26T21:16:15.9883264Z ##[endgroup]
+2026-10-26T21:16:16.0041718Z ##[group]Run python -m pip install -r student-4/backend/requirements.txt -r ai-services/requirements.txt pytest
+2026-10-26T21:16:16.0045402Z [36;1mpython -m pip install -r student-4/backend/requirements.txt -r ai-services/requirements.txt pytest[0m
+2026-10-26T21:16:16.0048963Z [36;1mpython -m py_compile student-4/database/init_db.py student-4/database/app.py student-4/backend/app.py student-4/frontend/app.py[0m
+2026-10-26T21:16:16.0051878Z [36;1mpython -m pytest student-4/tests ai-services/tests -q[0m
+2026-10-26T21:16:16.0359005Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:16:16.0360233Z env:
+2026-10-26T21:16:16.0361157Z   OLLAMA_ENABLED: false
+2026-10-26T21:16:16.0362217Z   AI_SERVICES_ENABLED: false
+2026-10-26T21:16:16.0363562Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:16:16.0365707Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T21:16:16.0367647Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:16:16.0369451Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:16:16.0371175Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:16:16.0372919Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T21:16:16.0374823Z ##[endgroup]
+2026-10-26T21:16:16.9880153Z Collecting pytest
+2026-10-26T21:16:17.0898803Z   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+2026-10-26T21:16:17.1074852Z Collecting Flask<4.0,>=3.1 (from -r student-4/backend/requirements.txt (line 1))
+2026-10-26T21:16:17.1290801Z   Downloading flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+2026-10-26T21:16:17.1509281Z Collecting requests<3.0,>=2.32 (from -r student-4/backend/requirements.txt (line 2))
+2026-10-26T21:16:17.1730557Z   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+2026-10-26T21:16:17.1977453Z Collecting fastmcp<5.0,>=4.0 (from -r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:17.2209480Z   Downloading fastmcp-4.1.4-py3-none-any.whl.metadata (9.5 kB)
+2026-10-26T21:16:17.2556137Z Collecting chromadb<2.0,>=1.5 (from -r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:17.2776013Z   Downloading chromadb-1.5.9-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.0 kB)
+2026-10-26T21:16:17.3316710Z Collecting PyYAML<7.0,>=6.0 (from -r ai-services/requirements.txt (line 4))
+2026-10-26T21:16:17.3537767Z   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+2026-10-26T21:16:17.3655176Z Collecting blinker>=1.9.0 (from Flask<4.0,>=3.1->-r student-4/backend/requirements.txt (line 1))
+2026-10-26T21:16:17.3865135Z   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+2026-10-26T21:16:17.4029793Z Collecting click>=8.1.3 (from Flask<4.0,>=3.1->-r student-4/backend/requirements.txt (line 1))
+2026-10-26T21:16:17.4243976Z   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+2026-10-26T21:16:17.4363412Z Collecting itsdangerous>=2.2.0 (from Flask<4.0,>=3.1->-r student-4/backend/requirements.txt (line 1))
+2026-10-26T21:16:17.4582273Z   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:16:17.4738582Z Collecting jinja2>=3.1.2 (from Flask<4.0,>=3.1->-r student-4/backend/requirements.txt (line 1))
+2026-10-26T21:16:17.4954162Z   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+2026-10-26T21:16:17.5535621Z Collecting markupsafe>=2.1.1 (from Flask<4.0,>=3.1->-r student-4/backend/requirements.txt (line 1))
+2026-10-26T21:16:17.5755412Z   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+2026-10-26T21:16:17.5946055Z Collecting werkzeug>=3.1.0 (from Flask<4.0,>=3.1->-r student-4/backend/requirements.txt (line 1))
+2026-10-26T21:16:17.6164392Z   Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+2026-10-26T21:16:17.7467418Z Collecting charset_normalizer<4,>=2 (from requests<3.0,>=2.32->-r student-4/backend/requirements.txt (line 2))
+2026-10-26T21:16:17.7692907Z   Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+2026-10-26T21:16:17.8054028Z Collecting idna<4,>=2.5 (from requests<3.0,>=2.32->-r student-4/backend/requirements.txt (line 2))
+2026-10-26T21:16:17.8281539Z   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+2026-10-26T21:16:17.8506878Z Collecting urllib3<3,>=1.26 (from requests<3.0,>=2.32->-r student-4/backend/requirements.txt (line 2))
+2026-10-26T21:16:17.8726248Z   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+2026-10-26T21:16:17.8925791Z Collecting certifi>=2023.5.7 (from requests<3.0,>=2.32->-r student-4/backend/requirements.txt (line 2))
+2026-10-26T21:16:17.9144149Z   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+2026-10-26T21:16:17.9289148Z Collecting fastmcp-slim==4.1.4 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:17.9509283Z   Downloading fastmcp_slim-4.1.4-py3-none-any.whl.metadata (11 kB)
+2026-10-26T21:16:17.9689012Z Collecting mcp-types<3.0.0,>=2.0.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:17.9904216Z   Downloading mcp_types-2.3.0-py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:16:18.0107587Z Collecting platformdirs>=4.0.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.0334742Z   Downloading platformdirs-4.13.5-py3-none-any.whl.metadata (5.5 kB)
+2026-10-26T21:16:18.0500452Z Collecting pydantic-settings>=2.0.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.0718411Z   Downloading pydantic_settings-2.16.1-py3-none-any.whl.metadata (4.0 kB)
+2026-10-26T21:16:18.1730628Z Collecting pydantic>=2.12.0 (from pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.1945727Z   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+2026-10-26T21:16:18.2372167Z Collecting python-dotenv>=1.1.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.2587605Z   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+2026-10-26T21:16:18.2906537Z Collecting rich>=13.9.4 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.3119778Z   Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+2026-10-26T21:16:18.3320179Z Collecting typing-extensions>=4.0.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.3536526Z   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+2026-10-26T21:16:18.3720919Z Collecting authlib>=1.6.11 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.3934018Z   Downloading authlib-1.9.1-py2.py3-none-any.whl.metadata (10 kB)
+2026-10-26T21:16:18.4074006Z Collecting exceptiongroup>=1.2.2 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.4293882Z   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+2026-10-26T21:16:18.4425149Z Collecting httpx2>=2.5.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.4641551Z   Downloading httpx2-2.16.0-py3-none-any.whl.metadata (10 kB)
+2026-10-26T21:16:18.4845847Z Collecting mcp<3.0.0,>=2.3.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.5148206Z   Downloading mcp-2.3.0-py3-none-any.whl.metadata (6.6 kB)
+2026-10-26T21:16:18.5349411Z Collecting opentelemetry-api>=1.28.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.5565130Z   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+2026-10-26T21:16:18.5690964Z Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.5903884Z   Downloading py_key_value_aio-0.4.6-py3-none-any.whl.metadata (16 kB)
+2026-10-26T21:16:18.6222550Z Collecting starlette>=1.0.1 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.6437663Z   Downloading starlette-1.10.0-py3-none-any.whl.metadata (6.6 kB)
+2026-10-26T21:16:18.6747528Z Collecting cyclopts>=4.0.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.6964065Z   Downloading cyclopts-5.3.1-py3-none-any.whl.metadata (12 kB)
+2026-10-26T21:16:18.7110461Z Collecting griffelib>=2.0.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.7322591Z   Downloading griffelib-2.4.1-py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:16:18.7484678Z Collecting joserfc>=1.5.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.7693144Z   Downloading joserfc-1.7.7-py3-none-any.whl.metadata (3.2 kB)
+2026-10-26T21:16:18.7804345Z Collecting jsonref>=1.1.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.8017496Z   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+2026-10-26T21:16:18.8144865Z Collecting jsonschema-path>=0.3.4 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.8360585Z   Downloading jsonschema_path-0.5.0-py3-none-any.whl.metadata (8.1 kB)
+2026-10-26T21:16:18.8483581Z Collecting openapi-pydantic>=0.6.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.8698821Z   Downloading openapi_pydantic-0.6.0-py3-none-any.whl.metadata (12 kB)
+2026-10-26T21:16:18.8892155Z Collecting packaging>=24.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.9105367Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+2026-10-26T21:16:18.9270355Z Collecting pyperclip>=1.9.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.9485073Z   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+2026-10-26T21:16:18.9715697Z Collecting python-multipart>=0.0.26 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:18.9933898Z   Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+2026-10-26T21:16:19.0055143Z Collecting uncalled-for>=0.4.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:19.0266487Z   Downloading uncalled_for-0.4.1-py3-none-any.whl.metadata (3.3 kB)
+2026-10-26T21:16:19.0500505Z Collecting uvicorn>=0.35 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:19.0714264Z   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+2026-10-26T21:16:19.1759648Z Collecting watchfiles>=1.0.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:19.1976261Z   Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+2026-10-26T21:16:19.3202600Z Collecting websockets>=15.0.1 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:19.3416210Z   Downloading websockets-17.3-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.3 kB)
+2026-10-26T21:16:19.3561981Z Collecting build>=1.0.3 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:19.3773040Z   Downloading build-1.6.1-py3-none-any.whl.metadata (5.6 kB)
+2026-10-26T21:16:19.4883159Z Collecting pybase64>=1.4.1 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:19.5099475Z   Downloading pybase64-1.5.1-cp312-cp312-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl.metadata (11 kB)
+2026-10-26T21:16:19.7137264Z Collecting numpy>=1.22.5 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:19.7350122Z   Downloading numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+2026-10-26T21:16:19.8018977Z Collecting onnxruntime>=1.14.1 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:19.8230397Z   Downloading onnxruntime-1.31.1-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (5.8 kB)
+2026-10-26T21:16:19.8440723Z Collecting opentelemetry-exporter-otlp-proto-grpc>=1.2.0 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:19.8686284Z   Downloading opentelemetry_exporter_otlp_proto_grpc-1.45.1-py3-none-any.whl.metadata (2.6 kB)
+2026-10-26T21:16:19.8892900Z Collecting opentelemetry-sdk>=1.2.0 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:19.9110745Z   Downloading opentelemetry_sdk-1.45.1-py3-none-any.whl.metadata (1.6 kB)
+2026-10-26T21:16:20.0471730Z Collecting tokenizers>=0.13.2 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.0694342Z   Downloading tokenizers-0.23.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.8 kB)
+2026-10-26T21:16:20.0897820Z Collecting pypika>=0.48.9 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.1153011Z   Downloading pypika-0.51.1-py2.py3-none-any.whl.metadata (51 kB)
+2026-10-26T21:16:20.1479741Z Collecting tqdm>=4.65.0 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.1697197Z   Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+2026-10-26T21:16:20.1877726Z Collecting overrides>=7.3.1 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.2101007Z   Downloading overrides-7.7.0-py3-none-any.whl.metadata (5.8 kB)
+2026-10-26T21:16:20.2617269Z Collecting importlib-resources (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.2888946Z   Downloading importlib_resources-7.1.0-py3-none-any.whl.metadata (4.0 kB)
+2026-10-26T21:16:20.7835522Z Collecting grpcio>=1.58.0 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.8052271Z   Downloading grpcio-1.85.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.8 kB)
+2026-10-26T21:16:20.8439016Z Collecting bcrypt>=4.0.1 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.8655855Z   Downloading bcrypt-5.0.0-cp39-abi3-manylinux_2_34_x86_64.whl.metadata (10 kB)
+2026-10-26T21:16:20.8926303Z Collecting typer>=0.9.0 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.9140232Z   Downloading typer-0.27.3-py3-none-any.whl.metadata (16 kB)
+2026-10-26T21:16:20.9376177Z Collecting kubernetes>=28.1.0 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.9589875Z   Downloading kubernetes-37.0.1-py2.py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:16:20.9746327Z Collecting tenacity>=8.2.3 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:20.9962040Z   Downloading tenacity-9.2.1-py3-none-any.whl.metadata (1.4 kB)
+2026-10-26T21:16:21.0556639Z Collecting mmh3>=4.0.1 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:21.0790206Z   Downloading mmh3-5.3.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (13 kB)
+2026-10-26T21:16:21.3534517Z Collecting orjson>=3.9.12 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:21.3747316Z   Downloading orjson-3.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (42 kB)
+2026-10-26T21:16:21.3949020Z Collecting httpx>=0.27.0 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:21.4164011Z   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+2026-10-26T21:16:21.4417572Z Collecting jsonschema>=4.19.0 (from chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:21.4642917Z   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+2026-10-26T21:16:21.4858401Z Collecting anyio>=4.9 (from mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:21.5074660Z   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+2026-10-26T21:16:21.5267553Z Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:21.5489327Z   Downloading pyjwt-2.15.1-py3-none-any.whl.metadata (3.5 kB)
+2026-10-26T21:16:21.5683112Z Collecting sse-starlette>=3.0.0 (from mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:21.5900090Z   Downloading sse_starlette-3.6.0-py3-none-any.whl.metadata (15 kB)
+2026-10-26T21:16:21.6098624Z Collecting typing-inspection>=0.4.1 (from mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:21.6313467Z   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+2026-10-26T21:16:21.6545868Z Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:21.6764925Z   Downloading beartype-0.23.1-py3-none-any.whl.metadata (35 kB)
+2026-10-26T21:16:21.7121673Z Collecting aiofile>=3.12.3 (from py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:21.7337650Z   Downloading aiofile-3.12.3-py3-none-any.whl.metadata (17 kB)
+2026-10-26T21:16:21.7565789Z Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:21.7781227Z   Downloading cachetools-7.2.5-py3-none-any.whl.metadata (5.5 kB)
+2026-10-26T21:16:21.7914572Z Collecting iniconfig>=1.0.1 (from pytest)
+2026-10-26T21:16:21.8125003Z   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+2026-10-26T21:16:21.8252906Z Collecting pluggy<2,>=1.5 (from pytest)
+2026-10-26T21:16:21.8466436Z   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+2026-10-26T21:16:21.8650665Z Collecting pygments>=2.7.2 (from pytest)
+2026-10-26T21:16:21.8862367Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+2026-10-26T21:16:21.9416086Z Collecting caio~=0.12.0 (from aiofile>=3.12.3->py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:21.9629438Z   Downloading caio-0.12.10-cp312-cp312-manylinux_2_34_x86_64.whl.metadata (4.6 kB)
+2026-10-26T21:16:22.1447950Z Collecting cryptography>=45.0.1 (from authlib>=1.6.11->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:22.1682917Z   Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.4 kB)
+2026-10-26T21:16:22.1857894Z Collecting pyproject_hooks (from build>=1.0.3->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:22.2072076Z   Downloading pyproject_hooks-1.3.3-py3-none-any.whl.metadata (1.3 kB)
+2026-10-26T21:16:22.3580636Z Collecting cffi>=2.0.0 (from cryptography>=45.0.1->authlib>=1.6.11->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:22.3794563Z   Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+2026-10-26T21:16:22.3916253Z Collecting pycparser (from cffi>=2.0.0->cryptography>=45.0.1->authlib>=1.6.11->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:22.4129537Z   Downloading pycparser-3.12-py3-none-any.whl.metadata (9.7 kB)
+2026-10-26T21:16:22.4274236Z Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:22.4485574Z   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+2026-10-26T21:16:22.4599760Z Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:22.4898894Z   Downloading docstring_parser-0.18.0-py3-none-any.whl.metadata (3.5 kB)
+2026-10-26T21:16:22.5041877Z Collecting rich-rst<3,>=2.0.1 (from cyclopts>=4.0.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:22.5255496Z   Downloading rich_rst-2.2.0-py3-none-any.whl.metadata (5.0 kB)
+2026-10-26T21:16:22.5601864Z Collecting httpcore==1.* (from httpx>=0.27.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:22.5823293Z   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+2026-10-26T21:16:22.5959998Z Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.27.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:22.6169803Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+2026-10-26T21:16:22.6322426Z Collecting httpcore2==2.16.0 (from httpx2>=2.5.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:22.6538191Z   Downloading httpcore2-2.16.0-py3-none-any.whl.metadata (27 kB)
+2026-10-26T21:16:22.6682080Z Collecting truststore>=0.10 (from httpx2>=2.5.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:22.6894586Z   Downloading truststore-0.10.5-py3-none-any.whl.metadata (4.5 kB)
+2026-10-26T21:16:22.7111937Z Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.19.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:22.7327295Z   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+2026-10-26T21:16:22.7521790Z Collecting referencing>=0.28.4 (from jsonschema>=4.19.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:22.7750262Z   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+2026-10-26T21:16:23.0274350Z Collecting rpds-py>=0.25.0 (from jsonschema>=4.19.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:23.0499639Z   Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+2026-10-26T21:16:23.0650381Z Collecting pathable<0.7.0,>=0.6.0 (from jsonschema-path>=0.3.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:23.0879214Z   Downloading pathable-0.6.0-py3-none-any.whl.metadata (7.2 kB)
+2026-10-26T21:16:23.1116121Z Collecting python-dateutil>=2.8.2 (from kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:23.1330528Z   Downloading python_dateutil-3.0.0-py2.py3-none-any.whl.metadata (8.2 kB)
+2026-10-26T21:16:23.1539894Z Collecting websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 (from kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:23.1753443Z   Downloading websocket_client-1.9.2-py3-none-any.whl.metadata (8.3 kB)
+2026-10-26T21:16:23.1882677Z Collecting requests-oauthlib (from kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:23.2095065Z   Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
+2026-10-26T21:16:23.2206735Z Collecting durationpy>=0.11 (from kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:23.2432418Z   Downloading durationpy-0.11-py3-none-any.whl.metadata (474 bytes)
+2026-10-26T21:16:23.7979055Z Collecting aiohttp<4.0.0,>=3.14.3 (from kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:23.8197568Z   Downloading aiohttp-3.14.5-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.3 kB)
+2026-10-26T21:16:23.8332662Z Collecting aiohttp-retry>=2.9.1 (from kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:23.8552497Z   Downloading aiohttp_retry-2.9.1-py3-none-any.whl.metadata (8.8 kB)
+2026-10-26T21:16:23.8738298Z Collecting aiohappyeyeballs>=2.5.0 (from aiohttp<4.0.0,>=3.14.3->kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:23.8953374Z   Downloading aiohappyeyeballs-2.7.1-py3-none-any.whl.metadata (5.9 kB)
+2026-10-26T21:16:23.9055973Z Collecting aiosignal>=1.4.0 (from aiohttp<4.0.0,>=3.14.3->kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:23.9279330Z   Downloading aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+2026-10-26T21:16:23.9953318Z Collecting frozenlist>=1.1.1 (from aiohttp<4.0.0,>=3.14.3->kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:24.0196807Z   Downloading frozenlist-1.8.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+2026-10-26T21:16:24.2897435Z Collecting multidict<8.0,>=4.5 (from aiohttp<4.0.0,>=3.14.3->kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:24.3113227Z   Downloading multidict-7.2.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (6.1 kB)
+2026-10-26T21:16:24.3824089Z Collecting propcache>=0.2.0 (from aiohttp<4.0.0,>=3.14.3->kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:24.4040215Z   Downloading propcache-0.5.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (25 kB)
+2026-10-26T21:16:24.7327922Z Collecting yarl<2.0,>=1.25.1 (from aiohttp<4.0.0,>=3.14.3->kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:24.7544993Z   Downloading yarl-1.25.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (111 kB)
+2026-10-26T21:16:24.8013535Z Collecting flatbuffers (from onnxruntime>=1.14.1->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:24.8231508Z   Downloading flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)
+2026-10-26T21:16:24.9769473Z Collecting protobuf>=4.25.8 (from onnxruntime>=1.14.1->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:24.9982467Z   Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+2026-10-26T21:16:25.0276785Z Collecting googleapis-common-protos~=1.57 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:25.0491029Z   Downloading googleapis_common_protos-1.76.0-py3-none-any.whl.metadata (8.5 kB)
+2026-10-26T21:16:25.0802240Z Collecting opentelemetry-exporter-otlp-common==0.66b1 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:25.1034130Z   Downloading opentelemetry_exporter_otlp_common-0.66b1-py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:16:25.1467115Z Collecting opentelemetry-exporter-otlp-proto-common==1.45.1 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:25.1684962Z   Downloading opentelemetry_exporter_otlp_proto_common-1.45.1-py3-none-any.whl.metadata (1.8 kB)
+2026-10-26T21:16:25.1858452Z Collecting opentelemetry-proto==1.45.1 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:25.2075812Z   Downloading opentelemetry_proto-1.45.1-py3-none-any.whl.metadata (2.3 kB)
+2026-10-26T21:16:25.2415950Z Collecting opentelemetry-semantic-conventions==0.66b1 (from opentelemetry-sdk>=1.2.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:25.2630703Z   Downloading opentelemetry_semantic_conventions-0.66b1-py3-none-any.whl.metadata (2.4 kB)
+2026-10-26T21:16:25.2837160Z Collecting annotated-types>=0.6.0 (from pydantic>=2.12.0->pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:25.3051693Z   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+2026-10-26T21:16:26.0441639Z Collecting pydantic-core==2.50.1 (from pydantic>=2.12.0->pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:26.0655556Z   Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+2026-10-26T21:16:26.0899758Z Collecting email-validator>=2.0.0 (from pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:26.1115414Z   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+2026-10-26T21:16:26.1280425Z Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:26.1493360Z   Downloading dnspython-2.9.0-py3-none-any.whl.metadata (5.7 kB)
+2026-10-26T21:16:26.1785683Z Collecting six>=1.6 (from python-dateutil>=2.8.2->kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.2020568Z   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+2026-10-26T21:16:26.2185306Z Collecting tzdata (from python-dateutil>=2.8.2->kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.2396456Z   Downloading tzdata-2026.5-py2.py3-none-any.whl.metadata (1.4 kB)
+2026-10-26T21:16:26.2575236Z Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:26.2800865Z   Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+2026-10-26T21:16:26.2952384Z Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r student-4/backend/requirements.txt (line 3))
+2026-10-26T21:16:26.3189483Z   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+2026-10-26T21:16:26.3801929Z Collecting huggingface-hub<3.0,>=0.16.4 (from tokenizers>=0.13.2->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.4017577Z   Downloading huggingface_hub-2.3.0-py3-none-any.whl.metadata (16 kB)
+2026-10-26T21:16:26.4394545Z Collecting filelock>=3.10.0 (from huggingface-hub<3.0,>=0.16.4->tokenizers>=0.13.2->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.4606091Z   Downloading filelock-4.2.4-py3-none-any.whl.metadata (2.0 kB)
+2026-10-26T21:16:26.4784800Z Collecting fsspec>=2023.5.0 (from huggingface-hub<3.0,>=0.16.4->tokenizers>=0.13.2->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.4997078Z   Downloading fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)
+2026-10-26T21:16:26.5585580Z Collecting hf-xet<2.0.0,>=1.6.0 (from huggingface-hub<3.0,>=0.16.4->tokenizers>=0.13.2->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.5798386Z   Downloading hf_xet-1.7.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (4.9 kB)
+2026-10-26T21:16:26.6059216Z Collecting shellingham>=1.3.0 (from typer>=0.9.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.6275776Z   Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+2026-10-26T21:16:26.6397106Z Collecting annotated-doc>=0.0.2 (from typer>=0.9.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.6609249Z   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+2026-10-26T21:16:26.7063371Z Collecting httptools>=0.8.0 (from uvicorn[standard]>=0.18.3->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.7287754Z   Downloading httptools-0.9.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+2026-10-26T21:16:26.7702297Z Collecting uvloop>=0.15.1 (from uvicorn[standard]>=0.18.3->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.7919393Z   Downloading uvloop-0.23.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.1 kB)
+2026-10-26T21:16:26.8223071Z Collecting oauthlib>=3.0.0 (from requests-oauthlib->kubernetes>=28.1.0->chromadb<2.0,>=1.5->-r ai-services/requirements.txt (line 3))
+2026-10-26T21:16:26.8465674Z   Downloading oauthlib-4.0.0-py3-none-any.whl.metadata (8.6 kB)
+2026-10-26T21:16:26.8799814Z Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+2026-10-26T21:16:26.9062188Z Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+2026-10-26T21:16:26.9329623Z Downloading fastmcp-4.1.4-py3-none-any.whl (8.2 kB)
+2026-10-26T21:16:26.9567115Z Downloading fastmcp_slim-4.1.4-py3-none-any.whl (935 kB)
+2026-10-26T21:16:27.0212911Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 935.7/935.7 kB 16.4 MB/s  0:00:00
+2026-10-26T21:16:27.0439159Z Downloading chromadb-1.5.9-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (23.3 MB)
+2026-10-26T21:16:27.2438690Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 23.3/23.3 MB 117.4 MB/s  0:00:00
+2026-10-26T21:16:27.2658829Z Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+2026-10-26T21:16:27.2720676Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 161.7 MB/s  0:00:00
+2026-10-26T21:16:27.2935049Z Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)
+2026-10-26T21:16:27.3176788Z Downloading idna-3.20-py3-none-any.whl (69 kB)
+2026-10-26T21:16:27.3418676Z Downloading mcp-2.3.0-py3-none-any.whl (368 kB)
+2026-10-26T21:16:27.3683130Z Downloading mcp_types-2.3.0-py3-none-any.whl (69 kB)
+2026-10-26T21:16:27.3923951Z Downloading py_key_value_aio-0.4.6-py3-none-any.whl (171 kB)
+2026-10-26T21:16:27.4174442Z Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+2026-10-26T21:16:27.4427350Z Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+2026-10-26T21:16:27.4676079Z Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+2026-10-26T21:16:27.4909174Z Downloading aiofile-3.12.3-py3-none-any.whl (22 kB)
+2026-10-26T21:16:27.5148750Z Downloading caio-0.12.10-cp312-cp312-manylinux_2_34_x86_64.whl (162 kB)
+2026-10-26T21:16:27.5395364Z Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+2026-10-26T21:16:27.5636258Z Downloading authlib-1.9.1-py2.py3-none-any.whl (266 kB)
+2026-10-26T21:16:27.5882434Z Downloading bcrypt-5.0.0-cp39-abi3-manylinux_2_34_x86_64.whl (278 kB)
+2026-10-26T21:16:27.6138190Z Downloading beartype-0.23.1-py3-none-any.whl (1.6 MB)
+2026-10-26T21:16:27.6236461Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 253.9 MB/s  0:00:00
+2026-10-26T21:16:27.6451134Z Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+2026-10-26T21:16:27.6684966Z Downloading build-1.6.1-py3-none-any.whl (31 kB)
+2026-10-26T21:16:27.6926530Z Downloading cachetools-7.2.5-py3-none-any.whl (19 kB)
+2026-10-26T21:16:27.7157479Z Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+2026-10-26T21:16:27.7391938Z Downloading click-8.5.0-py3-none-any.whl (125 kB)
+2026-10-26T21:16:27.7630705Z Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (4.8 MB)
+2026-10-26T21:16:27.7785820Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 349.4 MB/s  0:00:00
+2026-10-26T21:16:27.8003903Z Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)
+2026-10-26T21:16:27.8262313Z Downloading cyclopts-5.3.1-py3-none-any.whl (297 kB)
+2026-10-26T21:16:27.8501999Z Downloading docstring_parser-0.18.0-py3-none-any.whl (22 kB)
+2026-10-26T21:16:27.8738146Z Downloading rich_rst-2.2.0-py3-none-any.whl (279 kB)
+2026-10-26T21:16:27.8976611Z Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+2026-10-26T21:16:27.9214399Z Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+2026-10-26T21:16:27.9453324Z Downloading griffelib-2.4.1-py3-none-any.whl (172 kB)
+2026-10-26T21:16:27.9705129Z Downloading grpcio-1.85.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (7.4 MB)
+2026-10-26T21:16:27.9971962Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.4/7.4 MB 296.0 MB/s  0:00:00
+2026-10-26T21:16:28.0189436Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+2026-10-26T21:16:28.0426176Z Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+2026-10-26T21:16:28.0664284Z Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+2026-10-26T21:16:28.0903182Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+2026-10-26T21:16:28.1144804Z Downloading httpx2-2.16.0-py3-none-any.whl (97 kB)
+2026-10-26T21:16:28.1384078Z Downloading httpcore2-2.16.0-py3-none-any.whl (85 kB)
+2026-10-26T21:16:28.1624919Z Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+2026-10-26T21:16:28.1885566Z Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+2026-10-26T21:16:28.2130454Z Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+2026-10-26T21:16:28.2370602Z Downloading joserfc-1.7.7-py3-none-any.whl (71 kB)
+2026-10-26T21:16:28.2608638Z Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+2026-10-26T21:16:28.2857147Z Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+2026-10-26T21:16:28.3094347Z Downloading jsonschema_path-0.5.0-py3-none-any.whl (24 kB)
+2026-10-26T21:16:28.3330699Z Downloading pathable-0.6.0-py3-none-any.whl (18 kB)
+2026-10-26T21:16:28.3572076Z Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+2026-10-26T21:16:28.3810127Z Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+2026-10-26T21:16:28.4047339Z Downloading kubernetes-37.0.1-py2.py3-none-any.whl (7.5 MB)
+2026-10-26T21:16:28.4322922Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.5/7.5 MB 290.4 MB/s  0:00:00
+2026-10-26T21:16:28.4535600Z Downloading aiohttp-3.14.5-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.9 MB)
+2026-10-26T21:16:28.4629158Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 243.4 MB/s  0:00:00
+2026-10-26T21:16:28.4842879Z Downloading multidict-7.2.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (516 kB)
+2026-10-26T21:16:28.5087982Z Downloading yarl-1.25.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (117 kB)
+2026-10-26T21:16:28.5328847Z Downloading aiohappyeyeballs-2.7.1-py3-none-any.whl (15 kB)
+2026-10-26T21:16:28.5561646Z Downloading aiohttp_retry-2.9.1-py3-none-any.whl (10.0 kB)
+2026-10-26T21:16:28.5793468Z Downloading aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+2026-10-26T21:16:28.6032845Z Downloading durationpy-0.11-py3-none-any.whl (4.1 kB)
+2026-10-26T21:16:28.6296946Z Downloading frozenlist-1.8.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (242 kB)
+2026-10-26T21:16:28.6558639Z Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+2026-10-26T21:16:28.6810148Z Downloading mmh3-5.3.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (103 kB)
+2026-10-26T21:16:28.7049113Z Downloading numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+2026-10-26T21:16:28.7573355Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.7/16.7 MB 334.1 MB/s  0:00:00
+2026-10-26T21:16:28.7791754Z Downloading onnxruntime-1.31.1-cp312-cp312-manylinux_2_28_x86_64.whl (23.8 MB)
+2026-10-26T21:16:28.9113875Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 23.8/23.8 MB 181.9 MB/s  0:00:00
+2026-10-26T21:16:28.9328163Z Downloading openapi_pydantic-0.6.0-py3-none-any.whl (96 kB)
+2026-10-26T21:16:28.9565714Z Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+2026-10-26T21:16:28.9804687Z Downloading opentelemetry_exporter_otlp_proto_grpc-1.45.1-py3-none-any.whl (19 kB)
+2026-10-26T21:16:29.0043421Z Downloading opentelemetry_exporter_otlp_common-0.66b1-py3-none-any.whl (12 kB)
+2026-10-26T21:16:29.0282470Z Downloading opentelemetry_exporter_otlp_proto_common-1.45.1-py3-none-any.whl (15 kB)
+2026-10-26T21:16:29.0518069Z Downloading opentelemetry_proto-1.45.1-py3-none-any.whl (72 kB)
+2026-10-26T21:16:29.0787220Z Downloading googleapis_common_protos-1.76.0-py3-none-any.whl (307 kB)
+2026-10-26T21:16:29.1029134Z Downloading opentelemetry_sdk-1.45.1-py3-none-any.whl (140 kB)
+2026-10-26T21:16:29.1273534Z Downloading opentelemetry_semantic_conventions-0.66b1-py3-none-any.whl (206 kB)
+2026-10-26T21:16:29.1509553Z Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)
+2026-10-26T21:16:29.1750359Z Downloading orjson-3.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (130 kB)
+2026-10-26T21:16:29.1987533Z Downloading overrides-7.7.0-py3-none-any.whl (17 kB)
+2026-10-26T21:16:29.2224376Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+2026-10-26T21:16:29.2461451Z Downloading platformdirs-4.13.5-py3-none-any.whl (32 kB)
+2026-10-26T21:16:29.2695992Z Downloading propcache-0.5.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (250 kB)
+2026-10-26T21:16:29.2943286Z Downloading pybase64-1.5.1-cp312-cp312-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl (94 kB)
+2026-10-26T21:16:29.3179016Z Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+2026-10-26T21:16:29.3425544Z Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+2026-10-26T21:16:29.3515873Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 284.1 MB/s  0:00:00
+2026-10-26T21:16:29.3730966Z Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+2026-10-26T21:16:29.3964939Z Downloading pydantic_settings-2.16.1-py3-none-any.whl (80 kB)
+2026-10-26T21:16:29.4205465Z Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+2026-10-26T21:16:29.4440198Z Downloading dnspython-2.9.0-py3-none-any.whl (354 kB)
+2026-10-26T21:16:29.4686280Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+2026-10-26T21:16:29.4752040Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 228.7 MB/s  0:00:00
+2026-10-26T21:16:29.4966297Z Downloading pyjwt-2.15.1-py3-none-any.whl (33 kB)
+2026-10-26T21:16:29.5211890Z Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+2026-10-26T21:16:29.5444079Z Downloading pypika-0.51.1-py2.py3-none-any.whl (60 kB)
+2026-10-26T21:16:29.5684141Z Downloading python_dateutil-3.0.0-py2.py3-none-any.whl (94 kB)
+2026-10-26T21:16:29.5926170Z Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+2026-10-26T21:16:29.6162653Z Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+2026-10-26T21:16:29.6404638Z Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+2026-10-26T21:16:29.6650763Z Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+2026-10-26T21:16:29.6890252Z Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+2026-10-26T21:16:29.7126737Z Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (371 kB)
+2026-10-26T21:16:29.7371728Z Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+2026-10-26T21:16:29.7605115Z Downloading sse_starlette-3.6.0-py3-none-any.whl (17 kB)
+2026-10-26T21:16:29.7838859Z Downloading starlette-1.10.0-py3-none-any.whl (80 kB)
+2026-10-26T21:16:29.8072455Z Downloading tenacity-9.2.1-py3-none-any.whl (32 kB)
+2026-10-26T21:16:29.8315775Z Downloading tokenizers-0.23.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.4 MB)
+2026-10-26T21:16:29.8432175Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.4/3.4 MB 344.2 MB/s  0:00:00
+2026-10-26T21:16:29.8647216Z Downloading huggingface_hub-2.3.0-py3-none-any.whl (855 kB)
+2026-10-26T21:16:29.8710102Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 855.2/855.2 kB 176.1 MB/s  0:00:00
+2026-10-26T21:16:29.8924153Z Downloading hf_xet-1.7.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.2 MB)
+2026-10-26T21:16:29.9063300Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.2/4.2 MB 353.3 MB/s  0:00:00
+2026-10-26T21:16:29.9276198Z Downloading filelock-4.2.4-py3-none-any.whl (162 kB)
+2026-10-26T21:16:29.9516590Z Downloading fsspec-2026.9.0-py3-none-any.whl (221 kB)
+2026-10-26T21:16:29.9755359Z Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+2026-10-26T21:16:29.9992046Z Downloading truststore-0.10.5-py3-none-any.whl (19 kB)
+2026-10-26T21:16:30.0225983Z Downloading typer-0.27.3-py3-none-any.whl (123 kB)
+2026-10-26T21:16:30.0465271Z Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+2026-10-26T21:16:30.0720646Z Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+2026-10-26T21:16:30.0954974Z Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+2026-10-26T21:16:30.1187563Z Downloading uncalled_for-0.4.1-py3-none-any.whl (14 kB)
+2026-10-26T21:16:30.1418067Z Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+2026-10-26T21:16:30.1663048Z Downloading httptools-0.9.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (552 kB)
+2026-10-26T21:16:30.1716445Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 552.8/552.8 kB 100.9 MB/s  0:00:00
+2026-10-26T21:16:30.1955646Z Downloading uvloop-0.23.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.5 MB)
+2026-10-26T21:16:30.2090830Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 328.8 MB/s  0:00:00
+2026-10-26T21:16:30.2308229Z Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (458 kB)
+2026-10-26T21:16:30.2553418Z Downloading websocket_client-1.9.2-py3-none-any.whl (95 kB)
+2026-10-26T21:16:30.2789659Z Downloading websockets-17.3-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (225 kB)
+2026-10-26T21:16:30.3032985Z Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+2026-10-26T21:16:30.3271324Z Downloading flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+2026-10-26T21:16:30.3529611Z Downloading importlib_resources-7.1.0-py3-none-any.whl (37 kB)
+2026-10-26T21:16:30.3763939Z Downloading pycparser-3.12-py3-none-any.whl (62 kB)
+2026-10-26T21:16:30.4010763Z Downloading pyproject_hooks-1.3.3-py3-none-any.whl (10 kB)
+2026-10-26T21:16:30.4247100Z Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+2026-10-26T21:16:30.4478634Z Downloading oauthlib-4.0.0-py3-none-any.whl (159 kB)
+2026-10-26T21:16:30.4746271Z Downloading tzdata-2026.5-py2.py3-none-any.whl (347 kB)
+2026-10-26T21:16:32.0590009Z Installing collected packages: pypika, pyperclip, flatbuffers, durationpy, websockets, websocket-client, uvloop, urllib3, uncalled-for, tzdata, typing-extensions, truststore, tqdm, tenacity, six, shellingham, rpds-py, PyYAML, python-multipart, python-dotenv, pyproject_hooks, pyjwt, pygments, pycparser, pybase64, protobuf, propcache, pluggy, platformdirs, pathable, packaging, overrides, orjson, oauthlib, numpy, multidict, mmh3, mdurl, markupsafe, jsonref, itsdangerous, iniconfig, importlib-resources, idna, httptools, hf-xet, h11, griffelib, fsspec, frozenlist, filelock, docstring-parser, dnspython, click, charset_normalizer, certifi, caio, cachetools, blinker, beartype, bcrypt, attrs, annotated-types, annotated-doc, aiohappyeyeballs, yarl, werkzeug, uvicorn, typing-inspection, requests, referencing, python-dateutil, pytest, pydantic-core, py-key-value-aio, opentelemetry-proto, opentelemetry-api, onnxruntime, markdown-it-py, jinja2, httpcore2, httpcore, grpcio, googleapis-common-protos, exceptiongroup, email-validator, cffi, build, anyio, aiosignal, aiofile, watchfiles, starlette, rich, requests-oauthlib, pydantic, opentelemetry-semantic-conventions, opentelemetry-exporter-otlp-proto-common, jsonschema-specifications, jsonschema-path, httpx2, httpx, Flask, cryptography, aiohttp, typer, sse-starlette, rich-rst, pydantic-settings, opentelemetry-sdk, openapi-pydantic, mcp-types, jsonschema, joserfc, huggingface-hub, aiohttp-retry, tokenizers, opentelemetry-exporter-otlp-common, mcp, kubernetes, fastmcp-slim, cyclopts, authlib, opentelemetry-exporter-otlp-proto-grpc, fastmcp, chromadb
+2026-10-26T21:16:52.0795186Z 
+2026-10-26T21:16:52.0896245Z Successfully installed Flask-3.1.3 PyYAML-6.0.3 aiofile-3.12.3 aiohappyeyeballs-2.7.1 aiohttp-3.14.5 aiohttp-retry-2.9.1 aiosignal-1.4.0 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 attrs-26.1.0 authlib-1.9.1 bcrypt-5.0.0 beartype-0.23.1 blinker-1.9.0 build-1.6.1 cachetools-7.2.5 caio-0.12.10 certifi-2026.10.23 cffi-2.1.1 charset_normalizer-3.5.2 chromadb-1.5.9 click-8.5.0 cryptography-50.0.2 cyclopts-5.3.1 dnspython-2.9.0 docstring-parser-0.18.0 durationpy-0.11 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-4.1.4 fastmcp-slim-4.1.4 filelock-4.2.4 flatbuffers-25.12.19 frozenlist-1.8.0 fsspec-2026.9.0 googleapis-common-protos-1.76.0 griffelib-2.4.1 grpcio-1.85.0 h11-0.16.0 hf-xet-1.7.0 httpcore-1.0.9 httpcore2-2.16.0 httptools-0.9.0 httpx-0.28.1 httpx2-2.16.0 huggingface-hub-2.3.0 idna-3.20 importlib-resources-7.1.0 iniconfig-2.3.1 itsdangerous-2.2.0 jinja2-3.1.6 joserfc-1.7.7 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.5.0 jsonschema-specifications-2025.9.1 kubernetes-37.0.1 markdown-it-py-4.2.0 markupsafe-3.0.4 mcp-2.3.0 mcp-types-2.3.0 mdurl-0.1.2 mmh3-5.3.1 multidict-7.2.1 numpy-2.5.4 oauthlib-4.0.0 onnxruntime-1.31.1 openapi-pydantic-0.6.0 opentelemetry-api-1.45.1 opentelemetry-exporter-otlp-common-0.66b1 opentelemetry-exporter-otlp-proto-common-1.45.1 opentelemetry-exporter-otlp-proto-grpc-1.45.1 opentelemetry-proto-1.45.1 opentelemetry-sdk-1.45.1 opentelemetry-semantic-conventions-0.66b1 orjson-3.13.0 overrides-7.7.0 packaging-26.3 pathable-0.6.0 platformdirs-4.13.5 pluggy-1.7.0 propcache-0.5.4 protobuf-7.36.2 py-key-value-aio-0.4.6 pybase64-1.5.1 pycparser-3.12 pydantic-2.14.1 pydantic-core-2.50.1 pydantic-settings-2.16.1 pygments-2.21.0 pyjwt-2.15.1 pyperclip-1.11.0 pypika-0.51.1 pyproject_hooks-1.3.3 pytest-9.1.1 python-dateutil-3.0.0 python-dotenv-1.2.4 python-multipart-0.0.32 referencing-0.37.0 requests-2.34.2 requests-oauthlib-2.0.0 rich-15.0.0 rich-rst-2.2.0 rpds-py-2026.9.1 shellingham-1.5.4 six-1.17.0 sse-starlette-3.6.0 starlette-1.10.0 tenacity-9.2.1 tokenizers-0.23.3 tqdm-4.70.1 truststore-0.10.5 typer-0.27.3 typing-extensions-4.16.0 typing-inspection-0.4.4 tzdata-2026.5 uncalled-for-0.4.1 urllib3-2.8.0 uvicorn-0.54.0 uvloop-0.23.0 watchfiles-1.3.0 websocket-client-1.9.2 websockets-17.3 werkzeug-3.1.9 yarl-1.25.1
+2026-10-26T21:16:52.0910084Z 
+2026-10-26T21:16:52.0910381Z [notice] A new release of pip is available: 26.2.1 -> 26.2.2
+2026-10-26T21:16:52.0911051Z [notice] To update, run: pip install --upgrade pip
+2026-10-26T21:16:56.8700048Z ...................................................................... [ 25%]
+2026-10-26T21:17:06.3238981Z ........................................................................ [ 51%]
+2026-10-26T21:17:09.5811500Z ........................................................................ [ 77%]
+2026-10-26T21:17:10.8931881Z ..............................................................           [100%]
+2026-10-26T21:17:10.8932620Z 276 passed, 2 subtests passed in 17.38s
+2026-10-26T21:17:11.2725094Z ##[group]Run docker compose -f student-4/compose.local.yml config -q
+2026-10-26T21:17:11.2725629Z [36;1mdocker compose -f student-4/compose.local.yml config -q[0m
+2026-10-26T21:17:11.2726052Z [36;1mdocker compose -f student-4/compose.local.yml build[0m
+2026-10-26T21:17:11.2791019Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:17:11.2791267Z env:
+2026-10-26T21:17:11.2791456Z   OLLAMA_ENABLED: false
+2026-10-26T21:17:11.2791687Z   AI_SERVICES_ENABLED: false
+2026-10-26T21:17:11.2791991Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:11.2792414Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T21:17:11.2792831Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:11.2793196Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:11.2793562Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:11.2794546Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T21:17:11.2795078Z ##[endgroup]
+2026-10-26T21:17:11.8759663Z #1 [internal] load local bake definitions
+2026-10-26T21:17:11.9768318Z #1 reading from stdin 1.41kB done
+2026-10-26T21:17:11.9769423Z #1 DONE 0.0s
+2026-10-26T21:17:11.9769795Z 
+2026-10-26T21:17:11.9770213Z #2 [student-4-database internal] load build definition from Dockerfile
+2026-10-26T21:17:11.9770913Z #2 transferring dockerfile: 30B
+2026-10-26T21:17:12.1400739Z #2 transferring dockerfile: 409B done
+2026-10-26T21:17:12.1401374Z #2 DONE 0.0s
+2026-10-26T21:17:12.1401583Z 
+2026-10-26T21:17:12.1401915Z #3 [student-4-frontend internal] load build definition from Dockerfile
+2026-10-26T21:17:12.1402620Z #3 transferring dockerfile: 298B done
+2026-10-26T21:17:12.1403073Z #3 DONE 0.0s
+2026-10-26T21:17:12.1403267Z 
+2026-10-26T21:17:12.1403582Z #4 [student-4-backend internal] load build definition from Dockerfile
+2026-10-26T21:17:12.1404574Z #4 transferring dockerfile: 415B done
+2026-10-26T21:17:12.1405018Z #4 DONE 0.0s
+2026-10-26T21:17:12.1405254Z 
+2026-10-26T21:17:12.1405670Z #5 [student-4-frontend internal] load metadata for docker.io/library/python:3.12-slim
+2026-10-26T21:17:12.3708394Z #5 ...
+2026-10-26T21:17:12.3708698Z 
+2026-10-26T21:17:12.3709051Z #6 [auth] library/python:pull token for registry-1.docker.io
+2026-10-26T21:17:12.3709651Z #6 DONE 0.0s
+2026-10-26T21:17:12.5211457Z 
+2026-10-26T21:17:12.5212497Z #5 [student-4-frontend internal] load metadata for docker.io/library/python:3.12-slim
+2026-10-26T21:17:12.9862275Z #5 DONE 0.9s
+2026-10-26T21:17:12.9862533Z 
+2026-10-26T21:17:12.9862784Z #7 [student-4-backend internal] load .dockerignore
+2026-10-26T21:17:12.9863354Z #7 transferring context: 70B done
+2026-10-26T21:17:12.9863979Z #7 DONE 0.0s
+2026-10-26T21:17:12.9864160Z 
+2026-10-26T21:17:12.9864393Z #8 [student-4-database internal] load .dockerignore
+2026-10-26T21:17:12.9875343Z #8 transferring context: 75B done
+2026-10-26T21:17:12.9875782Z #8 DONE 0.0s
+2026-10-26T21:17:12.9875908Z 
+2026-10-26T21:17:12.9876922Z #9 [student-4-frontend internal] load .dockerignore
+2026-10-26T21:17:12.9877288Z #9 transferring context: 70B done
+2026-10-26T21:17:12.9877532Z #9 DONE 0.0s
+2026-10-26T21:17:12.9877648Z 
+2026-10-26T21:17:12.9877871Z #10 [student-4-frontend internal] load build context
+2026-10-26T21:17:12.9879257Z #10 transferring context: 31.00kB done
+2026-10-26T21:17:12.9879527Z #10 DONE 0.0s
+2026-10-26T21:17:12.9879775Z 
+2026-10-26T21:17:12.9879916Z #11 [student-4-database internal] load build context
+2026-10-26T21:17:12.9880304Z #11 transferring context: 13.46kB done
+2026-10-26T21:17:12.9880636Z #11 DONE 0.0s
+2026-10-26T21:17:12.9880746Z 
+2026-10-26T21:17:12.9880865Z #12 [student-4-backend internal] load build context
+2026-10-26T21:17:12.9881264Z #12 transferring context: 31.25kB done
+2026-10-26T21:17:12.9881651Z #12 DONE 0.0s
+2026-10-26T21:17:12.9881781Z 
+2026-10-26T21:17:12.9882225Z #13 [student-4-frontend 1/7] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+2026-10-26T21:17:12.9885804Z #13 resolve docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704 done
+2026-10-26T21:17:12.9887757Z #13 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 0B / 12.12MB 0.1s
+2026-10-26T21:17:13.1131687Z #13 sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704 10.37kB / 10.37kB done
+2026-10-26T21:17:13.1133242Z #13 sha256:e8a38829209aea82774882e5157e1f7c3e8c8393ff53a697b3580896e57f345c 1.75kB / 1.75kB done
+2026-10-26T21:17:13.1134637Z #13 sha256:a33c10a97f11005523814c6eee013986119fe41f3122f444518117536675c8e1 5.66kB / 5.66kB done
+2026-10-26T21:17:13.1135789Z #13 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 29.84MB / 29.84MB 0.2s done
+2026-10-26T21:17:13.1136974Z #13 sha256:be6443c06d3c9914acdca3ffb368adad23d4f282b55e71e730878ad3e3c3f75c 1.29MB / 1.29MB 0.2s done
+2026-10-26T21:17:13.1138108Z #13 sha256:5c397e4307db7bd392eff1d36de88b04da2a137a4b906b7e0e4657bada560645 0B / 249B 0.2s
+2026-10-26T21:17:13.1139172Z #13 extracting sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034
+2026-10-26T21:17:13.2168738Z #13 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 12.12MB / 12.12MB 0.3s done
+2026-10-26T21:17:13.2170997Z #13 sha256:5c397e4307db7bd392eff1d36de88b04da2a137a4b906b7e0e4657bada560645 249B / 249B 0.3s done
+2026-10-26T21:17:14.0909117Z #13 extracting sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 1.0s done
+2026-10-26T21:17:14.0910271Z #13 extracting sha256:be6443c06d3c9914acdca3ffb368adad23d4f282b55e71e730878ad3e3c3f75c
+2026-10-26T21:17:14.3422561Z #13 extracting sha256:be6443c06d3c9914acdca3ffb368adad23d4f282b55e71e730878ad3e3c3f75c 0.1s done
+2026-10-26T21:17:14.5228601Z #13 extracting sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7
+2026-10-26T21:17:15.1531568Z #13 extracting sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 0.6s done
+2026-10-26T21:17:15.1532933Z #13 extracting sha256:5c397e4307db7bd392eff1d36de88b04da2a137a4b906b7e0e4657bada560645 done
+2026-10-26T21:17:15.3251760Z #13 DONE 2.3s
+2026-10-26T21:17:15.3252140Z 
+2026-10-26T21:17:15.3252728Z #14 [student-4-backend 2/7] WORKDIR /app
+2026-10-26T21:17:15.3253183Z #14 DONE 0.0s
+2026-10-26T21:17:15.3253384Z 
+2026-10-26T21:17:15.3253802Z #15 [student-4-frontend 3/7] COPY requirements.txt .
+2026-10-26T21:17:15.3254326Z #15 DONE 0.0s
+2026-10-26T21:17:15.3254519Z 
+2026-10-26T21:17:15.3255068Z #16 [student-4-backend 3/7] RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+2026-10-26T21:17:15.6157882Z #16 DONE 0.3s
+2026-10-26T21:17:15.6158493Z 
+2026-10-26T21:17:15.6159052Z #17 [student-4-backend 4/8] COPY requirements.txt .
+2026-10-26T21:17:15.6159916Z #17 DONE 0.0s
+2026-10-26T21:17:15.6160386Z 
+2026-10-26T21:17:15.6160845Z #18 [student-4-database 4/7] COPY requirements.txt .
+2026-10-26T21:17:15.6161656Z #18 DONE 0.0s
+2026-10-26T21:17:15.6162083Z 
+2026-10-26T21:17:15.6162744Z #19 [student-4-database 5/7] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:17:17.5999322Z #19 2.073 Collecting Flask<4.0,>=3.1 (from -r requirements.txt (line 1))
+2026-10-26T21:17:17.6000201Z #19 2.117   Downloading flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+2026-10-26T21:17:17.6001063Z #19 2.135 Collecting blinker>=1.9.0 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:17.7188840Z #19 2.147   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+2026-10-26T21:17:17.7189999Z #19 2.179 Collecting click>=8.1.3 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:17.7191040Z #19 2.191   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+2026-10-26T21:17:17.7192025Z #19 2.211 Collecting itsdangerous>=2.2.0 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:17.7193259Z #19 2.223   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:17:17.8421202Z #19 2.255 Collecting jinja2>=3.1.2 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:17.8422780Z #19 2.266   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+2026-10-26T21:17:17.8424332Z #19 2.337 Collecting markupsafe>=2.1.1 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:17.8426036Z #19 2.349   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+2026-10-26T21:17:17.8427578Z #19 2.378 Collecting werkzeug>=3.1.0 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:17.9422583Z #19 2.390   Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+2026-10-26T21:17:17.9444327Z #19 2.412 Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+2026-10-26T21:17:17.9445030Z #19 2.438 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+2026-10-26T21:17:17.9445675Z #19 2.451 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+2026-10-26T21:17:17.9446411Z #19 2.478 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+2026-10-26T21:17:18.0589909Z #19 2.490 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+2026-10-26T21:17:18.0591417Z #19 2.503 Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+2026-10-26T21:17:18.0593036Z #19 2.515 Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+2026-10-26T21:17:18.0594655Z #19 2.550 Installing collected packages: markupsafe, itsdangerous, click, blinker, werkzeug, jinja2, Flask
+2026-10-26T21:17:18.5007326Z #19 ...
+2026-10-26T21:17:18.5007634Z 
+2026-10-26T21:17:18.5008083Z #20 [student-4-frontend 4/7] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:17:18.5008968Z #20 1.501 Collecting Flask<4.0,>=3.1 (from -r requirements.txt (line 1))
+2026-10-26T21:17:18.5009752Z #20 1.520   Downloading flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+2026-10-26T21:17:18.5010555Z #20 1.565 Collecting requests<3.0,>=2.32 (from -r requirements.txt (line 2))
+2026-10-26T21:17:18.5011425Z #20 1.569   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+2026-10-26T21:17:18.5012319Z #20 1.581 Collecting blinker>=1.9.0 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.5013215Z #20 1.585   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+2026-10-26T21:17:18.5014417Z #20 1.607 Collecting click>=8.1.3 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.5015278Z #20 1.611   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+2026-10-26T21:17:18.5016162Z #20 1.621 Collecting itsdangerous>=2.2.0 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.5017098Z #20 1.625   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:17:18.5017997Z #20 1.641 Collecting jinja2>=3.1.2 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.5018860Z #20 1.645   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+2026-10-26T21:17:18.5019745Z #20 1.727 Collecting markupsafe>=2.1.1 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.5021057Z #20 1.731   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+2026-10-26T21:17:18.5022308Z #20 1.759 Collecting werkzeug>=3.1.0 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.5023188Z #20 1.762   Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+2026-10-26T21:17:18.5024793Z #20 1.984 Collecting charset_normalizer<4,>=2 (from requests<3.0,>=2.32->-r requirements.txt (line 2))
+2026-10-26T21:17:18.5026225Z #20 1.988   Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+2026-10-26T21:17:18.5027524Z #20 2.010 Collecting idna<4,>=2.5 (from requests<3.0,>=2.32->-r requirements.txt (line 2))
+2026-10-26T21:17:18.5028379Z #20 2.014   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+2026-10-26T21:17:18.5029562Z #20 2.053 Collecting urllib3<3,>=1.26 (from requests<3.0,>=2.32->-r requirements.txt (line 2))
+2026-10-26T21:17:18.5030668Z #20 2.057   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+2026-10-26T21:17:18.5031606Z #20 2.086 Collecting certifi>=2023.5.7 (from requests<3.0,>=2.32->-r requirements.txt (line 2))
+2026-10-26T21:17:18.5032540Z #20 2.089   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+2026-10-26T21:17:18.5033318Z #20 2.107 Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+2026-10-26T21:17:18.5037920Z #20 2.111 Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+2026-10-26T21:17:18.5038655Z #20 2.115 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+2026-10-26T21:17:18.5039368Z #20 2.118 Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+2026-10-26T21:17:18.5040510Z #20 2.123 Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)
+2026-10-26T21:17:18.5041636Z #20 2.127 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+2026-10-26T21:17:18.5042284Z #20 2.130 Downloading idna-3.20-py3-none-any.whl (69 kB)
+2026-10-26T21:17:18.5042954Z #20 2.134 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+2026-10-26T21:17:18.5043992Z #20 2.137 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+2026-10-26T21:17:18.5045095Z #20 2.141 Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+2026-10-26T21:17:18.5046181Z #20 2.146 Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+2026-10-26T21:17:18.5046847Z #20 2.149 Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+2026-10-26T21:17:18.5048102Z #20 2.186 Installing collected packages: urllib3, markupsafe, itsdangerous, idna, click, charset_normalizer, certifi, blinker, werkzeug, requests, jinja2, Flask
+2026-10-26T21:17:18.5050205Z #20 2.884 Successfully installed Flask-3.1.3 blinker-1.9.0 certifi-2026.10.23 charset_normalizer-3.5.2 click-8.5.0 idna-3.20 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.4 requests-2.34.2 urllib3-2.8.0 werkzeug-3.1.9
+2026-10-26T21:17:18.5053524Z #20 2.886 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+2026-10-26T21:17:18.5056174Z #20 2.984 
+2026-10-26T21:17:18.5056675Z #20 2.984 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+2026-10-26T21:17:18.5057378Z #20 2.984 [notice] To update, run: pip install --upgrade pip
+2026-10-26T21:17:18.5057932Z #20 DONE 3.1s
+2026-10-26T21:17:18.5058127Z 
+2026-10-26T21:17:18.5058321Z #21 [student-4-frontend 5/7] COPY app.py ./
+2026-10-26T21:17:18.5058815Z #21 DONE 0.0s
+2026-10-26T21:17:18.5059013Z 
+2026-10-26T21:17:18.5059248Z #22 [student-4-frontend 6/7] COPY templates ./templates
+2026-10-26T21:17:18.5059763Z #22 DONE 0.0s
+2026-10-26T21:17:18.5059974Z 
+2026-10-26T21:17:18.5060192Z #23 [student-4-frontend 7/7] COPY static ./static
+2026-10-26T21:17:18.5060704Z #23 DONE 0.0s
+2026-10-26T21:17:18.5372985Z 
+2026-10-26T21:17:18.5374188Z #19 [student-4-database 5/7] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:17:18.5375530Z #19 3.073 Successfully installed Flask-3.1.3 blinker-1.9.0 click-8.5.0 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.4 werkzeug-3.1.9
+2026-10-26T21:17:18.6870435Z #19 3.078 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+2026-10-26T21:17:18.7949669Z #19 3.223 
+2026-10-26T21:17:18.7950747Z #19 3.223 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+2026-10-26T21:17:18.7952084Z #19 3.223 [notice] To update, run: pip install --upgrade pip
+2026-10-26T21:17:18.7954059Z #19 DONE 3.3s
+2026-10-26T21:17:18.7954714Z 
+2026-10-26T21:17:18.7955334Z #24 [student-4-backend 5/8] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:17:18.7956755Z #24 1.848 Collecting Flask<4.0,>=3.1 (from -r requirements.txt (line 1))
+2026-10-26T21:17:18.7958058Z #24 1.931   Downloading flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+2026-10-26T21:17:18.7959400Z #24 1.972 Collecting requests<3.0,>=2.32 (from -r requirements.txt (line 2))
+2026-10-26T21:17:18.7960801Z #24 1.995   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+2026-10-26T21:17:18.7962212Z #24 2.033 Collecting fastmcp<5.0,>=4.0 (from -r requirements.txt (line 3))
+2026-10-26T21:17:18.7963530Z #24 2.054   Downloading fastmcp-4.1.4-py3-none-any.whl.metadata (9.5 kB)
+2026-10-26T21:17:18.7965046Z #24 2.069 Collecting blinker>=1.9.0 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.7966505Z #24 2.091   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+2026-10-26T21:17:18.7967926Z #24 2.114 Collecting click>=8.1.3 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.7969353Z #24 2.137   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+2026-10-26T21:17:18.7970833Z #24 2.148 Collecting itsdangerous>=2.2.0 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.7972393Z #24 2.169   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:17:18.7973849Z #24 2.182 Collecting jinja2>=3.1.2 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.7975417Z #24 2.204   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+2026-10-26T21:17:18.7976900Z #24 2.255 Collecting markupsafe>=2.1.1 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.7978895Z #24 2.278   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+2026-10-26T21:17:18.7980584Z #24 2.311 Collecting werkzeug>=3.1.0 (from Flask<4.0,>=3.1->-r requirements.txt (line 1))
+2026-10-26T21:17:18.7981983Z #24 2.333   Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+2026-10-26T21:17:18.7983182Z #24 2.487 Collecting charset_normalizer<4,>=2 (from requests<3.0,>=2.32->-r requirements.txt (line 2))
+2026-10-26T21:17:18.7985257Z #24 2.509   Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+2026-10-26T21:17:18.7986793Z #24 2.545 Collecting idna<4,>=2.5 (from requests<3.0,>=2.32->-r requirements.txt (line 2))
+2026-10-26T21:17:18.7988065Z #24 2.570   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+2026-10-26T21:17:18.7989282Z #24 2.602 Collecting urllib3<3,>=1.26 (from requests<3.0,>=2.32->-r requirements.txt (line 2))
+2026-10-26T21:17:18.7990415Z #24 2.623   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+2026-10-26T21:17:18.7991551Z #24 2.642 Collecting certifi>=2023.5.7 (from requests<3.0,>=2.32->-r requirements.txt (line 2))
+2026-10-26T21:17:18.7992747Z #24 2.663   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+2026-10-26T21:17:18.7994324Z #24 2.678 Collecting fastmcp-slim==4.1.4 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:18.7995885Z #24 2.699   Downloading fastmcp_slim-4.1.4-py3-none-any.whl.metadata (11 kB)
+2026-10-26T21:17:18.7997587Z #24 2.728 Collecting mcp-types<3.0.0,>=2.0.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:18.7999154Z #24 2.749   Downloading mcp_types-2.3.0-py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:17:18.8000757Z #24 2.782 Collecting platformdirs>=4.0.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:18.8002264Z #24 2.816   Downloading platformdirs-4.13.5-py3-none-any.whl.metadata (5.5 kB)
+2026-10-26T21:17:18.8004326Z #24 2.840 Collecting pydantic-settings>=2.0.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:18.8006108Z #24 2.862   Downloading pydantic_settings-2.16.1-py3-none-any.whl.metadata (4.0 kB)
+2026-10-26T21:17:18.8007750Z #24 3.090 Collecting pydantic>=2.12.0 (from pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:18.8009347Z #24 3.119   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+2026-10-26T21:17:18.8011247Z #24 3.224 Collecting python-dotenv>=1.1.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:18.8012819Z #24 3.240   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+2026-10-26T21:17:18.8014466Z #24 3.297 Collecting rich>=13.9.4 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:18.8015931Z #24 3.313   Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+2026-10-26T21:17:18.9161499Z #24 ...
+2026-10-26T21:17:18.9175604Z 
+2026-10-26T21:17:18.9176320Z #25 [student-4-database 6/7] COPY app.py init_db.py ./
+2026-10-26T21:17:18.9177342Z #25 DONE 0.1s
+2026-10-26T21:17:18.9177858Z 
+2026-10-26T21:17:18.9178485Z #24 [student-4-backend 5/8] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:17:18.9180070Z #24 3.355 Collecting typing-extensions>=4.0.0 (from fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:18.9181829Z #24 3.372   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+2026-10-26T21:17:18.9183330Z #24 3.424 Collecting authlib>=1.6.11 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:18.9184946Z #24 3.453   Downloading authlib-1.9.1-py2.py3-none-any.whl.metadata (10 kB)
+2026-10-26T21:17:19.0219958Z #24 3.478 Collecting exceptiongroup>=1.2.2 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.0223352Z #24 3.478   Downloading exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+2026-10-26T21:17:19.0225923Z #24 3.505 Collecting httpx2>=2.5.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.0227690Z #24 3.531   Downloading httpx2-2.16.0-py3-none-any.whl.metadata (10 kB)
+2026-10-26T21:17:19.0229771Z #24 3.559 Collecting mcp<3.0.0,>=2.3.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.1349473Z #24 3.585   Downloading mcp-2.3.0-py3-none-any.whl.metadata (6.6 kB)
+2026-10-26T21:17:19.1351675Z #24 3.628 Collecting opentelemetry-api>=1.28.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.1353336Z #24 3.652   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+2026-10-26T21:17:19.1355459Z #24 3.672 Collecting py-key-value-aio<0.5.0,>=0.4.4 (from py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.2365932Z #24 ...
+2026-10-26T21:17:19.2366218Z 
+2026-10-26T21:17:19.2366706Z #26 [student-4-database 7/7] RUN mkdir -p /app/data && chown -R appuser:appgroup /app
+2026-10-26T21:17:19.2367452Z #26 DONE 0.3s
+2026-10-26T21:17:19.2367646Z 
+2026-10-26T21:17:19.2368024Z #24 [student-4-backend 5/8] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:17:19.2368935Z #24 3.699   Downloading py_key_value_aio-0.4.6-py3-none-any.whl.metadata (16 kB)
+2026-10-26T21:17:19.3425418Z #24 ...
+2026-10-26T21:17:19.3425694Z 
+2026-10-26T21:17:19.3425892Z #27 [student-4-frontend] exporting to image
+2026-10-26T21:17:19.3426398Z #27 exporting layers 0.9s done
+2026-10-26T21:17:19.3427137Z #27 writing image sha256:6bbd62fc3f40c4c18c455b05e215ae17a14bb401b3dc0ec61ca9d48f95e50a19 done
+2026-10-26T21:17:19.3428682Z #27 naming to docker.io/library/student-4-frontend:release0 done
+2026-10-26T21:17:19.3429242Z #27 DONE 0.9s
+2026-10-26T21:17:19.3429418Z 
+2026-10-26T21:17:19.3429773Z #24 [student-4-backend 5/8] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:17:19.3430869Z #24 3.775 Collecting starlette>=1.0.1 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.3431976Z #24 3.807   Downloading starlette-1.10.0-py3-none-any.whl.metadata (6.6 kB)
+2026-10-26T21:17:19.3433055Z #24 3.880 Collecting cyclopts>=4.0.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.4839297Z #24 ...
+2026-10-26T21:17:19.4839585Z 
+2026-10-26T21:17:19.4839919Z #28 [student-4-frontend] resolving provenance for metadata file
+2026-10-26T21:17:19.4840762Z #28 DONE 0.0s
+2026-10-26T21:17:19.4840995Z 
+2026-10-26T21:17:19.4841387Z #24 [student-4-backend 5/8] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:17:19.4842343Z #24 3.890   Downloading cyclopts-5.3.1-py3-none-any.whl.metadata (12 kB)
+2026-10-26T21:17:19.4844037Z #24 3.922 Collecting griffelib>=2.0.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.4845649Z #24 3.935   Downloading griffelib-2.4.1-py3-none-any.whl.metadata (1.9 kB)
+2026-10-26T21:17:19.4847634Z #24 3.978 Collecting joserfc>=1.5.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.4848758Z #24 4.012   Downloading joserfc-1.7.7-py3-none-any.whl.metadata (3.2 kB)
+2026-10-26T21:17:19.4849823Z #24 4.012 Collecting jsonref>=1.1.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.5998376Z #24 4.044   Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+2026-10-26T21:17:19.5999647Z #24 4.051 Collecting jsonschema-path>=0.3.4 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.6000868Z #24 4.079   Downloading jsonschema_path-0.5.0-py3-none-any.whl.metadata (8.1 kB)
+2026-10-26T21:17:19.6002079Z #24 4.098 Collecting openapi-pydantic>=0.6.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.6003280Z #24 4.110   Downloading openapi_pydantic-0.6.0-py3-none-any.whl.metadata (12 kB)
+2026-10-26T21:17:19.6006314Z #24 4.137 Collecting packaging>=24.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.7007059Z #24 4.161   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+2026-10-26T21:17:19.7008558Z #24 4.175 Collecting pyperclip>=1.9.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.7009456Z #24 4.196   Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+2026-10-26T21:17:19.7010402Z #24 4.217 Collecting python-multipart>=0.0.26 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.7011321Z #24 4.238   Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+2026-10-26T21:17:19.8039816Z #24 4.267 Collecting pyyaml<7.0,>=6.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.8041307Z #24 4.288   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+2026-10-26T21:17:19.8042735Z #24 4.295 Collecting uncalled-for>=0.4.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.8044131Z #24 4.316   Downloading uncalled_for-0.4.1-py3-none-any.whl.metadata (3.3 kB)
+2026-10-26T21:17:19.8045284Z #24 4.341 Collecting uvicorn>=0.35 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.9119358Z #24 4.363   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+2026-10-26T21:17:19.9120444Z #24 4.428 Collecting watchfiles>=1.0.0 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:19.9121487Z #24 4.449   Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+2026-10-26T21:17:20.2218503Z #24 ...
+2026-10-26T21:17:20.2219075Z 
+2026-10-26T21:17:20.2219493Z #29 [student-4-database] exporting to image
+2026-10-26T21:17:20.2220035Z #29 exporting layers 0.8s done
+2026-10-26T21:17:20.2220820Z #29 writing image sha256:fd63e62c2cdca95230eaf5b3b01acd6caa90bc29ea97f61d425e9c2c9d30c926 done
+2026-10-26T21:17:20.2221765Z #29 naming to docker.io/library/student-4-database:release0 done
+2026-10-26T21:17:20.2222326Z #29 DONE 0.8s
+2026-10-26T21:17:20.2222510Z 
+2026-10-26T21:17:20.2222795Z #30 [student-4-database] resolving provenance for metadata file
+2026-10-26T21:17:20.2223347Z #30 DONE 0.0s
+2026-10-26T21:17:20.2223531Z 
+2026-10-26T21:17:20.2224147Z #24 [student-4-backend 5/8] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:17:20.2225317Z #24 4.587 Collecting websockets>=15.0.1 (from fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.2226785Z #24 4.608   Downloading websockets-17.3-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.3 kB)
+2026-10-26T21:17:20.2602462Z #24 4.797 Collecting cryptography>=45.0.1 (from authlib>=1.6.11->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.3768341Z #24 4.819   Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.4 kB)
+2026-10-26T21:17:20.3769269Z #24 4.834 Collecting attrs>=23.1.0 (from cyclopts>=4.0.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.3770023Z #24 4.855   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+2026-10-26T21:17:20.3770864Z #24 4.863 Collecting docstring-parser<4.0,>=0.15 (from cyclopts>=4.0.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.3771729Z #24 4.884   Downloading docstring_parser-0.18.0-py3-none-any.whl.metadata (3.5 kB)
+2026-10-26T21:17:20.3772523Z #24 4.894 Collecting rich-rst<3,>=2.0.1 (from cyclopts>=4.0.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.3773276Z #24 4.914   Downloading rich_rst-2.2.0-py3-none-any.whl.metadata (5.0 kB)
+2026-10-26T21:17:20.4975347Z #24 4.950 Collecting anyio>=4.10 (from httpx2>=2.5.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.4976147Z #24 4.971   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+2026-10-26T21:17:20.4976915Z #24 4.980 Collecting httpcore2==2.16.0 (from httpx2>=2.5.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.4977723Z #24 5.001   Downloading httpcore2-2.16.0-py3-none-any.whl.metadata (27 kB)
+2026-10-26T21:17:20.4978504Z #24 5.014 Collecting truststore>=0.10 (from httpx2>=2.5.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.4979268Z #24 5.035   Downloading truststore-0.10.5-py3-none-any.whl.metadata (4.5 kB)
+2026-10-26T21:17:20.6181591Z #24 5.049 Collecting h11>=0.16 (from httpcore2==2.16.0->httpx2>=2.5.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.6182493Z #24 5.070   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+2026-10-26T21:17:20.6183378Z #24 5.090 Collecting pathable<0.7.0,>=0.6.0 (from jsonschema-path>=0.3.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.6184640Z #24 5.110   Downloading pathable-0.6.0-py3-none-any.whl.metadata (7.2 kB)
+2026-10-26T21:17:20.6185844Z #24 5.134 Collecting referencing<0.38.0 (from jsonschema-path>=0.3.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.6186890Z #24 5.155   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+2026-10-26T21:17:20.7284398Z #24 5.184 Collecting jsonschema>=4.20.0 (from mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.7285496Z #24 5.205   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+2026-10-26T21:17:20.7287452Z #24 5.222 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.7289367Z #24 5.243   Downloading pyjwt-2.15.1-py3-none-any.whl.metadata (3.5 kB)
+2026-10-26T21:17:20.7291232Z #24 5.265 Collecting sse-starlette>=3.0.0 (from mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.8510246Z #24 5.288   Downloading sse_starlette-3.6.0-py3-none-any.whl.metadata (15 kB)
+2026-10-26T21:17:20.8511727Z #24 5.322 Collecting typing-inspection>=0.4.1 (from mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.8513078Z #24 5.343   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+2026-10-26T21:17:20.8514978Z #24 5.388 Collecting beartype>=0.20.0 (from py-key-value-aio<0.5.0,>=0.4.4->py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.9635249Z #24 5.409   Downloading beartype-0.23.1-py3-none-any.whl.metadata (35 kB)
+2026-10-26T21:17:20.9636830Z #24 5.455 Collecting aiofile>=3.12.3 (from py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:20.9638363Z #24 5.476   Downloading aiofile-3.12.3-py3-none-any.whl.metadata (17 kB)
+2026-10-26T21:17:20.9639835Z #24 5.501 Collecting cachetools>=5.0.0 (from py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:21.1652688Z #24 5.522   Downloading cachetools-7.2.5-py3-none-any.whl.metadata (5.5 kB)
+2026-10-26T21:17:21.1654259Z #24 5.531 Collecting annotated-types>=0.6.0 (from pydantic>=2.12.0->pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:21.1655274Z #24 5.552   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+2026-10-26T21:17:21.6353608Z #24 6.172 Collecting pydantic-core==2.50.1 (from pydantic>=2.12.0->pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:21.7530748Z #24 6.194   Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+2026-10-26T21:17:21.7533017Z #24 6.230 Collecting email-validator>=2.0.0 (from pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:21.7534830Z #24 6.251   Downloading email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)
+2026-10-26T21:17:21.7536238Z #24 6.270 Collecting markdown-it-py>=2.2.0 (from rich>=13.9.4->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:21.7537668Z #24 6.290   Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+2026-10-26T21:17:21.8770132Z #24 6.311 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.9.4->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:21.8771594Z #24 6.332   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+2026-10-26T21:17:21.8773575Z #24 6.414 Collecting caio~=0.12.0 (from aiofile>=3.12.3->py-key-value-aio[filetree,memory]<0.5.0,>=0.4.4; extra == "client"->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:22.0012752Z #24 6.436   Downloading caio-0.12.10-cp312-cp312-manylinux_2_34_x86_64.whl.metadata (4.6 kB)
+2026-10-26T21:17:22.0014514Z #24 6.538 Collecting cffi>=2.0.0 (from cryptography>=45.0.1->authlib>=1.6.11->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:22.1053730Z #24 6.565   Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+2026-10-26T21:17:22.1055286Z #24 6.580 Collecting dnspython>=2.0.0 (from email-validator>=2.0.0->pydantic[email]>=2.12.0->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:22.1056341Z #24 6.601   Downloading dnspython-2.9.0-py3-none-any.whl.metadata (5.7 kB)
+2026-10-26T21:17:22.1057368Z #24 6.622 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:22.1058456Z #24 6.643   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+2026-10-26T21:17:22.3789842Z #24 6.916 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<3.0.0,>=2.3.0->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:22.5264874Z #24 6.938   Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+2026-10-26T21:17:22.5266629Z #24 6.947 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.9.4->fastmcp-slim==4.1.4->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:22.5268010Z #24 6.969   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+2026-10-26T21:17:22.5269324Z #24 7.064 Collecting pycparser (from cffi>=2.0.0->cryptography>=45.0.1->authlib>=1.6.11->fastmcp-slim[client,server]==4.1.4->fastmcp<5.0,>=4.0->-r requirements.txt (line 3))
+2026-10-26T21:17:22.6418120Z #24 7.085   Downloading pycparser-3.12-py3-none-any.whl.metadata (9.7 kB)
+2026-10-26T21:17:22.6419177Z #24 7.129 Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+2026-10-26T21:17:22.6419959Z #24 7.156 Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+2026-10-26T21:17:22.6420713Z #24 7.179 Downloading fastmcp-4.1.4-py3-none-any.whl (8.2 kB)
+2026-10-26T21:17:22.7447585Z #24 7.200 Downloading fastmcp_slim-4.1.4-py3-none-any.whl (935 kB)
+2026-10-26T21:17:22.7449034Z #24 7.261    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 935.7/935.7 kB 17.7 MB/s eta 0:00:00
+2026-10-26T21:17:22.7450001Z #24 7.282 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+2026-10-26T21:17:22.8525769Z #24 7.303 Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+2026-10-26T21:17:22.8526824Z #24 7.325 Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)
+2026-10-26T21:17:22.8527623Z #24 7.347 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+2026-10-26T21:17:22.8528042Z #24 7.369 Downloading idna-3.20-py3-none-any.whl (69 kB)
+2026-10-26T21:17:22.8528475Z #24 7.390 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+2026-10-26T21:17:22.9593300Z #24 7.411 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+2026-10-26T21:17:22.9595511Z #24 7.432 Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+2026-10-26T21:17:22.9596287Z #24 7.453 Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+2026-10-26T21:17:22.9596770Z #24 7.474 Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+2026-10-26T21:17:22.9597247Z #24 7.497 Downloading authlib-1.9.1-py2.py3-none-any.whl (266 kB)
+2026-10-26T21:17:23.0684280Z #24 7.519 Downloading cyclopts-5.3.1-py3-none-any.whl (297 kB)
+2026-10-26T21:17:23.0685151Z #24 7.542 Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+2026-10-26T21:17:23.0686022Z #24 7.562 Downloading griffelib-2.4.1-py3-none-any.whl (172 kB)
+2026-10-26T21:17:23.0686672Z #24 7.584 Downloading httpx2-2.16.0-py3-none-any.whl (97 kB)
+2026-10-26T21:17:23.0687174Z #24 7.606 Downloading httpcore2-2.16.0-py3-none-any.whl (85 kB)
+2026-10-26T21:17:23.1764731Z #24 7.627 Downloading joserfc-1.7.7-py3-none-any.whl (71 kB)
+2026-10-26T21:17:23.1765711Z #24 7.648 Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+2026-10-26T21:17:23.1766611Z #24 7.669 Downloading jsonschema_path-0.5.0-py3-none-any.whl (24 kB)
+2026-10-26T21:17:23.1767461Z #24 7.690 Downloading mcp-2.3.0-py3-none-any.whl (368 kB)
+2026-10-26T21:17:23.1768297Z #24 7.714 Downloading mcp_types-2.3.0-py3-none-any.whl (69 kB)
+2026-10-26T21:17:23.2941976Z #24 7.736 Downloading openapi_pydantic-0.6.0-py3-none-any.whl (96 kB)
+2026-10-26T21:17:23.2942981Z #24 7.756 Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+2026-10-26T21:17:23.2944062Z #24 7.788 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+2026-10-26T21:17:23.2944827Z #24 7.810 Downloading platformdirs-4.13.5-py3-none-any.whl (32 kB)
+2026-10-26T21:17:23.2945586Z #24 7.831 Downloading py_key_value_aio-0.4.6-py3-none-any.whl (171 kB)
+2026-10-26T21:17:23.4064970Z #24 7.853 Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+2026-10-26T21:17:23.4066076Z #24 7.878 Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+2026-10-26T21:17:23.4067497Z #24 7.922    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 46.4 MB/s eta 0:00:00
+2026-10-26T21:17:23.4068346Z #24 7.944 Downloading pydantic_settings-2.16.1-py3-none-any.whl (80 kB)
+2026-10-26T21:17:23.5168118Z #24 7.965 Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+2026-10-26T21:17:23.5168981Z #24 7.987 Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+2026-10-26T21:17:23.5169782Z #24 8.008 Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+2026-10-26T21:17:23.5170974Z #24 8.029 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+2026-10-26T21:17:23.5172552Z #24 8.033    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 441.6 MB/s eta 0:00:00
+2026-10-26T21:17:23.5173332Z #24 8.054 Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+2026-10-26T21:17:23.6224393Z #24 8.076 Downloading starlette-1.10.0-py3-none-any.whl (80 kB)
+2026-10-26T21:17:23.6225319Z #24 8.097 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+2026-10-26T21:17:23.6226197Z #24 8.118 Downloading uncalled_for-0.4.1-py3-none-any.whl (14 kB)
+2026-10-26T21:17:23.6226968Z #24 8.139 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+2026-10-26T21:17:23.6228025Z #24 8.160 Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (458 kB)
+2026-10-26T21:17:23.7304158Z #24 8.182 Downloading websockets-17.3-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (225 kB)
+2026-10-26T21:17:23.7306022Z #24 8.203 Downloading aiofile-3.12.3-py3-none-any.whl (22 kB)
+2026-10-26T21:17:23.7307309Z #24 8.225 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+2026-10-26T21:17:23.7308616Z #24 8.246 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+2026-10-26T21:17:23.7309753Z #24 8.268 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+2026-10-26T21:17:23.8480130Z #24 8.289 Downloading beartype-0.23.1-py3-none-any.whl (1.6 MB)
+2026-10-26T21:17:23.8481542Z #24 8.296    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 293.3 MB/s eta 0:00:00
+2026-10-26T21:17:23.8482506Z #24 8.317 Downloading cachetools-7.2.5-py3-none-any.whl (19 kB)
+2026-10-26T21:17:23.8483511Z #24 8.338 Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (4.8 MB)
+2026-10-26T21:17:23.8484937Z #24 8.364    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 195.6 MB/s eta 0:00:00
+2026-10-26T21:17:23.8485757Z #24 8.385 Downloading docstring_parser-0.18.0-py3-none-any.whl (22 kB)
+2026-10-26T21:17:23.9536685Z #24 8.408 Downloading email_validator-2.3.0-py3-none-any.whl (35 kB)
+2026-10-26T21:17:23.9537879Z #24 8.429 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+2026-10-26T21:17:23.9538569Z #24 8.449 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+2026-10-26T21:17:23.9539116Z #24 8.470 Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+2026-10-26T21:17:23.9539668Z #24 8.491 Downloading pathable-0.6.0-py3-none-any.whl (18 kB)
+2026-10-26T21:17:24.0623362Z #24 8.512 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+2026-10-26T21:17:24.0624626Z #24 8.516    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 791.7 MB/s eta 0:00:00
+2026-10-26T21:17:24.0625160Z #24 8.537 Downloading pyjwt-2.15.1-py3-none-any.whl (33 kB)
+2026-10-26T21:17:24.0625658Z #24 8.558 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+2026-10-26T21:17:24.0626185Z #24 8.579 Downloading rich_rst-2.2.0-py3-none-any.whl (279 kB)
+2026-10-26T21:17:24.0626706Z #24 8.600 Downloading sse_starlette-3.6.0-py3-none-any.whl (17 kB)
+2026-10-26T21:17:24.1670495Z #24 8.620 Downloading truststore-0.10.5-py3-none-any.whl (19 kB)
+2026-10-26T21:17:24.1671700Z #24 8.641 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+2026-10-26T21:17:24.1672490Z #24 8.662 Downloading caio-0.12.10-cp312-cp312-manylinux_2_34_x86_64.whl (162 kB)
+2026-10-26T21:17:24.1673300Z #24 8.683 Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)
+2026-10-26T21:17:24.1674500Z #24 8.704 Downloading dnspython-2.9.0-py3-none-any.whl (354 kB)
+2026-10-26T21:17:24.4025866Z #24 8.726 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+2026-10-26T21:17:24.4026554Z #24 8.746 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+2026-10-26T21:17:24.4027236Z #24 8.767 Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (371 kB)
+2026-10-26T21:17:24.4027915Z #24 8.789 Downloading pycparser-3.12-py3-none-any.whl (62 kB)
+2026-10-26T21:17:24.4405521Z #24 8.977 Installing collected packages: pyperclip, websockets, urllib3, uncalled-for, typing-extensions, truststore, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, platformdirs, pathable, packaging, mdurl, markupsafe, jsonref, itsdangerous, idna, h11, griffelib, docstring-parser, dnspython, click, charset_normalizer, certifi, caio, cachetools, blinker, beartype, attrs, annotated-types, werkzeug, uvicorn, typing-inspection, requests, referencing, pydantic-core, py-key-value-aio, opentelemetry-api, markdown-it-py, jinja2, httpcore2, exceptiongroup, email-validator, cffi, anyio, aiofile, watchfiles, starlette, rich, pydantic, jsonschema-specifications, jsonschema-path, httpx2, Flask, cryptography, sse-starlette, rich-rst, pydantic-settings, openapi-pydantic, mcp-types, jsonschema, joserfc, mcp, fastmcp-slim, cyclopts, authlib, fastmcp
+2026-10-26T21:17:30.1646481Z #24 14.70 Successfully installed Flask-3.1.3 aiofile-3.12.3 annotated-types-0.8.0 anyio-4.15.1 attrs-26.1.0 authlib-1.9.1 beartype-0.23.1 blinker-1.9.0 cachetools-7.2.5 caio-0.12.10 certifi-2026.10.23 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.0 cryptography-50.0.2 cyclopts-5.3.1 dnspython-2.9.0 docstring-parser-0.18.0 email-validator-2.3.0 exceptiongroup-1.3.1 fastmcp-4.1.4 fastmcp-slim-4.1.4 griffelib-2.4.1 h11-0.16.0 httpcore2-2.16.0 httpx2-2.16.0 idna-3.20 itsdangerous-2.2.0 jinja2-3.1.6 joserfc-1.7.7 jsonref-1.1.0 jsonschema-4.26.0 jsonschema-path-0.5.0 jsonschema-specifications-2025.9.1 markdown-it-py-4.2.0 markupsafe-3.0.4 mcp-2.3.0 mcp-types-2.3.0 mdurl-0.1.2 openapi-pydantic-0.6.0 opentelemetry-api-1.45.1 packaging-26.3 pathable-0.6.0 platformdirs-4.13.5 py-key-value-aio-0.4.6 pycparser-3.12 pydantic-2.14.1 pydantic-core-2.50.1 pydantic-settings-2.16.1 pygments-2.21.0 pyjwt-2.15.1 pyperclip-1.11.0 python-dotenv-1.2.4 python-multipart-0.0.32 pyyaml-6.0.3 referencing-0.37.0 requests-2.34.2 rich-15.0.0 rich-rst-2.2.0 rpds-py-2026.9.1 sse-starlette-3.6.0 starlette-1.10.0 truststore-0.10.5 typing-extensions-4.16.0 typing-inspection-0.4.4 uncalled-for-0.4.1 urllib3-2.8.0 uvicorn-0.54.0 watchfiles-1.3.0 websockets-17.3 werkzeug-3.1.9
+2026-10-26T21:17:30.3777208Z #24 14.70 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+2026-10-26T21:17:30.3779079Z #24 14.76 
+2026-10-26T21:17:30.3779412Z #24 14.76 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+2026-10-26T21:17:30.3779898Z #24 14.76 [notice] To update, run: pip install --upgrade pip
+2026-10-26T21:17:30.6185317Z #24 DONE 15.2s
+2026-10-26T21:17:30.7662876Z 
+2026-10-26T21:17:30.7663522Z #31 [student-4-backend 6/8] COPY app.py job_contract.py ./
+2026-10-26T21:17:30.7664531Z #31 DONE 0.0s
+2026-10-26T21:17:30.7664742Z 
+2026-10-26T21:17:30.7664961Z #32 [student-4-backend 7/8] COPY prompts ./prompts
+2026-10-26T21:17:30.7665455Z #32 DONE 0.0s
+2026-10-26T21:17:30.7665646Z 
+2026-10-26T21:17:30.7666039Z #33 [student-4-backend 8/8] RUN chown -R appuser:appgroup /app
+2026-10-26T21:17:30.7666662Z #33 DONE 0.1s
+2026-10-26T21:17:30.9178207Z 
+2026-10-26T21:17:30.9179494Z #34 [student-4-backend] exporting to image
+2026-10-26T21:17:30.9180093Z #34 exporting layers
+2026-10-26T21:17:32.2807538Z #34 exporting layers 1.5s done
+2026-10-26T21:17:32.3054719Z #34 writing image sha256:0c8a33134acab4dc1e0cd6c28706c64b71a5a1c5f65d931b708afcea48482504 done
+2026-10-26T21:17:32.3055423Z #34 naming to docker.io/library/student-4-backend:release0 done
+2026-10-26T21:17:32.3055826Z #34 DONE 1.5s
+2026-10-26T21:17:32.3055945Z 
+2026-10-26T21:17:32.3056121Z #35 [student-4-backend] resolving provenance for metadata file
+2026-10-26T21:17:32.3056673Z #35 DONE 0.0s
+2026-10-26T21:17:32.3057087Z  student-4-backend  Built
+2026-10-26T21:17:32.3057419Z  student-4-frontend  Built
+2026-10-26T21:17:32.3057712Z  student-4-database  Built
+2026-10-26T21:17:32.3133231Z ##[group]Run docker compose -f student-4/compose.local.yml up -d
+2026-10-26T21:17:32.3134065Z [36;1mdocker compose -f student-4/compose.local.yml up -d[0m
+2026-10-26T21:17:32.3198002Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:17:32.3198252Z env:
+2026-10-26T21:17:32.3198445Z   OLLAMA_ENABLED: false
+2026-10-26T21:17:32.3198677Z   AI_SERVICES_ENABLED: false
+2026-10-26T21:17:32.3198981Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:32.3199414Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T21:17:32.3199828Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:32.3200193Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:32.3200881Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:32.3201353Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T21:17:32.3201806Z ##[endgroup]
+2026-10-26T21:17:32.4081381Z  Network student-4-job-listing_student-4-network  Creating
+2026-10-26T21:17:32.4441769Z  Network student-4-job-listing_student-4-network  Created
+2026-10-26T21:17:32.4510364Z  Volume "student-4-job-listing_student-4-database-data"  Creating
+2026-10-26T21:17:32.4525755Z  Volume "student-4-job-listing_student-4-database-data"  Created
+2026-10-26T21:17:32.4531256Z  Container student-4-job-listing-student-4-database-1  Creating
+2026-10-26T21:17:32.4738943Z  Container student-4-job-listing-student-4-database-1  Created
+2026-10-26T21:17:32.4739970Z  Container student-4-job-listing-student-4-backend-1  Creating
+2026-10-26T21:17:32.4888076Z  Container student-4-job-listing-student-4-backend-1  Created
+2026-10-26T21:17:32.4889048Z  Container student-4-job-listing-student-4-frontend-1  Creating
+2026-10-26T21:17:32.4977607Z  Container student-4-job-listing-student-4-frontend-1  Created
+2026-10-26T21:17:32.5001141Z  Container student-4-job-listing-student-4-database-1  Starting
+2026-10-26T21:17:32.6799097Z  Container student-4-job-listing-student-4-database-1  Started
+2026-10-26T21:17:32.6800286Z  Container student-4-job-listing-student-4-database-1  Waiting
+2026-10-26T21:17:38.1816064Z  Container student-4-job-listing-student-4-database-1  Healthy
+2026-10-26T21:17:38.1817451Z  Container student-4-job-listing-student-4-backend-1  Starting
+2026-10-26T21:17:38.3096006Z  Container student-4-job-listing-student-4-backend-1  Started
+2026-10-26T21:17:38.3096830Z  Container student-4-job-listing-student-4-backend-1  Waiting
+2026-10-26T21:17:43.8116350Z  Container student-4-job-listing-student-4-backend-1  Healthy
+2026-10-26T21:17:43.8131486Z  Container student-4-job-listing-student-4-frontend-1  Starting
+2026-10-26T21:17:43.9360829Z  Container student-4-job-listing-student-4-frontend-1  Started
+2026-10-26T21:17:43.9465835Z ##[group]Run set -euo pipefail
+2026-10-26T21:17:43.9466192Z [36;1mset -euo pipefail[0m
+2026-10-26T21:17:43.9466440Z [36;1mwait_for_ready() {[0m
+2026-10-26T21:17:43.9466675Z [36;1m  local url="$1"[0m
+2026-10-26T21:17:43.9466902Z [36;1m  local service_name="$2"[0m
+2026-10-26T21:17:43.9467175Z [36;1m  for attempt in $(seq 1 15); do[0m
+2026-10-26T21:17:43.9467458Z [36;1m    if curl -fsS "$url"; then[0m
+2026-10-26T21:17:43.9467729Z [36;1m      return 0[0m
+2026-10-26T21:17:43.9467940Z [36;1m    fi[0m
+2026-10-26T21:17:43.9468245Z [36;1m    echo "Waiting for ${service_name} readiness (${attempt}/15)..."[0m
+2026-10-26T21:17:43.9468603Z [36;1m    sleep 2[0m
+2026-10-26T21:17:43.9468804Z [36;1m  done[0m
+2026-10-26T21:17:43.9469074Z [36;1m  echo "${service_name} did not become ready in time." >&2[0m
+2026-10-26T21:17:43.9469434Z [36;1m  return 1[0m
+2026-10-26T21:17:43.9469650Z [36;1m}[0m
+2026-10-26T21:17:43.9469825Z [36;1m[0m
+2026-10-26T21:17:43.9470155Z [36;1mwait_for_ready http://127.0.0.1:5401/ready "Student 4 backend"[0m
+2026-10-26T21:17:43.9470648Z [36;1mcurl -fsS http://127.0.0.1:5402/api/v1/stats | tee seed-counts.json[0m
+2026-10-26T21:17:43.9471325Z [36;1mpython -c 'import json; d=json.load(open("seed-counts.json")); assert all(d[k]>=10 for k in ("companies","job_postings","job_skills")), d'[0m
+2026-10-26T21:17:43.9472150Z [36;1mcurl -fsS http://127.0.0.1:5401/api/v1/jobs/enriched | python -c 'import json,sys; assert len(json.load(sys.stdin))>=10'[0m
+2026-10-26T21:17:43.9472773Z [36;1mwait_for_ready http://127.0.0.1:8404/ready "Student 4 frontend"[0m
+2026-10-26T21:17:43.9473323Z [36;1mcurl -fsS http://127.0.0.1:5401/api/v1/ai/services/status | tee ai-services-status.json[0m
+2026-10-26T21:17:43.9474527Z [36;1mpython -c 'import json; d=json.load(open("ai-services-status.json")); assert d["enabled"] is False and d["ollama_enabled"] is False'[0m
+2026-10-26T21:17:43.9475405Z [36;1mcurl -fsS http://127.0.0.1:5401/api/v1/ai/status | python -c 'import json,sys; assert json.load(sys.stdin)["status"] == "disabled"'[0m
+2026-10-26T21:17:43.9476129Z [36;1mdocker compose -f student-4/compose.local.yml ps --all > student-4-compose-ps.txt[0m
+2026-10-26T21:17:43.9539781Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:17:43.9540030Z env:
+2026-10-26T21:17:43.9540231Z   OLLAMA_ENABLED: false
+2026-10-26T21:17:43.9540468Z   AI_SERVICES_ENABLED: false
+2026-10-26T21:17:43.9540781Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:43.9541222Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T21:17:43.9541648Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:43.9542022Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:43.9542404Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:43.9542771Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T21:17:43.9543088Z ##[endgroup]
+2026-10-26T21:17:43.9797610Z {"service":"student-4-backend","status":"ready"}
+2026-10-26T21:17:43.9890226Z {"companies":10,"job_postings":10,"job_skills":20}
+2026-10-26T21:17:44.0519593Z curl: (56) Recv failure: Connection reset by peer
+2026-10-26T21:17:44.0527977Z Waiting for Student 4 frontend readiness (1/15)...
+2026-10-26T21:17:46.0695066Z {"service":"student-4-frontend","status":"ready"}
+2026-10-26T21:17:46.0772563Z {"enabled":false,"ollama_enabled":false,"status":"disabled"}
+2026-10-26T21:17:46.2036230Z ##[group]Run docker compose -f student-4/compose.local.yml logs --no-color > student-4-compose.log
+2026-10-26T21:17:46.2036941Z [36;1mdocker compose -f student-4/compose.local.yml logs --no-color > student-4-compose.log[0m
+2026-10-26T21:17:46.2101986Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:17:46.2102239Z env:
+2026-10-26T21:17:46.2102434Z   OLLAMA_ENABLED: false
+2026-10-26T21:17:46.2102670Z   AI_SERVICES_ENABLED: false
+2026-10-26T21:17:46.2102980Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:46.2103414Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T21:17:46.2104102Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:46.2104480Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:46.2104849Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:46.2105219Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T21:17:46.2105583Z ##[endgroup]
+2026-10-26T21:17:46.3082548Z ##[group]Run actions/upload-artifact@v6
+2026-10-26T21:17:46.3082852Z with:
+2026-10-26T21:17:46.3083059Z   name: student-4-release1-evidence
+2026-10-26T21:17:46.3083544Z   path: ai-services-status.json
+student-4-compose-ps.txt
+seed-counts.json
+student-4-compose.log
+
+2026-10-26T21:17:46.3084351Z   if-no-files-found: warn
+2026-10-26T21:17:46.3084584Z   compression-level: 6
+2026-10-26T21:17:46.3084791Z   overwrite: false
+2026-10-26T21:17:46.3084999Z   include-hidden-files: false
+2026-10-26T21:17:46.3085223Z env:
+2026-10-26T21:17:46.3085402Z   OLLAMA_ENABLED: false
+2026-10-26T21:17:46.3085620Z   AI_SERVICES_ENABLED: false
+2026-10-26T21:17:46.3085918Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:46.3086352Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T21:17:46.3086797Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:46.3087185Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:46.3087613Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:46.3087991Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T21:17:46.3088306Z ##[endgroup]
+2026-10-26T21:17:46.4829205Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-26T21:17:46.4850808Z The least common ancestor is /home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant. This will be the root directory of the artifact
+2026-10-26T21:17:46.4852773Z With the provided path, there will be 4 files uploaded
+2026-10-26T21:17:46.4855161Z Artifact name is valid!
+2026-10-26T21:17:46.4855821Z Root directory input is valid!
+2026-10-26T21:17:46.8994310Z Beginning upload of artifact content to blob storage
+2026-10-26T21:17:47.2340971Z Uploaded bytes 1408
+2026-10-26T21:17:47.3156542Z Finished uploading artifact content to blob storage!
+2026-10-26T21:17:47.3157837Z SHA256 digest of uploaded artifact zip is 81dd0bbc7ac0c6f714b991c7ac0793e0d017fe7721130f376965421add18cb9f
+2026-10-26T21:17:47.3159116Z Finalizing artifact upload
+2026-10-26T21:17:47.9051290Z Artifact student-4-release1-evidence.zip successfully finalized. Artifact ID 12688349348
+2026-10-26T21:17:47.9052333Z Artifact student-4-release1-evidence has been successfully uploaded! Final size is 1408 bytes. Artifact ID is 12688349348
+2026-10-26T21:17:47.9057613Z Artifact download URL: https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/artifacts/12688349348
+2026-10-26T21:17:47.9173304Z ##[group]Run docker compose -f student-4/compose.local.yml down -v
+2026-10-26T21:17:47.9174363Z [36;1mdocker compose -f student-4/compose.local.yml down -v[0m
+2026-10-26T21:17:47.9237888Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:17:47.9238137Z env:
+2026-10-26T21:17:47.9238332Z   OLLAMA_ENABLED: false
+2026-10-26T21:17:47.9238572Z   AI_SERVICES_ENABLED: false
+2026-10-26T21:17:47.9238890Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:47.9239545Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T21:17:47.9239989Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:47.9240365Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:47.9240739Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T21:17:47.9241119Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T21:17:47.9241435Z ##[endgroup]
+2026-10-26T21:17:48.0089114Z  Container student-4-job-listing-student-4-frontend-1  Stopping
+2026-10-26T21:17:58.1148747Z  Container student-4-job-listing-student-4-frontend-1  Stopped
+2026-10-26T21:17:58.1152317Z  Container student-4-job-listing-student-4-frontend-1  Removing
+2026-10-26T21:17:58.1209110Z  Container student-4-job-listing-student-4-frontend-1  Removed
+2026-10-26T21:17:58.1210040Z  Container student-4-job-listing-student-4-backend-1  Stopping
+2026-10-26T21:18:08.2289219Z  Container student-4-job-listing-student-4-backend-1  Stopped
+2026-10-26T21:18:08.2290158Z  Container student-4-job-listing-student-4-backend-1  Removing
+2026-10-26T21:18:08.2339212Z  Container student-4-job-listing-student-4-backend-1  Removed
+2026-10-26T21:18:08.2340053Z  Container student-4-job-listing-student-4-database-1  Stopping
+2026-10-26T21:18:18.3369640Z  Container student-4-job-listing-student-4-database-1  Stopped
+2026-10-26T21:18:18.3378102Z  Container student-4-job-listing-student-4-database-1  Removing
+2026-10-26T21:18:18.3432436Z  Container student-4-job-listing-student-4-database-1  Removed
+2026-10-26T21:18:18.3440786Z  Volume student-4-job-listing_student-4-database-data  Removing
+2026-10-26T21:18:18.3441603Z  Network student-4-job-listing_student-4-network  Removing
+2026-10-26T21:18:18.3451602Z  Volume student-4-job-listing_student-4-database-data  Removed
+2026-10-26T21:18:18.4417465Z  Network student-4-job-listing_student-4-network  Removed
+2026-10-26T21:18:18.4542347Z Post job cleanup.
+2026-10-26T21:18:18.5852784Z Post job cleanup.
+2026-10-26T21:18:18.6764692Z [command]/usr/bin/git version
+2026-10-26T21:18:18.6813576Z git version 2.55.0
+2026-10-26T21:18:18.6860090Z Temporarily overriding HOME='/home/runner/work/_temp/0a75f1df-de20-411a-9115-988f6ce0a16a' before making global git config changes
+2026-10-26T21:18:18.6861746Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:18:18.6869918Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant
+2026-10-26T21:18:18.6908635Z Removing SSH command configuration
+2026-10-26T21:18:18.6917356Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:18:18.6961760Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:18:18.7305616Z Removing HTTP extra header
+2026-10-26T21:18:18.7317985Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:18:18.7369481Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:18:18.7645347Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:18:18.7656789Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:18:18.7698465Z includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git.path
+2026-10-26T21:18:18.7702089Z includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/worktrees/*.path
+2026-10-26T21:18:18.7703462Z includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:18:18.7704712Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:18:18.7715699Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git.path
+2026-10-26T21:18:18.7754350Z /home/runner/work/_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:18:18.7775801Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git.path /home/runner/work/_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:18:18.7838902Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/worktrees/*.path
+2026-10-26T21:18:18.7871799Z /home/runner/work/_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:18:18.7886050Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:18:18.7925995Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:18:18.7953916Z /github/runner_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:18:18.7964615Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:18:18.8003589Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:18:18.8030469Z /github/runner_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:18:18.8039829Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config
+2026-10-26T21:18:18.8078693Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:18:18.8345756Z Removing credentials config '/home/runner/work/_temp/git-credentials-2d5f183a-2ca5-485c-ab11-c65d8159a42d.config'
+2026-10-26T21:18:18.8510167Z Cleaning up orphan processes
+

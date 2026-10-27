@@ -1,0 +1,120 @@
+{
+  "captured_at_utc": "2026-10-26 23:42:58 UTC",
+  "repository": "jongseonseo-star/asd-2026-ai-career-assistant",
+  "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "run_id": 40402532547,
+  "run_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+  "collection_method": "Authenticated GitHub connector read-only requests. No new tests, deployments, model reviews or remote mutations were executed.",
+  "raw_log_note": "Decoded text returned by GitHub job-log connector; CRLF normalized to LF and final newline ensured. GitHub's own masked values remain masked. Narrow local redaction patterns are recorded below.",
+  "redactions": [
+    {
+      "job_id": 121853156693,
+      "file": "job-121853156693-student-4.log",
+      "redactions": 0,
+      "kinds": []
+    },
+    {
+      "job_id": 121853157068,
+      "file": "job-121853157068-student-3.log",
+      "redactions": 0,
+      "kinds": []
+    },
+    {
+      "job_id": 121853157075,
+      "file": "job-121853157075-validate-cloud.log",
+      "redactions": 0,
+      "kinds": []
+    },
+    {
+      "job_id": 121853157112,
+      "file": "job-121853157112-student-2.log",
+      "redactions": 0,
+      "kinds": []
+    },
+    {
+      "job_id": 121854242098,
+      "file": "job-121854242098-deploy.log",
+      "redactions": 0,
+      "kinds": []
+    }
+  ],
+  "snapshots": [
+    {
+      "repository_path": ".github/workflows/student-2.yml",
+      "local_file": "source-snapshots/dotgithub__workflows__student-2.yml.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "d46cc6efad3654b9ec5fabd8ff9b163bfdfad5b9",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/.github/workflows/student-2.yml"
+    },
+    {
+      "repository_path": ".github/workflows/student-3.yml",
+      "local_file": "source-snapshots/dotgithub__workflows__student-3.yml.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "78049a491659e6a8cab582a920dc9d2e9f27a7ee",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/.github/workflows/student-3.yml"
+    },
+    {
+      "repository_path": ".github/workflows/student-4.yml",
+      "local_file": "source-snapshots/dotgithub__workflows__student-4.yml.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "028fcaaa3cde18c918c90961cc4f90e42511593f",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/.github/workflows/student-4.yml"
+    },
+    {
+      "repository_path": "student-2/tests/test_resume_grounding.py",
+      "local_file": "source-snapshots/student-2__tests__test_resume_grounding.py.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "8f04f5a5d537c477de98461e4403dc9c21b811cf",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py"
+    },
+    {
+      "repository_path": "student-3/tests/test_interview_service.py",
+      "local_file": "source-snapshots/student-3__tests__test_interview_service.py.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "28df1cc983565e5a887195ba4ef2a8ee4632b936",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-3/tests/test_interview_service.py"
+    },
+    {
+      "repository_path": "student-4/tests/test_release1.py",
+      "local_file": "source-snapshots/student-4__tests__test_release1.py.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "252ce80b28f0ec22174f384db80655d9ad784045",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_release1.py"
+    },
+    {
+      "repository_path": "student-4/tests/test_multi_agent_jobs.py",
+      "local_file": "source-snapshots/student-4__tests__test_multi_agent_jobs.py.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "48c754d39f2e3a519cee29f45d07656838bc7d16",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py"
+    },
+    {
+      "repository_path": "student-2/backend/app.py",
+      "local_file": "source-snapshots/student-2__backend__app.py.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "5518e69555a2f23fe3e1eeef322e49261e85d673",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/backend/app.py"
+    },
+    {
+      "repository_path": "student-3/backend/app.py",
+      "local_file": "source-snapshots/student-3__backend__app.py.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "7bd31cd43a5c7e2bffdc1503b7ea91a9cfdbb904",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-3/backend/app.py"
+    },
+    {
+      "repository_path": "student-4/backend/app.py",
+      "local_file": "source-snapshots/student-4__backend__app.py.txt",
+      "ref": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "git_blob_sha": "43a3b60f56ead2184af874bb711ea6399ea3bdec",
+      "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/backend/app.py"
+    }
+  ],
+  "sources": {
+    "main": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/branches/main",
+    "run": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+    "jobs": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/jobs?filter=latest&per_page=100",
+    "artifacts": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/artifacts?per_page=100"
+  }
+}
+

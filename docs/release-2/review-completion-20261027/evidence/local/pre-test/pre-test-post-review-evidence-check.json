@@ -1,0 +1,200 @@
+{
+  "mode": "pre_test",
+  "feature": "resume",
+  "started_at": "2026-10-22T03:19:09.604611+00:00",
+  "finished_at": "2026-10-22T03:19:09.632994+00:00",
+  "configuration": {
+    "base_urls": {
+      "mcp": "http://127.0.0.1:8765",
+      "rag": "http://127.0.0.1:8766",
+      "ollama": "http://127.0.0.1:11434",
+      "database": "http://127.0.0.1:5002",
+      "backend": "http://127.0.0.1:5001",
+      "frontend": "http://127.0.0.1:8082"
+    },
+    "timeout_seconds": 180,
+    "profile_id": 1,
+    "resume_id": 1,
+    "job_id": 1,
+    "project_root": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022",
+    "compose_project": "asd-2026-ai-career-assistant",
+    "compose_files": [
+      "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/docker-compose.yml"
+    ],
+    "ci_evidence_dir": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/student-2",
+    "security_evidence_dir": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-2/security",
+    "expected_commit": null
+  },
+  "workflow": [
+    "OBSERVE",
+    "IMPLEMENTATION ASSESSMENT",
+    "REVIEW ASSESSMENT",
+    "HUMAN DECISION",
+    "IMPROVE AND RETEST"
+  ],
+  "execution_scope": "checks-only",
+  "checks": [
+    {
+      "name": "testing-pre_test-saved-evidence",
+      "started_at": "2026-10-22T03:19:09.604868+00:00",
+      "finished_at": "2026-10-22T03:19:09.632981+00:00",
+      "duration_seconds": 0.028,
+      "passed": false,
+      "validation_errors": [
+        "Security evidence contains a failed or incomplete gate.",
+        "dependencies: saved scan is failed, missing or incomplete."
+      ],
+      "payload": {
+        "mode": "pre_test",
+        "execution_scope": "evidence-preparation-only",
+        "generated_at_utc": "2026-10-22T03:19:09.609533+00:00",
+        "security": {
+          "gate_status": "FAIL",
+          "scans": [
+            {
+              "scan": "ruff",
+              "file": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-2/security/ruff.json",
+              "recorded_status": "PASS",
+              "freshness": "RECORDED_INPUTS_MATCH",
+              "sha256": "a6cff2cc280cd9e38fef6bf3ba706a352dd8fbcbb0a5f124e2536aad6baf7549",
+              "generated_at_utc": "2026-10-22T02:50:31.218953+00:00",
+              "tool_version": "0.16.8",
+              "exit_code": 0,
+              "findings": [],
+              "changed_recorded_inputs": [],
+              "freshness_limit": "Only recorded input hashes were compared; newly added files were not part of that scan."
+            },
+            {
+              "scan": "secrets",
+              "file": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-2/security/secrets.json",
+              "recorded_status": "PASS",
+              "freshness": "RECORDED_INPUTS_MATCH",
+              "sha256": "e8410dd4b993d686aceef4a8e0e9b7474c806be87fe6b29c71f5db417a300eb7",
+              "generated_at_utc": "2026-10-22T02:50:31.218958+00:00",
+              "tool_version": "1.5.0",
+              "exit_code": 0,
+              "findings": [],
+              "changed_recorded_inputs": [],
+              "freshness_limit": "Only recorded input hashes were compared; newly added files were not part of that scan."
+            },
+            {
+              "scan": "dependencies",
+              "file": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-2/security/dependencies.json",
+              "recorded_status": "FAIL",
+              "freshness": "RECORDED_INPUTS_MATCH",
+              "sha256": "042d8f30c8ec5da67305b9a4e371645d2c9dfabbf183153651d9f02d9c1225b6",
+              "generated_at_utc": "2026-10-22T03:06:58.962612+00:00",
+              "tool_version": "2.10.1",
+              "exit_code": 1,
+              "audited_package_count": 127,
+              "findings": [
+                {
+                  "name": "chromadb",
+                  "version": "1.5.9",
+                  "vulnerabilities": [
+                    {
+                      "id": "PYSEC-2026-311",
+                      "fix_versions": []
+                    },
+                    {
+                      "id": "PYSEC-2026-311",
+                      "fix_versions": []
+                    },
+                    {
+                      "id": "PYSEC-2026-3814",
+                      "fix_versions": []
+                    },
+                    {
+                      "id": "PYSEC-2026-3815",
+                      "fix_versions": []
+                    },
+                    {
+                      "id": "PYSEC-2026-3813",
+                      "fix_versions": []
+                    }
+                  ],
+                  "skip_reason": null
+                }
+              ],
+              "changed_recorded_inputs": [],
+              "freshness_limit": "Only recorded input hashes were compared; newly added files were not part of that scan."
+            }
+          ],
+          "meaning": "Saved observations only. Documentation and functional tests do not waive security findings. Rerun the real hooks for current commit evidence."
+        },
+        "agent_assessments": {
+          "status": "not_run"
+        },
+        "human_decision": {
+          "status": "pending",
+          "reviewer": null,
+          "decision": null,
+          "rationale": null
+        },
+        "design_sources": [
+          {
+            "file": ".pre-commit-config.yaml",
+            "sha256": "7f3798b019c0460176e478d474ebcad622c04642a3de12fcd3784672a7de0081",
+            "text": "# Lab 11 pre-commit scans for all three active students. Each receives separate reports.\nrepos:\n  - repo: local\n    hooks:\n      - id: group-ruff-scan\n        name: Group - Ruff security scan (Students 2, 3, 4)\n        entry: python scripts/security_checks.py --scan ruff\n        language: python\n        language_version: python3.12\n        additional_dependencies: [\"pytest==9.1.1\", \"ruff==0.16.8\"]\n        pass_filenames: false\n        always_run: true\n        stages: [pre-commit]\n      - id: group-secrets-scan\n        name: Group - detect-secrets scan (Students 2, 3, 4)\n        entry: python scripts/security_checks.py --scan secrets\n        language: python\n        language_version: python3.12\n        additional_dependencies: [\"pytest==9.1.1\", \"detect-secrets==1.5.0\"]\n        pass_filenames: false\n        always_run: true\n        stages: [pre-commit]\n      - id: group-dependency-audit\n        name: Group - dependency vulnerability audit (Students 2, 3, 4)\n        entry: python scripts/security_checks.py --scan dependencies\n        language: python\n        language_version: python3.12\n        additional_dependencies: [\"pytest==9.1.1\", \"pip-audit==2.10.1\"]\n        pass_filenames: false\n        always_run: true\n        stages: [pre-commit]\n"
+          },
+          {
+            "file": "scripts/security_checks.py",
+            "sha256": "605af0792308c761e8c8c559e75dcb7f69d021fcfc1a30d4c4a279e042cda145",
+            "text": "\"\"\"Run the same fail-closed security checks for selected group members.\"\"\"\nimport argparse\nimport importlib.util\nfrom pathlib import Path\n\n\nROOT = Path(__file__).resolve().parents[1]\n\n\ndef load_checks():\n    spec = importlib.util.spec_from_file_location(\n        \"group_security_checks\", ROOT / \"student-2\" / \"security_checks.py\",\n    )\n    module = importlib.util.module_from_spec(spec)\n    spec.loader.exec_module(module)\n    return module\n\n\ndef main(argv=None):\n    parser = argparse.ArgumentParser(description=__doc__)\n    parser.add_argument(\"--students\", nargs=\"+\", choices=(\"student-2\", \"student-3\", \"student-4\"),\n                        default=[\"student-2\", \"student-3\", \"student-4\"])\n    parser.add_argument(\"--scan\", choices=(\"ruff\", \"secrets\", \"dependencies\", \"all\"), default=\"all\")\n    parser.add_argument(\"--include-shared\", action=\"store_true\",\n                        help=\"Also scan ai-services source with Ruff and detect-secrets. AI requirements are always audited.\")\n    parser.add_argument(\"--report-root\", type=Path,\n                        help=\"Write each scope to ROOT/student-N/security/*.json (default: repository logs/).\")\n    args = parser.parse_args(argv)\n    checks = load_checks()\n    kinds = (\"ruff\", \"secrets\", \"dependencies\") if args.scan == \"all\" else (args.scan,)\n    failures = 0\n    for student in dict.fromkeys(args.students):\n        report_dir = args.report_root / student / \"security\" if args.report_root else None\n        for kind in kinds:\n            try:\n                checks.scan(kind, student, args.include_shared, report_dir)\n            except (AssertionError, OSError, RuntimeError, ValueError):\n                # Preserve the scanner's redacted JSON and continue to report other scopes.\n                # No exception text, source lines, or detected secret values are printed.\n                print(f\"FAIL {student}: {kind}; inspect its redacted security report.\")\n                failures += 1\n            else:\n                print(f\"PASS {student}: {kind}\")\n    return 1 if failures else 0\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n"
+          },
+          {
+            "file": "scripts/security-ruff.toml",
+            "sha256": "5221dd386ab4950a6ca5a8ac20c1cee77146735765ef7178e824346fde645f79",
+            "text": "# Shared security-only policy. No formatting, fixes, or production-rule waivers.\ntarget-version = \"py312\"\n\n[lint]\nselect = [\"S\"]\n\n[lint.per-file-ignores]\n# Assertions express test expectations, not production access controls.\n\"**/tests/**\" = [\"S101\"]\n"
+          },
+          {
+            "file": "student-2/security_checks.py",
+            "sha256": "6f3cc2f366046b045607cb14b8e04280b9d1cca15b740d7af16b2286c4769740",
+            "text": "\"\"\"Lab 11 pre-commit scans; kept outside the existing API test directory.\"\"\"\nfrom datetime import datetime, timezone\nimport hashlib\nfrom importlib.metadata import version\nimport json\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport sys\nimport tempfile\n\n\nROOT = Path(__file__).resolve().parents[1]\nSUPPORTED_STUDENTS = (\"student-2\", \"student-3\", \"student-4\")\nREQUIREMENTS = (\n    \"student-2/backend/requirements.txt\",\n    \"student-2/frontend/requirements.txt\",\n    \"student-2/database/requirements.txt\",\n    \"ai-services/requirements.txt\",\n)\n\n\ndef requirements_for(student):\n    if student not in SUPPORTED_STUDENTS:\n        raise ValueError(\"Select a supported student scope.\")\n    return tuple(f\"{student}/{service}/requirements.txt\" for service in (\n        \"backend\", \"frontend\", \"database\",\n    )) + (\"ai-services/requirements.txt\",)\n\n\ndef run_command(command):\n    return subprocess.run(  # noqa: S603 - fixed local tools and repository file paths; no shell.\n        command, cwd=ROOT, capture_output=True, text=True, timeout=600,\n        env={**os.environ, \"PYTHONDONTWRITEBYTECODE\": \"1\"},\n    )\n\n\ndef student_files(student=\"student-2\", include_shared=False):\n    requirements_for(student)  # Validate before passing any scope to Git or tools.\n    git = shutil.which(\"git\")\n    if not git:\n        raise RuntimeError(\"Git is required to determine the scan scope.\")\n    result = run_command([\n        git, \"ls-files\", \"-z\", \"--cached\", \"--others\", \"--exclude-standard\", \"--\",\n        student, *([\"ai-services\"] if include_shared else []),\n    ])\n    if result.returncode:\n        raise RuntimeError(\"Could not determine the selected file list.\")\n    paths = sorted(set(filter(None, result.stdout.split(\"\\0\"))))\n    if any((ROOT / name).is_symlink() for name in paths):\n        raise RuntimeError(\"Scan scope contains a symbolic link.\")\n    files = [name for name in paths if (ROOT / name).is_file()]\n    if not files or not any(name.startswith(student + \"/\") for name in files):\n        raise RuntimeError(\"Selected student scan scope is empty.\")\n    return files\n\n\ndef scan(kind, student=\"student-2\", include_shared=False, report_dir=None):\n    requirements = requirements_for(student)\n    scope = (\"Student 2 code; dependency audit also includes its shared AI runtime requirements.\"\n             if student == \"student-2\" and not include_shared else\n             f\"{student} code\" + (\" and shared ai-services code\" if include_shared else \"\")\n             + \"; dependency audit also includes the shared AI runtime requirements.\")\n    report = {\n        \"scan\": kind,\n        \"generated_at_utc\": datetime.now(timezone.utc).isoformat(),\n        \"python\": sys.version.split()[0],\n        \"passed\": False,\n        \"scope\": scope,\n        \"student\": student,\n        \"shared_source_included\": include_shared,\n    }\n    try:\n        files = student_files(student, include_shared)\n        ruff_config = (\"student-2/ruff.toml\" if student == \"student-2\" and not include_shared\n                       else \"scripts/security-ruff.toml\")\n        inputs = sorted(set(files + list(requirements) + [\n            \".pre-commit-config.yaml\", \"student-2/security_checks.py\", ruff_config,\n            \"scripts/security_checks.py\",\n        ]))\n        report[\"input_sha256\"] = {\n            name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs\n        }\n        if kind == \"ruff\":\n            report[\"tool_version\"] = version(\"ruff\")\n            result = run_command([\n                sys.executable, \"-m\", \"ruff\", \"check\", \"--no-cache\",\n                \"--config\", ruff_config, \"--output-format\", \"json\", student,\n                *([\"ai-services\"] if include_shared else []),\n            ])\n            findings = json.loads(result.stdout)\n            if not isinstance(findings, list):\n                raise ValueError(\"Unexpected Ruff result format.\")\n            report[\"findings\"] = [\n                {\"file\": str(Path(item[\"filename\"]).relative_to(ROOT)),\n                 \"line\": item[\"location\"][\"row\"], \"rule\": item[\"code\"]}\n                for item in findings\n            ]\n            report[\"passed\"] = result.returncode == 0 and not findings\n        elif kind == \"secrets\":\n            report[\"tool_version\"] = version(\"detect-secrets\")\n            result = run_command([\n                sys.executable, \"-m\", \"detect_secrets\", \"scan\", \"--no-verify\", *files,\n            ])\n            findings = json.loads(result.stdout)[\"results\"]\n            if not isinstance(findings, dict):\n                raise ValueError(\"Unexpected detect-secrets result format.\")\n            # Retain locations and detector names, never secret values or source lines.\n            report[\"findings\"] = [\n                {\"file\": name, \"line\": item[\"line_number\"], \"type\": item[\"type\"]}\n                for name, items in findings.items() for item in items\n            ]\n            report[\"passed\"] = result.returncode == 0 and not findings\n        elif kind == \"dependencies\":\n            report[\"tool_version\"] = version(\"pip-audit\")\n            command = [sys.executable, \"-m\", \"pip_audit\"]\n            for name in requirements:\n                command.extend([\"-r\", name])\n            command.extend([\n                \"--strict\", \"--format\", \"json\", \"--progress-spinner\", \"off\",\n                \"--cache-dir\", str(Path(tempfile.gettempdir()) / \"asd-student2-audit-cache\"),\n            ])\n            result = run_command(command)\n            dependencies = json.loads(result.stdout)[\"dependencies\"]\n            if not isinstance(dependencies, list) or not dependencies:\n                raise ValueError(\"Dependency audit returned no package evidence.\")\n            report[\"requirements\"] = list(requirements)\n            report[\"dependencies\"] = [\n                {\"name\": item[\"name\"], \"version\": item.get(\"version\"),\n                 \"skip_reason\": item.get(\"skip_reason\"),\n                 \"vulnerabilities\": [\n                     {\"id\": finding[\"id\"], \"fix_versions\": finding.get(\"fix_versions\", [])}\n                     for finding in item.get(\"vulns\", [])\n                 ]}\n                for item in dependencies\n            ]\n            report[\"passed\"] = result.returncode == 0 and all(\n                not item.get(\"vulns\") and not item.get(\"skip_reason\") for item in dependencies\n            )\n        else:\n            raise ValueError(\"Unknown security scan.\")\n        report[\"exit_code\"] = result.returncode\n    except (OSError, RuntimeError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:\n        # Tool output and exception messages can contain source text or credentials.\n        report[\"error\"] = f\"{type(error).__name__}: scan could not complete; investigate locally.\"\n    report_dir = Path(report_dir or os.getenv(\n        student.upper().replace(\"-\", \"\") + \"_SECURITY_REPORT_DIR\",\n        str(ROOT / \"logs\" / student / \"security\"),\n    ))\n    report_dir.mkdir(parents=True, exist_ok=True)\n    path = report_dir / f\"{kind}.json\"\n    path.write_text(json.dumps(report, indent=2) + \"\\n\", encoding=\"utf-8\")\n    if not report[\"passed\"]:\n        # An explicit exception also blocks the CLI under Python optimization (-O).\n        raise AssertionError(f\"{kind} scan failed. See the redacted evidence in {path}.\")\n    return report\n\n\ndef test_ruff_scan():\n    scan(\"ruff\")\n\n\ndef test_secrets_scan():\n    scan(\"secrets\")\n\n\ndef test_dependency_audit():\n    scan(\"dependencies\")\n"
+          },
+          {
+            "file": "student-2/ruff.toml",
+            "sha256": "852c86cbd9a09bb2b853801aada4ab5ec33d6b7fa21fcc220944f4f5a654b678",
+            "text": "# Lab 11: security checks only; no formatting or automatic fixes.\ntarget-version = \"py312\"\n\n[lint]\nselect = [\"S\"]\n\n[lint.per-file-ignores]\n# Assertions express test expectations, not production access controls.\n# security_checks.py invokes Ruff with an explicit config from the repository root.\n\"tests/**\" = [\"S101\"]\n\"student-2/tests/**\" = [\"S101\"]\n\"security_checks.py\" = [\"S101\"]\n"
+          },
+          {
+            "file": "student-2/SECURITY.md",
+            "sha256": "e314cf435fee442d8ac56bd19b2dd752afa8e1942a75170ef08894c3d60a2b9f",
+            "text": "# Group pre-commit security checks\n\nRuff security rules, detect-secrets, and pip-audit run through real pre-commit\nhooks. The common CLI calls the same scan functions as the retained Student 2\npytest entrypoints. Security tools remain separate from the endpoint tests.\n\n## Scope\n\n- The hooks select all active members: `student-2`, `student-3`, `student-4`.\n  Each receives separate results; a failure in any selected scope fails the hook.\n- Ruff: selected students' Python code, security `S` rules only. Student 2 keeps\n  its existing policy; other scopes use `scripts/security-ruff.toml`.\n- Secrets: Git-tracked and non-ignored untracked files in the selected scope; no online\n  verification of candidate secrets. Ignored runtime data and local environments\n  are not part of this source scan.\n- Dependencies: each selected student's backend, frontend, and database requirements plus\n  `ai-services/requirements.txt`, because the feature uses that shared AI runtime.\n  Source and workflows belonging to other students are not modified by the scanner.\n- Shared AI source is an explicit `--include-shared` option, not part of default\n  source coverage. Shared AI dependencies are always included in the audit.\n\nThe dependency audit resolves the current requirement ranges, including transitive\ndependencies. It does not prove the versions already installed in a Docker image\nare identical. No vulnerability IDs are ignored and no automatic fixes are applied.\n\n## Install and run\n\nRun from the repository root with Python 3.12 available. A separate ignored\nenvironment keeps these tools apart from the existing root `.venv`:\n\n```bash\npython3.12 -m venv student-2/.venv\nstudent-2/.venv/bin/python -m pip install -r student-2/security-requirements.txt\nstudent-2/.venv/bin/python -m pre_commit install --install-hooks\nstudent-2/.venv/bin/python -m pre_commit run --all-files\n```\n\nOn Windows use `py -3.12` to create the environment and\n`student-2\\.venv\\Scripts\\python.exe` in place of `student-2/.venv/bin/python`.\nThe hooks use the platform-independent `python scripts/security_checks.py` entrypoint.\nDo not remove this environment while the installed Git hook refers to it.\n\nFor a selected student's checks without a commit:\n\n```bash\nstudent-2/.venv/bin/python scripts/security_checks.py --students student-2 --scan all\n```\n\nUse `--students student-3 student-4` to select other members, `--scan ruff` or\n`--scan secrets` for an individual scan, and `--include-shared` to include AI source.\n`--report-root /absolute/archive` writes distinct `student-N/security` directories.\nThese selected-scope commands do not change the all-member commit hooks.\n\n`--all-files` checks the current working tree. On an actual commit, pre-commit\ntemporarily hides unstaged tracked changes so the staged code is checked. Review\nand stage the intended files before committing. No commit is needed to run checks.\n\n## Evidence and failure behavior\n\nEach scan writes JSON under `logs/student-N/security/` (ignored by Git), or the\ndirectory named by `STUDENT2_SECURITY_REPORT_DIR` (likewise STUDENT3/STUDENT4).\nThe Student 2 report schema and default directory remain compatible. Reports include\nUTC time, tool/Python versions, input hashes, findings, and pass/fail status.\nDependency evidence includes resolved package versions and vulnerability IDs.\nSecret evidence includes only file, line and detector type, never values or source.\nArchive evidence for a particular revision before a later scan overwrites it.\n\nFindings, missing tools, invalid results, timeouts, or incomplete dependency audits\nfail the hook. A successful detect-secrets process is not sufficient: its findings\nmust also be empty. A blocked commit must be investigated, not bypassed.\n\n## Reviewed exceptions\n\n- Three `S104` line exceptions retain Docker-required `0.0.0.0` binding; debug\n  remains disabled. This is not an instruction to expose services publicly.\n- One `S608` line exception covers the database summary's table identifier, which\n  comes only from its fixed local list. User data still uses SQL parameters.\n- The htmx `integrity` attribute is a public checksum, not a credential. Its one-line\n  Jinja allowlist comment leaves the checksum and rendered script attributes intact.\n- `S101` is ignored in test files. The legacy Student 2 policy also allows it in\n  `security_checks.py`; the scanner now uses an explicit exception, including under `python -O`.\n\n## Initial dependency blocker\n\nOn 2026-10-19 UTC (19 October in Sydney), the audit resolved ChromaDB 1.5.9\nfrom the shared AI requirements and reported PYSEC-2026-311, PYSEC-2026-3813,\nPYSEC-2026-3814 and PYSEC-2026-3815. The service returned one duplicate entry\nand no fixed versions. The dependency hook remains failing; these IDs are not\nsuppressed. Shared dependencies were not changed. Review remediation with the\nshared AI owner and rerun the audit before treating the security gate as passed.\n\nThis is local pre-commit evidence, not a GitHub Actions run, deployment approval,\nor completion of TestingReportReview.\n\n## Chroma applicability review - 19 October 2026 (Australia/Sydney)\n\nThe retained raw audit contains five entries for four distinct findings; the\nduplicate is PYSEC-2026-311. The aliases below come from that audit, not a name\nmatch. Its `fix_versions` lists are empty. This records the observed result;\nit does not establish that no patch will become available.\n\n| Audit ID and advisory | Reported attack condition | Evidence in the reviewed project | Remaining limit |\n|---|---|---|---|\n| PYSEC-2026-311 / CVE-2026-45829 / [GHSA-f4j7-r4q5-qw2c](https://github.com/advisories/GHSA-f4j7-r4q5-qw2c) | Unauthenticated collection creation through Chroma's server API accepts a malicious model repository and `trust_remote_code=true`. | `ai-services/rag_retrieval.py` uses embedded `PersistentClient`; collection creation sets `embedding_function=None` and supplies locally computed vectors. The project RAG routes do not accept model-repository or remote-code settings. | A separately launched Chroma server, changed runtime settings, or untrusted persisted configuration must be checked on the actual demo machine. |\n| PYSEC-2026-3813 / CVE-2026-45830 / [GHSA-2wm9-hf6c-p5cr](https://github.com/advisories/GHSA-2wm9-hf6c-p5cr) | An authenticated Chroma server user can access another tenant's collections because authorization is insufficient. | The reviewed path uses one embedded store and does not configure a Chroma authenticated, multi-tenant server. | This does not prove application-level user isolation or the safety of any separately deployed service. |\n| PYSEC-2026-3814 / CVE-2026-45833 / [GHSA-36p7-vc44-83pf](https://github.com/advisories/GHSA-36p7-vc44-83pf) | A user with collection-update permission supplies a malicious model repository with remote-code execution enabled. | The reviewed application creates its own collections and supplies explicit vectors for insertion and queries; its HTTP routes do not expose Chroma collection-configuration updates. | Previously stored or externally modified collection configuration remains relevant; the live demo store has not been inspected. |\n| PYSEC-2026-3815 / CVE-2026-45831 / [GHSA-xph7-9rjv-w5fr](https://github.com/advisories/GHSA-xph7-9rjv-w5fr) | `SimpleRBACAuthorizationProvider` checks a permission without correctly restricting its tenant/database/collection scope. | The reviewed embedded-client path does not configure this provider or use Chroma RBAC as an application authorization boundary. | A future server/RBAC deployment requires a new assessment; the package finding remains present. |\n\nSupporting source locations are `ai-services/rag_retrieval.py` (`embed_texts`,\n`CorpusIndex.client`, `refresh`, `retrieve`) and `ai-services/rag_server.py`\n(`/refresh`, `/answer`, and the startup host setting). The default RAG host is\n`127.0.0.1`, but `AI_SERVICES_HOST` can override it. A loopback default is not\nevidence of the host actually used in a running process.\n\n### Environment and stored-data evidence\n\n- The retained test environment `/private/tmp/asd-student2-release2-py312` uses\n  Python 3.12.12 and ChromaDB 1.5.9. This matches the audit's resolved Chroma\n  version. The saved 209-test result is historical functional-test evidence,\n  not a fresh security pass or proof of the demo runtime.\n- Three historical test stores were inspected under\n  `/private/tmp/asd-student2-baseline-rag`,\n  `/private/tmp/asd-student2-final-rag`, and\n  `/private/tmp/asd-student2-security-regression-rag`. Each had one resume\n  collection with `config_json_str={}`; no external embedding model or\n  `trust_remote_code` setting was present in those inspected configurations.\n- The live demo RAG process, its effective host/environment settings and its\n  active store are still unverified. These historical test stores cannot\n  establish the state of that environment.\n\nThe reviewed source and historical stores do not demonstrate the published\nattack paths. This is a limited applicability assessment, not a declaration\nthat ChromaDB 1.5.9 is fixed, a false positive, or safe in every deployment.\nThe dependency hook remains failing; no vulnerability IDs are ignored, and\nno dependency, shared AI code, or commit policy is changed by this document.\nKeep the raw findings and re-assess after a verified remediation or a change\nto dependencies, server exposure, authorization, or stored configuration.\n\n### Course alignment and next integration boundary\n\n[Lab 8, section 4](https://github.com/Georges034302/asd-labs/blob/main/Lab_08_RAG_and_Enterprise_Context_Pipelines.md#4-rag-pipeline-development)\nuses Chroma with a local persistent client.\n[Lab 11, section 4](https://github.com/Georges034302/asd-labs/blob/main/Lab_11_Testing_Deployment_and_Operations.md#4-testing-implementation)\nruns the three scans through pytest and blocks commits on failure. Its sample\ndoes not provide a dependency-vulnerability waiver policy.\n[Lab 11, section 7](https://github.com/Georges034302/asd-labs/blob/main/Lab_11_Testing_Deployment_and_Operations.md#7-agentic-loop-integration)\nfocuses Pre-Test Review on test implementation and scan coverage; CI/CD Test\nReview evaluates results and evidence. A review may record a blocker without\nturning a failed scan into a pass.\n\nThe Student 2 evidence collector, prompts and CI result capture preserve this\nblocker. The existing shared loop now connects the explicit `pre_test` and\n`cicd_test` modes; connection checks do not run the models or establish a fresh\nsecurity pass. A real model review, human decision and CI run remain separate\nwork. The current Canvas rubric was not reverified for this review;\ndocumentation is not a claim of marking approval, full marks, or permission\nto bypass the failed hook. See [TESTING_REVIEW.md](TESTING_REVIEW.md).\n"
+          }
+        ],
+        "student": "student-2",
+        "evidence_check_scope": "saved-evidence-consistency-only",
+        "limitations": [
+          "A passed check means saved-evidence consistency only, not a current security PASS or release approval.",
+          "Recorded input hashes do not cover newly added files; rerun the real hooks for the current commit.",
+          "This collector runs no scans, subprocesses, models or application services; human judgment remains pending."
+        ]
+      }
+    }
+  ],
+  "agent_assessments": {
+    "status": "skipped",
+    "reason": "Explicit checks-only run; not a full agentic review."
+  },
+  "review": {
+    "passed": false,
+    "checks_passed": false,
+    "meaning": "Saved-evidence consistency and assessment execution only; not a fresh scan, final GitHub conclusion, security exception, or human approval."
+  },
+  "human_decision": {
+    "status": "pending",
+    "reviewer": null,
+    "decision": null,
+    "rationale": null
+  },
+  "limitations": [
+    "Testing collectors read saved evidence; they do not run hooks, pytest, GitHub Actions or application services.",
+    "Historical findings and recorded-input hashes cannot establish a new security pass; run the actual hooks for the intended revision.",
+    "Complete testing evidence is supplied to both assessment stages or rejected if it exceeds the 32,000-character budget or the conservative full-prompt capacity check.",
+    "Model assessments are advisory; the human decision remains pending."
+  ],
+  "improve": {
+    "next_step": "A human reviews checks and required assessments, then records their own decision using human_review.py with before/after evidence links."
+  }
+}

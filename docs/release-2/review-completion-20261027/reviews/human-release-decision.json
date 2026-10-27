@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "record_kind": "human-final-release-decision",
+  "record_status": "recorded",
+  "recorded_at_utc": "2026-10-27T00:10:59.596197+00:00",
+  "recorded_at_local": "2026-10-27T11:10:59.596197+11:00",
+  "timestamp_meaning": "Time this record was written. The exact time of the user response was not supplied and is not fabricated.",
+  "actor": {
+    "name": "Tomohisa Tamao",
+    "role": "Student 2",
+    "decision_capacity": "Individual final release judgment for the specified candidate; this record does not assert other team members agreed."
+  },
+  "candidate": {
+    "repository": "jongseonseo-star/asd-2026-ai-career-assistant",
+    "target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+    "deployment_workflow_run_id": 40402532547,
+    "deployment_workflow_run_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+    "live_deployment_sha_verified": false
+  },
+  "human_authorization": {
+    "source": "Explicit current-conversation user selection, relayed verbatim to this recording agent by the parent agent.",
+    "question_exact_ja": "上の3レビュー結果を踏まえ、Tomohisa Tamao（Student 2）として、対象3649ed5／配備run40402532547の最終release判断をどう記録しますか？現在はChroma監査の未解決事項、実稼働SHAの未確認、他2機能の書き込みCRUD証拠不足が残っています。条件付き承認にする場合は、理由と条件も回答してください。",
+    "response_exact_ja": "差戻し：不足証拠と残留リスクを確認後に再判断する",
+    "response_exact_timestamp": null,
+    "not_inferred_from_model_output": true
+  },
+  "decision": {
+    "code": "return-for-rework",
+    "label_ja": "差戻し：不足証拠と残留リスクを確認後に再判断する",
+    "release_approved": false,
+    "conditional_approval": false,
+    "risk_waiver_or_personal_acceptance_recorded": false,
+    "rationale_source": "The explicit user selection requires missing evidence and residual risks to be checked before reconsideration. No more detailed personal rationale is invented.",
+    "reassessment_required": true,
+    "reassessment_requires_new_genuine_human_judgment": true
+  },
+  "question_context_risks": [
+    {
+      "risk": "Unresolved matters in the Chroma dependency audit",
+      "status": "unresolved in the evidence provided with the question"
+    },
+    {
+      "risk": "Unverified SHA of the running deployment",
+      "status": "unverified"
+    },
+    {
+      "risk": "Missing write-CRUD evidence for the other two features",
+      "status": "unverified; Student 2 evidence does not prove other-feature writes"
+    }
+  ],
+  "review_evidence_presented_before_decision": [
+    {
+      "label": "MA Workflow Review shown before final decision",
+      "kind": "completed-development-review",
+      "path": "output/ma_workflow.json",
+      "sha256": "363f5e99191c45dab3d1b2678742d40d73916f9fdf7cb8b621ce0307143ec854",
+      "mode": "ma_workflow",
+      "finished_at_utc": "2026-10-26T23:57:08.047583+00:00",
+      "agent_assessment_status": "completed",
+      "execution_completed": true,
+      "meaning": "Recorded assessment completion, not source security clearance or human release approval."
+    },
+    {
+      "label": "Testing Report Review shown before final decision",
+      "kind": "completed-development-review",
+      "path": "output/testing_report.json",
+      "sha256": "a1d2e18cbd87137cc13247003cd21b1ad3ec9b26c94e2ad1f90dcf1d212f2187",
+      "mode": "testing_report",
+      "finished_at_utc": "2026-10-26T23:58:22.996571+00:00",
+      "agent_assessment_status": "completed",
+      "execution_completed": true,
+      "meaning": "Recorded assessment completion, not source security clearance or human release approval."
+    },
+    {
+      "label": "Cloud Deployment Review, successful second attempt shown before decision",
+      "kind": "completed-development-review",
+      "path": "output/cloud_deployment-attempt2.json",
+      "sha256": "7acf95e798adb5f46367da0b56f1880767e9b6a5a01bc3ee140b9b17a1177ad7",
+      "mode": "cloud_deployment",
+      "finished_at_utc": "2026-10-26T23:59:54.431259+00:00",
+      "agent_assessment_status": "completed",
+      "execution_completed": true,
+      "meaning": "Recorded assessment completion, not source security clearance or human release approval."
+    }
+  ],
+  "additional_separately_disclosed_findings": {
+    "not_part_of_the_verbatim_question": true,
+    "no_personal_acceptance_inferred": true,
+    "fresh_shared_source_scan": {
+      "generated_at_utc": "2026-10-27T00:02:11.024519+00:00",
+      "scope": "Student 2 plus shared ai-services source; not fresh Student 3/4 own-source scans.",
+      "ruff": "FAIL, exit_code=1, 16 findings: S310=14, S603=1, S110=1",
+      "secrets": "PASS, exit_code=0, 0 findings",
+      "baseline_comparison": "All 16 flagged statements existed verbatim at base 3649ed5. No baseline Ruff rerun, fix, exploitability finding or risk waiver is implied."
+    },
+    "human_reaction_to_each_supplemental_finding": "Not established by this record. The return-for-rework decision is not risk acceptance.",
+    "evidence": [
+      {
+        "label": "Additional current Student 2 and shared-source Ruff FAIL",
+        "kind": "supplemental-scan-not-human-risk-acceptance",
+        "path": "diagnostics/current-source-security/student-2/security/ruff.json",
+        "sha256": "681c3a639d23dc1f2fa5a3306769ff4adf1a7ee688f947aa2ce22b3047c1ec87"
+      },
+      {
+        "label": "Additional current Student 2 and shared-source secrets PASS",
+        "kind": "supplemental-scan",
+        "path": "diagnostics/current-source-security/student-2/security/secrets.json",
+        "sha256": "ef655aadfa7bbd19151da6ec851b48e45dcc3fd14baecede9507f976c89254ab"
+      },
+      {
+        "label": "Flagged statement comparison with base source and scan-input hashes",
+        "kind": "supplemental-derived-audit",
+        "path": "../evidence/github/shared-source-scan-audit.json",
+        "sha256": "5d267c5dea6750b878df7037d38032488db0738df1d5cdb932c7f9a4eefe0b54"
+      }
+    ]
+  },
+  "separate_prior_decisions": {
+    "application_output": {
+      "decision": "reject",
+      "recorded_at_utc": "2026-10-22T06:15:18.040364+00:00",
+      "meaning": "Rejects the application MA output for unsupported/misattributed claims; not this final release judgment."
+    },
+    "pre_test_review": {
+      "decision": "partially-accept",
+      "recorded_at_utc": "2026-10-22T03:19:21.845463+00:00",
+      "meaning": "Partial acceptance of a pre-test assessment, explicitly without approval of commit, deployment or release."
+    },
+    "evidence": [
+      {
+        "label": "Earlier application output rejection, separate decision",
+        "kind": "earlier-application-human-review",
+        "path": "../evidence/local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/workflow.json",
+        "sha256": "fae7e4e32a30100b4ff18f1dcc154979b9a1e52a0f12c460098e77c62b3c55b2"
+      },
+      {
+        "label": "Earlier pre-test partial acceptance, separate decision",
+        "kind": "earlier-development-pre-test-human-review",
+        "path": "../evidence/local/pre-test/pre-test-human-decision.json",
+        "sha256": "136b380723f4f34e6c4fc86f54a2312fb1fc36b2ff01c749bb16a2acf0a88059"
+      }
+    ]
+  },
+  "supplemental_testing_attempt2": {
+    "input_manifest": {
+      "label": "Input for later Testing Review incorporating shared Ruff FAIL",
+      "kind": "supplemental-review-input",
+      "path": "input/testing_report-attempt2.json",
+      "sha256": "ff93734db893a46bfefc130f92643a06bdec57432ae091fd881435282f4ef481"
+    },
+    "status_at_recording": "Not relied on for this human choice; its output is not one of the three reviews in the exact question.",
+    "future_completion_does_not_change_this_decision": true
+  },
+  "candidate_metadata_evidence": [
+    {
+      "label": "Recorded successful Cloud Deployment workflow metadata",
+      "kind": "github-run-metadata",
+      "path": "../evidence/github/cloud-run-40402532547.json",
+      "sha256": "5b597275169622538d850e832037e814a25f97036ad9020365919315c5ba69e6"
+    },
+    {
+      "label": "Original JUnit INCOMPLETE and subtest-count explanation",
+      "kind": "derived-test-evidence-audit",
+      "path": "../evidence/github/junit-count-audit.json",
+      "sha256": "30f2181d285e385ec09ec637d9c79a2848f97121767b5b0845a43d943d244c6b"
+    }
+  ],
+  "record_policy": {
+    "prior_artifacts_modified": false,
+    "append_only_intent": "Retain this record. Any later human decision should be a separate dated record, with its own reviewed evidence and hashes.",
+    "automatic_release_approval": false
+  }
+}

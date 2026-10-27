@@ -1,0 +1,292 @@
+{
+  "kind": "github_evidence_file_manifest",
+  "created_at_utc": "2026-10-26T23:53:55.143832+00:00",
+  "repository": "jongseonseo-star/asd-2026-ai-career-assistant",
+  "target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "run_id": 40402532547,
+  "file_count": 56,
+  "total_bytes": 1056631,
+  "files": [
+    {
+      "path": "artifact-download-results.json",
+      "bytes": 2583,
+      "sha256": "83a17805600421eb509e6fcca4d40608deb955a6887bb4e437b37f391c5674b8"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/ai-feedback-disabled-http-code.txt",
+      "bytes": 4,
+      "sha256": "8c4bc799953a87a2fa8386f58264974bdcaf4677d5ec91fd202cc1f9ed0f38bd"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/ai-feedback-disabled.json",
+      "bytes": 90,
+      "sha256": "9fd5c3b63685e775673bf600528936a54d05a405707714e7fb27e28dac0cecd0"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/ai-status-http-code.txt",
+      "bytes": 4,
+      "sha256": "8c4bc799953a87a2fa8386f58264974bdcaf4677d5ec91fd202cc1f9ed0f38bd"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/ai-status.json",
+      "bytes": 90,
+      "sha256": "9fd5c3b63685e775673bf600528936a54d05a405707714e7fb27e28dac0cecd0"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/backend-ai-configuration.json",
+      "bytes": 56,
+      "sha256": "713b0b915db575211e2b4ce4c4ff76cf424b84da9acb74a7d4b4350039ce86a5"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/backend-readiness.json",
+      "bytes": 129,
+      "sha256": "5217a43886d6f22d905e2f95aa302df3fa1345b575e558cb181579b208db2ffc"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/compose-logs.txt",
+      "bytes": 3729,
+      "sha256": "6968d1ddfe5fb3e52c3c37e9b6dcfa40183904d8b251965b75e7b60c2dd66edc"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/compose-ps.txt",
+      "bytes": 758,
+      "sha256": "c52c8cf3d4177cde48e51fc95ca0944172e76a38604882b05489931506f9f29c"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/database-health.json",
+      "bytes": 52,
+      "sha256": "19f057220aeaf005094c8a75c7fe77816b2cac91650022278953e7bf0c155494"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/frontend-readiness.json",
+      "bytes": 189,
+      "sha256": "702fa2aef6ab98506e2f55e778354c9aa7479e2ab36999fd042b12f826c98346"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/profiles.json",
+      "bytes": 2756,
+      "sha256": "cd2ba37497b6f137b505f4b96505be6805abc81538aecc11257896998be9c09b"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/pytest-results.xml",
+      "bytes": 69644,
+      "sha256": "076f680256017116d3b1d2fa55822e05ba0514ae9c888d88cdd047c7e0ceb82f"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/pytest.log",
+      "bytes": 438,
+      "sha256": "d87eb26cca732ca2ad6e067dfecc84e7e22e669a06f0795cda2582818278a373"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/report.json",
+      "bytes": 1240,
+      "sha256": "ba2ce12fa0bc1761b5c8fe8acc20b9726c83fd1de6dcf00a5f0bfd9fab41da28"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/report.md",
+      "bytes": 591,
+      "sha256": "bda9049e634f6fe6ab79fcd18e7816df50094f0d41ee77f3d4394a81e57781d3"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/resumes.json",
+      "bytes": 2520,
+      "sha256": "cf1bc65ab36d2ef750150f7f457b83ad89f8267449a190255353d67aaf0e0ab2"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/run-view.md",
+      "bytes": 112,
+      "sha256": "5a690e72bdaedf0e9d239926adfe1c06613bb5b8b3321365439c5435987812b1"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/seed-counts.json",
+      "bytes": 54,
+      "sha256": "492972883ad2743dad6fdf3265716adccfd8d3cb5538c1e639232a9fe5222332"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/skills.json",
+      "bytes": 3722,
+      "sha256": "7f8d8f25e6769cb8d7d9d91e4add8bf1780f2568e0bece4e69799de6f3bc2e72"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/test-audit.jsonl",
+      "bytes": 1146,
+      "sha256": "1caa3d0cd375a3f98f3f0f8ade5c129c8bd3a1930943a68bb77aaaf9c1608f53"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547/test-results.md",
+      "bytes": 591,
+      "sha256": "bda9049e634f6fe6ab79fcd18e7816df50094f0d41ee77f3d4394a81e57781d3"
+    },
+    {
+      "path": "artifacts/student-2-ci-evidence-40402532547.zip",
+      "bytes": 14429,
+      "sha256": "82cc242668851e05cbdc972d03007e865172e4b63e05814f353ab4ffd835dcef"
+    },
+    {
+      "path": "artifacts/student-3-evidence/student-3-docker.log",
+      "bytes": 2191,
+      "sha256": "29bd4a7928a54bab30d31cb0a9474fd701ee396b86ba48b538356abba1e90ed2"
+    },
+    {
+      "path": "artifacts/student-3-evidence.zip",
+      "bytes": 589,
+      "sha256": "2919a770ab66649255970ea3d057af941881b646e1784e276d1aabd8d46e5c60"
+    },
+    {
+      "path": "artifacts/student-4-release1-evidence/ai-services-status.json",
+      "bytes": 61,
+      "sha256": "410cbd6da072fa5859010862af397c05cc253bfec263c276b9d525fbb001b572"
+    },
+    {
+      "path": "artifacts/student-4-release1-evidence/seed-counts.json",
+      "bytes": 51,
+      "sha256": "e237d15b8882667634ea841eea8716d414a18af2a8e5b1f47f13383bab5f187a"
+    },
+    {
+      "path": "artifacts/student-4-release1-evidence/student-4-compose-ps.txt",
+      "bytes": 798,
+      "sha256": "26050e9bef876c9e7b7d6dc0660b27e1afb6a17ee18973891e9ac391022e6a48"
+    },
+    {
+      "path": "artifacts/student-4-release1-evidence/student-4-compose.log",
+      "bytes": 2993,
+      "sha256": "34bc2d901a832b93be169c8845cfe6030adbff64469bd42c75d5fc6fddb00d5a"
+    },
+    {
+      "path": "artifacts/student-4-release1-evidence.zip",
+      "bytes": 1408,
+      "sha256": "81dd0bbc7ac0c6f714b991c7ac0793e0d017fe7721130f376965421add18cb9f"
+    },
+    {
+      "path": "artifacts-40402532547.json",
+      "bytes": 2763,
+      "sha256": "dcfdca776e39f68a498e7c40974a12891498b2878da4377c8ba83b250e5bb314"
+    },
+    {
+      "path": "cloud-run-40402532547.json",
+      "bytes": 16536,
+      "sha256": "5b597275169622538d850e832037e814a25f97036ad9020365919315c5ba69e6"
+    },
+    {
+      "path": "collection-provenance.json",
+      "bytes": 6326,
+      "sha256": "c5e9493dafb504d9a563956fbad5db04e0434b1be94421497e213cdbb6ab6834"
+    },
+    {
+      "path": "endpoint-test-mapping.json",
+      "bytes": 23612,
+      "sha256": "ef389dde110f3d4ae98d5ee7b30b88c44377c3acd381254025acc8d230b54816"
+    },
+    {
+      "path": "historical-security-summary.json",
+      "bytes": 15722,
+      "sha256": "1c5d142cb8976dabd4f7f8b33113ac36586e01e21e8e233bd9bb3ff4c4eb49bb"
+    },
+    {
+      "path": "integrity-check.json",
+      "bytes": 2133,
+      "sha256": "8823a1cfd0518d1a1a81b473e537754074de5055c648fca264895fa0e5a575e0"
+    },
+    {
+      "path": "job-121853156693-student-4.log",
+      "bytes": 134297,
+      "sha256": "84fb532612eff51fadcc53b8846c946c1a0717cf9fe3932dc9d3cb392fb1c00c"
+    },
+    {
+      "path": "job-121853157068-student-3.log",
+      "bytes": 117251,
+      "sha256": "9496724584bdb9685ceb06d912a14f58e078e6a29cc6b2b44dca330bdd086cae"
+    },
+    {
+      "path": "job-121853157075-validate-cloud.log",
+      "bytes": 185039,
+      "sha256": "5c65f263372bcafeb31aaadad4d401430c076082ecc5ae6e87d11b9b9d7f4605"
+    },
+    {
+      "path": "job-121853157112-student-2.log",
+      "bytes": 165796,
+      "sha256": "1a150955d85c71605f62c8e0bdf00dffcbbf760719c3c79a4bdd4756595c41d9"
+    },
+    {
+      "path": "job-121854242098-deploy.log",
+      "bytes": 56220,
+      "sha256": "3eadde43c804779240b471f71ff8429f69cfbbda48f5007beb5b655a5b4f0ff4"
+    },
+    {
+      "path": "jobs-40402532547.json",
+      "bytes": 21515,
+      "sha256": "42cdb5daea568dfd7811728ceaaf97b39351d642e7d84bb83f230e336faa870e"
+    },
+    {
+      "path": "junit-count-audit.json",
+      "bytes": 3807,
+      "sha256": "30f2181d285e385ec09ec637d9c79a2848f97121767b5b0845a43d943d244c6b"
+    },
+    {
+      "path": "main-branch.json",
+      "bytes": 4672,
+      "sha256": "556079de38eca2097ebfdc8d0c2895f28a92a45078dc70c7376b24b799f0bed7"
+    },
+    {
+      "path": "run-summary.json",
+      "bytes": 6359,
+      "sha256": "689d2d104605a1e4eb5b9204c0f9d5d77a9c7e43f3651c4624e94111b69905c5"
+    },
+    {
+      "path": "source-snapshots/dotgithub__workflows__student-2.yml.txt",
+      "bytes": 14584,
+      "sha256": "d6fd798bd209ad8ec245c2bbd2ce2ce1cc730e13cab8c56899e93cafd9e3a3b2"
+    },
+    {
+      "path": "source-snapshots/dotgithub__workflows__student-3.yml.txt",
+      "bytes": 2642,
+      "sha256": "d96c62663588a116c23beae04c62a7fabf3b81bc3f0ad040a3409c8ffa372a2e"
+    },
+    {
+      "path": "source-snapshots/dotgithub__workflows__student-4.yml.txt",
+      "bytes": 3497,
+      "sha256": "ee2d4096a5a9cc0fd7504eb719258eeac3a5dd31bb7ac389a4e30c38c0e19666"
+    },
+    {
+      "path": "source-snapshots/student-2__backend__app.py.txt",
+      "bytes": 30143,
+      "sha256": "3e9e3264b64f60053efd4ce1956ca976b57dd58b44debf29c9ba8a156e905d43"
+    },
+    {
+      "path": "source-snapshots/student-2__testing_review.py.txt",
+      "bytes": 15018,
+      "sha256": "4eb2fdaf594b964783849c97a9cb160b4aac750222da9a7a9d18b4a410c6dd8a"
+    },
+    {
+      "path": "source-snapshots/student-2__tests__test_resume_grounding.py.txt",
+      "bytes": 18124,
+      "sha256": "7d8227412b8127d5a2f946233475d0fcf27d7c99ed69c958a2aeae2f85a7cff1"
+    },
+    {
+      "path": "source-snapshots/student-3__backend__app.py.txt",
+      "bytes": 44664,
+      "sha256": "a2074a370937e9a40da4aee104dbacb99b635a8b72a1d4e8520560a629efbe2b"
+    },
+    {
+      "path": "source-snapshots/student-3__tests__test_interview_service.py.txt",
+      "bytes": 11246,
+      "sha256": "5d5581b5e561d1ce43174b1d1709eb33cf172d68265c220b776295cacc05d645"
+    },
+    {
+      "path": "source-snapshots/student-4__backend__app.py.txt",
+      "bytes": 15609,
+      "sha256": "8477ee1967922d05510dfde2e616ba01d1b8855d6423246413f4003ee1b2cf93"
+    },
+    {
+      "path": "source-snapshots/student-4__tests__test_multi_agent_jobs.py.txt",
+      "bytes": 17464,
+      "sha256": "ee7f15ae8543471d1e416e3b0427c77fff31586fdcc390cfac7a22885b0b4012"
+    },
+    {
+      "path": "source-snapshots/student-4__tests__test_release1.py.txt",
+      "bytes": 8574,
+      "sha256": "90a6d9bd68e7873078863aaa6cabe4f29b02ca0cf355d25f76fd3b6e808f732c"
+    }
+  ],
+  "note": "Manifest excludes itself. ZIPs, extracted members and decoded GitHub job logs are retained; derived JSON is identified by kind. No new tests, deployments, model reviews, remote changes or release approval were performed by this collector."
+}

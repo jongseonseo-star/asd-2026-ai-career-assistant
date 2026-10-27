@@ -1,0 +1,396 @@
+{
+  "kind": "derived_endpoint_test_mapping",
+  "generated_at_utc": "2026-10-26T23:52:10.542825+00:00",
+  "repository": "jongseonseo-star/asd-2026-ai-career-assistant",
+  "target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "run_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+  "selection_note": "Two representative tested backend endpoints per student, selected from current pinned source for common testing review. This does not establish which endpoints members 3 and 4 will choose in their individual report sections.",
+  "students": [
+    {
+      "student": "student-2",
+      "job_id": 121853157112,
+      "job_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853157112",
+      "execution_evidence_level": "Individual passing JUnit testcase elements, plus successful suite summary; original aggregate collector INCOMPLETE is explained separately.",
+      "endpoints": [
+        {
+          "method": "GET",
+          "route": "/api/v1/profiles",
+          "backend_function": "profiles_collection",
+          "backend_line": 529,
+          "backend_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/backend/app.py#L529",
+          "test_file": "student-2/tests/test_resume_grounding.py",
+          "tests": [
+            {
+              "node_id": "student-2/tests/test_resume_grounding.py::ProfilesEndpointTests::test_profiles_returns_database_records",
+              "source_line": 214,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py#L214",
+              "expected": "HTTP 200 and database records returned",
+              "actual_evidence": [
+                {
+                  "classname": "student-2.tests.test_resume_grounding.ProfilesEndpointTests",
+                  "name": "test_profiles_returns_database_records",
+                  "outcome": "PASS",
+                  "time": "0.001"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            },
+            {
+              "node_id": "student-2/tests/test_resume_grounding.py::ProfilesEndpointTests::test_profiles_returns_empty_list_when_database_has_no_records",
+              "source_line": 230,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py#L230",
+              "expected": "HTTP 200 and empty list",
+              "actual_evidence": [
+                {
+                  "classname": "student-2.tests.test_resume_grounding.ProfilesEndpointTests",
+                  "name": "test_profiles_returns_empty_list_when_database_has_no_records",
+                  "outcome": "PASS",
+                  "time": "0.001"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            },
+            {
+              "node_id": "student-2/tests/test_resume_grounding.py::ProfilesEndpointTests::test_profiles_database_connection_failure_returns_503",
+              "source_line": 238,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py#L238",
+              "expected": "HTTP 503 for database connection failure",
+              "actual_evidence": [
+                {
+                  "classname": "student-2.tests.test_resume_grounding.ProfilesEndpointTests",
+                  "name": "test_profiles_database_connection_failure_returns_503",
+                  "outcome": "PASS",
+                  "time": "0.002"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            }
+          ]
+        },
+        {
+          "method": "POST",
+          "route": "/api/v1/ai/resume-feedback",
+          "backend_function": "resume_feedback",
+          "backend_line": 678,
+          "backend_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/backend/app.py#L678",
+          "test_file": "student-2/tests/test_resume_grounding.py",
+          "tests": [
+            {
+              "node_id": "student-2/tests/test_resume_grounding.py::ResumeGroundingTests::test_release1_delegates_generation_to_shared_rag_and_returns_mcp_result",
+              "source_line": 74,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py#L74",
+              "expected": "HTTP 200, shared RAG delegation and MCP result",
+              "actual_evidence": [
+                {
+                  "classname": "student-2.tests.test_resume_grounding.ResumeGroundingTests",
+                  "name": "test_release1_delegates_generation_to_shared_rag_and_returns_mcp_result",
+                  "outcome": "PASS",
+                  "time": "0.002"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            },
+            {
+              "node_id": "student-2/tests/test_resume_grounding.py::ResumeGroundingTests::test_foreign_resume_is_rejected_before_retrieval_or_generation",
+              "source_line": 149,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py#L149",
+              "expected": "HTTP 400, foreign resume rejected before model calls",
+              "actual_evidence": [
+                {
+                  "classname": "student-2.tests.test_resume_grounding.ResumeGroundingTests",
+                  "name": "test_foreign_resume_is_rejected_before_retrieval_or_generation",
+                  "outcome": "PASS",
+                  "time": "0.002"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            },
+            {
+              "node_id": "student-2/tests/test_resume_grounding.py::ResumeGroundingTests::test_rag_failure_never_silently_falls_back",
+              "source_line": 164,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py#L164",
+              "expected": "HTTP 503, no silent fallback",
+              "actual_evidence": [
+                {
+                  "classname": "student-2.tests.test_resume_grounding.ResumeGroundingTests",
+                  "name": "test_rag_failure_never_silently_falls_back",
+                  "outcome": "PASS",
+                  "time": "0.002"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            },
+            {
+              "node_id": "student-2/tests/test_resume_grounding.py::ResumeGroundingTests::test_malformed_rag_answer_is_rejected",
+              "source_line": 169,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py#L169",
+              "expected": "HTTP 502 for malformed answer",
+              "actual_evidence": [
+                {
+                  "classname": "student-2.tests.test_resume_grounding.ResumeGroundingTests",
+                  "name": "test_malformed_rag_answer_is_rejected",
+                  "outcome": "PASS",
+                  "time": "0.003"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            },
+            {
+              "node_id": "student-2/tests/test_resume_grounding.py::ResumeGroundingTests::test_no_context_passes_through_without_model_and_query_is_user_controlled",
+              "source_line": 174,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py#L174",
+              "expected": "HTTP 200 insufficient-context result without generation",
+              "actual_evidence": [
+                {
+                  "classname": "student-2.tests.test_resume_grounding.ResumeGroundingTests",
+                  "name": "test_no_context_passes_through_without_model_and_query_is_user_controlled",
+                  "outcome": "PASS",
+                  "time": "0.002"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            },
+            {
+              "node_id": "student-2/tests/test_resume_grounding.py::ResumeGroundingTests::test_invalid_ids_description_and_query_do_not_generate",
+              "source_line": 194,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/tests/test_resume_grounding.py#L194",
+              "expected": "HTTP 400 and no generation",
+              "actual_evidence": [
+                {
+                  "classname": "student-2.tests.test_resume_grounding.ResumeGroundingTests",
+                  "name": "test_invalid_ids_description_and_query_do_not_generate",
+                  "outcome": "PASS",
+                  "time": "0.003"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            }
+          ]
+        }
+      ],
+      "dependency_note": "Tests use Flask test clients and patched database/model/shared-service responses. They verify deterministic contracts; they do not establish live model answer quality."
+    },
+    {
+      "student": "student-3",
+      "job_id": 121853157068,
+      "job_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853157068",
+      "execution_evidence_level": "Individual PASSED node IDs in verbose job log, plus successful suite summary.",
+      "endpoints": [
+        {
+          "method": "POST",
+          "route": "/api/v1/interview-sessions/<int:session_id>/generate-questions",
+          "backend_function": "generate_questions_for_session",
+          "backend_line": 413,
+          "backend_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-3/backend/app.py#L413",
+          "test_file": "student-3/tests/test_interview_service.py",
+          "tests": [
+            {
+              "node_id": "student-3/tests/test_interview_service.py::InterviewServiceContractTests::test_generate_questions_response_includes_questions_list",
+              "source_line": 32,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-3/tests/test_interview_service.py#L32",
+              "expected": "HTTP 200, two questions and generated_questions field",
+              "actual_evidence": [
+                {
+                  "line": 412,
+                  "text": "2026-10-26T21:16:35.5968971Z student-3/tests/test_interview_service.py::InterviewServiceContractTests::test_generate_questions_response_includes_questions_list PASSED [ 66%]"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            },
+            {
+              "node_id": "student-3/tests/test_interview_service.py::InterviewServiceContractTests::test_empty_retrieval_skips_question_generation",
+              "source_line": 83,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-3/tests/test_interview_service.py#L83",
+              "expected": "HTTP 200 insufficient-context and model not called",
+              "actual_evidence": [
+                {
+                  "line": 409,
+                  "text": "2026-10-26T21:16:35.5642430Z student-3/tests/test_interview_service.py::InterviewServiceContractTests::test_empty_retrieval_skips_question_generation PASSED [ 41%]"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            },
+            {
+              "node_id": "student-3/tests/test_interview_service.py::InterviewServiceContractTests::test_bad_model_json_raises_dependency_error_502",
+              "source_line": 172,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-3/tests/test_interview_service.py#L172",
+              "expected": "HTTP 502 and dependency=ollama for invalid model JSON",
+              "actual_evidence": [
+                {
+                  "line": 407,
+                  "text": "2026-10-26T21:16:35.5519611Z student-3/tests/test_interview_service.py::InterviewServiceContractTests::test_bad_model_json_raises_dependency_error_502 PASSED [ 25%]"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            }
+          ]
+        },
+        {
+          "method": "POST",
+          "route": "/api/v1/interview-questions/<int:question_id>/evaluate-answer",
+          "backend_function": "evaluate_answer",
+          "backend_line": 602,
+          "backend_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-3/backend/app.py#L602",
+          "test_file": "student-3/tests/test_interview_service.py",
+          "tests": [
+            {
+              "node_id": "student-3/tests/test_interview_service.py::InterviewServiceContractTests::test_evaluate_answer_accepts_user_answer_alias",
+              "source_line": 110,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-3/tests/test_interview_service.py#L110",
+              "expected": "HTTP 200, user_answer alias accepted, score 85.0 and feedback",
+              "actual_evidence": [
+                {
+                  "line": 410,
+                  "text": "2026-10-26T21:16:35.5752350Z student-3/tests/test_interview_service.py::InterviewServiceContractTests::test_evaluate_answer_accepts_user_answer_alias PASSED [ 50%]"
+                }
+              ],
+              "execution_status": "individual-PASS-verified",
+              "limitations": []
+            }
+          ]
+        }
+      ],
+      "dependency_note": "Tests use Flask test clients and patched database/model/shared-service responses. They verify deterministic contracts; they do not establish live model answer quality."
+    },
+    {
+      "student": "student-4",
+      "job_id": 121853156693,
+      "job_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853156693",
+      "execution_evidence_level": "Pinned workflow runs all student-4/tests and ai-services/tests; suite summary is successful. No individual node result or JUnit artifact was produced.",
+      "endpoints": [
+        {
+          "method": "POST",
+          "route": "/api/v1/multi-agent/jobs/<int:job_id>/analyse",
+          "backend_function": "multi_agent_analyse",
+          "backend_line": 330,
+          "backend_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/backend/app.py#L330",
+          "test_file": "student-4/tests/test_multi_agent_jobs.py",
+          "tests": [
+            {
+              "node_id": "student-4/tests/test_multi_agent_jobs.py::test_backend_reads_selected_job_via_mcp_and_passes_only_owned_context",
+              "source_line": 205,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py#L205",
+              "expected": "HTTP 200, MCP selected job and only owned context, human decision pending",
+              "actual_evidence": [],
+              "execution_status": "suite-PASS-scope-only",
+              "limitations": [
+                "Individual test outcome is not separately logged; inclusion is supported by the successful full-directory pytest command."
+              ]
+            },
+            {
+              "node_id": "student-4/tests/test_multi_agent_jobs.py::test_backend_revalidates_multi_agent_evidence",
+              "source_line": 220,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py#L220",
+              "expected": "HTTP 502 for changed job ID, context or unknown citation",
+              "actual_evidence": [],
+              "execution_status": "suite-PASS-scope-only",
+              "limitations": [
+                "Individual test outcome is not separately logged; inclusion is supported by the successful full-directory pytest command."
+              ]
+            },
+            {
+              "node_id": "student-4/tests/test_multi_agent_jobs.py::test_backend_cannot_accept_client_supplied_job_context",
+              "source_line": 234,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py#L234",
+              "expected": "HTTP 400 and no MCP call",
+              "actual_evidence": [],
+              "execution_status": "suite-PASS-scope-only",
+              "limitations": [
+                "Individual test outcome is not separately logged; inclusion is supported by the successful full-directory pytest command."
+              ]
+            },
+            {
+              "node_id": "student-4/tests/test_multi_agent_jobs.py::test_backend_reports_shared_service_timeout",
+              "source_line": 242,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py#L242",
+              "expected": "HTTP 503 for shared service timeout",
+              "actual_evidence": [],
+              "execution_status": "suite-PASS-scope-only",
+              "limitations": [
+                "Individual test outcome is not separately logged; inclusion is supported by the successful full-directory pytest command."
+              ]
+            },
+            {
+              "node_id": "student-4/tests/test_multi_agent_jobs.py::test_backend_rejects_automatic_human_approval_during_analysis",
+              "source_line": 249,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py#L249",
+              "expected": "HTTP 502 for automatic human approval",
+              "actual_evidence": [],
+              "execution_status": "suite-PASS-scope-only",
+              "limitations": [
+                "Individual test outcome is not separately logged; inclusion is supported by the successful full-directory pytest command."
+              ]
+            },
+            {
+              "node_id": "student-4/tests/test_multi_agent_jobs.py::test_each_cloud_disable_flag_blocks_analysis_and_decision_without_network",
+              "source_line": 190,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py#L190",
+              "expected": "HTTP 503 with any cloud disable flag, no network",
+              "actual_evidence": [],
+              "execution_status": "suite-PASS-scope-only",
+              "limitations": [
+                "Individual test outcome is not separately logged; inclusion is supported by the successful full-directory pytest command."
+              ]
+            }
+          ]
+        },
+        {
+          "method": "POST",
+          "route": "/api/v1/multi-agent/jobs/<int:job_id>/runs/<uuid:run_id>/decision",
+          "backend_function": "multi_agent_decision",
+          "backend_line": 343,
+          "backend_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/backend/app.py#L343",
+          "test_file": "student-4/tests/test_multi_agent_jobs.py",
+          "tests": [
+            {
+              "node_id": "student-4/tests/test_multi_agent_jobs.py::test_decision_proxy_matches_the_requested_run_and_each_human_field",
+              "source_line": 260,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py#L260",
+              "expected": "HTTP 200 for submitted partial acceptance; HTTP 502 for mismatched run, decision, reason or evidence",
+              "actual_evidence": [],
+              "execution_status": "suite-PASS-scope-only",
+              "limitations": [
+                "Individual test outcome is not separately logged; inclusion is supported by the successful full-directory pytest command."
+              ]
+            },
+            {
+              "node_id": "student-4/tests/test_multi_agent_jobs.py::test_malformed_request_types_return_400_without_model_calls",
+              "source_line": 283,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py#L283",
+              "expected": "HTTP 400 for malformed decision types without model calls",
+              "actual_evidence": [],
+              "execution_status": "suite-PASS-scope-only",
+              "limitations": [
+                "Individual test outcome is not separately logged; inclusion is supported by the successful full-directory pytest command."
+              ]
+            },
+            {
+              "node_id": "student-4/tests/test_multi_agent_jobs.py::test_each_cloud_disable_flag_blocks_analysis_and_decision_without_network",
+              "source_line": 190,
+              "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-4/tests/test_multi_agent_jobs.py#L190",
+              "expected": "HTTP 503 with any cloud disable flag, no network",
+              "actual_evidence": [],
+              "execution_status": "suite-PASS-scope-only",
+              "limitations": [
+                "Individual test outcome is not separately logged; inclusion is supported by the successful full-directory pytest command."
+              ]
+            }
+          ]
+        }
+      ],
+      "dependency_note": "Tests use Flask test clients and patched database/model/shared-service responses. They verify deterministic contracts; they do not establish live model answer quality."
+    }
+  ]
+}

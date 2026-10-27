@@ -1,0 +1,4 @@
+{
+  "dependency": "ollama",
+  "error": "AI generation is disabled in this environment."
+}

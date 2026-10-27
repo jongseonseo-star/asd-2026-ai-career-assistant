@@ -1,0 +1,1 @@
+{"backend":{"dependencies":{"database":{"service":"student-2-database","status":"healthy"}},"service":"student-2-backend","status":"ready"},"service":"student-2-frontend","status":"ready"}

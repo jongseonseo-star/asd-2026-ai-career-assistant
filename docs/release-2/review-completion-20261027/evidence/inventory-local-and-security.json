@@ -1,0 +1,2388 @@
+{
+  "schema_version": 1,
+  "inventory_kind": "historical_local_and_security_evidence_package",
+  "created_at_utc": "2026-10-26T23:48:36.089918+00:00",
+  "original_repo_root": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022",
+  "local_worktree_head_at_packaging": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+  "reference_submission_commit_from_parent_context": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "reference_commit_not_verified_by_packager": true,
+  "scope": "Copies of existing historical evidence only. No application, model, security scan, CI, cloud CRUD, approval or release decision was executed by this packaging task.",
+  "public_upload_performed": false,
+  "original_files_modified": false,
+  "global_limitations": [
+    "Historical observations must not be relabelled as checks of 3649ed5 or a later release.",
+    "No latest GitHub status or current vulnerability-fix status is established by this inventory.",
+    "File publication commit is not the execution commit. Unrecorded execution SHAs remain unverified.",
+    "Original pending states, failures, partial acceptance and later errors are preserved.",
+    "A human application Reject or Pre-Test partial acceptance is not final human release approval.",
+    "The source files retain their original internal paths. This inventory maps those paths to packaged copies."
+  ],
+  "workflow_map": {
+    "terminal": "e8238b4a64494961b474cfea0d6e94c6",
+    "ui_run_and_reload": "af142ee8d6ed4a1fa97b42ea46de8715",
+    "ui_human_record": "5bb2a18dab9b4355ba0a7b9b790edb6f",
+    "failed_ui_run": "d6e37bf9f59244599e9f9180db741005"
+  },
+  "file_count": 45,
+  "total_source_bytes": 377734,
+  "integrity_cross_checks": [
+    {
+      "name": "pre_test_human_reference_matches_raw_pre_test",
+      "passed": true,
+      "detail": {
+        "recorded_sha256": "5b29f1ab64e7a739dccd7b2f56cb83cfe83a3db75f9436b4e351ee998ede6490",
+        "actual_raw_sha256": "5b29f1ab64e7a739dccd7b2f56cb83cfe83a3db75f9436b4e351ee998ede6490"
+      }
+    },
+    {
+      "name": "pre_test_scan_hash_ruff",
+      "passed": true,
+      "detail": {
+        "recorded_sha256": "a6cff2cc280cd9e38fef6bf3ba706a352dd8fbcbb0a5f124e2536aad6baf7549",
+        "actual_raw_sha256": "a6cff2cc280cd9e38fef6bf3ba706a352dd8fbcbb0a5f124e2536aad6baf7549"
+      }
+    },
+    {
+      "name": "pre_test_scan_hash_secrets",
+      "passed": true,
+      "detail": {
+        "recorded_sha256": "e8410dd4b993d686aceef4a8e0e9b7474c806be87fe6b29c71f5db417a300eb7",
+        "actual_raw_sha256": "e8410dd4b993d686aceef4a8e0e9b7474c806be87fe6b29c71f5db417a300eb7"
+      }
+    },
+    {
+      "name": "pre_test_scan_hash_dependencies",
+      "passed": true,
+      "detail": {
+        "recorded_sha256": "042d8f30c8ec5da67305b9a4e371645d2c9dfabbf183153651d9f02d9c1225b6",
+        "actual_raw_sha256": "042d8f30c8ec5da67305b9a4e371645d2c9dfabbf183153651d9f02d9c1225b6"
+      }
+    },
+    {
+      "name": "ui_5bb2_source_hash_matches_workflow",
+      "passed": true,
+      "detail": {
+        "recorded_sha256": "f6f2fbf5cb7041aeab60163e2eb8cc344a2fcc91a2a0be86264d6735810c0d80",
+        "actual_raw_sha256": "f6f2fbf5cb7041aeab60163e2eb8cc344a2fcc91a2a0be86264d6735810c0d80"
+      }
+    },
+    {
+      "name": "workflow_identity_and_final_reject_af142ee8d6ed4a1fa97b42ea46de8715",
+      "passed": true,
+      "detail": {
+        "workflow_id": "af142ee8d6ed4a1fa97b42ea46de8715",
+        "status": "rejected",
+        "human_decision": "reject"
+      }
+    },
+    {
+      "name": "workflow_identity_and_final_reject_5bb2a18dab9b4355ba0a7b9b790edb6f",
+      "passed": true,
+      "detail": {
+        "workflow_id": "5bb2a18dab9b4355ba0a7b9b790edb6f",
+        "status": "rejected",
+        "human_decision": "reject"
+      }
+    },
+    {
+      "name": "workflow_identity_and_final_reject_e8238b4a64494961b474cfea0d6e94c6",
+      "passed": true,
+      "detail": {
+        "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+        "status": "rejected",
+        "human_decision": "reject"
+      }
+    },
+    {
+      "name": "terminal_saved_response_hash_profile",
+      "passed": true,
+      "detail": {
+        "response_file": "profile.json",
+        "recorded_sha256": "0f8248b373baff25325326d5a45ac1f1c063399a8359cfc65e59fbdfd6b71bd5",
+        "actual_raw_sha256": "0f8248b373baff25325326d5a45ac1f1c063399a8359cfc65e59fbdfd6b71bd5"
+      }
+    },
+    {
+      "name": "terminal_saved_response_hash_resume",
+      "passed": true,
+      "detail": {
+        "response_file": "resume.json",
+        "recorded_sha256": "f2aa9a096279cf0c2ce99d3f3fddd2dfa5d5c95b5249ad842ff35f0bd78f2794",
+        "actual_raw_sha256": "f2aa9a096279cf0c2ce99d3f3fddd2dfa5d5c95b5249ad842ff35f0bd78f2794"
+      }
+    },
+    {
+      "name": "terminal_saved_response_hash_response",
+      "passed": true,
+      "detail": {
+        "response_file": "response.json",
+        "recorded_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328",
+        "actual_raw_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328"
+      }
+    },
+    {
+      "name": "terminal_saved_response_hash_history",
+      "passed": true,
+      "detail": {
+        "response_file": "history.json",
+        "recorded_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328",
+        "actual_raw_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328"
+      }
+    }
+  ],
+  "files": [
+    {
+      "id": "local__startup-20261022T023404Z__status.json",
+      "category": "local_startup",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-runtime/20261022T023404Z-19913/status.json",
+      "source_relative_to_original_repo": "reports/demo-runtime/20261022T023404Z-19913/status.json",
+      "packaged_path": "local/startup-20261022T023404Z/status.json",
+      "source_sha256": "6dd17cc61d079de1d7dc898741b4401727280d82572ac988d4eaa53ab8508a43",
+      "copy_sha256": "6dd17cc61d079de1d7dc898741b4401727280d82572ac988d4eaa53ab8508a43",
+      "bytes": 3850,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "started_at": "2026-10-22T02:34:04.356550+00:00",
+        "updated_at": "2026-10-22T02:34:20.038975+00:00",
+        "started_at_sydney": "2026-10-22T13:34:04.356550+11:00",
+        "updated_at_sydney": "2026-10-22T13:34:20.038975+11:00"
+      },
+      "verification_scope": "Student 2 core containers, MCP context, vector retrieval and container-to-host AI connectivity.",
+      "limitations": [
+        "Historical 22 Oct 2026 startup only.",
+        "Health/retrieval is not completed model workflow or human approval.",
+        "Compose Up for other student containers is not a full team functional test."
+      ],
+      "recorded_summary": {
+        "status": "ready_for_ui_verification",
+        "model_workflow_verified": false,
+        "human_review_recorded": false,
+        "recorded_checks": {
+          "prerequisites": {
+            "models": [
+              "llama3.1:8b",
+              "qwen2.5:7b"
+            ],
+            "ports_available": true
+          },
+          "rag-health": {
+            "documents": 10,
+            "embedding_dimensions": 256,
+            "retrieval_engine": "local-chroma",
+            "service": "shared-rag-server",
+            "status": "healthy"
+          },
+          "multi-agent-health": {
+            "agents": [
+              "planner",
+              "worker",
+              "reviewer"
+            ],
+            "release": "Release 2",
+            "service": "shared-multi-agent-server",
+            "status": "healthy",
+            "timestamp": "2026-10-22T02:34:05.167734+00:00"
+          },
+          "rag-vector-retrieval": {
+            "result_count": 3,
+            "refresh": {
+              "corpora": [
+                {
+                  "chunk_count": 5,
+                  "collection": "career-resume-5900e460f6cb47579501d4a8106f5a31",
+                  "corpus_file": "corpus/career-resume-5900e460f6cb47579501d4a8106f5a31.jsonl",
+                  "corpus_sha256": "21eadfc92a5c75418f63224ad16c88ebda31ecf38d5e7b81ea8de394a666e5b0",
+                  "corpus_version": "dc2932081c97a40d98f302191baf96299ff5010c2d8d50b52fd9a6acd08b09ce",
+                  "document_count": 4,
+                  "embedding_dimensions": 256,
+                  "embedding_version": "sha256-signed-token-hash-256-v1",
+                  "feature": "resume",
+                  "indexed_at": "2026-10-22T02:34:05.171654+00:00",
+                  "previous_collection": "career-resume-eb2eb68112cc4b2c90b907304c52e64a",
+                  "status": "success",
+                  "vector_store_status": "ready"
+                }
+              ],
+              "status": "success"
+            }
+          },
+          "database-ready": {
+            "service": "student-2-database",
+            "status": "healthy"
+          },
+          "backend-ready": {
+            "dependencies": {
+              "database": {
+                "service": "student-2-database",
+                "status": "healthy"
+              }
+            },
+            "service": "student-2-backend",
+            "status": "ready"
+          },
+          "frontend-ready": {
+            "backend": {
+              "dependencies": {
+                "database": {
+                  "service": "student-2-database",
+                  "status": "healthy"
+                }
+              },
+              "service": "student-2-backend",
+              "status": "ready"
+            },
+            "service": "student-2-frontend",
+            "status": "ready"
+          },
+          "container-to-rag-and-multi-agent": {
+            "health": "passed"
+          },
+          "mcp-protocol": {
+            "tool_names": [
+              "resume_context",
+              "job_context",
+              "interview_context",
+              "refresh_corpus",
+              "retrieve_context",
+              "answer_question"
+            ],
+            "profile_id": 1,
+            "resume_id": 1,
+            "skill_count": 2
+          },
+          "backend-to-mcp": {
+            "status": "context-only",
+            "profile_id": 1,
+            "resume_id": 1
+          },
+          "backend-to-ollama": {
+            "configured_model": "llama3.1:8b",
+            "configured_model_available": true,
+            "installed_models": [
+              "qwen2.5:7b",
+              "qwen3:4b-instruct-2507-q4_K_M",
+              "llama3.1:8b",
+              "qwen2.5:0.5b"
+            ],
+            "mode": "mcp-rag",
+            "runtime": "Ollama",
+            "shared_ai_enabled": true,
+            "shared_services_status": "checked during feedback generation",
+            "status": "available"
+          },
+          "frontend-options": {
+            "profile_id": 1,
+            "resume_id": 1,
+            "new_tab": true
+          }
+        }
+      },
+      "date_basis": "Paired startup status.json for logs without an embedded absolute timestamp.",
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__startup-20261022T023404Z__compose-ps.log",
+      "category": "local_startup",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-runtime/20261022T023404Z-19913/compose-ps.log",
+      "source_relative_to_original_repo": "reports/demo-runtime/20261022T023404Z-19913/compose-ps.log",
+      "packaged_path": "local/startup-20261022T023404Z/compose-ps.log",
+      "source_sha256": "9c63a08e16aead38e576e7bdc871840db9f23f51d14e7b30c03835fe4b5f6f1f",
+      "copy_sha256": "9c63a08e16aead38e576e7bdc871840db9f23f51d14e7b30c03835fe4b5f6f1f",
+      "bytes": 2545,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {},
+      "verification_scope": "Student 2 core containers, MCP context, vector retrieval and container-to-host AI connectivity.",
+      "limitations": [
+        "Historical 22 Oct 2026 startup only.",
+        "Health/retrieval is not completed model workflow or human approval.",
+        "Compose Up for other student containers is not a full team functional test."
+      ],
+      "recorded_summary": {},
+      "date_basis": "Paired startup status.json for logs without an embedded absolute timestamp.",
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__startup-20261022T023404Z__container-ai-health.log",
+      "category": "local_startup",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-runtime/20261022T023404Z-19913/container-ai-health.log",
+      "source_relative_to_original_repo": "reports/demo-runtime/20261022T023404Z-19913/container-ai-health.log",
+      "packaged_path": "local/startup-20261022T023404Z/container-ai-health.log",
+      "source_sha256": "94711a531868930da3e5ade302812e0f6b586130735e7511970a5b46c66914f5",
+      "copy_sha256": "94711a531868930da3e5ade302812e0f6b586130735e7511970a5b46c66914f5",
+      "bytes": 352,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {},
+      "verification_scope": "Student 2 core containers, MCP context, vector retrieval and container-to-host AI connectivity.",
+      "limitations": [
+        "Historical 22 Oct 2026 startup only.",
+        "Health/retrieval is not completed model workflow or human approval.",
+        "Compose Up for other student containers is not a full team functional test."
+      ],
+      "recorded_summary": {},
+      "date_basis": "Paired startup status.json for logs without an embedded absolute timestamp.",
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__startup-20261022T023404Z__rag-retrieval.json",
+      "category": "local_startup",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-runtime/20261022T023404Z-19913/rag-retrieval.json",
+      "source_relative_to_original_repo": "reports/demo-runtime/20261022T023404Z-19913/rag-retrieval.json",
+      "packaged_path": "local/startup-20261022T023404Z/rag-retrieval.json",
+      "source_sha256": "9e154b4a3727fc5ffc9217cf334c63cc3f9b043a67a68756571e538d9bab5265",
+      "copy_sha256": "9e154b4a3727fc5ffc9217cf334c63cc3f9b043a67a68756571e538d9bab5265",
+      "bytes": 5151,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {},
+      "verification_scope": "Student 2 core containers, MCP context, vector retrieval and container-to-host AI connectivity.",
+      "limitations": [
+        "Historical 22 Oct 2026 startup only.",
+        "Health/retrieval is not completed model workflow or human approval.",
+        "Compose Up for other student containers is not a full team functional test."
+      ],
+      "recorded_summary": {},
+      "date_basis": "Paired startup status.json for logs without an embedded absolute timestamp.",
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__ui-ai-rag-20261022T022704Z__ui-verification.json",
+      "category": "historical_ui_ai_rag_with_failed_ma",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-runtime/20261022T022704Z-16843/ui-verification.json",
+      "source_relative_to_original_repo": "reports/demo-runtime/20261022T022704Z-16843/ui-verification.json",
+      "packaged_path": "local/ui-ai-rag-20261022T022704Z/ui-verification.json",
+      "source_sha256": "267c7fb28f42b2e0502cef7ed7cf83404dc9c2f2eec67b1761960a61d3627604",
+      "copy_sha256": "267c7fb28f42b2e0502cef7ed7cf83404dc9c2f2eec67b1761960a61d3627604",
+      "bytes": 1609,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "recorded_at_utc": "2026-10-22T02:31:42.552039+00:00",
+        "recorded_at_utc_sydney": "2026-10-22T13:31:42.552039+11:00"
+      },
+      "verification_scope": "Safari AI and MCP+RAG observations; also preserves failed MA d6e37bf9f59244599e9f9180db741005.",
+      "limitations": [
+        "No human approval for AI/RAG.",
+        "MA in this record failed; do not use it as successful MA UI evidence."
+      ],
+      "recorded_summary": {
+        "original_ai": {
+          "status": "observed_success_before_restart",
+          "model": "llama3.1:8b",
+          "human_approval_recorded": false
+        },
+        "rag": {
+          "status": "observed_success",
+          "model": "llama3.1:8b",
+          "raw_model_response_visible": true,
+          "human_approval_recorded": false
+        },
+        "multi_agent": {
+          "status": "failed",
+          "workflow_id": "d6e37bf9f59244599e9f9180db741005",
+          "planner": "completed with valid string evidence IDs",
+          "worker": "completed structurally, but falsely described documented Flask and REST API experience as absent",
+          "reviewer": "failed validation because reason was empty; its supported verdict was also inconsistent with candidate evidence",
+          "human_decision": "pending; no decision recorded"
+        }
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__crud__local-crud-verification.json",
+      "category": "historical_local_crud",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/docs/release-2/student-2/evidence/local-crud-verification.json",
+      "source_relative_to_original_repo": "docs/release-2/student-2/evidence/local-crud-verification.json",
+      "packaged_path": "local/crud/local-crud-verification.json",
+      "source_sha256": "0691ec76b56627934fc48a444156a868d8c04bd298664d88dce66a995ae96682",
+      "copy_sha256": "0691ec76b56627934fc48a444156a868d8c04bd298664d88dce66a995ae96682",
+      "bytes": 2964,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "recorded_at_utc": "2026-10-22T03:32:26.577424+00:00",
+        "recorded_at_sydney": "2026-10-22T14:32:26.577424+11:00",
+        "recorded_at_utc_sydney": "2026-10-22T14:32:26.577424+11:00"
+      },
+      "verification_scope": "Student 2 profile/resume create, edit, reload/read, delete and cleanup through Safari.",
+      "limitations": [
+        "Page reload persistence only, not server restart persistence.",
+        "Local-only source; not a fresh test of final release."
+      ],
+      "recorded_summary": {
+        "status": "PASS",
+        "scope": "Local profile and resume CRUD through Safari Normal UI",
+        "recorded_checks": [
+          {
+            "step": "create_profile",
+            "status": "PASS",
+            "observed": "Profile created notification; profile #11 and 11 profiles displayed."
+          },
+          {
+            "step": "create_resume",
+            "status": "PASS",
+            "observed": "Resume created notification; resume #11 attached to profile #11; 11 resumes displayed."
+          },
+          {
+            "step": "update_profile",
+            "status": "PASS",
+            "observed": "Target role changed to Backend Developer - CRUD Verified; career summary changed to UPDATED synthetic text; update notification displayed."
+          },
+          {
+            "step": "update_resume",
+            "status": "PASS",
+            "observed": "Title and content changed; Set as primary resume enabled; update notification and Primary badge displayed."
+          },
+          {
+            "step": "reload_read",
+            "status": "PASS",
+            "observed": "Safari page reloaded; both records retained updated values, their relationship, and the Primary badge; counts 11/11/20."
+          },
+          {
+            "step": "delete_resume",
+            "status": "PASS",
+            "observed": "Only newly created resume #11 deleted after UI confirmation; Resume deleted successfully; resumes returned to 10."
+          },
+          {
+            "step": "delete_profile",
+            "status": "PASS",
+            "observed": "Only newly created profile #11 deleted after named UI confirmation; Profile deleted successfully; profiles returned to 10."
+          },
+          {
+            "step": "reload_after_deletion",
+            "status": "PASS",
+            "observed": "Safari page reloaded; test records absent; original profile IDs 1-10 and resume IDs 1-10 displayed; counts 10/10/20; Backend and Database Ready."
+          }
+        ],
+        "initial_counts": {
+          "profiles": 10,
+          "resumes": 10,
+          "skills": 20
+        },
+        "final_counts": {
+          "profiles": 10,
+          "resumes": 10,
+          "skills": 20
+        }
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__crud__cloud-crud-verification.json",
+      "category": "historical_cloud_crud",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/docs/release-2/student-2/evidence/cloud-crud-verification.json",
+      "source_relative_to_original_repo": "docs/release-2/student-2/evidence/cloud-crud-verification.json",
+      "packaged_path": "local/crud/cloud-crud-verification.json",
+      "source_sha256": "1db1cd839c3a2b8edca45cc612fe6bb72c2720513c45aee045990c565a28a9eb",
+      "copy_sha256": "1db1cd839c3a2b8edca45cc612fe6bb72c2720513c45aee045990c565a28a9eb",
+      "bytes": 3644,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "recorded_at_utc": "2026-10-22T03:50:02.166796+00:00",
+        "recorded_at_sydney": "2026-10-22T14:50:02.166796+11:00",
+        "recorded_at_utc_sydney": "2026-10-22T14:50:02.166796+11:00"
+      },
+      "verification_scope": "Student 2 profile/resume create, edit, reload/read, delete and cleanup through Safari.",
+      "limitations": [
+        "Page reload persistence only, not server restart persistence.",
+        "Local-only source; not a fresh test of final release.",
+        "Recorded deployment evidence refers to 19571e60; live runtime SHA was not independently verified.",
+        "Does not establish CRUD on 3649ed5 or any later deployment."
+      ],
+      "recorded_summary": {
+        "status": "PASS",
+        "scope": "Current cloud Student 2 profile and resume CRUD through Safari Normal UI",
+        "recorded_checks": [
+          {
+            "step": "cloud_home_and_navigation",
+            "status": "PASS",
+            "observed": "Shared cloud home loaded; Student 2 link opened the profile UI; Backend and Database Ready."
+          },
+          {
+            "step": "create_profile",
+            "status": "PASS",
+            "observed": "Profile created notification; profile #12 displayed; profile count 11."
+          },
+          {
+            "step": "create_resume",
+            "status": "PASS",
+            "observed": "Resume created notification; resume #11 linked to profile #12; resume count 11."
+          },
+          {
+            "step": "update_profile",
+            "status": "PASS",
+            "observed": "Target role changed to Backend Developer - Cloud Verified and summary to UPDATED synthetic text; update notification displayed."
+          },
+          {
+            "step": "update_resume",
+            "status": "PASS",
+            "observed": "Title and content changed; Primary enabled; update notification displayed."
+          },
+          {
+            "step": "reload_and_read",
+            "status": "PASS",
+            "observed": "Full Safari reload retained updated profile and resume content, relationship and Primary badge; counts 11/11/20."
+          },
+          {
+            "step": "delete_resume",
+            "status": "PASS",
+            "observed": "Only test resume #11 deleted after UI confirmation; deletion success and resume count 10."
+          },
+          {
+            "step": "delete_profile",
+            "status": "PASS",
+            "observed": "Only test profile #12 deleted after named UI confirmation; deletion success and profile count 10."
+          },
+          {
+            "step": "reload_after_deletion",
+            "status": "PASS",
+            "observed": "Full reload showed test records absent, original profile and resume IDs 1-10 and counts 10/10/20; Backend and Database Ready."
+          }
+        ],
+        "initial_counts": {
+          "profiles": 10,
+          "resumes": 10,
+          "skills": 20
+        },
+        "final_counts": {
+          "profiles": 10,
+          "resumes": 10,
+          "skills": 20
+        },
+        "recorded_deployment_evidence": {
+          "github_run_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/39535243335",
+          "conclusion": "success",
+          "head_sha": "19571e60d0db5482eb4936db2d954e80fe88c49a",
+          "live_runtime_sha_independently_verified": false
+        }
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__workflow.json",
+      "category": "historical_ma_workflow",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/ai-services/logs/multi-agent/resume/e8238b4a64494961b474cfea0d6e94c6.json",
+      "source_relative_to_original_repo": "ai-services/logs/multi-agent/resume/e8238b4a64494961b474cfea0d6e94c6.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/workflow.json",
+      "source_sha256": "fae7e4e32a30100b4ff18f1dcc154979b9a1e52a0f12c460098e77c62b3c55b2",
+      "copy_sha256": "fae7e4e32a30100b4ff18f1dcc154979b9a1e52a0f12c460098e77c62b3c55b2",
+      "bytes": 9357,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "created_at_utc": "2026-10-22T05:55:24.492923+00:00",
+        "finished_at_utc": "2026-10-22T05:55:52.839163+00:00",
+        "human_decision_recorded_at_utc": "2026-10-22T06:15:18.040364+00:00",
+        "created_at_utc_sydney": "2026-10-22T16:55:24.492923+11:00",
+        "finished_at_utc_sydney": "2026-10-22T16:55:52.839163+11:00",
+        "human_decision_recorded_at_utc_sydney": "2026-10-22T17:15:18.040364+11:00"
+      },
+      "verification_scope": "Saved Student 2 application workflow e8238b4a64494961b474cfea0d6e94c6",
+      "limitations": [
+        "Application workflow only; not the development-stage MA Workflow Review.",
+        "Not CI evidence, Cloud Deployment Review, or final human release approval.",
+        "Final saved application decision is Reject; it is not release approval."
+      ],
+      "recorded_summary": {
+        "status": "rejected",
+        "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+        "human_decision": {
+          "status": "recorded",
+          "decision": "reject",
+          "reviewer": "Tomohisa Tamao",
+          "recorded_at_utc": "2026-10-22T06:15:18.040364+00:00"
+        },
+        "trajectory_stages": [
+          {
+            "agent": "Planner",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:24.493477+00:00",
+            "finished_at_utc": "2026-10-22T05:55:32.312093+00:00"
+          },
+          {
+            "agent": "Worker",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:32.317843+00:00",
+            "finished_at_utc": "2026-10-22T05:55:42.621139+00:00"
+          },
+          {
+            "agent": "Reviewer",
+            "model": "llama3.1:8b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:42.622457+00:00",
+            "finished_at_utc": "2026-10-22T05:55:52.835211+00:00"
+          },
+          {
+            "agent": "Human",
+            "status": "recorded"
+          }
+        ]
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__af142ee8d6ed4a1fa97b42ea46de8715__workflow.json",
+      "category": "historical_ma_workflow",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/ai-services/logs/multi-agent/resume/af142ee8d6ed4a1fa97b42ea46de8715.json",
+      "source_relative_to_original_repo": "ai-services/logs/multi-agent/resume/af142ee8d6ed4a1fa97b42ea46de8715.json",
+      "packaged_path": "local/multi-agent/af142ee8d6ed4a1fa97b42ea46de8715/workflow.json",
+      "source_sha256": "2d272a8cf3fc21bd8e6a49793f911c63f34b1e30ac522d0e75dad474d43a6cd4",
+      "copy_sha256": "2d272a8cf3fc21bd8e6a49793f911c63f34b1e30ac522d0e75dad474d43a6cd4",
+      "bytes": 10420,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "created_at_utc": "2026-10-22T02:35:08.189487+00:00",
+        "finished_at_utc": "2026-10-22T02:35:39.920642+00:00",
+        "human_decision_recorded_at_utc": "2026-10-22T02:39:04.820069+00:00",
+        "created_at_utc_sydney": "2026-10-22T13:35:08.189487+11:00",
+        "finished_at_utc_sydney": "2026-10-22T13:35:39.920642+11:00",
+        "human_decision_recorded_at_utc_sydney": "2026-10-22T13:39:04.820069+11:00"
+      },
+      "verification_scope": "Saved Student 2 application workflow af142ee8d6ed4a1fa97b42ea46de8715",
+      "limitations": [
+        "Application workflow only; not the development-stage MA Workflow Review.",
+        "Not CI evidence, Cloud Deployment Review, or final human release approval.",
+        "Final saved application decision is Reject; it is not release approval."
+      ],
+      "recorded_summary": {
+        "status": "rejected",
+        "workflow_id": "af142ee8d6ed4a1fa97b42ea46de8715",
+        "human_decision": {
+          "status": "recorded",
+          "decision": "reject",
+          "reviewer": "Tomohisa Tamao",
+          "recorded_at_utc": "2026-10-22T02:39:04.820069+00:00"
+        },
+        "trajectory_stages": [
+          {
+            "agent": "Planner",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T02:35:08.191447+00:00",
+            "finished_at_utc": "2026-10-22T02:35:15.754408+00:00"
+          },
+          {
+            "agent": "Worker",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T02:35:15.757613+00:00",
+            "finished_at_utc": "2026-10-22T02:35:25.818675+00:00"
+          },
+          {
+            "agent": "Reviewer",
+            "model": "llama3.1:8b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T02:35:25.820657+00:00",
+            "finished_at_utc": "2026-10-22T02:35:39.917499+00:00"
+          },
+          {
+            "agent": "Human",
+            "status": "recorded"
+          }
+        ]
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__5bb2a18dab9b4355ba0a7b9b790edb6f__workflow.json",
+      "category": "historical_ma_workflow",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/ai-services/logs/multi-agent/resume/5bb2a18dab9b4355ba0a7b9b790edb6f.json",
+      "source_relative_to_original_repo": "ai-services/logs/multi-agent/resume/5bb2a18dab9b4355ba0a7b9b790edb6f.json",
+      "packaged_path": "local/multi-agent/5bb2a18dab9b4355ba0a7b9b790edb6f/workflow.json",
+      "source_sha256": "f6f2fbf5cb7041aeab60163e2eb8cc344a2fcc91a2a0be86264d6735810c0d80",
+      "copy_sha256": "f6f2fbf5cb7041aeab60163e2eb8cc344a2fcc91a2a0be86264d6735810c0d80",
+      "bytes": 8813,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "created_at_utc": "2026-10-22T04:46:34.739165+00:00",
+        "finished_at_utc": "2026-10-22T04:47:02.206556+00:00",
+        "human_decision_recorded_at_utc": "2026-10-22T05:41:48.563929+00:00",
+        "created_at_utc_sydney": "2026-10-22T15:46:34.739165+11:00",
+        "finished_at_utc_sydney": "2026-10-22T15:47:02.206556+11:00",
+        "human_decision_recorded_at_utc_sydney": "2026-10-22T16:41:48.563929+11:00"
+      },
+      "verification_scope": "Saved Student 2 application workflow 5bb2a18dab9b4355ba0a7b9b790edb6f",
+      "limitations": [
+        "Application workflow only; not the development-stage MA Workflow Review.",
+        "Not CI evidence, Cloud Deployment Review, or final human release approval.",
+        "Final saved application decision is Reject; it is not release approval."
+      ],
+      "recorded_summary": {
+        "status": "rejected",
+        "workflow_id": "5bb2a18dab9b4355ba0a7b9b790edb6f",
+        "human_decision": {
+          "status": "recorded",
+          "decision": "reject",
+          "reviewer": "Tomohisa Tamao",
+          "recorded_at_utc": "2026-10-22T05:41:48.563929+00:00"
+        },
+        "trajectory_stages": [
+          {
+            "agent": "Planner",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T04:46:34.741678+00:00",
+            "finished_at_utc": "2026-10-22T04:46:42.799722+00:00"
+          },
+          {
+            "agent": "Worker",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T04:46:42.801764+00:00",
+            "finished_at_utc": "2026-10-22T04:46:52.231794+00:00"
+          },
+          {
+            "agent": "Reviewer",
+            "model": "llama3.1:8b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T04:46:52.233666+00:00",
+            "finished_at_utc": "2026-10-22T04:47:02.202942+00:00"
+          },
+          {
+            "agent": "Human",
+            "status": "recorded"
+          }
+        ]
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__d6e37bf9f59244599e9f9180db741005__workflow.json",
+      "category": "historical_ma_workflow",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/ai-services/logs/multi-agent/resume/d6e37bf9f59244599e9f9180db741005.json",
+      "source_relative_to_original_repo": "ai-services/logs/multi-agent/resume/d6e37bf9f59244599e9f9180db741005.json",
+      "packaged_path": "local/multi-agent/d6e37bf9f59244599e9f9180db741005/workflow.json",
+      "source_sha256": "b56005a23dc9fec1cbb261ffafa40437742b4648876e9612bed953af86eea3d7",
+      "copy_sha256": "b56005a23dc9fec1cbb261ffafa40437742b4648876e9612bed953af86eea3d7",
+      "bytes": 6004,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "created_at_utc": "2026-10-22T02:28:41.325132+00:00",
+        "created_at_utc_sydney": "2026-10-22T13:28:41.325132+11:00"
+      },
+      "verification_scope": "Saved Student 2 application workflow d6e37bf9f59244599e9f9180db741005",
+      "limitations": [
+        "Application workflow only; not the development-stage MA Workflow Review.",
+        "Not CI evidence, Cloud Deployment Review, or final human release approval.",
+        "Failed Reviewer validation; human decision was pending."
+      ],
+      "recorded_summary": {
+        "status": "failed",
+        "workflow_id": "d6e37bf9f59244599e9f9180db741005",
+        "error": "Reviewer returned an incomplete response or unknown evidence references. Review the retained original output.",
+        "human_decision": {
+          "status": "pending",
+          "decision": null
+        },
+        "trajectory_stages": [
+          {
+            "agent": "Planner",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T02:28:41.327555+00:00",
+            "finished_at_utc": "2026-10-22T02:28:48.614897+00:00"
+          },
+          {
+            "agent": "Worker",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T02:28:48.616550+00:00",
+            "finished_at_utc": "2026-10-22T02:28:56.500799+00:00"
+          },
+          {
+            "agent": "Reviewer",
+            "model": "llama3.1:8b",
+            "status": "failed",
+            "started_at_utc": "2026-10-22T02:28:56.503233+00:00",
+            "finished_at_utc": "2026-10-22T02:29:04.445591+00:00"
+          }
+        ]
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__af142ee8d6ed4a1fa97b42ea46de8715__ui-verification.json",
+      "category": "historical_ma_ui",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-runtime/20261022T023404Z-19913/ui-verification.json",
+      "source_relative_to_original_repo": "reports/demo-runtime/20261022T023404Z-19913/ui-verification.json",
+      "packaged_path": "local/multi-agent/af142ee8d6ed4a1fa97b42ea46de8715/ui-verification.json",
+      "source_sha256": "e99eba8362ccbe96a1bd04b997481419fa872773c5d9227836d5a80c9feef408",
+      "copy_sha256": "e99eba8362ccbe96a1bd04b997481419fa872773c5d9227836d5a80c9feef408",
+      "bytes": 2829,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "recorded_at_utc": "2026-10-22T02:40:30.666838+00:00",
+        "human_decision_recorded_at_utc": "2026-10-22T02:39:04.820069+00:00",
+        "recorded_at_utc_sydney": "2026-10-22T13:40:30.666838+11:00",
+        "human_decision_recorded_at_utc_sydney": "2026-10-22T13:39:04.820069+11:00"
+      },
+      "verification_scope": "Safari MA run af142ee8d6ed4a1fa97b42ea46de8715; three real model stages, Human Reject and history after reload.",
+      "limitations": [
+        "Historical UI included Load workflow; do not assert that this control exists in current UI."
+      ],
+      "recorded_summary": {
+        "status": "rejected",
+        "workflow_id": "af142ee8d6ed4a1fa97b42ea46de8715",
+        "human_review_recorded": true,
+        "technical_model_workflow_verified": true,
+        "feedback_semantically_accurate": false,
+        "human_decision": {
+          "status": "recorded",
+          "decision": "reject",
+          "reviewer": "Tomohisa Tamao",
+          "recorded_at_utc": "2026-10-22T02:39:04.820069+00:00"
+        },
+        "recorded_stages": [
+          {
+            "agent": "Planner",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama"
+          },
+          {
+            "agent": "Worker",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama"
+          },
+          {
+            "agent": "Reviewer",
+            "model": "llama3.1:8b",
+            "status": "completed",
+            "generation_source": "ollama"
+          }
+        ]
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__5bb2a18dab9b4355ba0a7b9b790edb6f__ui-human-verification.json",
+      "category": "historical_ma_ui_human",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/docs/release-2/student-2/evidence/multi-agent-ui-human-verification.json",
+      "source_relative_to_original_repo": "docs/release-2/student-2/evidence/multi-agent-ui-human-verification.json",
+      "packaged_path": "local/multi-agent/5bb2a18dab9b4355ba0a7b9b790edb6f/ui-human-verification.json",
+      "source_sha256": "72886522f722c7d62244ff639ff755bfda6a55bc6b361d87c8bc00fd33b749f4",
+      "copy_sha256": "72886522f722c7d62244ff639ff755bfda6a55bc6b361d87c8bc00fd33b749f4",
+      "bytes": 1054,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "verified_at_utc": "2026-10-22T05:42:22.879821+00:00",
+        "human_decision_recorded_at_utc": "2026-10-22T05:41:48.563929+00:00",
+        "verified_at_utc_sydney": "2026-10-22T16:42:22.879821+11:00",
+        "human_decision_recorded_at_utc_sydney": "2026-10-22T16:41:48.563929+11:00"
+      },
+      "verification_scope": "Safari Human Reject for 5bb2a18dab9b4355ba0a7b9b790edb6f, paired with its saved workflow.",
+      "limitations": [
+        "Different run from af142 and e823.",
+        "This record did not create a new model run."
+      ],
+      "recorded_summary": {
+        "status": "rejected",
+        "workflow_id": "5bb2a18dab9b4355ba0a7b9b790edb6f",
+        "human_decision": {
+          "status": "recorded",
+          "decision": "reject",
+          "reviewer": "Tomohisa Tamao",
+          "recorded_at_utc": "2026-10-22T05:41:48.563929+00:00"
+        }
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__terminal-execution.json",
+      "category": "historical_ma_terminal",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/execution.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/execution.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/terminal-execution.json",
+      "source_sha256": "8458901593c6c5e56070778bfe71138be380ce1639d004230392247b909e0daf",
+      "copy_sha256": "8458901593c6c5e56070778bfe71138be380ce1639d004230392247b909e0daf",
+      "bytes": 2570,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "started_at_utc": "2026-10-22T05:55:24.442626+00:00",
+        "finished_at_utc": "2026-10-22T05:55:52.875423+00:00",
+        "started_at_utc_sydney": "2026-10-22T16:55:24.442626+11:00",
+        "finished_at_utc_sydney": "2026-10-22T16:55:52.875423+11:00"
+      },
+      "verification_scope": "Terminal application run e8238b4a64494961b474cfea0d6e94c6 before Human Review.",
+      "limitations": [
+        "Pre-human response/history is pending; final Reject is in the separate human records.",
+        "Candidate records are existing project demo evidence."
+      ],
+      "recorded_summary": {
+        "status": "completed_pending_human_review",
+        "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+        "automatic_retries": 0,
+        "human_decision_submitted": false,
+        "recorded_checks": {
+          "resume_workflow": true,
+          "candidate_evidence_matches": true,
+          "pending_human_review": true,
+          "three_ordered_real_model_stages": true,
+          "structured_outputs_present": true,
+          "human_decision_pending": true,
+          "history_matches_response": true
+        }
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__profile.json",
+      "category": "historical_ma_terminal",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/profile.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/profile.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/profile.json",
+      "source_sha256": "0f8248b373baff25325326d5a45ac1f1c063399a8359cfc65e59fbdfd6b71bd5",
+      "copy_sha256": "0f8248b373baff25325326d5a45ac1f1c063399a8359cfc65e59fbdfd6b71bd5",
+      "bytes": 271,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "updated_at": "2026-09-03 09:49:32"
+      },
+      "verification_scope": "Terminal application run e8238b4a64494961b474cfea0d6e94c6 before Human Review.",
+      "limitations": [
+        "Pre-human response/history is pending; final Reject is in the separate human records.",
+        "Candidate records are existing project demo evidence."
+      ],
+      "recorded_summary": {},
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__resume.json",
+      "category": "historical_ma_terminal",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/resume.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/resume.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/resume.json",
+      "source_sha256": "f2aa9a096279cf0c2ce99d3f3fddd2dfa5d5c95b5249ad842ff35f0bd78f2794",
+      "copy_sha256": "f2aa9a096279cf0c2ce99d3f3fddd2dfa5d5c95b5249ad842ff35f0bd78f2794",
+      "bytes": 260,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "updated_at": "2026-09-03 09:49:32"
+      },
+      "verification_scope": "Terminal application run e8238b4a64494961b474cfea0d6e94c6 before Human Review.",
+      "limitations": [
+        "Pre-human response/history is pending; final Reject is in the separate human records.",
+        "Candidate records are existing project demo evidence."
+      ],
+      "recorded_summary": {},
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__response-before-human.json",
+      "category": "historical_ma_terminal",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/response.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/response.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/response-before-human.json",
+      "source_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328",
+      "copy_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328",
+      "bytes": 6380,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "created_at_utc": "2026-10-22T05:55:24.492923+00:00",
+        "finished_at_utc": "2026-10-22T05:55:52.839163+00:00",
+        "created_at_utc_sydney": "2026-10-22T16:55:24.492923+11:00",
+        "finished_at_utc_sydney": "2026-10-22T16:55:52.839163+11:00"
+      },
+      "verification_scope": "Terminal application run e8238b4a64494961b474cfea0d6e94c6 before Human Review.",
+      "limitations": [
+        "Pre-human response/history is pending; final Reject is in the separate human records.",
+        "Candidate records are existing project demo evidence."
+      ],
+      "recorded_summary": {
+        "status": "pending_human_review",
+        "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+        "human_decision": {
+          "status": "pending",
+          "decision": null
+        },
+        "trajectory_stages": [
+          {
+            "agent": "Planner",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:24.493477+00:00",
+            "finished_at_utc": "2026-10-22T05:55:32.312093+00:00"
+          },
+          {
+            "agent": "Worker",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:32.317843+00:00",
+            "finished_at_utc": "2026-10-22T05:55:42.621139+00:00"
+          },
+          {
+            "agent": "Reviewer",
+            "model": "llama3.1:8b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:42.622457+00:00",
+            "finished_at_utc": "2026-10-22T05:55:52.835211+00:00"
+          }
+        ]
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__history-before-human.json",
+      "category": "historical_ma_terminal",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/history.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/history.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/history-before-human.json",
+      "source_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328",
+      "copy_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328",
+      "bytes": 6380,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "created_at_utc": "2026-10-22T05:55:24.492923+00:00",
+        "finished_at_utc": "2026-10-22T05:55:52.839163+00:00",
+        "created_at_utc_sydney": "2026-10-22T16:55:24.492923+11:00",
+        "finished_at_utc_sydney": "2026-10-22T16:55:52.839163+11:00"
+      },
+      "verification_scope": "Terminal application run e8238b4a64494961b474cfea0d6e94c6 before Human Review.",
+      "limitations": [
+        "Pre-human response/history is pending; final Reject is in the separate human records.",
+        "Candidate records are existing project demo evidence."
+      ],
+      "recorded_summary": {
+        "status": "pending_human_review",
+        "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+        "human_decision": {
+          "status": "pending",
+          "decision": null
+        },
+        "trajectory_stages": [
+          {
+            "agent": "Planner",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:24.493477+00:00",
+            "finished_at_utc": "2026-10-22T05:55:32.312093+00:00"
+          },
+          {
+            "agent": "Worker",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:32.317843+00:00",
+            "finished_at_utc": "2026-10-22T05:55:42.621139+00:00"
+          },
+          {
+            "agent": "Reviewer",
+            "model": "llama3.1:8b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:42.622457+00:00",
+            "finished_at_utc": "2026-10-22T05:55:52.835211+00:00"
+          }
+        ]
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__human-review__request.json",
+      "category": "historical_ma_terminal_human",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/human-review-20261022T061518Z-459e93f2/request.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/human-review-20261022T061518Z-459e93f2/request.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/human-review/request.json",
+      "source_sha256": "b87ec7b08400e734e287c7595b74bada2718fe7592d5cc1095a9231fd0c08b8e",
+      "copy_sha256": "b87ec7b08400e734e287c7595b74bada2718fe7592d5cc1095a9231fd0c08b8e",
+      "bytes": 583,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {},
+      "verification_scope": "Separate explicit Human Reject and read-back for e8238b4a64494961b474cfea0d6e94c6.",
+      "limitations": [
+        "Application feedback judgment, not a final release decision."
+      ],
+      "recorded_summary": {
+        "human_decision": {
+          "decision": "reject",
+          "reviewer": "Tomohisa Tamao"
+        }
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__human-review__response.json",
+      "category": "historical_ma_terminal_human",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/human-review-20261022T061518Z-459e93f2/response.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/human-review-20261022T061518Z-459e93f2/response.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/human-review/response.json",
+      "source_sha256": "401c363a7d53cff30f2f5c7b3488c4afbf8ecd78be57c0ac534637f6b52997ba",
+      "copy_sha256": "401c363a7d53cff30f2f5c7b3488c4afbf8ecd78be57c0ac534637f6b52997ba",
+      "bytes": 7625,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "created_at_utc": "2026-10-22T05:55:24.492923+00:00",
+        "finished_at_utc": "2026-10-22T05:55:52.839163+00:00",
+        "human_decision_recorded_at_utc": "2026-10-22T06:15:18.040364+00:00",
+        "created_at_utc_sydney": "2026-10-22T16:55:24.492923+11:00",
+        "finished_at_utc_sydney": "2026-10-22T16:55:52.839163+11:00",
+        "human_decision_recorded_at_utc_sydney": "2026-10-22T17:15:18.040364+11:00"
+      },
+      "verification_scope": "Separate explicit Human Reject and read-back for e8238b4a64494961b474cfea0d6e94c6.",
+      "limitations": [
+        "Application feedback judgment, not a final release decision."
+      ],
+      "recorded_summary": {
+        "status": "rejected",
+        "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+        "human_decision": {
+          "status": "recorded",
+          "decision": "reject",
+          "reviewer": "Tomohisa Tamao",
+          "recorded_at_utc": "2026-10-22T06:15:18.040364+00:00"
+        },
+        "trajectory_stages": [
+          {
+            "agent": "Planner",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:24.493477+00:00",
+            "finished_at_utc": "2026-10-22T05:55:32.312093+00:00"
+          },
+          {
+            "agent": "Worker",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:32.317843+00:00",
+            "finished_at_utc": "2026-10-22T05:55:42.621139+00:00"
+          },
+          {
+            "agent": "Reviewer",
+            "model": "llama3.1:8b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:42.622457+00:00",
+            "finished_at_utc": "2026-10-22T05:55:52.835211+00:00"
+          },
+          {
+            "agent": "Human",
+            "status": "recorded"
+          }
+        ]
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__human-review__history.json",
+      "category": "historical_ma_terminal_human",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/human-review-20261022T061518Z-459e93f2/history.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/human-review-20261022T061518Z-459e93f2/history.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/human-review/history.json",
+      "source_sha256": "401c363a7d53cff30f2f5c7b3488c4afbf8ecd78be57c0ac534637f6b52997ba",
+      "copy_sha256": "401c363a7d53cff30f2f5c7b3488c4afbf8ecd78be57c0ac534637f6b52997ba",
+      "bytes": 7625,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "created_at_utc": "2026-10-22T05:55:24.492923+00:00",
+        "finished_at_utc": "2026-10-22T05:55:52.839163+00:00",
+        "human_decision_recorded_at_utc": "2026-10-22T06:15:18.040364+00:00",
+        "created_at_utc_sydney": "2026-10-22T16:55:24.492923+11:00",
+        "finished_at_utc_sydney": "2026-10-22T16:55:52.839163+11:00",
+        "human_decision_recorded_at_utc_sydney": "2026-10-22T17:15:18.040364+11:00"
+      },
+      "verification_scope": "Separate explicit Human Reject and read-back for e8238b4a64494961b474cfea0d6e94c6.",
+      "limitations": [
+        "Application feedback judgment, not a final release decision."
+      ],
+      "recorded_summary": {
+        "status": "rejected",
+        "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+        "human_decision": {
+          "status": "recorded",
+          "decision": "reject",
+          "reviewer": "Tomohisa Tamao",
+          "recorded_at_utc": "2026-10-22T06:15:18.040364+00:00"
+        },
+        "trajectory_stages": [
+          {
+            "agent": "Planner",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:24.493477+00:00",
+            "finished_at_utc": "2026-10-22T05:55:32.312093+00:00"
+          },
+          {
+            "agent": "Worker",
+            "model": "qwen2.5:7b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:32.317843+00:00",
+            "finished_at_utc": "2026-10-22T05:55:42.621139+00:00"
+          },
+          {
+            "agent": "Reviewer",
+            "model": "llama3.1:8b",
+            "status": "completed",
+            "generation_source": "ollama",
+            "started_at_utc": "2026-10-22T05:55:42.622457+00:00",
+            "finished_at_utc": "2026-10-22T05:55:52.835211+00:00"
+          },
+          {
+            "agent": "Human",
+            "status": "recorded"
+          }
+        ]
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__multi-agent__e8238b4a64494961b474cfea0d6e94c6__human-review__verification.json",
+      "category": "historical_ma_terminal_human",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/human-review-20261022T061518Z-459e93f2/verification.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/terminal-multi-agent-20261022T055524Z-168c14bb/human-review-20261022T061518Z-459e93f2/verification.json",
+      "packaged_path": "local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/human-review/verification.json",
+      "source_sha256": "d8c15b528488f28c4d1c7bf4c7a5bff365162720ea57883ee53bc805f7a7d9cb",
+      "copy_sha256": "d8c15b528488f28c4d1c7bf4c7a5bff365162720ea57883ee53bc805f7a7d9cb",
+      "bytes": 2259,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "finished_at_utc": "2026-10-22T06:15:18.050547+00:00",
+        "human_decision_recorded_at_utc": "2026-10-22T06:15:18.040364+00:00",
+        "finished_at_utc_sydney": "2026-10-22T17:15:18.050547+11:00",
+        "human_decision_recorded_at_utc_sydney": "2026-10-22T17:15:18.040364+11:00"
+      },
+      "verification_scope": "Separate explicit Human Reject and read-back for e8238b4a64494961b474cfea0d6e94c6.",
+      "limitations": [
+        "Application feedback judgment, not a final release decision."
+      ],
+      "recorded_summary": {
+        "status": "rejected_verified",
+        "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+        "automatic_retries": 0,
+        "saved_history_matches_response": true,
+        "human_decision": {
+          "status": "recorded",
+          "decision": "reject",
+          "reviewer": "Tomohisa Tamao",
+          "recorded_at_utc": "2026-10-22T06:15:18.040364+00:00"
+        }
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__pre-test__pre-test-live.json",
+      "category": "historical_pre_test",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/pre-test-live.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/pre-test-live.json",
+      "packaged_path": "local/pre-test/pre-test-live.json",
+      "source_sha256": "5b29f1ab64e7a739dccd7b2f56cb83cfe83a3db75f9436b4e351ee998ede6490",
+      "copy_sha256": "5b29f1ab64e7a739dccd7b2f56cb83cfe83a3db75f9436b4e351ee998ede6490",
+      "bytes": 95752,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "started_at": "2026-10-22T03:12:12.149114+00:00",
+        "finished_at": "2026-10-22T03:13:20.973460+00:00",
+        "started_at_sydney": "2026-10-22T14:12:12.149114+11:00",
+        "finished_at_sydney": "2026-10-22T14:13:20.973460+11:00"
+      },
+      "verification_scope": "Student 2 three security scans plus shared design; Qwen assessment, Llama review and separate human partially-accept record.",
+      "limitations": [
+        "Does not review all three students together.",
+        "Does not establish latest CI/CD Review, MA Workflow Review, Cloud Review or release approval."
+      ],
+      "recorded_summary": {
+        "mode": "pre_test",
+        "execution_scope": "two-model-agentic-review",
+        "recorded_checks": [
+          {
+            "name": "testing-pre_test-saved-evidence",
+            "passed": false,
+            "validation_errors": [
+              "Security evidence contains a failed or incomplete gate.",
+              "dependencies: saved scan is failed, missing or incomplete."
+            ]
+          }
+        ],
+        "human_decision": {
+          "status": "pending",
+          "decision": null,
+          "reviewer": null
+        },
+        "assessment_status": "completed",
+        "assessment_agents": {
+          "implementation": {
+            "status": 200,
+            "model": "qwen2.5:7b"
+          },
+          "review": {
+            "status": 200,
+            "model": "llama3.1:8b"
+          }
+        }
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__pre-test__pre-test-human-decision.json",
+      "category": "historical_pre_test",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/pre-test-human-decision.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/pre-test-human-decision.json",
+      "packaged_path": "local/pre-test/pre-test-human-decision.json",
+      "source_sha256": "136b380723f4f34e6c4fc86f54a2312fb1fc36b2ff01c749bb16a2acf0a88059",
+      "copy_sha256": "136b380723f4f34e6c4fc86f54a2312fb1fc36b2ff01c749bb16a2acf0a88059",
+      "bytes": 1938,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {},
+      "verification_scope": "Student 2 three security scans plus shared design; Qwen assessment, Llama review and separate human partially-accept record.",
+      "limitations": [
+        "Does not review all three students together.",
+        "Does not establish latest CI/CD Review, MA Workflow Review, Cloud Review or release approval."
+      ],
+      "recorded_summary": {
+        "status": "recorded",
+        "human_decision": {
+          "status": "recorded",
+          "decision": "partially-accept",
+          "reviewer": "Tomohisa Tamao",
+          "recorded_at": "2026-10-22T03:19:21.845463+00:00"
+        },
+        "reviewed_execution": {
+          "path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/pre-test-live.json",
+          "sha256": "5b29f1ab64e7a739dccd7b2f56cb83cfe83a3db75f9436b4e351ee998ede6490"
+        }
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "local__pre-test__pre-test-post-review-evidence-check.json",
+      "category": "historical_pre_test",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/pre-test-post-review-evidence-check.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/pre-test-post-review-evidence-check.json",
+      "packaged_path": "local/pre-test/pre-test-post-review-evidence-check.json",
+      "source_sha256": "25e82b56c0d4ca9272e25146736945247e131fb395b1690768376277f46612ca",
+      "copy_sha256": "25e82b56c0d4ca9272e25146736945247e131fb395b1690768376277f46612ca",
+      "bytes": 31660,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "started_at": "2026-10-22T03:19:09.604611+00:00",
+        "finished_at": "2026-10-22T03:19:09.632994+00:00",
+        "started_at_sydney": "2026-10-22T14:19:09.604611+11:00",
+        "finished_at_sydney": "2026-10-22T14:19:09.632994+11:00"
+      },
+      "verification_scope": "Student 2 three security scans plus shared design; Qwen assessment, Llama review and separate human partially-accept record.",
+      "limitations": [
+        "Does not review all three students together.",
+        "Does not establish latest CI/CD Review, MA Workflow Review, Cloud Review or release approval.",
+        "Checks-only saved-evidence consistency; not a new AI review or a fresh scan."
+      ],
+      "recorded_summary": {
+        "mode": "pre_test",
+        "execution_scope": "checks-only",
+        "recorded_checks": [
+          {
+            "name": "testing-pre_test-saved-evidence",
+            "passed": false,
+            "validation_errors": [
+              "Security evidence contains a failed or incomplete gate.",
+              "dependencies: saved scan is failed, missing or incomplete."
+            ]
+          }
+        ],
+        "human_decision": {
+          "status": "pending",
+          "decision": null,
+          "reviewer": null
+        },
+        "assessment_status": "skipped",
+        "assessment_agents": {}
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-2__completed-20261022__ruff.json",
+      "category": "historical_completed_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-2/security/ruff.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/runtime-security/student-2/security/ruff.json",
+      "packaged_path": "security/student-2/completed-20261022/ruff.json",
+      "source_sha256": "a6cff2cc280cd9e38fef6bf3ba706a352dd8fbcbb0a5f124e2536aad6baf7549",
+      "copy_sha256": "a6cff2cc280cd9e38fef6bf3ba706a352dd8fbcbb0a5f124e2536aad6baf7549",
+      "bytes": 7127,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T02:50:31.218953+00:00",
+        "generated_at_utc_sydney": "2026-10-22T13:50:31.218953+11:00"
+      },
+      "verification_scope": "Student 2 saved completed ruff scan with recorded input hashes.",
+      "limitations": [
+        "Historical snapshot, not a final revision scan.",
+        "Shared AI source is not included in Ruff/secrets when shared_source_included=false; shared AI requirements are included in dependency audit.",
+        "Chroma findings remain unresolved; repeated IDs across student scopes are not distinct new vulnerabilities."
+      ],
+      "recorded_summary": {
+        "scan": "ruff",
+        "student": "student-2",
+        "passed": true,
+        "scope": "Student 2 code; dependency audit also includes its shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "0.16.8",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 59,
+        "matched_count": 55,
+        "changed_recorded_inputs": [
+          "student-2/SECURITY.md",
+          "student-2/frontend/app.py",
+          "student-2/frontend/templates/index.html",
+          "student-2/tests/test_frontend_ai_modes.py"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-2__completed-20261022__secrets.json",
+      "category": "historical_completed_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-2/security/secrets.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/runtime-security/student-2/security/secrets.json",
+      "packaged_path": "security/student-2/completed-20261022/secrets.json",
+      "source_sha256": "e8410dd4b993d686aceef4a8e0e9b7474c806be87fe6b29c71f5db417a300eb7",
+      "copy_sha256": "e8410dd4b993d686aceef4a8e0e9b7474c806be87fe6b29c71f5db417a300eb7",
+      "bytes": 7129,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T02:50:31.218958+00:00",
+        "generated_at_utc_sydney": "2026-10-22T13:50:31.218958+11:00"
+      },
+      "verification_scope": "Student 2 saved completed secrets scan with recorded input hashes.",
+      "limitations": [
+        "Historical snapshot, not a final revision scan.",
+        "Shared AI source is not included in Ruff/secrets when shared_source_included=false; shared AI requirements are included in dependency audit.",
+        "Chroma findings remain unresolved; repeated IDs across student scopes are not distinct new vulnerabilities."
+      ],
+      "recorded_summary": {
+        "scan": "secrets",
+        "student": "student-2",
+        "passed": true,
+        "scope": "Student 2 code; dependency audit also includes its shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "1.5.0",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 59,
+        "matched_count": 55,
+        "changed_recorded_inputs": [
+          "student-2/SECURITY.md",
+          "student-2/frontend/app.py",
+          "student-2/frontend/templates/index.html",
+          "student-2/tests/test_frontend_ai_modes.py"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-2__completed-20261022__dependencies.json",
+      "category": "historical_completed_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-2/security/dependencies.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/runtime-security/student-2/security/dependencies.json",
+      "packaged_path": "security/student-2/completed-20261022/dependencies.json",
+      "source_sha256": "042d8f30c8ec5da67305b9a4e371645d2c9dfabbf183153651d9f02d9c1225b6",
+      "copy_sha256": "042d8f30c8ec5da67305b9a4e371645d2c9dfabbf183153651d9f02d9c1225b6",
+      "bytes": 23405,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T03:06:58.962612+00:00",
+        "generated_at_utc_sydney": "2026-10-22T14:06:58.962612+11:00"
+      },
+      "verification_scope": "Student 2 saved completed dependencies scan with recorded input hashes.",
+      "limitations": [
+        "Historical snapshot, not a final revision scan.",
+        "Shared AI source is not included in Ruff/secrets when shared_source_included=false; shared AI requirements are included in dependency audit.",
+        "Chroma findings remain unresolved; repeated IDs across student scopes are not distinct new vulnerabilities."
+      ],
+      "recorded_summary": {
+        "scan": "dependencies",
+        "student": "student-2",
+        "passed": false,
+        "scope": "Student 2 code; dependency audit also includes its shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "2.10.1",
+        "exit_code": 1,
+        "completion": "completed",
+        "unique_packages": 127,
+        "skipped_package_count": 0,
+        "vulnerability_entry_count": 5,
+        "distinct_advisory_ids": [
+          "PYSEC-2026-311",
+          "PYSEC-2026-3813",
+          "PYSEC-2026-3814",
+          "PYSEC-2026-3815"
+        ],
+        "affected_packages": [
+          {
+            "name": "chromadb",
+            "version": "1.5.9",
+            "advisory_ids": [
+              "PYSEC-2026-311",
+              "PYSEC-2026-311",
+              "PYSEC-2026-3814",
+              "PYSEC-2026-3815",
+              "PYSEC-2026-3813"
+            ]
+          }
+        ]
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 59,
+        "matched_count": 55,
+        "changed_recorded_inputs": [
+          "student-2/SECURITY.md",
+          "student-2/frontend/app.py",
+          "student-2/frontend/templates/index.html",
+          "student-2/tests/test_frontend_ai_modes.py"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-2__later-records-20261022__ruff.json",
+      "category": "historical_later_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/logs/student-2/security/ruff.json",
+      "source_relative_to_original_repo": "logs/student-2/security/ruff.json",
+      "packaged_path": "security/student-2/later-records-20261022/ruff.json",
+      "source_sha256": "4f09b83ca5ca6a82c3e4117a2d2c941bb09e244f911fa6eb810f651aeb4226db",
+      "copy_sha256": "4f09b83ca5ca6a82c3e4117a2d2c941bb09e244f911fa6eb810f651aeb4226db",
+      "bytes": 7127,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T09:00:40.892960+00:00",
+        "generated_at_utc_sydney": "2026-10-22T20:00:40.892960+11:00"
+      },
+      "verification_scope": "Student 2 later saved ruff record; each file keeps its own timestamp.",
+      "limitations": [
+        "Later dependency JSONDecodeError is incomplete, not a completed vulnerability audit.",
+        "Later Ruff/secrets PASS does not resolve dependencies or establish a final-release security PASS."
+      ],
+      "recorded_summary": {
+        "scan": "ruff",
+        "student": "student-2",
+        "passed": true,
+        "scope": "Student 2 code; dependency audit also includes its shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "0.16.8",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 59,
+        "matched_count": 59,
+        "changed_recorded_inputs": [],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-2__later-records-20261022__secrets.json",
+      "category": "historical_later_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/logs/student-2/security/secrets.json",
+      "source_relative_to_original_repo": "logs/student-2/security/secrets.json",
+      "packaged_path": "security/student-2/later-records-20261022/secrets.json",
+      "source_sha256": "edf7b46edc38ac5acefe9931f6766a9b4a120f64f683b8645071f39080fb197a",
+      "copy_sha256": "edf7b46edc38ac5acefe9931f6766a9b4a120f64f683b8645071f39080fb197a",
+      "bytes": 7129,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T09:00:41.131016+00:00",
+        "generated_at_utc_sydney": "2026-10-22T20:00:41.131016+11:00"
+      },
+      "verification_scope": "Student 2 later saved secrets record; each file keeps its own timestamp.",
+      "limitations": [
+        "Later dependency JSONDecodeError is incomplete, not a completed vulnerability audit.",
+        "Later Ruff/secrets PASS does not resolve dependencies or establish a final-release security PASS."
+      ],
+      "recorded_summary": {
+        "scan": "secrets",
+        "student": "student-2",
+        "passed": true,
+        "scope": "Student 2 code; dependency audit also includes its shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "1.5.0",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 59,
+        "matched_count": 59,
+        "changed_recorded_inputs": [],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-2__later-records-20261022__dependencies.json",
+      "category": "historical_later_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/logs/student-2/security/dependencies.json",
+      "source_relative_to_original_repo": "logs/student-2/security/dependencies.json",
+      "packaged_path": "security/student-2/later-records-20261022/dependencies.json",
+      "source_sha256": "c47bc3fdbd78f2c44dd65611b4100d8fb735d0dba0d080b76a13f5cc73eddbb6",
+      "copy_sha256": "c47bc3fdbd78f2c44dd65611b4100d8fb735d0dba0d080b76a13f5cc73eddbb6",
+      "bytes": 7177,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T08:24:35.353105+00:00",
+        "generated_at_utc_sydney": "2026-10-22T19:24:35.353105+11:00"
+      },
+      "verification_scope": "Student 2 later saved dependencies record; each file keeps its own timestamp.",
+      "limitations": [
+        "Later dependency JSONDecodeError is incomplete, not a completed vulnerability audit.",
+        "Later Ruff/secrets PASS does not resolve dependencies or establish a final-release security PASS."
+      ],
+      "recorded_summary": {
+        "scan": "dependencies",
+        "student": "student-2",
+        "passed": false,
+        "scope": "Student 2 code; dependency audit also includes its shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "2.10.1",
+        "error": "JSONDecodeError: scan could not complete; investigate locally.",
+        "completion": "incomplete_error"
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 59,
+        "matched_count": 58,
+        "changed_recorded_inputs": [
+          "student-2/SECURITY.md"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-3__completed-20261022__ruff.json",
+      "category": "historical_completed_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-3/security/ruff.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/runtime-security/student-3/security/ruff.json",
+      "packaged_path": "security/student-3/completed-20261022/ruff.json",
+      "source_sha256": "35d60ed13e976049b2824161cdc5a6c6631816ae0ab60fda6f92aa613c3d3533",
+      "copy_sha256": "35d60ed13e976049b2824161cdc5a6c6631816ae0ab60fda6f92aa613c3d3533",
+      "bytes": 3827,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T02:50:31.730379+00:00",
+        "generated_at_utc_sydney": "2026-10-22T13:50:31.730379+11:00"
+      },
+      "verification_scope": "Student 3 saved completed ruff scan with recorded input hashes.",
+      "limitations": [
+        "Historical snapshot, not a final revision scan.",
+        "Shared AI source is not included in Ruff/secrets when shared_source_included=false; shared AI requirements are included in dependency audit.",
+        "Chroma findings remain unresolved; repeated IDs across student scopes are not distinct new vulnerabilities."
+      ],
+      "recorded_summary": {
+        "scan": "ruff",
+        "student": "student-3",
+        "passed": false,
+        "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "0.16.8",
+        "exit_code": 1,
+        "completion": "completed",
+        "finding_entry_count": 7
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 26,
+        "matched_count": 18,
+        "changed_recorded_inputs": [
+          "student-3/README.md",
+          "student-3/backend/Dockerfile",
+          "student-3/backend/app.py",
+          "student-3/compose.local.yml",
+          "student-3/database/Dockerfile",
+          "student-3/database/app.py",
+          "student-3/frontend/Dockerfile",
+          "student-3/frontend/app.py"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-3__completed-20261022__secrets.json",
+      "category": "historical_completed_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-3/security/secrets.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/runtime-security/student-3/security/secrets.json",
+      "packaged_path": "security/student-3/completed-20261022/secrets.json",
+      "source_sha256": "52cb1f52609d8ef45d0563c297ef514bafa20ca504c84b41960d97918ad54e8f",
+      "copy_sha256": "52cb1f52609d8ef45d0563c297ef514bafa20ca504c84b41960d97918ad54e8f",
+      "bytes": 3155,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T02:50:31.808037+00:00",
+        "generated_at_utc_sydney": "2026-10-22T13:50:31.808037+11:00"
+      },
+      "verification_scope": "Student 3 saved completed secrets scan with recorded input hashes.",
+      "limitations": [
+        "Historical snapshot, not a final revision scan.",
+        "Shared AI source is not included in Ruff/secrets when shared_source_included=false; shared AI requirements are included in dependency audit.",
+        "Chroma findings remain unresolved; repeated IDs across student scopes are not distinct new vulnerabilities."
+      ],
+      "recorded_summary": {
+        "scan": "secrets",
+        "student": "student-3",
+        "passed": true,
+        "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "1.5.0",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 26,
+        "matched_count": 18,
+        "changed_recorded_inputs": [
+          "student-3/README.md",
+          "student-3/backend/Dockerfile",
+          "student-3/backend/app.py",
+          "student-3/compose.local.yml",
+          "student-3/database/Dockerfile",
+          "student-3/database/app.py",
+          "student-3/frontend/Dockerfile",
+          "student-3/frontend/app.py"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-3__completed-20261022__dependencies.json",
+      "category": "historical_completed_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-3/security/dependencies.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/runtime-security/student-3/security/dependencies.json",
+      "packaged_path": "security/student-3/completed-20261022/dependencies.json",
+      "source_sha256": "e0c44f6b0cf6902cd4ad2693361cd6bffed189102a6f76cacd2ded357329204a",
+      "copy_sha256": "e0c44f6b0cf6902cd4ad2693361cd6bffed189102a6f76cacd2ded357329204a",
+      "bytes": 19431,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T03:07:22.102416+00:00",
+        "generated_at_utc_sydney": "2026-10-22T14:07:22.102416+11:00"
+      },
+      "verification_scope": "Student 3 saved completed dependencies scan with recorded input hashes.",
+      "limitations": [
+        "Historical snapshot, not a final revision scan.",
+        "Shared AI source is not included in Ruff/secrets when shared_source_included=false; shared AI requirements are included in dependency audit.",
+        "Chroma findings remain unresolved; repeated IDs across student scopes are not distinct new vulnerabilities."
+      ],
+      "recorded_summary": {
+        "scan": "dependencies",
+        "student": "student-3",
+        "passed": false,
+        "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "2.10.1",
+        "exit_code": 1,
+        "completion": "completed",
+        "unique_packages": 127,
+        "skipped_package_count": 0,
+        "vulnerability_entry_count": 5,
+        "distinct_advisory_ids": [
+          "PYSEC-2026-311",
+          "PYSEC-2026-3813",
+          "PYSEC-2026-3814",
+          "PYSEC-2026-3815"
+        ],
+        "affected_packages": [
+          {
+            "name": "chromadb",
+            "version": "1.5.9",
+            "advisory_ids": [
+              "PYSEC-2026-311",
+              "PYSEC-2026-311",
+              "PYSEC-2026-3814",
+              "PYSEC-2026-3815",
+              "PYSEC-2026-3813"
+            ]
+          }
+        ]
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 26,
+        "matched_count": 18,
+        "changed_recorded_inputs": [
+          "student-3/README.md",
+          "student-3/backend/Dockerfile",
+          "student-3/backend/app.py",
+          "student-3/compose.local.yml",
+          "student-3/database/Dockerfile",
+          "student-3/database/app.py",
+          "student-3/frontend/Dockerfile",
+          "student-3/frontend/app.py"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-3__later-records-20261022__ruff.json",
+      "category": "historical_later_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/logs/student-3/security/ruff.json",
+      "source_relative_to_original_repo": "logs/student-3/security/ruff.json",
+      "packaged_path": "security/student-3/later-records-20261022/ruff.json",
+      "source_sha256": "f8eba67c371aafd4e0afdceeda7d23401f678db686bdada82809c8839ad73a3c",
+      "copy_sha256": "f8eba67c371aafd4e0afdceeda7d23401f678db686bdada82809c8839ad73a3c",
+      "bytes": 3153,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T09:00:40.978924+00:00",
+        "generated_at_utc_sydney": "2026-10-22T20:00:40.978924+11:00"
+      },
+      "verification_scope": "Student 3 later saved ruff record; each file keeps its own timestamp.",
+      "limitations": [
+        "Later dependency JSONDecodeError is incomplete, not a completed vulnerability audit.",
+        "Later Ruff/secrets PASS does not resolve dependencies or establish a final-release security PASS."
+      ],
+      "recorded_summary": {
+        "scan": "ruff",
+        "student": "student-3",
+        "passed": true,
+        "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "0.16.8",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 26,
+        "matched_count": 26,
+        "changed_recorded_inputs": [],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-3__later-records-20261022__secrets.json",
+      "category": "historical_later_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/logs/student-3/security/secrets.json",
+      "source_relative_to_original_repo": "logs/student-3/security/secrets.json",
+      "packaged_path": "security/student-3/later-records-20261022/secrets.json",
+      "source_sha256": "b745eaa54d6c82208013a2e1412aff17fec824d8acf9b424572538d544acb918",
+      "copy_sha256": "b745eaa54d6c82208013a2e1412aff17fec824d8acf9b424572538d544acb918",
+      "bytes": 3155,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T09:00:41.704297+00:00",
+        "generated_at_utc_sydney": "2026-10-22T20:00:41.704297+11:00"
+      },
+      "verification_scope": "Student 3 later saved secrets record; each file keeps its own timestamp.",
+      "limitations": [
+        "Later dependency JSONDecodeError is incomplete, not a completed vulnerability audit.",
+        "Later Ruff/secrets PASS does not resolve dependencies or establish a final-release security PASS."
+      ],
+      "recorded_summary": {
+        "scan": "secrets",
+        "student": "student-3",
+        "passed": true,
+        "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "1.5.0",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 26,
+        "matched_count": 26,
+        "changed_recorded_inputs": [],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-3__later-records-20261022__dependencies.json",
+      "category": "historical_later_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/logs/student-3/security/dependencies.json",
+      "source_relative_to_original_repo": "logs/student-3/security/dependencies.json",
+      "packaged_path": "security/student-3/later-records-20261022/dependencies.json",
+      "source_sha256": "bc007feabf8eeada64c872adf0f20b2a4408a09c5f521274f1f315078c47d426",
+      "copy_sha256": "bc007feabf8eeada64c872adf0f20b2a4408a09c5f521274f1f315078c47d426",
+      "bytes": 3203,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T08:24:52.437002+00:00",
+        "generated_at_utc_sydney": "2026-10-22T19:24:52.437002+11:00"
+      },
+      "verification_scope": "Student 3 later saved dependencies record; each file keeps its own timestamp.",
+      "limitations": [
+        "Later dependency JSONDecodeError is incomplete, not a completed vulnerability audit.",
+        "Later Ruff/secrets PASS does not resolve dependencies or establish a final-release security PASS."
+      ],
+      "recorded_summary": {
+        "scan": "dependencies",
+        "student": "student-3",
+        "passed": false,
+        "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "2.10.1",
+        "error": "JSONDecodeError: scan could not complete; investigate locally.",
+        "completion": "incomplete_error"
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 26,
+        "matched_count": 26,
+        "changed_recorded_inputs": [],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-4__completed-20261022__ruff.json",
+      "category": "historical_completed_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-4/security/ruff.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/runtime-security/student-4/security/ruff.json",
+      "packaged_path": "security/student-4/completed-20261022/ruff.json",
+      "source_sha256": "8fa4cb874cb8092f87943e4b012db2dfcecebc4ad8836ae01851caaad3400e53",
+      "copy_sha256": "8fa4cb874cb8092f87943e4b012db2dfcecebc4ad8836ae01851caaad3400e53",
+      "bytes": 5412,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T02:50:31.793018+00:00",
+        "generated_at_utc_sydney": "2026-10-22T13:50:31.793018+11:00"
+      },
+      "verification_scope": "Student 4 saved completed ruff scan with recorded input hashes.",
+      "limitations": [
+        "Historical snapshot, not a final revision scan.",
+        "Shared AI source is not included in Ruff/secrets when shared_source_included=false; shared AI requirements are included in dependency audit.",
+        "Chroma findings remain unresolved; repeated IDs across student scopes are not distinct new vulnerabilities."
+      ],
+      "recorded_summary": {
+        "scan": "ruff",
+        "student": "student-4",
+        "passed": false,
+        "scope": "student-4 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "0.16.8",
+        "exit_code": 1,
+        "completion": "completed",
+        "finding_entry_count": 12
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 36,
+        "matched_count": 28,
+        "changed_recorded_inputs": [
+          "student-4/backend/app.py",
+          "student-4/backend/job_contract.py",
+          "student-4/compose.local.yml",
+          "student-4/database/app.py",
+          "student-4/frontend/app.py",
+          "student-4/frontend/templates/index.html",
+          "student-4/tests/test_database.py",
+          "student-4/tests/test_release1.py"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-4__completed-20261022__secrets.json",
+      "category": "historical_completed_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-4/security/secrets.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/runtime-security/student-4/security/secrets.json",
+      "packaged_path": "security/student-4/completed-20261022/secrets.json",
+      "source_sha256": "031b4de30dc897cc4c8b8a88e50eadfbca21af37822eb3c2d3240b63d40d2ea3",
+      "copy_sha256": "031b4de30dc897cc4c8b8a88e50eadfbca21af37822eb3c2d3240b63d40d2ea3",
+      "bytes": 4255,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T02:50:32.254324+00:00",
+        "generated_at_utc_sydney": "2026-10-22T13:50:32.254324+11:00"
+      },
+      "verification_scope": "Student 4 saved completed secrets scan with recorded input hashes.",
+      "limitations": [
+        "Historical snapshot, not a final revision scan.",
+        "Shared AI source is not included in Ruff/secrets when shared_source_included=false; shared AI requirements are included in dependency audit.",
+        "Chroma findings remain unresolved; repeated IDs across student scopes are not distinct new vulnerabilities."
+      ],
+      "recorded_summary": {
+        "scan": "secrets",
+        "student": "student-4",
+        "passed": true,
+        "scope": "student-4 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "1.5.0",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 36,
+        "matched_count": 28,
+        "changed_recorded_inputs": [
+          "student-4/backend/app.py",
+          "student-4/backend/job_contract.py",
+          "student-4/compose.local.yml",
+          "student-4/database/app.py",
+          "student-4/frontend/app.py",
+          "student-4/frontend/templates/index.html",
+          "student-4/tests/test_database.py",
+          "student-4/tests/test_release1.py"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-4__completed-20261022__dependencies.json",
+      "category": "historical_completed_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/runtime-security/student-4/security/dependencies.json",
+      "source_relative_to_original_repo": "reports/demo-20261022/runtime-security/student-4/security/dependencies.json",
+      "packaged_path": "security/student-4/completed-20261022/dependencies.json",
+      "source_sha256": "00ec9d4413a35e8b36aef914692735688a303b0a0bf81acd47a0af4ec8f63074",
+      "copy_sha256": "00ec9d4413a35e8b36aef914692735688a303b0a0bf81acd47a0af4ec8f63074",
+      "bytes": 20531,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T03:07:27.791761+00:00",
+        "generated_at_utc_sydney": "2026-10-22T14:07:27.791761+11:00"
+      },
+      "verification_scope": "Student 4 saved completed dependencies scan with recorded input hashes.",
+      "limitations": [
+        "Historical snapshot, not a final revision scan.",
+        "Shared AI source is not included in Ruff/secrets when shared_source_included=false; shared AI requirements are included in dependency audit.",
+        "Chroma findings remain unresolved; repeated IDs across student scopes are not distinct new vulnerabilities."
+      ],
+      "recorded_summary": {
+        "scan": "dependencies",
+        "student": "student-4",
+        "passed": false,
+        "scope": "student-4 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "2.10.1",
+        "exit_code": 1,
+        "completion": "completed",
+        "unique_packages": 127,
+        "skipped_package_count": 0,
+        "vulnerability_entry_count": 5,
+        "distinct_advisory_ids": [
+          "PYSEC-2026-311",
+          "PYSEC-2026-3813",
+          "PYSEC-2026-3814",
+          "PYSEC-2026-3815"
+        ],
+        "affected_packages": [
+          {
+            "name": "chromadb",
+            "version": "1.5.9",
+            "advisory_ids": [
+              "PYSEC-2026-311",
+              "PYSEC-2026-311",
+              "PYSEC-2026-3814",
+              "PYSEC-2026-3815",
+              "PYSEC-2026-3813"
+            ]
+          }
+        ]
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 36,
+        "matched_count": 28,
+        "changed_recorded_inputs": [
+          "student-4/backend/app.py",
+          "student-4/backend/job_contract.py",
+          "student-4/compose.local.yml",
+          "student-4/database/app.py",
+          "student-4/frontend/app.py",
+          "student-4/frontend/templates/index.html",
+          "student-4/tests/test_database.py",
+          "student-4/tests/test_release1.py"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-4__later-records-20261022__ruff.json",
+      "category": "historical_later_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/logs/student-4/security/ruff.json",
+      "source_relative_to_original_repo": "logs/student-4/security/ruff.json",
+      "packaged_path": "security/student-4/later-records-20261022/ruff.json",
+      "source_sha256": "00887c63128b3517e1d6a7d32ee45b5d12e045ec13226185ba05b3449c3bdfde",
+      "copy_sha256": "00887c63128b3517e1d6a7d32ee45b5d12e045ec13226185ba05b3449c3bdfde",
+      "bytes": 4253,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T09:00:41.022091+00:00",
+        "generated_at_utc_sydney": "2026-10-22T20:00:41.022091+11:00"
+      },
+      "verification_scope": "Student 4 later saved ruff record; each file keeps its own timestamp.",
+      "limitations": [
+        "Later dependency JSONDecodeError is incomplete, not a completed vulnerability audit.",
+        "Later Ruff/secrets PASS does not resolve dependencies or establish a final-release security PASS."
+      ],
+      "recorded_summary": {
+        "scan": "ruff",
+        "student": "student-4",
+        "passed": true,
+        "scope": "student-4 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "0.16.8",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 36,
+        "matched_count": 31,
+        "changed_recorded_inputs": [
+          "student-4/backend/app.py",
+          "student-4/backend/job_contract.py",
+          "student-4/compose.local.yml",
+          "student-4/frontend/app.py",
+          "student-4/frontend/templates/index.html"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-4__later-records-20261022__secrets.json",
+      "category": "historical_later_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/logs/student-4/security/secrets.json",
+      "source_relative_to_original_repo": "logs/student-4/security/secrets.json",
+      "packaged_path": "security/student-4/later-records-20261022/secrets.json",
+      "source_sha256": "2b8f12d7b742f4ce75f47817c1f68575de61277fdb83d40940da11052a165f85",
+      "copy_sha256": "2b8f12d7b742f4ce75f47817c1f68575de61277fdb83d40940da11052a165f85",
+      "bytes": 4255,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T09:00:42.158319+00:00",
+        "generated_at_utc_sydney": "2026-10-22T20:00:42.158319+11:00"
+      },
+      "verification_scope": "Student 4 later saved secrets record; each file keeps its own timestamp.",
+      "limitations": [
+        "Later dependency JSONDecodeError is incomplete, not a completed vulnerability audit.",
+        "Later Ruff/secrets PASS does not resolve dependencies or establish a final-release security PASS."
+      ],
+      "recorded_summary": {
+        "scan": "secrets",
+        "student": "student-4",
+        "passed": true,
+        "scope": "student-4 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "1.5.0",
+        "exit_code": 0,
+        "completion": "completed",
+        "finding_entry_count": 0
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 36,
+        "matched_count": 31,
+        "changed_recorded_inputs": [
+          "student-4/backend/app.py",
+          "student-4/backend/job_contract.py",
+          "student-4/compose.local.yml",
+          "student-4/frontend/app.py",
+          "student-4/frontend/templates/index.html"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-4__later-records-20261022__dependencies.json",
+      "category": "historical_later_security",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/logs/student-4/security/dependencies.json",
+      "source_relative_to_original_repo": "logs/student-4/security/dependencies.json",
+      "packaged_path": "security/student-4/later-records-20261022/dependencies.json",
+      "source_sha256": "89acebe8a85a6eb99125cb3401e5990449bf984b049dd0282146aab4349544d4",
+      "copy_sha256": "89acebe8a85a6eb99125cb3401e5990449bf984b049dd0282146aab4349544d4",
+      "bytes": 4303,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {
+        "generated_at_utc": "2026-10-22T08:25:09.536977+00:00",
+        "generated_at_utc_sydney": "2026-10-22T19:25:09.536977+11:00"
+      },
+      "verification_scope": "Student 4 later saved dependencies record; each file keeps its own timestamp.",
+      "limitations": [
+        "Later dependency JSONDecodeError is incomplete, not a completed vulnerability audit.",
+        "Later Ruff/secrets PASS does not resolve dependencies or establish a final-release security PASS."
+      ],
+      "recorded_summary": {
+        "scan": "dependencies",
+        "student": "student-4",
+        "passed": false,
+        "scope": "student-4 code; dependency audit also includes the shared AI runtime requirements.",
+        "shared_source_included": false,
+        "tool_version": "2.10.1",
+        "error": "JSONDecodeError: scan could not complete; investigate locally.",
+        "completion": "incomplete_error"
+      },
+      "recorded_input_hash_comparison": {
+        "comparison_target": "local packaging worktree only",
+        "worktree_head": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+        "recorded_input_count": 36,
+        "matched_count": 31,
+        "changed_recorded_inputs": [
+          "student-4/backend/app.py",
+          "student-4/backend/job_contract.py",
+          "student-4/compose.local.yml",
+          "student-4/frontend/app.py",
+          "student-4/frontend/templates/index.html"
+        ],
+        "missing_recorded_inputs": [],
+        "limit": "Not a fresh scan; does not assess added files or the latest remote revision."
+      },
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__CHROMA_RISK_NOTE.md",
+      "category": "historical_risk_documentation",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/docs/release-2/student-2/CHROMA_RISK_NOTE.md",
+      "source_relative_to_original_repo": "docs/release-2/student-2/CHROMA_RISK_NOTE.md",
+      "packaged_path": "security/CHROMA_RISK_NOTE.md",
+      "source_sha256": "08ab4ec44bce8e7836302ce8527c3f5174d3317d797a618b302978c11cf8312b",
+      "copy_sha256": "08ab4ec44bce8e7836302ce8527c3f5174d3317d797a618b302978c11cf8312b",
+      "bytes": 5272,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": false,
+      "dates": {},
+      "verification_scope": "Documented Chroma findings, embedded-use assessment and limitations dated 22 October 2026.",
+      "limitations": [
+        "Not a patch, proof of safety, security PASS, teacher waiver, or release approval.",
+        "Advisory status describes the source date, not a new advisory lookup."
+      ],
+      "recorded_summary": {},
+      "execution_git_revision_independently_verified": false
+    },
+    {
+      "id": "security__student-2-SECURITY-context.md",
+      "category": "security_implementation_and_exception_context",
+      "source_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/student-2/SECURITY.md",
+      "source_relative_to_original_repo": "student-2/SECURITY.md",
+      "packaged_path": "security/student-2-SECURITY-context.md",
+      "source_sha256": "08f101fb72b52f414fa8fa8d6b850fb36c17dd30438ce4544f24b5345e7d416b",
+      "copy_sha256": "08f101fb72b52f414fa8fa8d6b850fb36c17dd30438ce4544f24b5345e7d416b",
+      "bytes": 12540,
+      "copied_without_content_changes": true,
+      "source_tracked_in_local_repo": true,
+      "dates": {},
+      "verification_scope": "Shared security design and the documented one-time dependency-hook exception.",
+      "limitations": [
+        "Includes historical preparation-state statements; later CI successes must be considered separately.",
+        "Reported team-leader approval is not teacher waiver or final human release approval."
+      ],
+      "recorded_summary": {},
+      "source_file_last_commit": "48ddc3e6148046b7fcb160f9e76bfe2120838ede",
+      "execution_git_revision_independently_verified": false
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+  "status": "rejected_verified",
+  "model_called": false,
+  "post_attempted": true,
+  "automatic_retries": 0,
+  "http_requests": [
+    {
+      "label": "before",
+      "method": "GET",
+      "url": "http://127.0.0.1:5001/api/v1/ai/multi-agent/workflows/e8238b4a64494961b474cfea0d6e94c6",
+      "started_at_utc": "2026-10-22T06:15:18.001001+00:00",
+      "http_status": 200,
+      "response_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328",
+      "finished_at_utc": "2026-10-22T06:15:18.032922+00:00"
+    },
+    {
+      "label": "response",
+      "method": "POST",
+      "url": "http://127.0.0.1:5001/api/v1/ai/multi-agent/workflows/e8238b4a64494961b474cfea0d6e94c6/human-review",
+      "started_at_utc": "2026-10-22T06:15:18.033258+00:00",
+      "http_status": 200,
+      "response_sha256": "401c363a7d53cff30f2f5c7b3488c4afbf8ecd78be57c0ac534637f6b52997ba",
+      "finished_at_utc": "2026-10-22T06:15:18.044012+00:00"
+    },
+    {
+      "label": "history",
+      "method": "GET",
+      "url": "http://127.0.0.1:5001/api/v1/ai/multi-agent/workflows/e8238b4a64494961b474cfea0d6e94c6",
+      "started_at_utc": "2026-10-22T06:15:18.044175+00:00",
+      "http_status": 200,
+      "response_sha256": "401c363a7d53cff30f2f5c7b3488c4afbf8ecd78be57c0ac534637f6b52997ba",
+      "finished_at_utc": "2026-10-22T06:15:18.050310+00:00"
+    }
+  ],
+  "human_decision": {
+    "correction": "",
+    "decision": "reject",
+    "rationale": "I reject this output because the Worker states that REST API, SQLite and project experience are not documented, although R1 explicitly lists them. It also treats REST API and SQLite as job requirements even though no job description was supplied. The Reviewer identifies a contradiction but incorrectly attributes the unsupported claim to the candidate rather than the Worker. The assessment must use the supplied evidence and distinguish candidate statements from AI-generated claims.",
+    "recorded_at_utc": "2026-10-22T06:15:18.040364+00:00",
+    "reviewer": "Tomohisa Tamao",
+    "status": "recorded"
+  },
+  "original_model_outputs_preserved": true,
+  "saved_history_matches_response": true,
+  "finished_at_utc": "2026-10-22T06:15:18.050547+00:00"
+}

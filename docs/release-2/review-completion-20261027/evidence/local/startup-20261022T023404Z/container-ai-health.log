@@ -1,0 +1,2 @@
+RAG_BASE_URL {"documents": 10, "embedding_dimensions": 256, "retrieval_engine": "local-chroma", "service": "shared-rag-server", "status": "healthy"}
+MULTI_AGENT_SERVER_URL {"agents": ["planner", "worker", "reviewer"], "release": "Release 2", "service": "shared-multi-agent-server", "status": "healthy", "timestamp": "2026-10-22T02:34:18.708110+00:00"}

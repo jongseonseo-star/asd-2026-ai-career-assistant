@@ -1,0 +1,39 @@
+MA WORKFLOW REVIEW INPUT - Student 2 Resume/Profile
+Target source commit: 3649ed5d25fa9de6cc601e1a69e922a004a81946.
+Scope: Student 2 resume workflow on the shared local Multi-Agent Server. This supplies facts for a development review. Execution records are from 22 October 2026; their exact execution Git SHA is unverified. Target-source inspection below is separate from those historical observations.
+
+A. Terminal execution and supplied facts
+Workflow e8238b4a64494961b474cfea0d6e94c6 began at 2026-10-22T05:55:24Z. A user-terminal HTTP client sent profile_id=1, resume_id=1, job_description="". There was no J1 job requirement. P1 target_role was Software Engineer. R1 content: "Computer science graduate with Python, Flask, Git, REST API and SQLite project experience." S1 recorded Advanced Python, 2.0 years; S2 recorded Intermediate Flask, 1.0 year.
+Execution metadata records zero automatic retries, 28.432 seconds, and HTTP 200 for profile/resume GET, resume-review POST and workflow-history GET. Its checks record candidate-evidence match, three ordered real model stages, structured outputs, pending human review and history matching the original response. The four saved profile/resume/response/history hashes match execution.json. Original response/history remain separate before-human evidence; the final workflow adds the later human decision.
+
+B. Literal model outputs and chronology
+Planner, qwen2.5:7b, 05:55:24-05:55:32Z, generation_source=ollama, completed:
+objective: "Verify the candidate's technical skills and experience as per the job requirements."
+steps: "Identify and assess the candidate's proficiency in Python and Flask."; "Check the candidate's project experience related to the target role."
+evidence_ids: ["S1", "S2"].
+Worker, qwen2.5:7b, 05:55:32-05:55:42Z, generation_source=ollama, completed:
+strengths: "Candidate has advanced proficiency in Python with 2 years of experience." [S1]; "Candidate has intermediate proficiency in Flask with 1 year of experience." [S2].
+skill_gaps: "Candidate lacks documented experience with REST API and SQLite, which are required for the role." [R1].
+recommended_actions: "Verify the candidate's experience with REST API and SQLite through additional references or projects." [R1].
+information_missing: "Candidate's project experience is not demonstrated in the supplied records." [R1].
+Reviewer, llama3.1:8b, 05:55:42-05:55:52Z, generation_source=ollama, completed:
+verdict: "needs_correction".
+reason: "The candidate's claim of lacking experience with REST API and SQLite contradicts their project experience listed in R1, which mentions a project with Python, Flask, Git, REST API, and SQLite."
+risks: ["Inaccurate self-assessment by the candidate"].
+recommendations: ["Request additional references or projects to verify the candidate's experience with REST API and SQLite"].
+No corrected Worker generation appears after this review.
+
+C. Separate human history
+The saved e823 workflow records Tomohisa Tamao's explicit Reject at 06:15:18Z and final status rejected. Rationale:
+"I reject this output because the Worker states that REST API, SQLite and project experience are not documented, although R1 explicitly lists them. It also treats REST API and SQLite as job requirements even though no job description was supplied. The Reviewer identifies a contradiction but incorrectly attributes the unsupported claim to the candidate rather than the Worker. The assessment must use the supplied evidence and distinguish candidate statements from AI-generated claims."
+Human trajectory and human_decision agree. This rejects an application output; it is not release approval.
+
+D. Different UI runs
+Safari run af142ee8d6ed4a1fa97b42ea46de8715 (created 02:35:08Z) has three completed Ollama stages, Reviewer needs_correction and explicit human Reject at 02:39:04Z. Worker claimed "Candidate lacks intermediate proficiency in Flask" [S2] and that REST APIs were not demonstrated [P1,R1], despite S2/R1 above. Its paired 02:40:30Z UI observation records workflow reopened and human decision retained after page reload; technical execution verified=true, semantic accuracy=false. The historical Load workflow control is not asserted to exist in the current UI.
+5bb2a18dab9b4355ba0a7b9b790edb6f is another run. Worker claimed the candidate "lacks experience with backend development frameworks beyond Flask, such as Django or FastAPI" [R1]; Reviewer said "The candidate claims to have experience with backend development frameworks beyond Flask" although no supplied record contains that candidate claim. UI verification records user-approved Reject at 05:41:48Z for treating missing evidence as absence and misattributing the AI claim. Its source SHA matches the persisted workflow. It records no new model run by the assistant.
+
+E. Failure history and target-source handling
+Failed run d6e37bf9f59244599e9f9180db741005 at 02:28:41Z retains Reviewer raw output with verdict "supported", reason "", risks [] and recommendations. Reviewer stage/workflow are failed, with error: "Reviewer returned an incomplete response or unknown evidence references. Review the retained original output." Human remains pending.
+Static target source ai-services/resume_multi_agent.py (Git blob 003b47da32b2f36956bf8bef9a4c644079e7c8b8) validates profile/resume ownership, saves stages/raw outputs, and runs Planner then Worker then Reviewer. Empty model response or invalid stage shape/references raises ResumeWorkflowError; failed history is saved and returned with 503. Successful stages enter pending_human_review. Validation checks JSON structure, allowed evidence labels, non-empty Reviewer reason and verdict values; it does not establish semantic truth. Prompts require all candidate evidence to be read and missing evidence treated as uncertainty. An explicit human POST requires reviewer/rationale, allows accept/partially_accept/correct/reject only while pending (otherwise 409), and appends Human history. Student 2 backend loads candidate context from its database, validates workflow IDs and reports timeout/unavailable/invalid-JSON errors; timeout advice is to inspect history before another run. The resume adapter and backend have no content differences between local 48ddc3e and target 3649ed5. Source continuity does not prove the historical execution SHA.
+
+Limits: no fresh model rerun, automatic correction, current AI-enabled cloud execution, semantic-success result or final release decision is established. Terminal invocation used an HTTP client, not the separate interview CLI. Other students' personal MA workflows are outside scope. Review execution/traceability, evidence grounding, validation/failure handling and the human gate separately.

@@ -1,0 +1,18 @@
+{
+  "kind": "attempt2_input_validation_no_models",
+  "generated_at_utc": "2026-10-27T00:05:14.241663+00:00",
+  "manifest": "release2-completion/reviews/input/testing_report-attempt2.json",
+  "manifest_sha256": "ff93734db893a46bfefc130f92643a06bdec57432ae091fd881435282f4ef481",
+  "checks_passed": true,
+  "validation_errors": [],
+  "observed_evidence_utf8_bytes": 15832,
+  "within_20000_byte_budget": true,
+  "report_utf8_bytes": 8974,
+  "reference_count": 8,
+  "original_inputs_retained": {
+    "manifest": "release2-completion/reviews/input/testing_report.json",
+    "manifest_sha256": "1202326324984eb62d573c528d46d1ab006efef777d4c89dc23732f78e6efb9b",
+    "report_sha256_matches_original_manifest": true
+  },
+  "no_model_scan_test_deploy_execution": true
+}

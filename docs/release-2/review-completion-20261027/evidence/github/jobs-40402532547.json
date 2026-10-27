@@ -1,0 +1,626 @@
+{
+  "total_count": 5,
+  "jobs": [
+    {
+      "id": 121853156693,
+      "run_id": 40402532547,
+      "workflow_name": "Cloud Deployment",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOT_RbrM8AAAAcXwOdVQ",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/jobs/121853156693",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853156693",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-26T21:16:10Z",
+      "started_at": "2026-10-26T21:16:12Z",
+      "completed_at": "2026-10-26T21:18:21Z",
+      "name": "student-4 / validate-student-4",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-26T21:16:13Z",
+          "completed_at": "2026-10-26T21:16:14Z"
+        },
+        {
+          "name": "Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-26T21:16:14Z",
+          "completed_at": "2026-10-26T21:16:15Z"
+        },
+        {
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-26T21:16:15Z",
+          "completed_at": "2026-10-26T21:16:15Z"
+        },
+        {
+          "name": "Validate Python and run unit tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-26T21:16:15Z",
+          "completed_at": "2026-10-26T21:17:11Z"
+        },
+        {
+          "name": "Validate Compose and build services",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-26T21:17:11Z",
+          "completed_at": "2026-10-26T21:17:32Z"
+        },
+        {
+          "name": "Start services",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-26T21:17:32Z",
+          "completed_at": "2026-10-26T21:17:43Z"
+        },
+        {
+          "name": "Smoke-test APIs and seed counts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-26T21:17:43Z",
+          "completed_at": "2026-10-26T21:17:46Z"
+        },
+        {
+          "name": "Capture logs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-26T21:17:46Z",
+          "completed_at": "2026-10-26T21:17:46Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-26T21:17:46Z",
+          "completed_at": "2026-10-26T21:17:47Z"
+        },
+        {
+          "name": "Stop services",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-26T21:17:47Z",
+          "completed_at": "2026-10-26T21:18:18Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-26T21:18:18Z",
+          "completed_at": "2026-10-26T21:18:18Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-26T21:18:18Z",
+          "completed_at": "2026-10-26T21:18:18Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-26T21:18:18Z",
+          "completed_at": "2026-10-26T21:18:18Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/check-runs/121853156693",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000169,
+      "runner_name": "GitHub Actions 1000000169",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 121853157068,
+      "run_id": 40402532547,
+      "workflow_name": "Cloud Deployment",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOT_RbrM8AAAAcXwOezA",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/jobs/121853157068",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853157068",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-26T21:16:10Z",
+      "started_at": "2026-10-26T21:16:12Z",
+      "completed_at": "2026-10-26T21:17:52Z",
+      "name": "student-3 / Build, Test, and Verify Compliance",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-26T21:16:12Z",
+          "completed_at": "2026-10-26T21:16:14Z"
+        },
+        {
+          "name": "Checkout Code",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-26T21:16:14Z",
+          "completed_at": "2026-10-26T21:16:15Z"
+        },
+        {
+          "name": "Set up Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-26T21:16:15Z",
+          "completed_at": "2026-10-26T21:16:16Z"
+        },
+        {
+          "name": "Validate Python Syntax",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-26T21:16:16Z",
+          "completed_at": "2026-10-26T21:16:16Z"
+        },
+        {
+          "name": "Run Unit and Schema Tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-26T21:16:16Z",
+          "completed_at": "2026-10-26T21:16:35Z"
+        },
+        {
+          "name": "Build and Start Containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-26T21:16:35Z",
+          "completed_at": "2026-10-26T21:17:15Z"
+        },
+        {
+          "name": "Smoke Test Health and Readiness Endpoints",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-26T21:17:15Z",
+          "completed_at": "2026-10-26T21:17:17Z"
+        },
+        {
+          "name": "Verify Seed Data Rubric Compliance",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-26T21:17:17Z",
+          "completed_at": "2026-10-26T21:17:17Z"
+        },
+        {
+          "name": "Export Container Logs and Cleanup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-26T21:17:17Z",
+          "completed_at": "2026-10-26T21:17:48Z"
+        },
+        {
+          "name": "Upload Verification Evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-26T21:17:48Z",
+          "completed_at": "2026-10-26T21:17:49Z"
+        },
+        {
+          "name": "Post Set up Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-26T21:17:49Z",
+          "completed_at": "2026-10-26T21:17:49Z"
+        },
+        {
+          "name": "Post Checkout Code",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-26T21:17:49Z",
+          "completed_at": "2026-10-26T21:17:50Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-26T21:17:50Z",
+          "completed_at": "2026-10-26T21:17:50Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/check-runs/121853157068",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000172,
+      "runner_name": "GitHub Actions 1000000172",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 121853157075,
+      "run_id": 40402532547,
+      "workflow_name": "Cloud Deployment",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOT_RbrM8AAAAcXwOe0w",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/jobs/121853157075",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853157075",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-26T21:16:10Z",
+      "started_at": "2026-10-26T21:16:17Z",
+      "completed_at": "2026-10-26T21:18:19Z",
+      "name": "validate-cloud",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-26T21:16:18Z",
+          "completed_at": "2026-10-26T21:16:18Z"
+        },
+        {
+          "name": "Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-26T21:16:18Z",
+          "completed_at": "2026-10-26T21:16:19Z"
+        },
+        {
+          "name": "Build and check the cloud runtime",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-26T21:16:19Z",
+          "completed_at": "2026-10-26T21:17:40Z"
+        },
+        {
+          "name": "Run Lab 11 API tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-26T21:17:40Z",
+          "completed_at": "2026-10-26T21:17:46Z"
+        },
+        {
+          "name": "Stop CI containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-26T21:17:46Z",
+          "completed_at": "2026-10-26T21:18:16Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-26T21:18:16Z",
+          "completed_at": "2026-10-26T21:18:17Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-26T21:18:17Z",
+          "completed_at": "2026-10-26T21:18:17Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/check-runs/121853157075",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000171,
+      "runner_name": "GitHub Actions 1000000171",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 121853157112,
+      "run_id": 40402532547,
+      "workflow_name": "Cloud Deployment",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOT_RbrM8AAAAcXwOe-A",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/jobs/121853157112",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853157112",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-26T21:16:10Z",
+      "started_at": "2026-10-26T21:16:11Z",
+      "completed_at": "2026-10-26T21:18:07Z",
+      "name": "student-2 / Build, smoke-test, and collect evidence",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-26T21:16:12Z",
+          "completed_at": "2026-10-26T21:16:14Z"
+        },
+        {
+          "name": "Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-26T21:16:14Z",
+          "completed_at": "2026-10-26T21:16:15Z"
+        },
+        {
+          "name": "Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-26T21:16:15Z",
+          "completed_at": "2026-10-26T21:16:15Z"
+        },
+        {
+          "name": "Prepare evidence directory",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-26T21:16:15Z",
+          "completed_at": "2026-10-26T21:16:15Z"
+        },
+        {
+          "name": "Validate Python syntax",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-26T21:16:15Z",
+          "completed_at": "2026-10-26T21:16:15Z"
+        },
+        {
+          "name": "Install test dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-26T21:16:15Z",
+          "completed_at": "2026-10-26T21:16:44Z"
+        },
+        {
+          "name": "Test resume grounding and failure handling without external AI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-26T21:16:44Z",
+          "completed_at": "2026-10-26T21:17:00Z"
+        },
+        {
+          "name": "Validate Docker Compose configuration",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-26T21:17:00Z",
+          "completed_at": "2026-10-26T21:17:01Z"
+        },
+        {
+          "name": "Build Student 2 Docker images",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-26T21:17:01Z",
+          "completed_at": "2026-10-26T21:17:19Z"
+        },
+        {
+          "name": "Start Student 2 services",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-26T21:17:19Z",
+          "completed_at": "2026-10-26T21:17:30Z"
+        },
+        {
+          "name": "Run retry-based smoke checks",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-26T21:17:30Z",
+          "completed_at": "2026-10-26T21:17:32Z"
+        },
+        {
+          "name": "Validate seed records and API responses",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-26T21:17:32Z",
+          "completed_at": "2026-10-26T21:17:32Z"
+        },
+        {
+          "name": "Validate AI dependency status handling",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-26T21:17:32Z",
+          "completed_at": "2026-10-26T21:17:33Z"
+        },
+        {
+          "name": "Capture Compose status and logs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-26T21:17:33Z",
+          "completed_at": "2026-10-26T21:17:33Z"
+        },
+        {
+          "name": "Create CI evidence summary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-26T21:17:33Z",
+          "completed_at": "2026-10-26T21:17:33Z"
+        },
+        {
+          "name": "Tear down Student 2 services",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-26T21:17:33Z",
+          "completed_at": "2026-10-26T21:18:04Z"
+        },
+        {
+          "name": "Upload Student 2 CI evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-26T21:18:04Z",
+          "completed_at": "2026-10-26T21:18:05Z"
+        },
+        {
+          "name": "Post Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 33,
+          "started_at": "2026-10-26T21:18:05Z",
+          "completed_at": "2026-10-26T21:18:05Z"
+        },
+        {
+          "name": "Post Check out repository",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 34,
+          "started_at": "2026-10-26T21:18:05Z",
+          "completed_at": "2026-10-26T21:18:05Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 35,
+          "started_at": "2026-10-26T21:18:05Z",
+          "completed_at": "2026-10-26T21:18:05Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/check-runs/121853157112",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000170,
+      "runner_name": "GitHub Actions 1000000170",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 121854242098,
+      "run_id": 40402532547,
+      "workflow_name": "Cloud Deployment",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOT_RbrM8AAAAcXxQtMg",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/jobs/121854242098",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121854242098",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-26T21:18:21Z",
+      "started_at": "2026-10-26T21:18:23Z",
+      "completed_at": "2026-10-26T21:18:51Z",
+      "name": "deploy",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-26T21:18:24Z",
+          "completed_at": "2026-10-26T21:18:25Z"
+        },
+        {
+          "name": "Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-26T21:18:25Z",
+          "completed_at": "2026-10-26T21:18:25Z"
+        },
+        {
+          "name": "Deploy the tested commit to EC2",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-26T21:18:25Z",
+          "completed_at": "2026-10-26T21:18:46Z"
+        },
+        {
+          "name": "Check public access",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-26T21:18:46Z",
+          "completed_at": "2026-10-26T21:18:49Z"
+        },
+        {
+          "name": "Remove the SSH key",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-26T21:18:49Z",
+          "completed_at": "2026-10-26T21:18:49Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-26T21:18:49Z",
+          "completed_at": "2026-10-26T21:18:50Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-26T21:18:50Z",
+          "completed_at": "2026-10-26T21:18:50Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/check-runs/121854242098",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000173,
+      "runner_name": "GitHub Actions 1000000173",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
+

@@ -1,0 +1,171 @@
+# AWS EC2 runtime profile, following Lab 11's frontend -> backend -> database flow.
+# Standalone file: do not merge with docker-compose.yml (it publishes local API ports).
+name: asd-release2-aws
+
+services:
+  shared-frontend:
+    build: ./shared/frontend
+    ports:
+      - "${CLOUD_BIND_ADDRESS:-0.0.0.0}:${FRONTEND_PORT:-80}:80"
+      - "${CLOUD_BIND_ADDRESS:-0.0.0.0}:${STUDENT2_PUBLIC_PORT:-8082}:8082"
+      - "${CLOUD_BIND_ADDRESS:-0.0.0.0}:${STUDENT3_PUBLIC_PORT:-8303}:8303"
+      - "${CLOUD_BIND_ADDRESS:-0.0.0.0}:${STUDENT4_PUBLIC_PORT:-8404}:8404"
+    environment:
+      STUDENT2_FRONTEND_URL: http://student-2-frontend:8082
+      STUDENT3_FRONTEND_URL: http://student-3-frontend:8083
+      STUDENT4_FRONTEND_URL: http://student-4-frontend:8404
+      STUDENT2_PUBLIC_PORT: ${STUDENT2_PUBLIC_PORT:-8082}
+      STUDENT3_PUBLIC_PORT: ${STUDENT3_PUBLIC_PORT:-8303}
+      STUDENT4_PUBLIC_PORT: ${STUDENT4_PUBLIC_PORT:-8404}
+    depends_on:
+      student-2-frontend: {condition: service_healthy}
+      student-3-frontend: {condition: service_healthy}
+      student-4-frontend: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+  student-2-database:
+    build: ./student-2/database
+    environment: {PORT: "5002", DB_PATH: /app/data/candidate_data.db}
+    volumes: [student-2-data:/app/data]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5002/api/v1/profiles', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+  student-2-backend:
+    build: ./student-2/backend
+    environment:
+      PORT: "5001"
+      DATABASE_API_URL: http://student-2-database:5002
+      # Lab 11: disable AI Mode, MCP and RAG using this project's actual switches.
+      OLLAMA_ENABLED: "false"
+      AI_SERVICES_ENABLED: "false"
+      MULTI_AGENT_ENABLED: "false"
+    depends_on:
+      student-2-database: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+  student-2-frontend:
+    build: ./student-2/frontend
+    environment: {PORT: "8082", BACKEND_API_URL: "http://student-2-backend:5001"}
+    depends_on:
+      student-2-backend: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8082/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+  student-3-database:
+    build: ./student-3/database
+    environment: {PORT: "5002", DB_PATH: /app/data/interview_data.db}
+    volumes: [student-3-data:/app/data]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5002/api/v1/stats', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+  student-3-backend:
+    build: ./student-3/backend
+    environment:
+      PORT: "5001"
+      DATABASE_API_URL: http://student-3-database:5002
+      OLLAMA_ENABLED: "false"
+      AI_SERVICES_ENABLED: "false"
+      MULTI_AGENT_ENABLED: "false"
+    depends_on:
+      student-3-database: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+  student-3-frontend:
+    build: ./student-3/frontend
+    environment: {PORT: "8083", BACKEND_API_URL: "http://student-3-backend:5001"}
+    depends_on:
+      student-3-backend: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8083/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+  student-4-database:
+    build: ./student-4/database
+    environment: {PORT: "5402", DB_PATH: /app/data/jobs.db}
+    volumes: [student-4-data:/app/data]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5402/api/v1/stats', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+  student-4-backend:
+    build: ./student-4/backend
+    environment:
+      PORT: "5401"
+      DATABASE_API_URL: http://student-4-database:5402
+      OLLAMA_ENABLED: "false"
+      AI_SERVICES_ENABLED: "false"
+      MULTI_AGENT_ENABLED: "false"
+    depends_on:
+      student-4-database: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5401/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+  student-4-frontend:
+    build: ./student-4/frontend
+    environment: {PORT: "8404", BACKEND_API_URL: "http://student-4-backend:5401"}
+    depends_on:
+      student-4-backend: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8404/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+    networks: [career-assistant-network]
+
+networks:
+  career-assistant-network:
+
+volumes:
+  student-2-data:
+  student-3-data:
+  student-4-data:

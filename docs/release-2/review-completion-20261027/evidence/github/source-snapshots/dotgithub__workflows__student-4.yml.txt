@@ -1,0 +1,79 @@
+name: Student 4 - Build and Validate
+
+on:
+  push:
+    branches: [main, codex/student-4-job-listing, feature/student-4-job-listing, feature/student-4-release1]
+    paths: ["student-4/**", "ai-services/**", "shared/frontend/**", "docker-compose.yml", ".github/workflows/student-4.yml"]
+  pull_request:
+    branches: [main]
+    paths: ["student-4/**", "ai-services/**", "shared/frontend/**", "docker-compose.yml", ".github/workflows/student-4.yml"]
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-student-4:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OLLAMA_ENABLED: "false"
+      AI_SERVICES_ENABLED: "false"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with: {python-version: "3.12"}
+      - name: Validate Python and run unit tests
+        run: |
+          python -m pip install -r student-4/backend/requirements.txt -r ai-services/requirements.txt pytest
+          python -m py_compile student-4/database/init_db.py student-4/database/app.py student-4/backend/app.py student-4/frontend/app.py
+          python -m pytest student-4/tests ai-services/tests -q
+      - name: Validate Compose and build services
+        run: |
+          docker compose -f student-4/compose.local.yml config -q
+          docker compose -f student-4/compose.local.yml build
+      - name: Start services
+        run: docker compose -f student-4/compose.local.yml up -d
+      - name: Smoke-test APIs and seed counts
+        run: |
+          set -euo pipefail
+          wait_for_ready() {
+            local url="$1"
+            local service_name="$2"
+            for attempt in $(seq 1 15); do
+              if curl -fsS "$url"; then
+                return 0
+              fi
+              echo "Waiting for ${service_name} readiness (${attempt}/15)..."
+              sleep 2
+            done
+            echo "${service_name} did not become ready in time." >&2
+            return 1
+          }
+
+          wait_for_ready http://127.0.0.1:5401/ready "Student 4 backend"
+          curl -fsS http://127.0.0.1:5402/api/v1/stats | tee seed-counts.json
+          python -c 'import json; d=json.load(open("seed-counts.json")); assert all(d[k]>=10 for k in ("companies","job_postings","job_skills")), d'
+          curl -fsS http://127.0.0.1:5401/api/v1/jobs/enriched | python -c 'import json,sys; assert len(json.load(sys.stdin))>=10'
+          wait_for_ready http://127.0.0.1:8404/ready "Student 4 frontend"
+          curl -fsS http://127.0.0.1:5401/api/v1/ai/services/status | tee ai-services-status.json
+          python -c 'import json; d=json.load(open("ai-services-status.json")); assert d["enabled"] is False and d["ollama_enabled"] is False'
+          curl -fsS http://127.0.0.1:5401/api/v1/ai/status | python -c 'import json,sys; assert json.load(sys.stdin)["status"] == "disabled"'
+          docker compose -f student-4/compose.local.yml ps --all > student-4-compose-ps.txt
+      - name: Capture logs
+        if: always()
+        run: docker compose -f student-4/compose.local.yml logs --no-color > student-4-compose.log
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: student-4-release1-evidence
+          path: |
+            ai-services-status.json
+            student-4-compose-ps.txt
+            seed-counts.json
+            student-4-compose.log
+      - name: Stop services
+        if: always()
+        run: docker compose -f student-4/compose.local.yml down -v
+

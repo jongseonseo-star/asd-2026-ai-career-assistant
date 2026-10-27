@@ -236,3 +236,12 @@ inspect the outputs, and record the actual human decision.
 Keep the terminal open. Ctrl+C stops the launcher’s AI processes; Docker
 containers remain. Startup logs are under `reports/demo-runtime/`.
 This launcher covers Student 2; cloud AI remains disabled.
+
+## Release 2 report reviews
+
+The shared loop also supports explicit `ma_workflow`, `testing_report` and
+`cloud_deployment` modes using saved reports and hash-verified evidence references.
+See [the report review instructions](REPORT_REVIEWS.md) for the input manifest,
+checks-only validation, actual two-model execution, limits and separate human
+release judgment. These modes do not run tests or deploy, do not turn source
+FAILs into PASSes, and are not included in the existing `all` selection.

@@ -1,0 +1,29 @@
+student-3-frontend-1  |  * Serving Flask app 'app'
+student-3-frontend-1  |  * Debug mode: off
+student-3-frontend-1  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+student-3-database-1  |  * Serving Flask app 'app'
+student-3-frontend-1  |  * Running on all addresses (0.0.0.0)
+student-3-frontend-1  |  * Running on http://127.0.0.1:8083
+student-3-frontend-1  |  * Running on http://172.18.0.4:8083
+student-3-frontend-1  | [33mPress CTRL+C to quit[0m
+student-3-frontend-1  | 172.18.0.1 - - [26/Oct/2026 21:17:17] "GET /health HTTP/1.1" 200 -
+student-3-backend-1   |  * Serving Flask app 'app'
+student-3-backend-1   |  * Debug mode: off
+student-3-backend-1   | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+student-3-backend-1   |  * Running on all addresses (0.0.0.0)
+student-3-backend-1   |  * Running on http://127.0.0.1:5001
+student-3-backend-1   |  * Running on http://172.18.0.3:5001
+student-3-backend-1   | [33mPress CTRL+C to quit[0m
+student-3-backend-1   | 127.0.0.1 - - [26/Oct/2026 21:17:15] "GET /ready HTTP/1.1" 200 -
+student-3-backend-1   | 172.18.0.1 - - [26/Oct/2026 21:17:15] "GET /health HTTP/1.1" 200 -
+student-3-database-1  |  * Debug mode: off
+student-3-database-1  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+student-3-database-1  |  * Running on all addresses (0.0.0.0)
+student-3-database-1  |  * Running on http://127.0.0.1:5002
+student-3-database-1  |  * Running on http://172.18.0.2:5002
+student-3-database-1  | [33mPress CTRL+C to quit[0m
+student-3-database-1  | 127.0.0.1 - - [26/Oct/2026 21:17:09] "GET /health HTTP/1.1" 200 -
+student-3-database-1  | 127.0.0.1 - - [26/Oct/2026 21:17:15] "GET /health HTTP/1.1" 200 -
+student-3-database-1  | 172.18.0.3 - - [26/Oct/2026 21:17:15] "GET /health HTTP/1.1" 200 -
+student-3-database-1  | 172.18.0.1 - - [26/Oct/2026 21:17:15] "GET /health HTTP/1.1" 200 -
+student-3-database-1  | 172.18.0.1 - - [26/Oct/2026 21:17:17] "GET /api/v1/stats HTTP/1.1" 200 -

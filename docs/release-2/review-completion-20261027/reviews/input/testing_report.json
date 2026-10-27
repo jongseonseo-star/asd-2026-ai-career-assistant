@@ -1,0 +1,56 @@
+{
+  "mode": "testing_report",
+  "target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "scope": [
+    "student-2",
+    "student-3",
+    "student-4"
+  ],
+  "report": {
+    "path": "testing_report-report.txt",
+    "sha256": "4c0e583d46fd3c4ba8af4d7f421a097e5a0e0b060bde3ac761d3dcc3ac1ff629"
+  },
+  "evidence": [
+    {
+      "label": "historical local/security inventory",
+      "path": "../../evidence/inventory-local-and-security.json",
+      "sha256": "7311d0541263c778e951cb2adb93d876c1adc8da526e909e97797c81f7100fcb"
+    },
+    {
+      "label": "six endpoint source/execution mapping",
+      "path": "../../evidence/github/endpoint-test-mapping.json",
+      "sha256": "ef389dde110f3d4ae98d5ee7b30b88c44377c3acd381254025acc8d230b54816"
+    },
+    {
+      "label": "quantified immutable JUnit audit",
+      "path": "../../evidence/github/junit-count-audit.json",
+      "sha256": "30f2181d285e385ec09ec637d9c79a2848f97121767b5b0845a43d943d244c6b"
+    },
+    {
+      "label": "run jobs and artifact summary",
+      "path": "../../evidence/github/run-summary.json",
+      "sha256": "689d2d104605a1e4eb5b9204c0f9d5d77a9c7e43f3651c4624e94111b69905c5"
+    },
+    {
+      "label": "GitHub collection provenance",
+      "path": "../../evidence/github/collection-provenance.json",
+      "sha256": "c5e9493dafb504d9a563956fbad5db04e0434b1be94421497e213cdbb6ab6834"
+    },
+    {
+      "label": "historical security records and findings",
+      "path": "../../evidence/github/historical-security-summary.json",
+      "sha256": "1c5d142cb8976dabd4f7f8b33113ac36586e01e21e8e233bd9bb3ff4c4eb49bb"
+    },
+    {
+      "label": "downloaded artifact integrity",
+      "path": "../../evidence/github/artifact-download-results.json",
+      "sha256": "83a17805600421eb509e6fcca4d40608deb955a6887bb4e437b37f391c5674b8"
+    }
+  ],
+  "limitations": [
+    "This is evidence input, not an independent agent result or human release decision.",
+    "Student 2 original aggregate remains INCOMPLETE due to 316 declared versus 314 testcase elements; 2 CLI passing subtests explain the difference.",
+    "Student 3 CI covers one named test file; Student 4 has successful suite-level evidence without individual node output.",
+    "Historical Oct 22 security scans have unverified execution SHAs and do not clear current dependency risk."
+  ]
+}

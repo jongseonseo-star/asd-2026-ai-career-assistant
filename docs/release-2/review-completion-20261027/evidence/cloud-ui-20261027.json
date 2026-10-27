@@ -1,0 +1,38 @@
+{
+  "evidence_kind": "observed_browser_crud_verification",
+  "recorded_by": "Codex via Safari computer-use; not a human release decision",
+  "method": "Actual Safari UI interactions and accessibility observations. This file is a structured transcription of the observations, not an application-generated test report.",
+  "url": "http://3.107.4.185:8082/",
+  "started_at": "2026-10-26T23:44:25.026Z",
+  "finished_at": "2026-10-26T23:48:40.529Z",
+  "timezone_display": "Australia/Sydney: 27 October 2026, 10:44-10:48",
+  "latest_successful_deployment": {
+    "commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+    "run_id": 40402532547,
+    "deploy_job_id": 121854242098,
+    "runtime_commit_independently_read": false,
+    "limitation": "The latest successful Actions deployment targets this commit. The browser does not expose a runtime commit identifier; no SSH filesystem check was performed."
+  },
+  "scope": "Student 2 profile and resume CRUD through the currently accessible shared cloud application",
+  "test_records": {
+    "profile_id": 13,
+    "profile_name": "Release2 Verification 20261027",
+    "resume_id": 12,
+    "resume_title": "Release2 Cloud Verification Resume Updated",
+    "ownership": "Both disposable records were created during this verification. No pre-existing record was edited or deleted."
+  },
+  "observations": [
+    {"at":"2026-10-26T23:44:25.026Z","stage":"before","observed":["Backend Ready","Database Ready","Release 0 model Not configured","10 profiles","10 resumes","20 skills"]},
+    {"stage":"profile_created","observed":["Profile created for Release2 Verification 20261027.","PROFILE #13 Backend Developer","11 profiles"]},
+    {"at":"2026-10-26T23:45:28.597Z","stage":"profile_updated","observed":["Profile updated for Release2 Verification 20261027.","PROFILE #13 Cloud API Tester","Updated disposable verification record. Cloud profile update persisted."]},
+    {"at":"2026-10-26T23:46:17.211Z","stage":"resume_created","observed":["Resume created: Release2 Cloud Verification Resume.","RESUME #12","Release2 Verification 20261027","Disposable resume for profile 13. Python, Flask, REST API and SQLite test evidence.","11 resumes"]},
+    {"at":"2026-10-26T23:46:44.058Z","stage":"resume_updated","observed":["Resume updated: Release2 Cloud Verification Resume Updated.","Updated disposable resume. Confirmed edit and reload of Python Flask REST API SQLite evidence."]},
+    {"at":"2026-10-26T23:46:53.667Z","stage":"reload_persisted","observed":["PROFILE #13 Cloud API Tester","Updated disposable verification record. Cloud profile update persisted.","RESUME #12","Release2 Cloud Verification Resume Updated","Updated disposable resume. Confirmed edit and reload of Python Flask REST API SQLite evidence."]},
+    {"at":"2026-10-26T23:48:10.822Z","stage":"resume_deleted","observed":["Resume deleted successfully.","10 resumes","11 profiles"]},
+    {"at":"2026-10-26T23:48:28.767Z","stage":"profile_deleted","observed":["Profile deleted successfully.","10 profiles","10 resumes","20 skills"]},
+    {"at":"2026-10-26T23:48:40.529Z","stage":"cleanup_verified_after_reload","observed":["Backend Ready","Database Ready","10 profiles","10 resumes","20 skills","Neither disposable record remained visible"]}
+  ],
+  "deletion_authorization": "The user explicitly approved deleting resume #12 and profile #13 in this conversation before both deletion confirmations.",
+  "results": {"create":"PASS","read":"PASS","update":"PASS","reload_retention":"PASS","delete":"PASS","cleanup":"PASS"},
+  "limitations": ["No server-restart persistence check.","No Student 3 or Student 4 CRUD check in this session.","Not an independent verification of the live runtime commit.","Visible Multi-Agent tab does not prove the cloud AI service is enabled; no model request was made."]
+}
