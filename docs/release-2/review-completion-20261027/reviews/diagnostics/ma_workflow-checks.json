@@ -1,0 +1,145 @@
+{
+  "mode": "ma_workflow",
+  "feature": "shared-report",
+  "started_at": "2026-10-26T23:56:24.175949+00:00",
+  "finished_at": "2026-10-26T23:56:24.178398+00:00",
+  "configuration": {
+    "base_urls": {
+      "mcp": "http://127.0.0.1:8765",
+      "rag": "http://127.0.0.1:8766",
+      "ollama": "http://127.0.0.1:11434",
+      "database": "http://127.0.0.1:5002",
+      "backend": "http://127.0.0.1:5001",
+      "frontend": "http://127.0.0.1:8082"
+    },
+    "timeout_seconds": 180,
+    "profile_id": 1,
+    "resume_id": 1,
+    "job_id": 1,
+    "project_root": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/release2-report-completion",
+    "compose_project": "asd-2026-ai-career-assistant",
+    "compose_files": [
+      "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/release2-report-completion/docker-compose.yml"
+    ],
+    "ci_evidence_dir": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/release2-report-completion/reports/student-2",
+    "review_manifest": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/release2-completion/reviews/input/ma_workflow.json",
+    "expected_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946"
+  },
+  "workflow": [
+    "OBSERVE",
+    "IMPLEMENTATION ASSESSMENT",
+    "REVIEW ASSESSMENT",
+    "HUMAN DECISION",
+    "IMPROVE AND RETEST"
+  ],
+  "execution_scope": "checks-only",
+  "checks": [
+    {
+      "name": "report-ma_workflow-saved-evidence",
+      "started_at": "2026-10-26T23:56:24.176217+00:00",
+      "finished_at": "2026-10-26T23:56:24.178382+00:00",
+      "duration_seconds": 0.002,
+      "passed": true,
+      "validation_errors": [],
+      "payload": {
+        "evidence_check_scope": "selected-report-and-reference-integrity-only",
+        "limitations": [
+          "Only the complete selected report is supplied to the models; referenced files are hash-verified, not supplied as model text.",
+          "A valid report package does not turn any recorded FAIL, historical result or unverified claim into a PASS.",
+          "This collector runs no application, scan, test, workflow, deployment, subprocess or model.",
+          "The models give advice only; a genuine human release decision remains separate and pending."
+        ],
+        "manifest_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/release2-completion/reviews/input/ma_workflow.json",
+        "manifest_sha256": "b39138d209ab6047ec27b39ca45c15d64997f0ff9a10f44e40d277e9671230ad",
+        "mode": "ma_workflow",
+        "target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+        "scope": [
+          "student-2"
+        ],
+        "declared_limitations": [
+          "Application execution records are historical (2026-10-22); their exact execution Git SHA is unverified.",
+          "Target source was read statically from local Git objects; no new application, model or cloud execution occurred.",
+          "Human Reject records apply to application outputs, not development-review approval or release approval.",
+          "The complete report text is intended as model input; raw references support integrity checks and audit."
+        ],
+        "expected_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+        "expected_commit_matched": true,
+        "report": {
+          "label": "selected report",
+          "content_supplied_to_models": true,
+          "hash_verified": true,
+          "path": "ma_workflow-report.txt",
+          "expected_sha256": "5e6086b01f0c80f2518a5d4fec6686b7b783f4194438c49e58aa4a70e25ce9d0",
+          "resolved_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/release2-completion/reviews/input/ma_workflow-report.txt",
+          "actual_sha256": "5e6086b01f0c80f2518a5d4fec6686b7b783f4194438c49e58aa4a70e25ce9d0",
+          "text": "MA WORKFLOW REVIEW INPUT - Student 2 Resume/Profile\nTarget source commit: 3649ed5d25fa9de6cc601e1a69e922a004a81946.\nScope: Student 2 resume workflow on the shared local Multi-Agent Server. This supplies facts for a development review. Execution records are from 22 October 2026; their exact execution Git SHA is unverified. Target-source inspection below is separate from those historical observations.\n\nA. Terminal execution and supplied facts\nWorkflow e8238b4a64494961b474cfea0d6e94c6 began at 2026-10-22T05:55:24Z. A user-terminal HTTP client sent profile_id=1, resume_id=1, job_description=\"\". There was no J1 job requirement. P1 target_role was Software Engineer. R1 content: \"Computer science graduate with Python, Flask, Git, REST API and SQLite project experience.\" S1 recorded Advanced Python, 2.0 years; S2 recorded Intermediate Flask, 1.0 year.\nExecution metadata records zero automatic retries, 28.432 seconds, and HTTP 200 for profile/resume GET, resume-review POST and workflow-history GET. Its checks record candidate-evidence match, three ordered real model stages, structured outputs, pending human review and history matching the original response. The four saved profile/resume/response/history hashes match execution.json. Original response/history remain separate before-human evidence; the final workflow adds the later human decision.\n\nB. Literal model outputs and chronology\nPlanner, qwen2.5:7b, 05:55:24-05:55:32Z, generation_source=ollama, completed:\nobjective: \"Verify the candidate's technical skills and experience as per the job requirements.\"\nsteps: \"Identify and assess the candidate's proficiency in Python and Flask.\"; \"Check the candidate's project experience related to the target role.\"\nevidence_ids: [\"S1\", \"S2\"].\nWorker, qwen2.5:7b, 05:55:32-05:55:42Z, generation_source=ollama, completed:\nstrengths: \"Candidate has advanced proficiency in Python with 2 years of experience.\" [S1]; \"Candidate has intermediate proficiency in Flask with 1 year of experience.\" [S2].\nskill_gaps: \"Candidate lacks documented experience with REST API and SQLite, which are required for the role.\" [R1].\nrecommended_actions: \"Verify the candidate's experience with REST API and SQLite through additional references or projects.\" [R1].\ninformation_missing: \"Candidate's project experience is not demonstrated in the supplied records.\" [R1].\nReviewer, llama3.1:8b, 05:55:42-05:55:52Z, generation_source=ollama, completed:\nverdict: \"needs_correction\".\nreason: \"The candidate's claim of lacking experience with REST API and SQLite contradicts their project experience listed in R1, which mentions a project with Python, Flask, Git, REST API, and SQLite.\"\nrisks: [\"Inaccurate self-assessment by the candidate\"].\nrecommendations: [\"Request additional references or projects to verify the candidate's experience with REST API and SQLite\"].\nNo corrected Worker generation appears after this review.\n\nC. Separate human history\nThe saved e823 workflow records Tomohisa Tamao's explicit Reject at 06:15:18Z and final status rejected. Rationale:\n\"I reject this output because the Worker states that REST API, SQLite and project experience are not documented, although R1 explicitly lists them. It also treats REST API and SQLite as job requirements even though no job description was supplied. The Reviewer identifies a contradiction but incorrectly attributes the unsupported claim to the candidate rather than the Worker. The assessment must use the supplied evidence and distinguish candidate statements from AI-generated claims.\"\nHuman trajectory and human_decision agree. This rejects an application output; it is not release approval.\n\nD. Different UI runs\nSafari run af142ee8d6ed4a1fa97b42ea46de8715 (created 02:35:08Z) has three completed Ollama stages, Reviewer needs_correction and explicit human Reject at 02:39:04Z. Worker claimed \"Candidate lacks intermediate proficiency in Flask\" [S2] and that REST APIs were not demonstrated [P1,R1], despite S2/R1 above. Its paired 02:40:30Z UI observation records workflow reopened and human decision retained after page reload; technical execution verified=true, semantic accuracy=false. The historical Load workflow control is not asserted to exist in the current UI.\n5bb2a18dab9b4355ba0a7b9b790edb6f is another run. Worker claimed the candidate \"lacks experience with backend development frameworks beyond Flask, such as Django or FastAPI\" [R1]; Reviewer said \"The candidate claims to have experience with backend development frameworks beyond Flask\" although no supplied record contains that candidate claim. UI verification records user-approved Reject at 05:41:48Z for treating missing evidence as absence and misattributing the AI claim. Its source SHA matches the persisted workflow. It records no new model run by the assistant.\n\nE. Failure history and target-source handling\nFailed run d6e37bf9f59244599e9f9180db741005 at 02:28:41Z retains Reviewer raw output with verdict \"supported\", reason \"\", risks [] and recommendations. Reviewer stage/workflow are failed, with error: \"Reviewer returned an incomplete response or unknown evidence references. Review the retained original output.\" Human remains pending.\nStatic target source ai-services/resume_multi_agent.py (Git blob 003b47da32b2f36956bf8bef9a4c644079e7c8b8) validates profile/resume ownership, saves stages/raw outputs, and runs Planner then Worker then Reviewer. Empty model response or invalid stage shape/references raises ResumeWorkflowError; failed history is saved and returned with 503. Successful stages enter pending_human_review. Validation checks JSON structure, allowed evidence labels, non-empty Reviewer reason and verdict values; it does not establish semantic truth. Prompts require all candidate evidence to be read and missing evidence treated as uncertainty. An explicit human POST requires reviewer/rationale, allows accept/partially_accept/correct/reject only while pending (otherwise 409), and appends Human history. Student 2 backend loads candidate context from its database, validates workflow IDs and reports timeout/unavailable/invalid-JSON errors; timeout advice is to inspect history before another run. The resume adapter and backend have no content differences between local 48ddc3e and target 3649ed5. Source continuity does not prove the historical execution SHA.\n\nLimits: no fresh model rerun, automatic correction, current AI-enabled cloud execution, semantic-success result or final release decision is established. Terminal invocation used an HTTP client, not the separate interview CLI. Other students' personal MA workflows are outside scope. Review execution/traceability, evidence grounding, validation/failure handling and the human gate separately.\n"
+        },
+        "references": [
+          {
+            "label": "historical local/security inventory",
+            "content_supplied_to_models": false,
+            "hash_verified": true,
+            "path": "../../evidence/inventory-local-and-security.json",
+            "expected_sha256": "7311d0541263c778e951cb2adb93d876c1adc8da526e909e97797c81f7100fcb",
+            "resolved_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/release2-completion/evidence/inventory-local-and-security.json",
+            "actual_sha256": "7311d0541263c778e951cb2adb93d876c1adc8da526e909e97797c81f7100fcb"
+          },
+          {
+            "label": "e823 final persisted workflow with human Reject",
+            "content_supplied_to_models": false,
+            "hash_verified": true,
+            "path": "../../evidence/local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/workflow.json",
+            "expected_sha256": "fae7e4e32a30100b4ff18f1dcc154979b9a1e52a0f12c460098e77c62b3c55b2",
+            "resolved_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/release2-completion/evidence/local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/workflow.json",
+            "actual_sha256": "fae7e4e32a30100b4ff18f1dcc154979b9a1e52a0f12c460098e77c62b3c55b2"
+          },
+          {
+            "label": "e823 original terminal execution metadata",
+            "content_supplied_to_models": false,
+            "hash_verified": true,
+            "path": "../../evidence/local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/terminal-execution.json",
+            "expected_sha256": "8458901593c6c5e56070778bfe71138be380ce1639d004230392247b909e0daf",
+            "resolved_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/release2-completion/evidence/local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/terminal-execution.json",
+            "actual_sha256": "8458901593c6c5e56070778bfe71138be380ce1639d004230392247b909e0daf"
+          },
+          {
+            "label": "UI/failure records and target source snapshot",
+            "content_supplied_to_models": false,
+            "hash_verified": true,
+            "path": "ma_workflow-supporting-snapshot.json",
+            "expected_sha256": "591f4781ca75da99ea8f9d9a6e2c898472f548613b40757896597703d48f30e4",
+            "resolved_path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/release2-completion/reviews/input/ma_workflow-supporting-snapshot.json",
+            "actual_sha256": "591f4781ca75da99ea8f9d9a6e2c898472f548613b40757896597703d48f30e4"
+          }
+        ]
+      }
+    }
+  ],
+  "agent_assessments": {
+    "status": "skipped",
+    "reason": "Explicit checks-only run; not a full agentic review."
+  },
+  "review": {
+    "passed": true,
+    "checks_passed": true,
+    "meaning": "Selected report/reference integrity and required model completion only; not a PASS for source tests or security findings, a fresh execution, or human release approval."
+  },
+  "human_decision": {
+    "status": "pending",
+    "reviewer": null,
+    "decision": null,
+    "rationale": null
+  },
+  "limitations": [
+    "Only the complete selected report is supplied to the models; referenced files are hash-verified, not supplied as model text.",
+    "A valid report package does not turn any recorded FAIL, historical result or unverified claim into a PASS.",
+    "This collector runs no application, scan, test, workflow, deployment, subprocess or model.",
+    "The models give advice only; a genuine human release decision remains separate and pending.",
+    "The full selected report and reference metadata must fit the 20,000-byte input budget and conservative full-prompt capacity guard; oversized input is rejected, never truncated.",
+    "The manifest target identifies the intended review revision; older evidence must retain its own revision/date and limitations in the report. Hash matching does not prove report accuracy.",
+    "The default --feature value is unused for report modes; the manifest scope identifies the actual covered members/features."
+  ],
+  "improve": {
+    "next_step": "A human reviews checks and required assessments, then records their own decision using human_review.py with before/after evidence links."
+  }
+}

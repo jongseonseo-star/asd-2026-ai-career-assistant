@@ -1,0 +1,46 @@
+{
+  "base_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "changes": "Uncommitted local report-review additions. Not the deployed application.",
+  "files": [
+    {
+      "source_path": "ai-services/agentic_loop.py",
+      "snapshot": "ai-services__agentic_loop.py",
+      "sha256": "0d55bb0b5fe97172cf664ce630bd45ad6003d8ddabf32dab8deeb399af83fa7a"
+    },
+    {
+      "source_path": "ai-services/loop_evidence.py",
+      "snapshot": "ai-services__loop_evidence.py",
+      "sha256": "973f833a800e08263febeac0c361a1c974e7be79fafa923ff2a2bd90742d24ad"
+    },
+    {
+      "source_path": "ai-services/loop_report_reviews.py",
+      "snapshot": "ai-services__loop_report_reviews.py",
+      "sha256": "2bf3e427f8a7c246c2798763b3f048392d6004591b7f57e3ae99d35c39cfb65a"
+    },
+    {
+      "source_path": "ai-services/prompts/loop/implementation.txt",
+      "snapshot": "ai-services__prompts__loop__implementation.txt",
+      "sha256": "671282188e16d65146f1f5d3ba8b1e66e5d333481024bfb1d4ab6752ea309cb3"
+    },
+    {
+      "source_path": "ai-services/prompts/loop/review.txt",
+      "snapshot": "ai-services__prompts__loop__review.txt",
+      "sha256": "b8973a237e0612cfeb4f483db590c96211f448005cf1b5df17fff97081635f78"
+    },
+    {
+      "source_path": "ai-services/prompts/loop/ma_workflow.txt",
+      "snapshot": "ai-services__prompts__loop__ma_workflow.txt",
+      "sha256": "7d928a792d17d8447dc398f7296034004cfaa43d15e01b53753f78f935a0d259"
+    },
+    {
+      "source_path": "ai-services/prompts/loop/testing_report.txt",
+      "snapshot": "ai-services__prompts__loop__testing_report.txt",
+      "sha256": "cb9ae1ee4a361deebd2cc1d72d2e1cad2b6867db36169394130c101befffadb6"
+    },
+    {
+      "source_path": "ai-services/prompts/loop/cloud_deployment.txt",
+      "snapshot": "ai-services__prompts__loop__cloud_deployment.txt",
+      "sha256": "eca2bfb685f8237096b0a5c61f95415864a56ad1d99449eea3f235b17d9ea4f1"
+    }
+  ]
+}

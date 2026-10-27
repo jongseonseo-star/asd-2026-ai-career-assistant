@@ -1,0 +1,88 @@
+{
+  "checked_at_utc": "2026-10-26T23:53:55.140118+00:00",
+  "source_files_modified": false,
+  "secret_pattern_matches": [],
+  "zip_member_integrity": [
+    {
+      "zip": "artifacts/student-2-ci-evidence-40402532547.zip",
+      "member_count": 21,
+      "all_extracted_bytes_match_archive": true
+    },
+    {
+      "zip": "artifacts/student-3-evidence.zip",
+      "member_count": 1,
+      "all_extracted_bytes_match_archive": true
+    },
+    {
+      "zip": "artifacts/student-4-release1-evidence.zip",
+      "member_count": 4,
+      "all_extracted_bytes_match_archive": true
+    }
+  ],
+  "testing_manifest_integrity": [
+    {
+      "path": "testing_report-report.txt",
+      "exists": true,
+      "sha256_matches": true
+    },
+    {
+      "path": "../../evidence/inventory-local-and-security.json",
+      "exists": true,
+      "sha256_matches": true
+    },
+    {
+      "path": "../../evidence/github/endpoint-test-mapping.json",
+      "exists": true,
+      "sha256_matches": true
+    },
+    {
+      "path": "../../evidence/github/junit-count-audit.json",
+      "exists": true,
+      "sha256_matches": true
+    },
+    {
+      "path": "../../evidence/github/run-summary.json",
+      "exists": true,
+      "sha256_matches": true
+    },
+    {
+      "path": "../../evidence/github/collection-provenance.json",
+      "exists": true,
+      "sha256_matches": true
+    },
+    {
+      "path": "../../evidence/github/historical-security-summary.json",
+      "exists": true,
+      "sha256_matches": true
+    },
+    {
+      "path": "../../evidence/github/artifact-download-results.json",
+      "exists": true,
+      "sha256_matches": true
+    }
+  ],
+  "endpoint_mapping_check": [
+    {
+      "student": "student-2",
+      "endpoint_count": 2,
+      "test_evidence": {
+        "individual-PASS-verified": 9
+      }
+    },
+    {
+      "student": "student-3",
+      "endpoint_count": 2,
+      "test_evidence": {
+        "individual-PASS-verified": 4
+      }
+    },
+    {
+      "student": "student-4",
+      "endpoint_count": 2,
+      "test_evidence": {
+        "suite-PASS-scope-only": 9
+      }
+    }
+  ],
+  "new_tests_or_deployments_run": false
+}

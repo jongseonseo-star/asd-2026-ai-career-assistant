@@ -1,0 +1,133 @@
+{
+  "status": "ready_for_ui_verification",
+  "started_at": "2026-10-22T02:34:04.356550+00:00",
+  "source_root": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022",
+  "report_directory": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-runtime/20261022T023404Z-19913",
+  "ports": {
+    "mcp": 18765,
+    "rag": 18766,
+    "multi-agent": 18767
+  },
+  "checks": {
+    "prerequisites": {
+      "models": [
+        "llama3.1:8b",
+        "qwen2.5:7b"
+      ],
+      "ports_available": true
+    },
+    "rag-health": {
+      "documents": 10,
+      "embedding_dimensions": 256,
+      "retrieval_engine": "local-chroma",
+      "service": "shared-rag-server",
+      "status": "healthy"
+    },
+    "multi-agent-health": {
+      "agents": [
+        "planner",
+        "worker",
+        "reviewer"
+      ],
+      "release": "Release 2",
+      "service": "shared-multi-agent-server",
+      "status": "healthy",
+      "timestamp": "2026-10-22T02:34:05.167734+00:00"
+    },
+    "rag-vector-retrieval": {
+      "result_count": 3,
+      "refresh": {
+        "corpora": [
+          {
+            "chunk_count": 5,
+            "collection": "career-resume-5900e460f6cb47579501d4a8106f5a31",
+            "corpus_file": "corpus/career-resume-5900e460f6cb47579501d4a8106f5a31.jsonl",
+            "corpus_sha256": "21eadfc92a5c75418f63224ad16c88ebda31ecf38d5e7b81ea8de394a666e5b0",
+            "corpus_version": "dc2932081c97a40d98f302191baf96299ff5010c2d8d50b52fd9a6acd08b09ce",
+            "document_count": 4,
+            "embedding_dimensions": 256,
+            "embedding_version": "sha256-signed-token-hash-256-v1",
+            "feature": "resume",
+            "indexed_at": "2026-10-22T02:34:05.171654+00:00",
+            "previous_collection": "career-resume-eb2eb68112cc4b2c90b907304c52e64a",
+            "status": "success",
+            "vector_store_status": "ready"
+          }
+        ],
+        "status": "success"
+      }
+    },
+    "database-ready": {
+      "service": "student-2-database",
+      "status": "healthy"
+    },
+    "backend-ready": {
+      "dependencies": {
+        "database": {
+          "service": "student-2-database",
+          "status": "healthy"
+        }
+      },
+      "service": "student-2-backend",
+      "status": "ready"
+    },
+    "frontend-ready": {
+      "backend": {
+        "dependencies": {
+          "database": {
+            "service": "student-2-database",
+            "status": "healthy"
+          }
+        },
+        "service": "student-2-backend",
+        "status": "ready"
+      },
+      "service": "student-2-frontend",
+      "status": "ready"
+    },
+    "container-to-rag-and-multi-agent": {
+      "health": "passed"
+    },
+    "mcp-protocol": {
+      "tool_names": [
+        "resume_context",
+        "job_context",
+        "interview_context",
+        "refresh_corpus",
+        "retrieve_context",
+        "answer_question"
+      ],
+      "profile_id": 1,
+      "resume_id": 1,
+      "skill_count": 2
+    },
+    "backend-to-mcp": {
+      "status": "context-only",
+      "profile_id": 1,
+      "resume_id": 1
+    },
+    "backend-to-ollama": {
+      "configured_model": "llama3.1:8b",
+      "configured_model_available": true,
+      "installed_models": [
+        "qwen2.5:7b",
+        "qwen3:4b-instruct-2507-q4_K_M",
+        "llama3.1:8b",
+        "qwen2.5:0.5b"
+      ],
+      "mode": "mcp-rag",
+      "runtime": "Ollama",
+      "shared_ai_enabled": true,
+      "shared_services_status": "checked during feedback generation",
+      "status": "available"
+    },
+    "frontend-options": {
+      "profile_id": 1,
+      "resume_id": 1,
+      "new_tab": true
+    }
+  },
+  "model_workflow_verified": false,
+  "human_review_recorded": false,
+  "updated_at": "2026-10-22T02:34:20.038975+00:00"
+}

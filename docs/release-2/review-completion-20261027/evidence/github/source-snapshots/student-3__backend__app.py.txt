@@ -1,0 +1,1014 @@
+from __future__ import annotations
+
+import asyncio
+import json
+import os
+from pathlib import Path
+from typing import Any
+
+import requests
+from flask import Flask, jsonify, request
+
+BASE_DIR = Path(__file__).resolve().parent
+PROMPTS_DIR = BASE_DIR / "prompts"
+
+DATABASE_API_URL = os.getenv("DATABASE_API_URL", "http://127.0.0.1:5002").rstrip("/")
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
+PORT = int(os.getenv("PORT", "5001"))
+HOST = os.getenv("HOST", "127.0.0.1")
+DATABASE_TIMEOUT = float(os.getenv("DATABASE_TIMEOUT_SECONDS", "5"))
+OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "180"))
+MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://127.0.0.1:8765").rstrip("/")
+RAG_BASE_URL = os.getenv("RAG_BASE_URL", "http://127.0.0.1:8766").rstrip("/")
+MULTI_AGENT_SERVER_URL = os.getenv("MULTI_AGENT_SERVER_URL", "http://127.0.0.1:8767").rstrip("/")
+SHARED_AI_TIMEOUT = float(os.getenv("SHARED_AI_TIMEOUT_SECONDS", "5"))
+MULTI_AGENT_TIMEOUT = float(os.getenv("MULTI_AGENT_TIMEOUT_SECONDS", "180"))
+AI_SERVICES_ENABLED = os.getenv("AI_SERVICES_ENABLED", "false").lower() in {"1", "true", "yes"}
+OLLAMA_ENABLED = os.getenv("OLLAMA_ENABLED", "true").lower() in {"1", "true", "yes"}
+MULTI_AGENT_ENABLED = os.getenv("MULTI_AGENT_ENABLED", "true").lower() in {"1", "true", "yes"}
+
+app = Flask(__name__)
+session = requests.Session()
+
+
+class ClientInputError(Exception):
+    pass
+
+
+class DependencyError(Exception):
+    def __init__(self, dependency: str, message: str, status_code: int = 503) -> None:
+        super().__init__(message)
+        self.dependency = dependency
+        self.message = message
+        self.status_code = status_code
+
+
+@app.errorhandler(ClientInputError)
+def handle_client_input(error: ClientInputError):
+    return jsonify({"error": str(error)}), 400
+
+
+@app.errorhandler(DependencyError)
+def handle_dependency(error: DependencyError):
+    return jsonify({"error": error.message, "dependency": error.dependency}), error.status_code
+
+
+@app.errorhandler(404)
+def handle_404(_error):
+    return jsonify({"error": "Endpoint not found."}), 404
+
+
+@app.errorhandler(405)
+def handle_405(_error):
+    return jsonify({"error": "Method not allowed."}), 405
+
+
+@app.errorhandler(500)
+def handle_500(_error):
+    return jsonify({"error": "Internal backend service error."}), 500
+
+
+def require_json_object() -> dict[str, Any]:
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ClientInputError("A valid JSON object is required.")
+    return data
+
+
+def require_text(data: dict[str, Any], field: str, maximum_length: int) -> str:
+    value = data.get(field)
+    if not isinstance(value, str) or not value.strip():
+        raise ClientInputError(f"{field} is required.")
+    value = value.strip()
+    if len(value) > maximum_length:
+        raise ClientInputError(f"{field} must not exceed {maximum_length} characters.")
+    return value
+
+
+def require_positive_integer(data: dict[str, Any], field: str) -> int:
+    value = data.get(field)
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        raise ClientInputError(f"{field} must be a positive integer.")
+    return value
+
+
+def requested_ai_mode(data: dict[str, Any]) -> str:
+    mode = data.get("mode", "multi-agent" if AI_SERVICES_ENABLED else "ai")
+    if mode not in {"multi-agent", "multi-agent-loop15", "mcp", "mcp-rag", "ai"}:
+        raise ClientInputError("mode must be multi-agent, mcp, mcp-rag, or ai.")
+    if mode in {"multi-agent", "multi-agent-loop15", "mcp", "mcp-rag"} and not AI_SERVICES_ENABLED:
+        raise DependencyError("shared-ai", f"{mode} mode is disabled in this environment.")
+    if mode in {"multi-agent", "multi-agent-loop15"} and not MULTI_AGENT_ENABLED:
+        raise DependencyError("multi-agent-server", "Multi-Agent service is disabled in this environment.")
+    if mode in {"ai", "mcp-rag"} and not OLLAMA_ENABLED:
+        raise DependencyError("ollama", "AI generation is disabled in this environment.")
+    return mode
+
+
+def load_prompt(file_name: str) -> str:
+    try:
+        text = (PROMPTS_DIR / file_name).read_text(encoding="utf-8").strip()
+    except OSError as error:
+        raise DependencyError("prompt-assets", f"Unable to load prompt asset: {file_name}.", 500) from error
+    if not text:
+        raise DependencyError("prompt-assets", f"Prompt asset is empty: {file_name}.", 500)
+    return text
+
+
+def database_request(method: str, path: str, *, json_body: dict[str, Any] | None = None, params: dict[str, Any] | None = None) -> tuple[Any, int]:
+    try:
+        response = session.request(method, f"{DATABASE_API_URL}{path}", json=json_body, params=params, timeout=DATABASE_TIMEOUT)
+    except requests.Timeout as error:
+        raise DependencyError("student-3-database", "Database service request timed out.") from error
+    except requests.RequestException as error:
+        raise DependencyError("student-3-database", "Database service is unavailable.") from error
+
+    try:
+        payload = response.json()
+    except ValueError as error:
+        raise DependencyError("student-3-database", "Database service returned non-JSON data.", 502) from error
+
+    if response.status_code >= 500:
+        raise DependencyError("student-3-database", "Database service returned an internal error.")
+    return payload, response.status_code
+
+
+def proxy_database(method: str, path: str, *, json_body: dict[str, Any] | None = None, include_query: bool = False):
+    params = request.args.to_dict(flat=True) if include_query else None
+    payload, status = database_request(method, path, json_body=json_body, params=params)
+    return jsonify(payload), status
+
+
+async def call_mcp_tool(target_role: str, interview_type: str) -> dict[str, Any]:
+    from fastmcp import Client
+
+    clean_role = str(target_role).strip()[:200] or "General role"
+    clean_type = str(interview_type).strip()[:80] or "general"
+    async with Client(f"{MCP_BASE_URL}/mcp", timeout=SHARED_AI_TIMEOUT) as client:
+        result = await client.call_tool(
+            "interview_context",
+            arguments={"target_role": clean_role, "interview_type": clean_type},
+            timeout=SHARED_AI_TIMEOUT,
+        )
+    structured = getattr(result, "structured_content", None) or getattr(result, "structuredContent", None)
+    if isinstance(structured, dict):
+        return structured
+    for content in getattr(result, "content", []):
+        text = getattr(content, "text", "")
+        if text:
+            parsed = json.loads(text)
+            if isinstance(parsed, dict):
+                return parsed
+    raise ValueError("MCP returned no structured interview context.")
+
+
+def fetch_mcp_context(target_role: str, interview_type: str) -> dict[str, Any]:
+    clean_role = str(target_role).strip()[:200] or "General role"
+    clean_type = str(interview_type).strip()[:80] or "general"
+    try:
+        return asyncio.run(call_mcp_tool(clean_role, clean_type))
+    except Exception as error:
+        raise DependencyError("shared-ai-services", "MCP service is unavailable or rejected the request.") from error
+
+
+def shared_ai_context(*, target_role: str, interview_type: str, query: str) -> dict[str, Any]:
+    if not AI_SERVICES_ENABLED:
+        return {"mcp": {}, "retrieved_context": [], "sources": [], "confidence": "disabled"}
+    mcp_payload = fetch_mcp_context(target_role, interview_type)
+    try:
+        rag_response = session.post(
+            f"{RAG_BASE_URL}/retrieve",
+            json={"query": query, "top_k": 3, "feature": "interview"},
+            timeout=SHARED_AI_TIMEOUT,
+        )
+        rag_response.raise_for_status()
+        rag_payload = rag_response.json()
+    except (ImportError, asyncio.TimeoutError, requests.Timeout, requests.RequestException, ValueError) as error:
+        raise DependencyError("shared-ai-services", "MCP or RAG service is unavailable.") from error
+
+    results = rag_payload.get("results", []) if isinstance(rag_payload, dict) else []
+    if not isinstance(results, list):
+        results = []
+    texts = [item.get("text", "").strip() for item in results if isinstance(item, dict)]
+    sources = [
+        item.get("source") or item.get("source_uri") or item.get("chunk_id")
+        for item in results
+        if isinstance(item, dict) and (item.get("source") or item.get("source_uri") or item.get("chunk_id"))
+    ]
+    return {
+        "mcp": mcp_payload if isinstance(mcp_payload, dict) else {},
+        "retrieved_context": [t for t in texts if t],
+        "sources": sources,
+        "confidence": rag_payload.get("confidence", "low") if isinstance(rag_payload, dict) else "low",
+    }
+
+
+def insufficient_context_response(*, mode: str, context: dict[str, Any], **extra: Any) -> dict[str, Any]:
+    return {
+        **extra,
+        "mode": mode,
+        "status": "insufficient-context",
+        "model": "Not called",
+        "generation_metadata": {"called": False},
+        "mcp_result": context["mcp"],
+        "retrieved_context": context["retrieved_context"],
+        "sources": context["sources"],
+        "confidence": context["confidence"],
+        "feedback": "No approved interview guidance matched this request. No model was called.",
+    }
+
+
+def grounding_prompt(context: dict[str, Any]) -> str:
+    return "\n\nGROUNDED CONTEXT\n" + json.dumps(context, ensure_ascii=False, indent=2)
+
+
+def get_ollama_models(timeout: float | None = None) -> list[str]:
+    if not OLLAMA_ENABLED:
+        raise DependencyError("ollama", "AI generation is disabled in this environment.")
+    request_timeout = timeout if timeout is not None else OLLAMA_TIMEOUT
+    try:
+        response = session.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=request_timeout)
+        response.raise_for_status()
+        payload = response.json()
+    except requests.Timeout as error:
+        raise DependencyError("ollama", "Ollama status request timed out.") from error
+    except (requests.RequestException, ValueError) as error:
+        raise DependencyError("ollama", "Ollama is unavailable or returned invalid data.") from error
+    return [model["name"] for model in payload.get("models", []) if isinstance(model, dict) and model.get("name")]
+
+
+def call_ollama(system_prompt: str, user_prompt: str) -> str:
+    if not OLLAMA_ENABLED:
+        raise DependencyError("ollama", "AI generation is disabled in this environment.")
+    body = {
+        "model": OLLAMA_MODEL,
+        "stream": False,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        "options": {"temperature": 0.2, "num_predict": 500},
+    }
+    try:
+        response = session.post(f"{OLLAMA_BASE_URL}/api/chat", json=body, timeout=OLLAMA_TIMEOUT)
+    except requests.Timeout as error:
+        raise DependencyError("ollama", "Ollama interview generation timed out.") from error
+    except requests.RequestException as error:
+        raise DependencyError("ollama", "Ollama is unavailable.") from error
+
+    if response.status_code != 200:
+        raise DependencyError("ollama", f"Ollama could not run '{OLLAMA_MODEL}'. Check that the model is installed.")
+
+    try:
+        content = response.json().get("message", {}).get("content", "").strip()
+    except ValueError as error:
+        raise DependencyError("ollama", "Ollama returned non-JSON data.", 502) from error
+
+    if not content:
+        raise DependencyError("ollama", "Ollama returned an empty response.", 502)
+    return content
+
+
+def parse_json_text(raw_text: str) -> Any:
+    cleaned = raw_text.strip()
+    if cleaned.startswith("```"):
+        cleaned = cleaned.strip("`")
+        if cleaned.lower().startswith("json"):
+            cleaned = cleaned[4:].lstrip()
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError as error:
+        raise DependencyError("ollama", "Model returned invalid JSON.", 502) from error
+
+
+@app.get("/")
+def service_information():
+    return jsonify({
+        "service": "student-3-backend",
+        "feature": "Interview Preparation Management",
+        "release": "Release 2",
+        "database_api_url": DATABASE_API_URL,
+        "ollama_model": OLLAMA_MODEL,
+        "multi_agent_server_url": MULTI_AGENT_SERVER_URL,
+    }), 200
+
+
+@app.get("/health")
+def health():
+    return jsonify({"status": "healthy", "service": "student-3-backend"}), 200
+
+
+@app.get("/ready")
+def readiness():
+    database_health, status = database_request("GET", "/health")
+    if status != 200:
+        raise DependencyError("student-3-database", "Database service is not ready.")
+    return jsonify({"status": "ready", "service": "student-3-backend", "dependencies": {"database": database_health}}), 200
+
+
+@app.get("/api/v1/ai/status")
+def ai_status():
+    ollama_ok = False
+    models: list[str] = []
+    try:
+        models = get_ollama_models(timeout=min(DATABASE_TIMEOUT, 3.0))
+        ollama_ok = True
+    except Exception:
+        ollama_ok = False
+
+    configured_model_available = OLLAMA_MODEL in models if ollama_ok else False
+
+    mcp_status = "disabled"
+    if AI_SERVICES_ENABLED:
+        try:
+            mcp_res = session.get(f"{MCP_BASE_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 1.0))
+            mcp_status = "available" if mcp_res.status_code in {200, 204, 400, 404, 405} else "unavailable"
+        except Exception:
+            try:
+                mcp_res = session.get(f"{MCP_BASE_URL}/mcp", timeout=min(SHARED_AI_TIMEOUT, 1.0))
+                mcp_status = "available" if mcp_res.status_code in {200, 204, 400, 404, 405} else "unavailable"
+            except Exception:
+                mcp_status = "unavailable"
+
+    rag_status = "disabled"
+    if AI_SERVICES_ENABLED:
+        try:
+            rag_res = session.get(f"{RAG_BASE_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 1.0))
+            rag_status = "available" if rag_res.status_code == 200 else "unavailable"
+        except Exception:
+            rag_status = "unavailable"
+
+    multi_agent_status = "disabled"
+    if AI_SERVICES_ENABLED and MULTI_AGENT_ENABLED:
+        try:
+            ma_res = session.get(f"{MULTI_AGENT_SERVER_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 1.0))
+            multi_agent_status = "available" if ma_res.status_code == 200 else "unavailable"
+        except Exception:
+            multi_agent_status = "unavailable"
+
+    dependencies = {
+        "ollama": {
+            "status": "disabled" if not OLLAMA_ENABLED else "available" if ollama_ok else "unavailable",
+            "runtime": "Ollama",
+            "configured_model": OLLAMA_MODEL,
+            "configured_model_available": configured_model_available,
+            "installed_models": models,
+        },
+        "mcp": {
+            "status": mcp_status,
+            "enabled": AI_SERVICES_ENABLED,
+            "url": MCP_BASE_URL,
+        },
+        "rag": {
+            "status": rag_status,
+            "enabled": AI_SERVICES_ENABLED,
+            "url": RAG_BASE_URL,
+        },
+        "multi_agent": {
+            "status": multi_agent_status,
+            "enabled": AI_SERVICES_ENABLED and MULTI_AGENT_ENABLED,
+            "url": MULTI_AGENT_SERVER_URL,
+        },
+    }
+
+    return jsonify({
+        "status": "disabled" if not OLLAMA_ENABLED else "available" if ollama_ok else "unavailable",
+        "runtime": "Ollama",
+        "release": "Release 2",
+        "configured_model": OLLAMA_MODEL,
+        "configured_model_available": configured_model_available,
+        "installed_models": models,
+        "shared_ai_services_enabled": AI_SERVICES_ENABLED,
+        "mcp_server_url": MCP_BASE_URL,
+        "rag_server_url": RAG_BASE_URL,
+        "multi_agent_server_url": MULTI_AGENT_SERVER_URL,
+        "dependencies": dependencies,
+    }), 200
+
+
+@app.route("/api/v1/interview-sessions", methods=["GET", "POST"])
+def interview_sessions_collection():
+    if request.method == "GET":
+        return proxy_database("GET", "/api/v1/interview-sessions", include_query=True)
+    return proxy_database("POST", "/api/v1/interview-sessions", json_body=require_json_object())
+
+
+@app.route("/api/v1/interview-sessions/<int:session_id>", methods=["GET", "PUT", "DELETE"])
+def interview_session_item(session_id: int):
+    path = f"/api/v1/interview-sessions/{session_id}"
+    if request.method == "GET":
+        return proxy_database("GET", path)
+    if request.method == "DELETE":
+        return proxy_database("DELETE", path)
+    return proxy_database("PUT", path, json_body=require_json_object())
+
+
+@app.route("/api/v1/interview-sessions/<int:session_id>/questions", methods=["GET"])
+def interview_session_questions(session_id: int):
+    return proxy_database("GET", f"/api/v1/interview-sessions/{session_id}/questions")
+
+
+@app.route("/api/v1/interview-sessions/<int:session_id>/generate-questions", methods=["POST"])
+def generate_questions_for_session(session_id: int):
+    data = require_json_object()
+    mode = requested_ai_mode(data)
+    session_payload, status = database_request("GET", f"/api/v1/interview-sessions/{session_id}")
+    if status != 200:
+        return jsonify(session_payload), status
+
+    if "target_role" in data:
+        role = require_text(data, "target_role", 200)
+    else:
+        role = str(session_payload.get("target_role", "General role")).strip()[:200] or "General role"
+    raw_interview_type = data.get("interview_type", session_payload.get("interview_type", "general"))
+    interview_type = str(raw_interview_type).strip()[:80] or "general"
+    question_count = data.get("question_count", 5)
+    if isinstance(question_count, bool) or not isinstance(question_count, int):
+        raise ClientInputError("question_count must be an integer.")
+    if question_count < 1 or question_count > 10:
+        raise ClientInputError("question_count must be between 1 and 10.")
+
+    if mode in {"multi-agent", "multi-agent-loop15"}:
+        force_iter = 15 if mode == "multi-agent-loop15" or data.get("force_iterations") == 15 else data.get("force_iterations")
+        prep_body = {
+            "target_role": role,
+            "interview_type": interview_type,
+            "question_count": question_count,
+            "session_id": session_id,
+            "max_iterations": 15,
+        }
+        if force_iter:
+            prep_body["force_iterations"] = force_iter
+            prep_body["context"] = {"force_iterations": force_iter}
+
+        try:
+            ma_res = session.post(
+                f"{MULTI_AGENT_SERVER_URL}/interview/prep",
+                json=prep_body,
+                timeout=MULTI_AGENT_TIMEOUT,
+            )
+            ma_res.raise_for_status()
+            ma_payload = ma_res.json()
+        except (requests.Timeout, requests.RequestException, ValueError, Exception) as error:
+            raise DependencyError("multi-agent-server", "Multi-Agent service is unavailable or returned invalid data.") from error
+
+        items = ma_payload.get("questions", []) if isinstance(ma_payload, dict) else []
+        if not isinstance(items, list) or not items:
+            raise DependencyError("multi-agent-server", "Multi-Agent service did not return any interview questions.", 502)
+
+        is_pending_review = ma_payload.get("status") == "pending_human_review" or not ma_payload.get("approved", True)
+
+        created_questions = []
+        if not is_pending_review:
+            for item in items[:question_count]:
+                question = item if isinstance(item, dict) else {"question": str(item)}
+                question_text = question.get("question") or question.get("question_text") or str(question)
+                category = question.get("category") or interview_type or "general"
+                record, record_status = database_request(
+                    "POST",
+                    "/api/v1/interview-questions",
+                    json_body={
+                        "session_id": session_id,
+                        "category": str(category).strip()[:80],
+                        "question_text": str(question_text).strip()[:3000],
+                    },
+                )
+                if record_status != 201:
+                    return jsonify(record), record_status
+                created_questions.append(record)
+        else:
+            for idx, item in enumerate(items[:question_count]):
+                q_dict = item if isinstance(item, dict) else {"question": str(item)}
+                q_text = q_dict.get("question") or q_dict.get("question_text") or str(q_dict)
+                cat = q_dict.get("category") or interview_type or "general"
+                created_questions.append({
+                    "id": f"proposed-{idx + 1}",
+                    "session_id": session_id,
+                    "category": str(cat).strip()[:80],
+                    "question_text": str(q_text).strip()[:3000],
+                    "proposed": True,
+                })
+
+        return jsonify({
+            "session_id": session_id,
+            "status": ma_payload.get("status", "completed" if not is_pending_review else "pending_human_review"),
+            "run_id": ma_payload.get("run_id"),
+            "questions": created_questions,
+            "generated_questions": created_questions,
+            "count": len(created_questions),
+            "mode": mode,
+            "release": "Release 2",
+            "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human Review)",
+            "plan": ma_payload.get("plan"),
+            "review": ma_payload.get("review"),
+            "trajectory": ma_payload.get("trajectory"),
+            "iterations": ma_payload.get("iterations", 1),
+            "approved": not is_pending_review,
+            "human_decision": ma_payload.get("human_decision"),
+            "sources": ["multi-agent://planner", "multi-agent://worker", "multi-agent://reviewer", "multi-agent://human-review"],
+            "confidence": "high",
+        }), 200
+
+    if mode == "mcp":
+        mcp_context = fetch_mcp_context(role, interview_type)
+        questions_payload, questions_status = database_request("GET", f"/api/v1/interview-sessions/{session_id}/questions")
+        if questions_status != 200:
+            return jsonify(questions_payload), questions_status
+        return jsonify({
+            "session_id": session_id,
+            "mode": "mcp",
+            "status": "context-only",
+            "model": "Not called",
+            "generation_metadata": {"called": False},
+            "interview_session": session_payload,
+            "questions": questions_payload,
+            "mcp_result": mcp_context,
+            "feedback": "Current interview records and MCP context retrieved. No model was called.",
+        }), 200
+
+    context = shared_ai_context(target_role=role, interview_type=interview_type, query=f"{role} {interview_type} interview questions") if mode == "mcp-rag" else {"mcp": {}, "retrieved_context": [], "sources": [], "confidence": "disabled"}
+    if mode == "mcp-rag" and not context["retrieved_context"]:
+        return jsonify(insufficient_context_response(
+            mode=mode,
+            context=context,
+            session_id=session_id,
+            questions=[],
+            generated_questions=[],
+            count=0,
+        )), 200
+
+    prompt = f"{load_prompt('question_generation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'session_id': session_id, 'target_role': role, 'interview_type': interview_type, 'question_count': question_count}, ensure_ascii=False, indent=2)}{grounding_prompt(context)}"
+    model_output = call_ollama(load_prompt('system_prompt.txt'), prompt)
+    parsed = parse_json_text(model_output)
+    items = parsed.get("questions", []) if isinstance(parsed, dict) else []
+    if not isinstance(items, list) or not items:
+        raise DependencyError("ollama", "Ollama did not return any interview questions.", 502)
+
+    created_questions = []
+    for item in items[:question_count]:
+        question = item if isinstance(item, dict) else {"question": str(item)}
+        question_text = question.get("question") or question.get("question_text") or str(question)
+        category = question.get("category") or interview_type or "general"
+        record, record_status = database_request(
+            "POST",
+            "/api/v1/interview-questions",
+            json_body={
+                "session_id": session_id,
+                "category": str(category).strip()[:80],
+                "question_text": str(question_text).strip()[:3000],
+            },
+        )
+        if record_status != 201:
+            return jsonify(record), record_status
+        created_questions.append(record)
+
+    return jsonify({
+        "session_id": session_id,
+        "questions": created_questions,
+        "generated_questions": created_questions,
+        "count": len(created_questions),
+        "mode": mode,
+        "sources": context["sources"],
+        "confidence": context["confidence"],
+    }), 200
+
+
+@app.route("/api/v1/interview-questions", methods=["GET", "POST"])
+def interview_questions_collection():
+    if request.method == "GET":
+        return proxy_database("GET", "/api/v1/interview-questions", include_query=True)
+    return proxy_database("POST", "/api/v1/interview-questions", json_body=require_json_object())
+
+
+@app.route("/api/v1/interview-questions/<int:question_id>", methods=["GET", "PUT", "DELETE"])
+def interview_question_item(question_id: int):
+    path = f"/api/v1/interview-questions/{question_id}"
+    if request.method == "GET":
+        return proxy_database("GET", path)
+    if request.method == "DELETE":
+        return proxy_database("DELETE", path)
+    return proxy_database("PUT", path, json_body=require_json_object())
+
+
+@app.route("/api/v1/interview-responce", methods=["GET", "POST"])
+def interview_responses_collection():
+    if request.method == "GET":
+        return proxy_database("GET", "/api/v1/interview-responce", include_query=True)
+    return proxy_database("POST", "/api/v1/interview-responce", json_body=require_json_object())
+
+
+@app.route("/api/v1/interview-questions/<int:question_id>/evaluate-answer", methods=["POST"])
+def evaluate_answer(question_id: int):
+    data = require_json_object()
+    mode = requested_ai_mode(data)
+    if "answer" in data:
+        candidate_answer = require_text(data, "answer", 12000)
+    else:
+        candidate_answer = require_text(data, "user_answer", 12000)
+    question_payload, question_status = database_request("GET", f"/api/v1/interview-questions/{question_id}")
+    if question_status != 200:
+        return jsonify(question_payload), question_status
+    session_id = question_payload.get("session_id")
+    session_payload, session_status = database_request("GET", f"/api/v1/interview-sessions/{session_id}")
+    if session_status != 200:
+        return jsonify(session_payload), session_status
+
+    target_role = str(session_payload.get("target_role", "General")).strip()[:200] or "General"
+    interview_type = str(session_payload.get("interview_type", "general")).strip()[:80] or "general"
+
+    if mode in {"multi-agent", "multi-agent-loop15"}:
+        force_iter = 15 if mode == "multi-agent-loop15" or data.get("force_iterations") == 15 else data.get("force_iterations")
+        eval_body = {
+            "target_role": target_role,
+            "interview_type": interview_type,
+            "question_text": str(question_payload.get("question_text", "")).strip(),
+            "candidate_answer": candidate_answer,
+            "question_id": question_id,
+            "session_id": session_id,
+            "max_iterations": 15,
+        }
+        if force_iter:
+            eval_body["force_iterations"] = force_iter
+            eval_body["context"] = {"force_iterations": force_iter}
+
+        try:
+            ma_res = session.post(
+                f"{MULTI_AGENT_SERVER_URL}/interview/evaluate",
+                json=eval_body,
+                timeout=MULTI_AGENT_TIMEOUT,
+            )
+            ma_res.raise_for_status()
+            ma_payload = ma_res.json()
+        except (requests.Timeout, requests.RequestException, ValueError, Exception) as error:
+            raise DependencyError("multi-agent-server", "Multi-Agent service is unavailable or returned invalid data.") from error
+
+        score = float(ma_payload.get("score", 0.0) or 0.0)
+        score = min(max(score, 0.0), 100.0)
+        feedback_raw = ma_payload.get("feedback") or "Evaluated by Multi-Agent Coordinator."
+        tips_raw = ma_payload.get("improvement_tips")
+
+        if isinstance(feedback_raw, dict):
+            summary = feedback_raw.get("summary") or feedback_raw.get("assessment") or feedback_raw.get("feedback")
+            if not summary:
+                parts = []
+                if feedback_raw.get("strengths"):
+                    parts.append("Strengths: " + "; ".join(str(s) for s in feedback_raw["strengths"]))
+                if feedback_raw.get("gaps"):
+                    parts.append("Areas for improvement: " + "; ".join(str(g) for g in feedback_raw["gaps"]))
+                summary = " | ".join(parts) if parts else "Candidate response evaluated against rubric."
+            if not tips_raw and feedback_raw.get("improvement_tips"):
+                tips_raw = feedback_raw.get("improvement_tips")
+            feedback = str(summary)
+        else:
+            feedback = str(feedback_raw)
+
+        if not tips_raw:
+            tips_raw = ["Continue practicing structured communication."]
+        if isinstance(tips_raw, list):
+            tips = "; ".join(str(item).strip() for item in tips_raw if str(item).strip())
+        else:
+            tips = str(tips_raw).strip()
+
+        is_pending_review = ma_payload.get("status") == "pending_human_review" or not ma_payload.get("approved", True)
+
+        response_payload = None
+        if not is_pending_review:
+            response_payload, response_status = database_request(
+                "POST",
+                "/api/v1/interview-responce",
+                json_body={
+                    "question_id": question_id,
+                    "user_answer": candidate_answer,
+                    "ai_feedback": str(feedback).strip()[:4000],
+                    "score": score,
+                    "improvement_tips": str(tips).strip()[:4000],
+                },
+            )
+            if response_status != 201:
+                return jsonify(response_payload), response_status
+
+            answers_payload, answers_status = database_request("GET", "/api/v1/interview-responce", params={"question_id": question_id})
+            if answers_status == 200 and isinstance(answers_payload, list):
+                average = sum(float(item.get("score", 0) or 0) for item in answers_payload) / len(answers_payload)
+                update_payload, update_status = database_request("PUT", f"/api/v1/interview-sessions/{session_id}", json_body={"overall_score": round(average, 2)})
+                if update_status != 200:
+                    return jsonify(update_payload), update_status
+        else:
+            response_payload = {
+                "question_id": question_id,
+                "user_answer": candidate_answer,
+                "ai_feedback": str(feedback).strip()[:4000],
+                "score": score,
+                "improvement_tips": str(tips).strip()[:4000],
+                "pending_review": True,
+            }
+
+        return jsonify({
+            "session_id": session_id,
+            "question_id": question_id,
+            "candidate_answer": candidate_answer,
+            "status": ma_payload.get("status", "completed" if not is_pending_review else "pending_human_review"),
+            "run_id": ma_payload.get("run_id"),
+            "mode": mode,
+            "release": "Release 2",
+            "score": round(score, 2),
+            "feedback": str(feedback).strip(),
+            "improvement_tips": str(tips).strip(),
+            "response": response_payload,
+            "plan": ma_payload.get("plan"),
+            "review": ma_payload.get("review"),
+            "trajectory": ma_payload.get("trajectory"),
+            "iterations": ma_payload.get("iterations", 1),
+            "approved": not is_pending_review,
+            "human_decision": ma_payload.get("human_decision"),
+            "sources": ["multi-agent://planner", "multi-agent://worker", "multi-agent://reviewer", "multi-agent://human-review"],
+            "confidence": "high",
+        }), 200
+
+    if mode == "mcp":
+        mcp_context = fetch_mcp_context(target_role, interview_type)
+        return jsonify({
+            "session_id": session_id,
+            "question_id": question_id,
+            "mode": "mcp",
+            "status": "context-only",
+            "model": "Not called",
+            "generation_metadata": {"called": False},
+            "question": question_payload,
+            "interview_session": session_payload,
+            "mcp_result": mcp_context,
+            "feedback": "Current interview records and MCP context retrieved. No model was called.",
+        }), 200
+
+    context = shared_ai_context(target_role=target_role, interview_type=interview_type, query=f"{target_role} {question_payload.get('question_text', '')} interview evaluation") if mode == "mcp-rag" else {"mcp": {}, "retrieved_context": [], "sources": [], "confidence": "disabled"}
+    if mode == "mcp-rag" and not context["retrieved_context"]:
+        return jsonify(insufficient_context_response(
+            mode=mode,
+            context=context,
+            session_id=session_id,
+            question_id=question_id,
+            question=question_payload,
+            interview_session=session_payload,
+        )), 200
+
+    prompt = f"{load_prompt('response_evaluation_task.txt')}\n\nCONTROLLED CONTEXT\n{json.dumps({'target_role': target_role, 'question': question_payload.get('question_text', ''), 'candidate_answer': candidate_answer}, ensure_ascii=False, indent=2)}{grounding_prompt(context)}"
+    model_output = call_ollama(load_prompt('system_prompt.txt'), prompt)
+    parsed = parse_json_text(model_output)
+    if not isinstance(parsed, dict):
+        raise DependencyError("ollama", "Ollama returned an invalid evaluation payload.", 502)
+
+    score = parsed.get("score", 0)
+    if isinstance(score, bool) or not isinstance(score, (int, float)):
+        raise DependencyError("ollama", "Ollama evaluation did not include a numeric score.", 502)
+    score = float(score)
+    score = min(max(score, 0.0), 100.0)
+    feedback = parsed.get("feedback") or "The response was submitted for review."
+    tips_raw = parsed.get("improvement_tips") or "Keep practising with more concrete examples and clearer structure."
+    if isinstance(tips_raw, list):
+        tips = "; ".join(str(item).strip() for item in tips_raw if str(item).strip())
+    else:
+        tips = str(tips_raw).strip()
+
+    response_payload, response_status = database_request(
+        "POST",
+        "/api/v1/interview-responce",
+        json_body={
+            "question_id": question_id,
+            "user_answer": candidate_answer,
+            "ai_feedback": str(feedback).strip()[:4000],
+            "score": score,
+            "improvement_tips": str(tips).strip()[:4000],
+        },
+    )
+    if response_status != 201:
+        return jsonify(response_payload), response_status
+
+    answers_payload, answers_status = database_request("GET", "/api/v1/interview-responce", params={"question_id": question_id})
+    if answers_status == 200 and isinstance(answers_payload, list):
+        average = sum(float(item.get("score", 0) or 0) for item in answers_payload) / len(answers_payload)
+        update_payload, update_status = database_request("PUT", f"/api/v1/interview-sessions/{session_id}", json_body={"overall_score": round(average, 2)})
+        if update_status != 200:
+            return jsonify(update_payload), update_status
+
+    return jsonify({
+        "session_id": session_id,
+        "question_id": question_id,
+        "mode": mode,
+        "score": round(score, 2),
+        "feedback": str(feedback).strip(),
+        "improvement_tips": str(tips).strip(),
+        "response": response_payload,
+        "sources": context["sources"],
+        "confidence": context["confidence"],
+    }), 200
+
+
+@app.route("/api/v1/interview-sessions/<int:session_id>/multi-agent-prep", methods=["POST"])
+def session_multi_agent_prep(session_id: int):
+    data = request.get_json(silent=True) or {}
+    if not isinstance(data, dict):
+        raise ClientInputError("A valid JSON object is required.")
+    data["mode"] = "multi-agent"
+    with app.test_request_context(method="POST", json=data):
+        return generate_questions_for_session(session_id)
+
+
+@app.route("/api/v1/interview-sessions/<int:session_id>/human-review", methods=["POST"])
+def session_human_review(session_id: int):
+    data = require_json_object()
+    decision = data.get("decision", "Accept")
+    if decision not in {"Accept", "Partially Accept", "Reject"}:
+        raise ClientInputError("decision must be Accept, Partially Accept, or Reject.")
+    reviewer = str(data.get("reviewer", "User")).strip()[:200] or "User"
+    rationale = str(data.get("rationale") or data.get("reason", "")).strip()[:4000]
+    run_id = data.get("run_id")
+    raw_questions = data.get("questions") or []
+
+    session_payload, session_status = database_request("GET", f"/api/v1/interview-sessions/{session_id}")
+    if session_status != 200:
+        return jsonify(session_payload), session_status
+
+    ma_payload = {}
+    try:
+        ma_res = session.post(
+            f"{MULTI_AGENT_SERVER_URL}/interview/prep/decision",
+            json={
+                "run_id": run_id,
+                "session_id": session_id,
+                "decision": decision,
+                "reviewer": reviewer,
+                "rationale": rationale,
+                "questions": raw_questions,
+            },
+            timeout=MULTI_AGENT_TIMEOUT,
+        )
+        if ma_res.status_code == 200:
+            ma_payload = ma_res.json()
+    except Exception:
+        ma_payload = {}
+
+    created_questions = []
+    if decision in {"Accept", "Partially Accept"} and raw_questions:
+        for item in raw_questions:
+            q_dict = item if isinstance(item, dict) else {"question": str(item)}
+            q_text = q_dict.get("question_text") or q_dict.get("question") or str(q_dict)
+            cat = q_dict.get("category") or session_payload.get("interview_type") or "general"
+            record, record_status = database_request(
+                "POST",
+                "/api/v1/interview-questions",
+                json_body={
+                    "session_id": session_id,
+                    "category": str(cat).strip()[:80],
+                    "question_text": str(q_text).strip()[:3000],
+                },
+            )
+            if record_status == 201:
+                created_questions.append(record)
+
+    human_decision = {
+        "status": "recorded",
+        "role": f"Human — Final Decision Maker ({reviewer})",
+        "decision": decision,
+        "reviewer": reviewer,
+        "rationale": rationale,
+    }
+
+    return jsonify({
+        "session_id": session_id,
+        "status": "completed" if decision in {"Accept", "Partially Accept"} else "rejected",
+        "approved": decision in {"Accept", "Partially Accept"},
+        "decision": decision,
+        "human_decision": human_decision,
+        "questions": created_questions,
+        "count": len(created_questions),
+        "trajectory": ma_payload.get("trajectory", []),
+        "mode": "multi-agent",
+        "release": "Release 2",
+        "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human Review)",
+    }), 200
+
+
+@app.route("/api/v1/interview-questions/<int:question_id>/multi-agent-evaluate", methods=["POST"])
+def question_multi_agent_evaluate(question_id: int):
+    data = request.get_json(silent=True) or {}
+    if not isinstance(data, dict):
+        raise ClientInputError("A valid JSON object is required.")
+    data["mode"] = "multi-agent"
+    with app.test_request_context(method="POST", json=data):
+        return evaluate_answer(question_id)
+
+
+@app.route("/api/v1/interview-questions/<int:question_id>/human-review", methods=["POST"])
+def question_human_review(question_id: int):
+    data = require_json_object()
+    decision = data.get("decision", "Accept")
+    if decision not in {"Accept", "Partially Accept", "Reject"}:
+        raise ClientInputError("decision must be Accept, Partially Accept, or Reject.")
+    reviewer = str(data.get("reviewer", "User")).strip()[:200] or "User"
+    rationale = str(data.get("rationale") or data.get("reason", "")).strip()[:4000]
+    candidate_answer = str(data.get("candidate_answer") or data.get("user_answer") or data.get("answer") or "").strip()[:12000]
+    feedback = str(data.get("feedback") or "Evaluated by user.").strip()[:4000]
+    tips = str(data.get("improvement_tips") or "").strip()[:4000]
+    score = float(data.get("score", 75.0))
+    score = min(max(score, 0.0), 100.0)
+    run_id = data.get("run_id")
+
+    question_payload, question_status = database_request("GET", f"/api/v1/interview-questions/{question_id}")
+    if question_status != 200:
+        return jsonify(question_payload), question_status
+    session_id = question_payload.get("session_id")
+
+    ma_payload = {}
+    try:
+        ma_res = session.post(
+            f"{MULTI_AGENT_SERVER_URL}/interview/evaluate/decision",
+            json={
+                "run_id": run_id,
+                "question_id": question_id,
+                "session_id": session_id,
+                "decision": decision,
+                "reviewer": reviewer,
+                "rationale": rationale,
+                "score": score,
+            },
+            timeout=MULTI_AGENT_TIMEOUT,
+        )
+        if ma_res.status_code == 200:
+            ma_payload = ma_res.json()
+    except Exception:
+        ma_payload = {}
+
+    response_payload = None
+    if decision in {"Accept", "Partially Accept"}:
+        response_payload, response_status = database_request(
+            "POST",
+            "/api/v1/interview-responce",
+            json_body={
+                "question_id": question_id,
+                "user_answer": candidate_answer,
+                "ai_feedback": str(feedback).strip()[:4000],
+                "score": score,
+                "improvement_tips": str(tips).strip()[:4000],
+            },
+        )
+        if response_status != 201:
+            return jsonify(response_payload), response_status
+
+        answers_payload, answers_status = database_request("GET", "/api/v1/interview-responce", params={"question_id": question_id})
+        if answers_status == 200 and isinstance(answers_payload, list):
+            average = sum(float(item.get("score", 0) or 0) for item in answers_payload) / len(answers_payload)
+            update_payload, update_status = database_request("PUT", f"/api/v1/interview-sessions/{session_id}", json_body={"overall_score": round(average, 2)})
+            if update_status != 200:
+                return jsonify(update_payload), update_status
+
+    human_decision = {
+        "status": "recorded",
+        "role": f"Human — Final Decision Maker ({reviewer})",
+        "decision": decision,
+        "reviewer": reviewer,
+        "rationale": rationale,
+        "score": score,
+    }
+
+    return jsonify({
+        "session_id": session_id,
+        "question_id": question_id,
+        "status": "completed" if decision in {"Accept", "Partially Accept"} else "rejected",
+        "approved": decision in {"Accept", "Partially Accept"},
+        "decision": decision,
+        "human_decision": human_decision,
+        "score": score,
+        "feedback": feedback,
+        "improvement_tips": tips,
+        "response": response_payload,
+        "trajectory": ma_payload.get("trajectory", []),
+        "mode": "multi-agent",
+        "release": "Release 2",
+        "architecture": "Multi-Agent Coordination (Planner -> Worker -> Reviewer -> Human Review)",
+    }), 200
+
+
+@app.route("/api/v1/multi-agent/status", methods=["GET"])
+def multi_agent_server_status():
+    if not AI_SERVICES_ENABLED or not MULTI_AGENT_ENABLED:
+        return jsonify({
+            "status": "disabled",
+            "service": "shared-multi-agent-server",
+            "url": MULTI_AGENT_SERVER_URL,
+        }), 200
+    try:
+        res = session.get(f"{MULTI_AGENT_SERVER_URL}/health", timeout=min(SHARED_AI_TIMEOUT, 2.0))
+        return jsonify(res.json()), res.status_code
+    except Exception as error:
+        return jsonify({
+            "status": "unavailable",
+            "service": "shared-multi-agent-server",
+            "error": str(error),
+            "url": MULTI_AGENT_SERVER_URL,
+        }), 503
+
+
+if __name__ == "__main__":
+    app.run(host=HOST, port=PORT, debug=False)
+

@@ -1,0 +1,153 @@
+{
+  "kind": "derived_github_run_summary",
+  "generated_at_utc": "2026-10-26T23:52:10.542825+00:00",
+  "repository": "jongseonseo-star/asd-2026-ai-career-assistant",
+  "target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "main_commit_captured_at_utc": "2026-10-26 23:42:58 UTC",
+  "run": {
+    "id": 40402532547,
+    "name": "Cloud Deployment",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+    "run_attempt": 1,
+    "created_at": "2026-10-26T21:13:32Z",
+    "updated_at": "2026-10-26T21:18:52Z",
+    "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547"
+  },
+  "jobs": [
+    {
+      "id": 121853156693,
+      "name": "student-4 / validate-student-4",
+      "conclusion": "success",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "started_at": "2026-10-26T21:16:12Z",
+      "completed_at": "2026-10-26T21:18:21Z",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853156693",
+      "log": {
+        "label": "job-121853156693-student-4.log",
+        "path": "job-121853156693-student-4.log",
+        "sha256": "84fb532612eff51fadcc53b8846c946c1a0717cf9fe3932dc9d3cb392fb1c00c"
+      },
+      "test_summary_lines": [
+        {
+          "line": 561,
+          "text": "2026-10-26T21:17:10.8932620Z 276 passed, 2 subtests passed in 17.38s"
+        }
+      ]
+    },
+    {
+      "id": 121853157068,
+      "name": "student-3 / Build, Test, and Verify Compliance",
+      "conclusion": "success",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "started_at": "2026-10-26T21:16:12Z",
+      "completed_at": "2026-10-26T21:17:52Z",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853157068",
+      "log": {
+        "label": "job-121853157068-student-3.log",
+        "path": "job-121853157068-student-3.log",
+        "sha256": "9496724584bdb9685ceb06d912a14f58e078e6a29cc6b2b44dca330bdd086cae"
+      },
+      "test_summary_lines": [
+        {
+          "line": 418,
+          "text": "2026-10-26T21:16:35.6799118Z ============================== 12 passed in 0.44s =============================="
+        }
+      ]
+    },
+    {
+      "id": 121853157075,
+      "name": "validate-cloud",
+      "conclusion": "success",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "started_at": "2026-10-26T21:16:17Z",
+      "completed_at": "2026-10-26T21:18:19Z",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853157075",
+      "log": {
+        "label": "job-121853157075-validate-cloud.log",
+        "path": "job-121853157075-validate-cloud.log",
+        "sha256": "5c65f263372bcafeb31aaadad4d401430c076082ecc5ae6e87d11b9b9d7f4605"
+      },
+      "test_summary_lines": [
+        {
+          "line": 1682,
+          "text": "2026-10-26T21:17:45.7688836Z ============================== 7 passed in 0.11s ==============================="
+        }
+      ]
+    },
+    {
+      "id": 121853157112,
+      "name": "student-2 / Build, smoke-test, and collect evidence",
+      "conclusion": "success",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "started_at": "2026-10-26T21:16:11Z",
+      "completed_at": "2026-10-26T21:18:07Z",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121853157112",
+      "log": {
+        "label": "job-121853157112-student-2.log",
+        "path": "job-121853157112-student-2.log",
+        "sha256": "1a150955d85c71605f62c8e0bdf00dffcbbf760719c3c79a4bdd4756595c41d9"
+      },
+      "test_summary_lines": [
+        {
+          "line": 623,
+          "text": "2026-10-26T21:17:00.3522888Z 314 passed, 2 subtests passed in 15.55s"
+        }
+      ]
+    },
+    {
+      "id": 121854242098,
+      "name": "deploy",
+      "conclusion": "success",
+      "head_sha": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+      "started_at": "2026-10-26T21:18:23Z",
+      "completed_at": "2026-10-26T21:18:51Z",
+      "html_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/job/121854242098",
+      "log": {
+        "label": "job-121854242098-deploy.log",
+        "path": "job-121854242098-deploy.log",
+        "sha256": "3eadde43c804779240b471f71ff8429f69cfbbda48f5007beb5b655a5b4f0ff4"
+      },
+      "test_summary_lines": []
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12690240543,
+      "name": "student-3-evidence",
+      "size_in_bytes": 589,
+      "digest": "sha256:2919a770ab66649255970ea3d057af941881b646e1784e276d1aabd8d46e5c60",
+      "expired": false,
+      "created_at": "2026-10-26T21:17:49Z",
+      "expires_at": "2027-01-24T21:13:32Z",
+      "artifact_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/artifacts/12690240543"
+    },
+    {
+      "id": 12690075714,
+      "name": "student-2-ci-evidence-40402532547",
+      "size_in_bytes": 14429,
+      "digest": "sha256:82cc242668851e05cbdc972d03007e865172e4b63e05814f353ab4ffd835dcef",
+      "expired": false,
+      "created_at": "2026-10-26T21:18:05Z",
+      "expires_at": "2026-11-09T21:18:04Z",
+      "artifact_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/artifacts/12690075714"
+    },
+    {
+      "id": 12688349348,
+      "name": "student-4-release1-evidence",
+      "size_in_bytes": 1408,
+      "digest": "sha256:81dd0bbc7ac0c6f714b991c7ac0793e0d017fe7721130f376965421add18cb9f",
+      "expired": false,
+      "created_at": "2026-10-26T21:17:47Z",
+      "expires_at": "2027-01-24T21:13:32Z",
+      "artifact_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547/artifacts/12688349348"
+    }
+  ],
+  "new_executions_performed": false,
+  "security_gate_status_in_s2_artifact": "not-evaluated-in-this-workflow",
+  "limitations": [
+    "Workflow success establishes the recorded checks only. It does not establish independent model review completion, current security clearance or final human release approval.",
+    "Shared ai-services tests overlap S2/S4 suites; 314 and 276 are not disjoint tests and must not be added as unique coverage."
+  ]
+}

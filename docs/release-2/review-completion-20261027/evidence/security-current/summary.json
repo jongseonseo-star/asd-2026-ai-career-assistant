@@ -1,0 +1,350 @@
+{
+  "kind": "current_pre_commit_security_summary",
+  "generated_at_utc": "2026-10-27T00:12:50.325167+00:00",
+  "application_evidence_target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "tooling_identity": "Uncommitted report-review additions on the target baseline; raw input hashes identify actual local scan inputs.",
+  "pre_commit": {
+    "log_path": "evidence/security-current/pre-commit-current.log",
+    "original_log_path": "reviews/diagnostics/pre-commit-current.log",
+    "log_sha256": "8f0d536c1ecc4f4969dbab12d73078d0ea28140ba69a5f0e64a888dc23a41458",
+    "copied_log_sha256": "8f0d536c1ecc4f4969dbab12d73078d0ea28140ba69a5f0e64a888dc23a41458",
+    "hooks": {
+      "group-ruff-scan": "PASS",
+      "group-secrets-scan": "PASS",
+      "group-dependency-audit": "FAIL"
+    },
+    "dependency_hook_exit_code": 1,
+    "completed": true,
+    "dependency_failure_is_tool_error": false
+  },
+  "records": [
+    {
+      "student": "student-2",
+      "scan": "ruff",
+      "path": "evidence/security-current/student-2/security/ruff.json",
+      "sha256": "37eaa8a760c627212a480de905b4c7824de27cc4dc9df72c727e38a7f86047ca",
+      "copied_bytes_match_original": true,
+      "generated_at_utc": "2026-10-27T00:04:50.903531+00:00",
+      "passed": true,
+      "exit_code": 0,
+      "error": null,
+      "tool_version": "0.16.8",
+      "python": "3.12.12",
+      "scope": "Student 2 code; dependency audit also includes its shared AI runtime requirements.",
+      "shared_source_included": false,
+      "input_count": 59,
+      "current_recorded_input_hash_mismatches": [],
+      "finding_count": 0
+    },
+    {
+      "student": "student-2",
+      "scan": "secrets",
+      "path": "evidence/security-current/student-2/security/secrets.json",
+      "sha256": "406e4c8363d729b5928d3576ce2d72d1e8cae20c896c9f7a84d67fec93f69971",
+      "copied_bytes_match_original": true,
+      "generated_at_utc": "2026-10-27T00:04:51.309208+00:00",
+      "passed": true,
+      "exit_code": 0,
+      "error": null,
+      "tool_version": "1.5.0",
+      "python": "3.12.12",
+      "scope": "Student 2 code; dependency audit also includes its shared AI runtime requirements.",
+      "shared_source_included": false,
+      "input_count": 59,
+      "current_recorded_input_hash_mismatches": [],
+      "finding_count": 0
+    },
+    {
+      "student": "student-2",
+      "scan": "dependencies",
+      "path": "evidence/security-current/student-2/security/dependencies.json",
+      "sha256": "21ef0a6d4f257dc0cffedbbc7a90c0cfee84d1a56bc8a6d89ced4891091effbb",
+      "copied_bytes_match_original": true,
+      "generated_at_utc": "2026-10-27T00:04:52.961040+00:00",
+      "passed": false,
+      "exit_code": 1,
+      "error": null,
+      "tool_version": "2.10.1",
+      "python": "3.12.12",
+      "scope": "Student 2 code; dependency audit also includes its shared AI runtime requirements.",
+      "shared_source_included": false,
+      "input_count": 59,
+      "current_recorded_input_hash_mismatches": [],
+      "classification": "COMPLETED_VULNERABILITY_FAIL",
+      "requirements": [
+        "student-2/backend/requirements.txt",
+        "student-2/frontend/requirements.txt",
+        "student-2/database/requirements.txt",
+        "ai-services/requirements.txt"
+      ],
+      "package_count": 122,
+      "skipped_package_count": 0,
+      "vulnerability_record_count": 5,
+      "distinct_advisory_ids": [
+        "PYSEC-2026-311",
+        "PYSEC-2026-3813",
+        "PYSEC-2026-3814",
+        "PYSEC-2026-3815"
+      ],
+      "vulnerable_packages": [
+        {
+          "name": "chromadb",
+          "version": "1.5.9",
+          "skip_reason": null,
+          "vulnerabilities": [
+            {
+              "id": "PYSEC-2026-311",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-311",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-3814",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-3815",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-3813",
+              "fix_versions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "student": "student-3",
+      "scan": "ruff",
+      "path": "evidence/security-current/student-3/security/ruff.json",
+      "sha256": "39354672cf669685e1e486ae5464023a8824ce4f2cf3850fab88d25db85d6c0b",
+      "copied_bytes_match_original": true,
+      "generated_at_utc": "2026-10-27T00:04:51.155137+00:00",
+      "passed": true,
+      "exit_code": 0,
+      "error": null,
+      "tool_version": "0.16.8",
+      "python": "3.12.12",
+      "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+      "shared_source_included": false,
+      "input_count": 26,
+      "current_recorded_input_hash_mismatches": [],
+      "finding_count": 0
+    },
+    {
+      "student": "student-3",
+      "scan": "secrets",
+      "path": "evidence/security-current/student-3/security/secrets.json",
+      "sha256": "d9c20d342d6f091ab8c4850e646bd9b9708ec76d72e994553d77f847ca583b9c",
+      "copied_bytes_match_original": true,
+      "generated_at_utc": "2026-10-27T00:04:51.960046+00:00",
+      "passed": true,
+      "exit_code": 0,
+      "error": null,
+      "tool_version": "1.5.0",
+      "python": "3.12.12",
+      "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+      "shared_source_included": false,
+      "input_count": 26,
+      "current_recorded_input_hash_mismatches": [],
+      "finding_count": 0
+    },
+    {
+      "student": "student-3",
+      "scan": "dependencies",
+      "path": "evidence/security-current/student-3/security/dependencies.json",
+      "sha256": "2eede9b689f4867b6a8f6da23c995fe8429776c258682d62cd438c49b512fe9e",
+      "copied_bytes_match_original": true,
+      "generated_at_utc": "2026-10-27T00:05:13.353353+00:00",
+      "passed": false,
+      "exit_code": 1,
+      "error": null,
+      "tool_version": "2.10.1",
+      "python": "3.12.12",
+      "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+      "shared_source_included": false,
+      "input_count": 26,
+      "current_recorded_input_hash_mismatches": [],
+      "classification": "COMPLETED_VULNERABILITY_FAIL",
+      "requirements": [
+        "student-3/backend/requirements.txt",
+        "student-3/frontend/requirements.txt",
+        "student-3/database/requirements.txt",
+        "ai-services/requirements.txt"
+      ],
+      "package_count": 122,
+      "skipped_package_count": 0,
+      "vulnerability_record_count": 5,
+      "distinct_advisory_ids": [
+        "PYSEC-2026-311",
+        "PYSEC-2026-3813",
+        "PYSEC-2026-3814",
+        "PYSEC-2026-3815"
+      ],
+      "vulnerable_packages": [
+        {
+          "name": "chromadb",
+          "version": "1.5.9",
+          "skip_reason": null,
+          "vulnerabilities": [
+            {
+              "id": "PYSEC-2026-311",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-311",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-3814",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-3815",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-3813",
+              "fix_versions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "student": "student-4",
+      "scan": "ruff",
+      "path": "evidence/security-current/student-4/security/ruff.json",
+      "sha256": "f62272174bf5b050129531a504e17d1e1ac9c4935ad3fae7d7e21c0bffd998d8",
+      "copied_bytes_match_original": true,
+      "generated_at_utc": "2026-10-27T00:04:51.202235+00:00",
+      "passed": true,
+      "exit_code": 0,
+      "error": null,
+      "tool_version": "0.16.8",
+      "python": "3.12.12",
+      "scope": "student-4 code; dependency audit also includes the shared AI runtime requirements.",
+      "shared_source_included": false,
+      "input_count": 39,
+      "current_recorded_input_hash_mismatches": [],
+      "finding_count": 0
+    },
+    {
+      "student": "student-4",
+      "scan": "secrets",
+      "path": "evidence/security-current/student-4/security/secrets.json",
+      "sha256": "6790032af12c818313cf579268dec8e9535d8eb7cbc9f7e7c43e77ca3ffff662",
+      "copied_bytes_match_original": true,
+      "generated_at_utc": "2026-10-27T00:04:52.441506+00:00",
+      "passed": true,
+      "exit_code": 0,
+      "error": null,
+      "tool_version": "1.5.0",
+      "python": "3.12.12",
+      "scope": "student-4 code; dependency audit also includes the shared AI runtime requirements.",
+      "shared_source_included": false,
+      "input_count": 39,
+      "current_recorded_input_hash_mismatches": [],
+      "finding_count": 0
+    },
+    {
+      "student": "student-4",
+      "scan": "dependencies",
+      "path": "evidence/security-current/student-4/security/dependencies.json",
+      "sha256": "bcc916a9ee0f88b78ec128c545fd0713b75bbb70f179ab22fe7069f0c951bcfa",
+      "copied_bytes_match_original": true,
+      "generated_at_utc": "2026-10-27T00:05:19.527232+00:00",
+      "passed": false,
+      "exit_code": 1,
+      "error": null,
+      "tool_version": "2.10.1",
+      "python": "3.12.12",
+      "scope": "student-4 code; dependency audit also includes the shared AI runtime requirements.",
+      "shared_source_included": false,
+      "input_count": 39,
+      "current_recorded_input_hash_mismatches": [],
+      "classification": "COMPLETED_VULNERABILITY_FAIL",
+      "requirements": [
+        "student-4/backend/requirements.txt",
+        "student-4/frontend/requirements.txt",
+        "student-4/database/requirements.txt",
+        "ai-services/requirements.txt"
+      ],
+      "package_count": 122,
+      "skipped_package_count": 0,
+      "vulnerability_record_count": 5,
+      "distinct_advisory_ids": [
+        "PYSEC-2026-311",
+        "PYSEC-2026-3813",
+        "PYSEC-2026-3814",
+        "PYSEC-2026-3815"
+      ],
+      "vulnerable_packages": [
+        {
+          "name": "chromadb",
+          "version": "1.5.9",
+          "skip_reason": null,
+          "vulnerabilities": [
+            {
+              "id": "PYSEC-2026-311",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-311",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-3814",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-3815",
+              "fix_versions": []
+            },
+            {
+              "id": "PYSEC-2026-3813",
+              "fix_versions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "source_change_audit": {
+    "baseline_path": "evidence/github/shared-source-scan-audit.json",
+    "baseline_sha256": "5d267c5dea6750b878df7037d38032488db0738df1d5cdb932c7f9a4eefe0b54",
+    "baseline_generated_at_utc": "2026-10-27T00:03:55.561226+00:00",
+    "current_git_status": [
+      " M ai-services/README.md",
+      " M ai-services/agentic_loop.py",
+      " M ai-services/loop_evidence.py",
+      "?? ai-services/REPORT_REVIEWS.md",
+      "?? ai-services/loop_report_reviews.py",
+      "?? ai-services/prompts/loop/cloud_deployment.txt",
+      "?? ai-services/prompts/loop/ma_workflow.txt",
+      "?? ai-services/prompts/loop/testing_report.txt",
+      "?? ai-services/tests/test_report_reviews.py"
+    ],
+    "same_git_status_as_pre_hook_baseline": true,
+    "pre_hook_input_hash_source": "reviews/diagnostics/current-source-security/student-2/security/ruff.json",
+    "pre_hook_input_count": 111,
+    "pre_hook_input_hash_mismatches": [],
+    "hook_source_changes_detected": false,
+    "meaning": "The displayed working-tree diff contains pre-existing report-tool additions. All 111 recorded pre-hook source hashes still match; no hook source correction is evidenced. Security reports were written as expected."
+  },
+  "supplement_to_model_reviews": {
+    "present_in_frozen_review_inputs": false,
+    "role": "post-review evidence supplement",
+    "timing_note": "These scans occurred at 00:04-00:05 UTC, before Testing attempt 2 at 00:09 UTC, but their records were not included in its frozen input. No model reassessment using this supplement occurred."
+  },
+  "limitations": [
+    "Own-source Ruff/secret PASS does not include shared ai-services source (shared_source_included=false). The separately preserved Student 2 plus shared Ruff result remains FAIL with 16 findings.",
+    "Dependency audits include each student's three service requirement files and shared ai-services requirements. This is not proof those AI dependencies are installed in the cloud baseline.",
+    "Each dependency scan completed with 122 packages and the same Chroma 1.5.9 advisory result: five records, four distinct IDs, empty recorded fix-version lists. Empty lists do not establish whether a fix exists today.",
+    "These are local current-working-source pre-commit results, not a new GitHub CI run or a release approval.",
+    "Historical evidence was preserved; no scan, hook, fix, commit, push or model was run by this audit."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "started_at_utc": "2026-10-22T05:55:24.442626+00:00",
+  "runner": "reports/demo-20261022/run_terminal_multi_agent.py",
+  "runner_sha256": "405329160ba8fd15bdf3edf705dde2cf1612746154b6d0d611feb8d5625fb7fb",
+  "invocation": "User terminal; Python standard-library HTTP client",
+  "request": {
+    "profile_id": 1,
+    "resume_id": 1,
+    "job_description": ""
+  },
+  "automatic_retries": 0,
+  "human_decision_submitted": false,
+  "status": "completed_pending_human_review",
+  "http_requests": [
+    {
+      "label": "profile",
+      "method": "GET",
+      "url": "http://127.0.0.1:5001/api/v1/profiles/1",
+      "started_at_utc": "2026-10-22T05:55:24.442793+00:00",
+      "finished_at_utc": "2026-10-22T05:55:24.474800+00:00",
+      "http_status": 200,
+      "response_file": "profile.json",
+      "response_sha256": "0f8248b373baff25325326d5a45ac1f1c063399a8359cfc65e59fbdfd6b71bd5"
+    },
+    {
+      "label": "resume",
+      "method": "GET",
+      "url": "http://127.0.0.1:5001/api/v1/resumes/1",
+      "started_at_utc": "2026-10-22T05:55:24.475777+00:00",
+      "finished_at_utc": "2026-10-22T05:55:24.483935+00:00",
+      "http_status": 200,
+      "response_file": "resume.json",
+      "response_sha256": "f2aa9a096279cf0c2ce99d3f3fddd2dfa5d5c95b5249ad842ff35f0bd78f2794"
+    },
+    {
+      "label": "response",
+      "method": "POST",
+      "url": "http://127.0.0.1:5001/api/v1/ai/multi-agent/resume-review",
+      "started_at_utc": "2026-10-22T05:55:24.484433+00:00",
+      "finished_at_utc": "2026-10-22T05:55:52.852449+00:00",
+      "http_status": 200,
+      "response_file": "response.json",
+      "response_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328"
+    },
+    {
+      "label": "history",
+      "method": "GET",
+      "url": "http://127.0.0.1:5001/api/v1/ai/multi-agent/workflows/e8238b4a64494961b474cfea0d6e94c6",
+      "started_at_utc": "2026-10-22T05:55:52.857186+00:00",
+      "finished_at_utc": "2026-10-22T05:55:52.873343+00:00",
+      "http_status": 200,
+      "response_file": "history.json",
+      "response_sha256": "45a33ebf23d2c1dce4febab45be2199adeeed30782d9628d63ceed7afbdee328"
+    }
+  ],
+  "workflow_id": "e8238b4a64494961b474cfea0d6e94c6",
+  "checks": {
+    "resume_workflow": true,
+    "candidate_evidence_matches": true,
+    "pending_human_review": true,
+    "three_ordered_real_model_stages": true,
+    "structured_outputs_present": true,
+    "human_decision_pending": true,
+    "history_matches_response": true
+  },
+  "finished_at_utc": "2026-10-22T05:55:52.875423+00:00",
+  "elapsed_seconds": 28.432
+}

@@ -1,0 +1,462 @@
+{
+  "kind": "derived_historical_security_summary",
+  "generated_at_utc": "2026-10-26T23:52:10.542825+00:00",
+  "target_commit_for_review": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "execution_commit_of_historical_records": "UNVERIFIED",
+  "freshness_for_target_commit": "UNVERIFIED",
+  "students": [
+    {
+      "student": "student-2",
+      "records": [
+        {
+          "path": "security/student-2/completed-20261022/dependencies.json",
+          "sha256": "042d8f30c8ec5da67305b9a4e371645d2c9dfabbf183153651d9f02d9c1225b6",
+          "scan": "dependencies",
+          "generated_at_utc": "2026-10-22T03:06:58.962612+00:00",
+          "recorded_passed": false,
+          "recorded_exit_code": 1,
+          "derived_status": "FAIL",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [
+            {
+              "name": "chromadb",
+              "version": "1.5.9",
+              "vulnerabilities": [
+                {
+                  "id": "PYSEC-2026-311",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-311",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-3814",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-3815",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-3813",
+                  "fix_versions": []
+                }
+              ],
+              "skip_reason": null
+            }
+          ],
+          "tool_version": "2.10.1"
+        },
+        {
+          "path": "security/student-2/completed-20261022/ruff.json",
+          "sha256": "a6cff2cc280cd9e38fef6bf3ba706a352dd8fbcbb0a5f124e2536aad6baf7549",
+          "scan": "ruff",
+          "generated_at_utc": "2026-10-22T02:50:31.218953+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "0.16.8"
+        },
+        {
+          "path": "security/student-2/completed-20261022/secrets.json",
+          "sha256": "e8410dd4b993d686aceef4a8e0e9b7474c806be87fe6b29c71f5db417a300eb7",
+          "scan": "secrets",
+          "generated_at_utc": "2026-10-22T02:50:31.218958+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "1.5.0"
+        },
+        {
+          "path": "security/student-2/later-records-20261022/dependencies.json",
+          "sha256": "c47bc3fdbd78f2c44dd65611b4100d8fb735d0dba0d080b76a13f5cc73eddbb6",
+          "scan": "dependencies",
+          "generated_at_utc": "2026-10-22T08:24:35.353105+00:00",
+          "recorded_passed": false,
+          "recorded_exit_code": null,
+          "derived_status": "INCOMPLETE",
+          "error": "JSONDecodeError: scan could not complete; investigate locally.",
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "2.10.1"
+        },
+        {
+          "path": "security/student-2/later-records-20261022/ruff.json",
+          "sha256": "4f09b83ca5ca6a82c3e4117a2d2c941bb09e244f911fa6eb810f651aeb4226db",
+          "scan": "ruff",
+          "generated_at_utc": "2026-10-22T09:00:40.892960+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "0.16.8"
+        },
+        {
+          "path": "security/student-2/later-records-20261022/secrets.json",
+          "sha256": "edf7b46edc38ac5acefe9931f6766a9b4a120f64f683b8645071f39080fb197a",
+          "scan": "secrets",
+          "generated_at_utc": "2026-10-22T09:00:41.131016+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "1.5.0"
+        }
+      ]
+    },
+    {
+      "student": "student-3",
+      "records": [
+        {
+          "path": "security/student-3/completed-20261022/dependencies.json",
+          "sha256": "e0c44f6b0cf6902cd4ad2693361cd6bffed189102a6f76cacd2ded357329204a",
+          "scan": "dependencies",
+          "generated_at_utc": "2026-10-22T03:07:22.102416+00:00",
+          "recorded_passed": false,
+          "recorded_exit_code": 1,
+          "derived_status": "FAIL",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [
+            {
+              "name": "chromadb",
+              "version": "1.5.9",
+              "vulnerabilities": [
+                {
+                  "id": "PYSEC-2026-311",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-311",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-3814",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-3815",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-3813",
+                  "fix_versions": []
+                }
+              ],
+              "skip_reason": null
+            }
+          ],
+          "tool_version": "2.10.1"
+        },
+        {
+          "path": "security/student-3/completed-20261022/ruff.json",
+          "sha256": "35d60ed13e976049b2824161cdc5a6c6631816ae0ab60fda6f92aa613c3d3533",
+          "scan": "ruff",
+          "generated_at_utc": "2026-10-22T02:50:31.730379+00:00",
+          "recorded_passed": false,
+          "recorded_exit_code": 1,
+          "derived_status": "FAIL",
+          "error": null,
+          "finding_count": 7,
+          "findings": [
+            {
+              "file": "student-3/backend/app.py",
+              "line": 779,
+              "rule": "S104"
+            },
+            {
+              "file": "student-3/database/app.py",
+              "line": 147,
+              "rule": "S608"
+            },
+            {
+              "file": "student-3/database/app.py",
+              "line": 257,
+              "rule": "S608"
+            },
+            {
+              "file": "student-3/database/app.py",
+              "line": 374,
+              "rule": "S608"
+            },
+            {
+              "file": "student-3/database/app.py",
+              "line": 485,
+              "rule": "S608"
+            },
+            {
+              "file": "student-3/database/app.py",
+              "line": 500,
+              "rule": "S104"
+            },
+            {
+              "file": "student-3/frontend/app.py",
+              "line": 430,
+              "rule": "S104"
+            }
+          ],
+          "vulnerability_findings": [],
+          "tool_version": "0.16.8"
+        },
+        {
+          "path": "security/student-3/completed-20261022/secrets.json",
+          "sha256": "52cb1f52609d8ef45d0563c297ef514bafa20ca504c84b41960d97918ad54e8f",
+          "scan": "secrets",
+          "generated_at_utc": "2026-10-22T02:50:31.808037+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "1.5.0"
+        },
+        {
+          "path": "security/student-3/later-records-20261022/dependencies.json",
+          "sha256": "bc007feabf8eeada64c872adf0f20b2a4408a09c5f521274f1f315078c47d426",
+          "scan": "dependencies",
+          "generated_at_utc": "2026-10-22T08:24:52.437002+00:00",
+          "recorded_passed": false,
+          "recorded_exit_code": null,
+          "derived_status": "INCOMPLETE",
+          "error": "JSONDecodeError: scan could not complete; investigate locally.",
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "2.10.1"
+        },
+        {
+          "path": "security/student-3/later-records-20261022/ruff.json",
+          "sha256": "f8eba67c371aafd4e0afdceeda7d23401f678db686bdada82809c8839ad73a3c",
+          "scan": "ruff",
+          "generated_at_utc": "2026-10-22T09:00:40.978924+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "0.16.8"
+        },
+        {
+          "path": "security/student-3/later-records-20261022/secrets.json",
+          "sha256": "b745eaa54d6c82208013a2e1412aff17fec824d8acf9b424572538d544acb918",
+          "scan": "secrets",
+          "generated_at_utc": "2026-10-22T09:00:41.704297+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "1.5.0"
+        }
+      ]
+    },
+    {
+      "student": "student-4",
+      "records": [
+        {
+          "path": "security/student-4/completed-20261022/dependencies.json",
+          "sha256": "00ec9d4413a35e8b36aef914692735688a303b0a0bf81acd47a0af4ec8f63074",
+          "scan": "dependencies",
+          "generated_at_utc": "2026-10-22T03:07:27.791761+00:00",
+          "recorded_passed": false,
+          "recorded_exit_code": 1,
+          "derived_status": "FAIL",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [
+            {
+              "name": "chromadb",
+              "version": "1.5.9",
+              "vulnerabilities": [
+                {
+                  "id": "PYSEC-2026-311",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-311",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-3814",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-3815",
+                  "fix_versions": []
+                },
+                {
+                  "id": "PYSEC-2026-3813",
+                  "fix_versions": []
+                }
+              ],
+              "skip_reason": null
+            }
+          ],
+          "tool_version": "2.10.1"
+        },
+        {
+          "path": "security/student-4/completed-20261022/ruff.json",
+          "sha256": "8fa4cb874cb8092f87943e4b012db2dfcecebc4ad8836ae01851caaad3400e53",
+          "scan": "ruff",
+          "generated_at_utc": "2026-10-22T02:50:31.793018+00:00",
+          "recorded_passed": false,
+          "recorded_exit_code": 1,
+          "derived_status": "FAIL",
+          "error": null,
+          "finding_count": 12,
+          "findings": [
+            {
+              "file": "student-4/backend/app.py",
+              "line": 304,
+              "rule": "S104"
+            },
+            {
+              "file": "student-4/database/app.py",
+              "line": 95,
+              "rule": "S608"
+            },
+            {
+              "file": "student-4/database/app.py",
+              "line": 127,
+              "rule": "S608"
+            },
+            {
+              "file": "student-4/database/app.py",
+              "line": 138,
+              "rule": "S608"
+            },
+            {
+              "file": "student-4/database/app.py",
+              "line": 140,
+              "rule": "S608"
+            },
+            {
+              "file": "student-4/database/app.py",
+              "line": 150,
+              "rule": "S608"
+            },
+            {
+              "file": "student-4/database/app.py",
+              "line": 156,
+              "rule": "S608"
+            },
+            {
+              "file": "student-4/database/app.py",
+              "line": 159,
+              "rule": "S608"
+            },
+            {
+              "file": "student-4/database/app.py",
+              "line": 160,
+              "rule": "S608"
+            },
+            {
+              "file": "student-4/database/app.py",
+              "line": 167,
+              "rule": "S104"
+            },
+            {
+              "file": "student-4/frontend/app.py",
+              "line": 151,
+              "rule": "S104"
+            },
+            {
+              "file": "student-4/tests/test_release1.py",
+              "line": 69,
+              "rule": "S108"
+            }
+          ],
+          "vulnerability_findings": [],
+          "tool_version": "0.16.8"
+        },
+        {
+          "path": "security/student-4/completed-20261022/secrets.json",
+          "sha256": "031b4de30dc897cc4c8b8a88e50eadfbca21af37822eb3c2d3240b63d40d2ea3",
+          "scan": "secrets",
+          "generated_at_utc": "2026-10-22T02:50:32.254324+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "1.5.0"
+        },
+        {
+          "path": "security/student-4/later-records-20261022/dependencies.json",
+          "sha256": "89acebe8a85a6eb99125cb3401e5990449bf984b049dd0282146aab4349544d4",
+          "scan": "dependencies",
+          "generated_at_utc": "2026-10-22T08:25:09.536977+00:00",
+          "recorded_passed": false,
+          "recorded_exit_code": null,
+          "derived_status": "INCOMPLETE",
+          "error": "JSONDecodeError: scan could not complete; investigate locally.",
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "2.10.1"
+        },
+        {
+          "path": "security/student-4/later-records-20261022/ruff.json",
+          "sha256": "00887c63128b3517e1d6a7d32ee45b5d12e045ec13226185ba05b3449c3bdfde",
+          "scan": "ruff",
+          "generated_at_utc": "2026-10-22T09:00:41.022091+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "0.16.8"
+        },
+        {
+          "path": "security/student-4/later-records-20261022/secrets.json",
+          "sha256": "2b8f12d7b742f4ce75f47817c1f68575de61277fdb83d40940da11052a165f85",
+          "scan": "secrets",
+          "generated_at_utc": "2026-10-22T09:00:42.158319+00:00",
+          "recorded_passed": true,
+          "recorded_exit_code": 0,
+          "derived_status": "PASS",
+          "error": null,
+          "finding_count": 0,
+          "findings": [],
+          "vulnerability_findings": [],
+          "tool_version": "1.5.0"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Historical Oct 22 local scan records are not a fresh scan of the Oct 26 target commit.",
+    "Original passing static/secret checks do not overrule completed vulnerability failures or later incomplete dependency scans.",
+    "No new security scans were executed by this evidence collector."
+  ]
+}

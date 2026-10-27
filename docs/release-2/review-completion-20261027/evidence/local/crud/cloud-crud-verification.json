@@ -1,0 +1,97 @@
+{
+  "recorded_at_utc": "2026-10-22T03:50:02.166796+00:00",
+  "recorded_at_sydney": "2026-10-22T14:50:02.166796+11:00",
+  "status": "PASS",
+  "scope": "Current cloud Student 2 profile and resume CRUD through Safari Normal UI",
+  "home_url": "http://3.107.4.185/",
+  "navigation": "Clicked the Student 2 Resume & Profile link /resume/; Safari navigated to port 8082.",
+  "feature_url": "http://3.107.4.185:8082/",
+  "address_provenance": "Public EC2 evidence image docs/release-2/cloud/evidence/05-instance-running.jpg, followed by a live Safari response.",
+  "initial_counts": {
+    "profiles": 10,
+    "resumes": 10,
+    "skills": 20
+  },
+  "test_data": {
+    "classification": "Disposable synthetic cloud CRUD verification data",
+    "profile_id": 12,
+    "profile_name": "Cloud CRUD Verification 20261022",
+    "email": "cloud-crud-20261022@example.com",
+    "resume_id": 11,
+    "initial_resume_title": "Cloud CRUD Resume 20261022",
+    "updated_resume_title": "Cloud CRUD Resume 20261022 - Updated"
+  },
+  "checks": [
+    {
+      "step": "cloud_home_and_navigation",
+      "status": "PASS",
+      "observed": "Shared cloud home loaded; Student 2 link opened the profile UI; Backend and Database Ready."
+    },
+    {
+      "step": "create_profile",
+      "status": "PASS",
+      "observed": "Profile created notification; profile #12 displayed; profile count 11."
+    },
+    {
+      "step": "create_resume",
+      "status": "PASS",
+      "observed": "Resume created notification; resume #11 linked to profile #12; resume count 11."
+    },
+    {
+      "step": "update_profile",
+      "status": "PASS",
+      "observed": "Target role changed to Backend Developer - Cloud Verified and summary to UPDATED synthetic text; update notification displayed."
+    },
+    {
+      "step": "update_resume",
+      "status": "PASS",
+      "observed": "Title and content changed; Primary enabled; update notification displayed."
+    },
+    {
+      "step": "reload_and_read",
+      "status": "PASS",
+      "observed": "Full Safari reload retained updated profile and resume content, relationship and Primary badge; counts 11/11/20."
+    },
+    {
+      "step": "delete_resume",
+      "status": "PASS",
+      "observed": "Only test resume #11 deleted after UI confirmation; deletion success and resume count 10."
+    },
+    {
+      "step": "delete_profile",
+      "status": "PASS",
+      "observed": "Only test profile #12 deleted after named UI confirmation; deletion success and profile count 10."
+    },
+    {
+      "step": "reload_after_deletion",
+      "status": "PASS",
+      "observed": "Full reload showed test records absent, original profile and resume IDs 1-10 and counts 10/10/20; Backend and Database Ready."
+    }
+  ],
+  "final_counts": {
+    "profiles": 10,
+    "resumes": 10,
+    "skills": 20
+  },
+  "existing_records_modified_by_this_verification": false,
+  "observed_cloud_ai_state": {
+    "model_display": "Not configured",
+    "tabs": [
+      "Normal UI",
+      "AI Mode"
+    ],
+    "multi_agent_tab_present": false,
+    "ai_generation_tested": false
+  },
+  "deployment_evidence": {
+    "github_run_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/39535243335",
+    "conclusion": "success",
+    "head_sha": "19571e60d0db5482eb4936db2d954e80fe88c49a",
+    "live_runtime_sha_independently_verified": false
+  },
+  "limitations": [
+    "Current cloud version only; the local uncommitted Release 2 changes are not verified by this check.",
+    "UI reload persistence was verified, not service restart persistence or direct database contents.",
+    "This result does not change the failed security gate."
+  ]
+}

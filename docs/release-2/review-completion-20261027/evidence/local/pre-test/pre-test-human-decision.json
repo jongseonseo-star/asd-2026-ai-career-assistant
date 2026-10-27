@@ -1,0 +1,29 @@
+{
+  "status": "recorded",
+  "recorded_at": "2026-10-22T03:19:21.845463+00:00",
+  "reviewer": "Tomohisa Tamao",
+  "decision": "partially-accept",
+  "rationale": "I partially accept the assessment of the scan scope, failure handling and unresolved dependency vulnerabilities. I do not accept rerunning the audit alone as remediation. A verified remediation must be assessed and then checked with a fresh audit. No code or dependency remediation and no fresh security scan have been performed for this decision; the after reference is only a post-review check of saved evidence, which still reports FAIL. The security gate remains failed; this decision does not approve a commit, deployment or release.",
+  "reviewed_execution": {
+    "path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/pre-test-live.json",
+    "sha256": "5b29f1ab64e7a739dccd7b2f56cb83cfe83a3db75f9436b4e351ee998ede6490"
+  },
+  "before": [
+    {
+      "path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/pre-test-live.json",
+      "sha256": "5b29f1ab64e7a739dccd7b2f56cb83cfe83a3db75f9436b4e351ee998ede6490"
+    }
+  ],
+  "after": [
+    {
+      "path": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/demo-ready-20261022/reports/demo-20261022/pre-test-post-review-evidence-check.json",
+      "sha256": "25e82b56c0d4ca9272e25146736945247e131fb395b1690768376277f46612ca"
+    }
+  ],
+  "automated_result_unchanged": {
+    "passed": false,
+    "checks_passed": false,
+    "meaning": "Saved-evidence consistency and assessment execution only; not a fresh scan, final GitHub conclusion, security exception, or human approval."
+  },
+  "meaning": "Explicit reviewer-supplied decision about recommendations; not automatic approval, a signature, or proof of group completion."
+}

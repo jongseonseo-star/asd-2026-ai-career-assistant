@@ -1,0 +1,70 @@
+[
+  {
+    "id": 12690240543,
+    "name": "student-3-evidence",
+    "expected_digest": "sha256:2919a770ab66649255970ea3d057af941881b646e1784e276d1aabd8d46e5c60",
+    "source_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/artifacts/12690240543/zip",
+    "bytes": 589,
+    "sha256": "sha256:2919a770ab66649255970ea3d057af941881b646e1784e276d1aabd8d46e5c60",
+    "digest_matches": true,
+    "status": "downloaded-and-extracted",
+    "archive": "artifacts/student-3-evidence.zip",
+    "directory": "artifacts/student-3-evidence",
+    "members": [
+      "student-3-docker.log"
+    ]
+  },
+  {
+    "id": 12690075714,
+    "name": "student-2-ci-evidence-40402532547",
+    "expected_digest": "sha256:82cc242668851e05cbdc972d03007e865172e4b63e05814f353ab4ffd835dcef",
+    "source_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/artifacts/12690075714/zip",
+    "bytes": 14429,
+    "sha256": "sha256:82cc242668851e05cbdc972d03007e865172e4b63e05814f353ab4ffd835dcef",
+    "digest_matches": true,
+    "status": "downloaded-and-extracted",
+    "archive": "artifacts/student-2-ci-evidence-40402532547.zip",
+    "directory": "artifacts/student-2-ci-evidence-40402532547",
+    "members": [
+      "ai-feedback-disabled-http-code.txt",
+      "ai-feedback-disabled.json",
+      "ai-status-http-code.txt",
+      "ai-status.json",
+      "backend-ai-configuration.json",
+      "backend-readiness.json",
+      "compose-logs.txt",
+      "compose-ps.txt",
+      "database-health.json",
+      "frontend-readiness.json",
+      "profiles.json",
+      "pytest-results.xml",
+      "pytest.log",
+      "report.json",
+      "report.md",
+      "resumes.json",
+      "run-view.md",
+      "seed-counts.json",
+      "skills.json",
+      "test-audit.jsonl",
+      "test-results.md"
+    ]
+  },
+  {
+    "id": 12688349348,
+    "name": "student-4-release1-evidence",
+    "expected_digest": "sha256:81dd0bbc7ac0c6f714b991c7ac0793e0d017fe7721130f376965421add18cb9f",
+    "source_url": "https://api.github.com/repos/jongseonseo-star/asd-2026-ai-career-assistant/actions/artifacts/12688349348/zip",
+    "bytes": 1408,
+    "sha256": "sha256:81dd0bbc7ac0c6f714b991c7ac0793e0d017fe7721130f376965421add18cb9f",
+    "digest_matches": true,
+    "status": "downloaded-and-extracted",
+    "archive": "artifacts/student-4-release1-evidence.zip",
+    "directory": "artifacts/student-4-release1-evidence",
+    "members": [
+      "seed-counts.json",
+      "student-4-compose-ps.txt",
+      "ai-services-status.json",
+      "student-4-compose.log"
+    ]
+  }
+]

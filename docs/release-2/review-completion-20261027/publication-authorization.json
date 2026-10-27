@@ -1,0 +1,20 @@
+{
+  "recorded_at_utc": "2026-10-27T02:44:54Z",
+  "actor": "Tomohisa Tamao (Student 2)",
+  "question": "新しいレビュー機能と証拠はGitHub保存用に準備済みですが、既存のコミット前チェックでChromaDBの依存監査がFAILです。今回の保存コミット1回だけ依存監査hookをスキップし、専用ブランチへ保存してdraft PRを作ってよいですか？通常のRuff・秘密情報チェックは実行し、未解決の検査結果とrelease差戻しを記録します。mainへの統合や再配備は含みません。",
+  "answer_verbatim": "今回1回の例外と専用ブランチのdraft PR作成を承認",
+  "scope": {
+    "commit_limit": 1,
+    "skip_hook": "group-dependency-audit",
+    "other_hooks_enabled": [
+      "group-ruff-scan",
+      "group-secrets-scan"
+    ],
+    "branch": "student2-release2-report-reviews",
+    "draft_pr": true,
+    "merge": false,
+    "deploy": false
+  },
+  "release_decision_unchanged": "return-for-rework",
+  "note": "Recorded after receiving the response; recorded_at is not asserted to be the response timestamp."
+}

@@ -1,0 +1,40 @@
+{
+  "recorded_at_utc": "2026-10-22T02:31:42.552039+00:00",
+  "verification_method": "Safari UI observations and local persisted workflow records",
+  "startup_checks": "12 passed; see status.json",
+  "original_ai": {
+    "status": "observed_success_before_restart",
+    "model": "llama3.1:8b",
+    "human_approval_recorded": false
+  },
+  "rag": {
+    "status": "observed_success",
+    "model": "llama3.1:8b",
+    "profile_id": 1,
+    "resume_id": 1,
+    "ui_result_label": "MCP + RAG RESULT",
+    "observed_findings": [
+      "Python 2.0 years",
+      "Flask 1.0 year",
+      "Docker, automated testing and cloud deployment experience not demonstrated"
+    ],
+    "guidance_source": "repo://ai-services/knowledge/resume/evidence-boundaries.md#chunk-1",
+    "retrieval_confidence": "Medium",
+    "raw_model_response_visible": true,
+    "human_approval_recorded": false
+  },
+  "multi_agent": {
+    "status": "failed",
+    "workflow_id": "d6e37bf9f59244599e9f9180db741005",
+    "planner": "completed with valid string evidence IDs",
+    "worker": "completed structurally, but falsely described documented Flask and REST API experience as absent",
+    "reviewer": "failed validation because reason was empty; its supported verdict was also inconsistent with candidate evidence",
+    "human_decision": "pending; no decision recorded"
+  },
+  "pending_fix": {
+    "status": "implemented_on_disk_restart_required",
+    "scope": "Worker evidence comparison and Reviewer contradiction checks / nonempty reason JSON template",
+    "offline_multi_agent_tests_passed": 17,
+    "actual_model_success_after_fix": false
+  }
+}

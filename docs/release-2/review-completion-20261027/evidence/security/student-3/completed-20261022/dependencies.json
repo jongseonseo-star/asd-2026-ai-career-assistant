@@ -1,0 +1,830 @@
+{
+  "scan": "dependencies",
+  "generated_at_utc": "2026-10-22T03:07:22.102416+00:00",
+  "python": "3.12.12",
+  "passed": false,
+  "scope": "student-3 code; dependency audit also includes the shared AI runtime requirements.",
+  "student": "student-3",
+  "shared_source_included": false,
+  "input_sha256": {
+    ".pre-commit-config.yaml": "7f3798b019c0460176e478d474ebcad622c04642a3de12fcd3784672a7de0081",
+    "ai-services/requirements.txt": "ed254d52de0bcb4acaab30282d26590164d369586e5a64354ef29edd969c2212",
+    "scripts/security-ruff.toml": "5221dd386ab4950a6ca5a8ac20c1cee77146735765ef7178e824346fde645f79",
+    "scripts/security_checks.py": "605af0792308c761e8c8c559e75dcb7f69d021fcfc1a30d4c4a279e042cda145",
+    "student-2/security_checks.py": "6f3cc2f366046b045607cb14b8e04280b9d1cca15b740d7af16b2286c4769740",
+    "student-3/README.md": "a176ca478e37a1c48b03618e5ff0e2bd311a591bd533627b42d07ec46117119e",
+    "student-3/backend/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "student-3/backend/Dockerfile": "8a05cc8ccb258a9983f80e3b534d8982644521218dcaaac26f5d680ecc337c08",
+    "student-3/backend/app.py": "c5fd7683f3a18a26381aafe296962d264de78b44cad729872267df647bfeb614",
+    "student-3/backend/prompts/question_generation_task.txt": "2d67b175ef90be8ea2dc9a3b68c4272d8f6112763522ff236af5770f145e5f62",
+    "student-3/backend/prompts/response_evaluation_task.txt": "ea963da78f272507ea156410bdf2c7726ff13312ea07adf53db8c9fc8f5110ab",
+    "student-3/backend/prompts/system_prompt.txt": "67f42750ff2bb2b9ff212b25bc92f1e806463505504b8127b904ff2febe9773f",
+    "student-3/backend/requirements.txt": "efcd46f86c0a9283e1576bfd3312852c8555178fc78884a35ccadd1b014614f9",
+    "student-3/compose.local.yml": "57baac1719fbcaa3f958b9dc861912567762b643b0376cdb2ba789bd1ed1422b",
+    "student-3/database/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "student-3/database/Dockerfile": "ee4c39f89282f7a2b7c909470f1b0b847e733c86d2c7b9eb34cce5b25201bb4f",
+    "student-3/database/app.py": "a608e1d4169d7a0e11ac95e1c14513e6d7e0c7b807f8e62d66342f13d665735b",
+    "student-3/database/init_db.py": "d4f33e7a7e79908f1e9e2916db53856e99ca62168c37c45f3b20ad678b67e264",
+    "student-3/database/requirements.txt": "b23e013f1f0fcfa742c93fb444d599582462d25c96a829c2fdb624d0fec6960d",
+    "student-3/frontend/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "student-3/frontend/Dockerfile": "4c1f269c41daced0830b7ed742aabbbc37bb070f32d8a2fa0edd60be61042e96",
+    "student-3/frontend/app.py": "2ecdccb6b958267301688e59938695481753ed98e999c3fbd9ecaff37e2f35ad",
+    "student-3/frontend/requirements.txt": "f599b89fd79c5099e4b4ba0488650f2bf612eb789bd4df0b54747dc210dcb01b",
+    "student-3/tests/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "student-3/tests/test_interview_service.py": "3d6a9fa4b7591e57f0993264ad0c81573fcc5722919b0bebed7e5dc082139401",
+    "student-3/tests/test_multi_agent_interview.py": "e981edd60f9236abb73f862fa196f22f76ed8983bcc0e7dafb24a9ed1b56b938"
+  },
+  "tool_version": "2.10.1",
+  "requirements": [
+    "student-3/backend/requirements.txt",
+    "student-3/frontend/requirements.txt",
+    "student-3/database/requirements.txt",
+    "ai-services/requirements.txt"
+  ],
+  "dependencies": [
+    {
+      "name": "flask",
+      "version": "3.1.3",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "fastmcp",
+      "version": "4.1.3",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "fastmcp-slim",
+      "version": "4.1.3",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "chromadb",
+      "version": "1.5.9",
+      "skip_reason": null,
+      "vulnerabilities": [
+        {
+          "id": "PYSEC-2026-311",
+          "fix_versions": []
+        },
+        {
+          "id": "PYSEC-2026-311",
+          "fix_versions": []
+        },
+        {
+          "id": "PYSEC-2026-3814",
+          "fix_versions": []
+        },
+        {
+          "id": "PYSEC-2026-3815",
+          "fix_versions": []
+        },
+        {
+          "id": "PYSEC-2026-3813",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "name": "pyyaml",
+      "version": "6.0.3",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.2",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "idna",
+      "version": "3.20",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "mcp",
+      "version": "2.3.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "mcp-types",
+      "version": "2.3.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "py-key-value-aio",
+      "version": "0.4.6",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "aiofile",
+      "version": "3.12.3",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "caio",
+      "version": "0.12.9",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "anyio",
+      "version": "4.15.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "authlib",
+      "version": "1.9.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "bcrypt",
+      "version": "5.0.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "beartype",
+      "version": "0.23.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "blinker",
+      "version": "1.9.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "build",
+      "version": "1.6.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "cachetools",
+      "version": "7.2.4",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.19",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "click",
+      "version": "8.5.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.2",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "cyclopts",
+      "version": "5.2.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "docstring-parser",
+      "version": "0.18.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "rich-rst",
+      "version": "2.2.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "exceptiongroup",
+      "version": "1.3.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "griffelib",
+      "version": "2.4.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "grpcio",
+      "version": "1.84.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "httpx2",
+      "version": "2.16.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "httpcore2",
+      "version": "2.16.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "itsdangerous",
+      "version": "2.2.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "jinja2",
+      "version": "3.1.6",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "joserfc",
+      "version": "1.7.7",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "jsonref",
+      "version": "1.1.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "jsonschema-path",
+      "version": "0.5.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pathable",
+      "version": "0.6.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "keyring",
+      "version": "25.7.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "kubernetes",
+      "version": "37.0.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "aiohttp",
+      "version": "3.14.5",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "multidict",
+      "version": "7.1.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "yarl",
+      "version": "1.25.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "aiohappyeyeballs",
+      "version": "2.7.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "aiohttp-retry",
+      "version": "2.9.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "aiosignal",
+      "version": "1.4.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "durationpy",
+      "version": "0.11",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "frozenlist",
+      "version": "1.8.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "markupsafe",
+      "version": "3.0.4",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "mmh3",
+      "version": "5.3.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.4",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "onnxruntime",
+      "version": "1.31.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "openapi-pydantic",
+      "version": "0.6.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.45.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "opentelemetry-exporter-otlp-proto-grpc",
+      "version": "1.45.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "opentelemetry-exporter-otlp-common",
+      "version": "0.66b1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "opentelemetry-exporter-otlp-proto-common",
+      "version": "1.45.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "opentelemetry-proto",
+      "version": "1.45.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "googleapis-common-protos",
+      "version": "1.75.5",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "opentelemetry-sdk",
+      "version": "1.45.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "opentelemetry-semantic-conventions",
+      "version": "0.66b1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.2",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "orjson",
+      "version": "3.13.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "overrides",
+      "version": "7.7.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "platformdirs",
+      "version": "4.13.5",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "propcache",
+      "version": "0.5.4",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pybase64",
+      "version": "1.5.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pydantic",
+      "version": "2.14.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.50.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pydantic-settings",
+      "version": "2.16.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "email-validator",
+      "version": "2.3.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "dnspython",
+      "version": "2.9.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pygments",
+      "version": "2.21.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pyjwt",
+      "version": "2.15.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pyperclip",
+      "version": "1.11.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pypika",
+      "version": "0.51.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "python-dateutil",
+      "version": "3.0.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.2.4",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "python-multipart",
+      "version": "0.0.32",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "rich",
+      "version": "15.0.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.2.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.9.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "sse-starlette",
+      "version": "3.5.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "starlette",
+      "version": "1.9.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "tenacity",
+      "version": "9.2.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "tokenizers",
+      "version": "0.23.3",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "huggingface-hub",
+      "version": "2.2.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "hf-xet",
+      "version": "1.7.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "filelock",
+      "version": "4.2.4",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "fsspec",
+      "version": "2026.9.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "truststore",
+      "version": "0.10.5",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "typer",
+      "version": "0.27.3",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "shellingham",
+      "version": "1.5.4",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.4",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "uncalled-for",
+      "version": "0.4.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.54.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "httptools",
+      "version": "0.9.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "uvloop",
+      "version": "0.23.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "watchfiles",
+      "version": "1.3.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "websocket-client",
+      "version": "1.9.2",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "websockets",
+      "version": "17.3",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "werkzeug",
+      "version": "3.1.9",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "flatbuffers",
+      "version": "25.12.19",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "importlib-resources",
+      "version": "7.1.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "jaraco-classes",
+      "version": "3.4.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "jaraco-context",
+      "version": "6.1.2",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "jaraco-functools",
+      "version": "4.6.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "more-itertools",
+      "version": "11.2.1",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pycparser",
+      "version": "3.11",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "pyproject-hooks",
+      "version": "1.3.3",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "requests-oauthlib",
+      "version": "2.0.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "oauthlib",
+      "version": "4.0.0",
+      "skip_reason": null,
+      "vulnerabilities": []
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.5",
+      "skip_reason": null,
+      "vulnerabilities": []
+    }
+  ],
+  "exit_code": 1
+}

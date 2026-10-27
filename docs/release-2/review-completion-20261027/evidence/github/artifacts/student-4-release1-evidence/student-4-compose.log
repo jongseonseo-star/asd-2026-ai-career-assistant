@@ -1,0 +1,37 @@
+student-4-database-1  |  * Serving Flask app 'app'
+student-4-database-1  |  * Debug mode: off
+student-4-frontend-1  |  * Serving Flask app 'app'
+student-4-frontend-1  |  * Debug mode: off
+student-4-frontend-1  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+student-4-frontend-1  |  * Running on all addresses (0.0.0.0)
+student-4-frontend-1  |  * Running on http://127.0.0.1:8404
+student-4-frontend-1  |  * Running on http://172.18.0.4:8404
+student-4-frontend-1  | [33mPress CTRL+C to quit[0m
+student-4-frontend-1  | 172.18.0.1 - - [26/Oct/2026 21:17:46] "GET /ready HTTP/1.1" 200 -
+student-4-database-1  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+student-4-database-1  |  * Running on all addresses (0.0.0.0)
+student-4-database-1  |  * Running on http://127.0.0.1:5402
+student-4-database-1  |  * Running on http://172.18.0.2:5402
+student-4-database-1  | [33mPress CTRL+C to quit[0m
+student-4-database-1  | 127.0.0.1 - - [26/Oct/2026 21:17:37] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 127.0.0.1 - - [26/Oct/2026 21:17:43] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 172.18.0.3 - - [26/Oct/2026 21:17:43] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 172.18.0.3 - - [26/Oct/2026 21:17:43] "GET /health HTTP/1.1" 200 -
+student-4-database-1  | 172.18.0.1 - - [26/Oct/2026 21:17:43] "GET /api/v1/stats HTTP/1.1" 200 -
+student-4-database-1  | 172.18.0.3 - - [26/Oct/2026 21:17:44] "GET /api/v1/job_postings HTTP/1.1" 200 -
+student-4-database-1  | 172.18.0.3 - - [26/Oct/2026 21:17:44] "GET /api/v1/companies HTTP/1.1" 200 -
+student-4-database-1  | 172.18.0.3 - - [26/Oct/2026 21:17:44] "GET /api/v1/job_skills HTTP/1.1" 200 -
+student-4-database-1  | 172.18.0.3 - - [26/Oct/2026 21:17:46] "GET /health HTTP/1.1" 200 -
+student-4-backend-1   |  * Serving Flask app 'app'
+student-4-backend-1   |  * Debug mode: off
+student-4-backend-1   | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+student-4-backend-1   |  * Running on all addresses (0.0.0.0)
+student-4-backend-1   |  * Running on http://127.0.0.1:5401
+student-4-backend-1   |  * Running on http://172.18.0.3:5401
+student-4-backend-1   | [33mPress CTRL+C to quit[0m
+student-4-backend-1   | 127.0.0.1 - - [26/Oct/2026 21:17:43] "GET /ready HTTP/1.1" 200 -
+student-4-backend-1   | 172.18.0.1 - - [26/Oct/2026 21:17:43] "GET /ready HTTP/1.1" 200 -
+student-4-backend-1   | 172.18.0.1 - - [26/Oct/2026 21:17:44] "GET /api/v1/jobs/enriched HTTP/1.1" 200 -
+student-4-backend-1   | 172.18.0.4 - - [26/Oct/2026 21:17:46] "GET /ready HTTP/1.1" 200 -
+student-4-backend-1   | 172.18.0.1 - - [26/Oct/2026 21:17:46] "GET /api/v1/ai/services/status HTTP/1.1" 200 -
+student-4-backend-1   | 172.18.0.1 - - [26/Oct/2026 21:17:46] "GET /api/v1/ai/status HTTP/1.1" 200 -

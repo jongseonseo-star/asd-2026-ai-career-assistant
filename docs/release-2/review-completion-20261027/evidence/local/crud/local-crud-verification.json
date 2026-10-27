@@ -1,0 +1,75 @@
+{
+  "recorded_at_utc": "2026-10-22T03:32:26.577424+00:00",
+  "recorded_at_sydney": "2026-10-22T14:32:26.577424+11:00",
+  "status": "PASS",
+  "scope": "Local profile and resume CRUD through Safari Normal UI",
+  "url": "http://127.0.0.1:8082/",
+  "method": "Observed native Safari UI operations and page reloads; no direct API or database verification was performed for this record.",
+  "initial_counts": {
+    "profiles": 10,
+    "resumes": 10,
+    "skills": 20
+  },
+  "test_data": {
+    "classification": "Disposable synthetic data created only for this local verification",
+    "profile_id": 11,
+    "profile_name": "Demo CRUD Verification 20261022",
+    "profile_email": "demo-crud-20261022@example.com",
+    "resume_id": 11,
+    "resume_title_initial": "Demo CRUD Resume 20261022",
+    "resume_title_updated": "Demo CRUD Resume 20261022 - Updated"
+  },
+  "checks": [
+    {
+      "step": "create_profile",
+      "status": "PASS",
+      "observed": "Profile created notification; profile #11 and 11 profiles displayed."
+    },
+    {
+      "step": "create_resume",
+      "status": "PASS",
+      "observed": "Resume created notification; resume #11 attached to profile #11; 11 resumes displayed."
+    },
+    {
+      "step": "update_profile",
+      "status": "PASS",
+      "observed": "Target role changed to Backend Developer - CRUD Verified; career summary changed to UPDATED synthetic text; update notification displayed."
+    },
+    {
+      "step": "update_resume",
+      "status": "PASS",
+      "observed": "Title and content changed; Set as primary resume enabled; update notification and Primary badge displayed."
+    },
+    {
+      "step": "reload_read",
+      "status": "PASS",
+      "observed": "Safari page reloaded; both records retained updated values, their relationship, and the Primary badge; counts 11/11/20."
+    },
+    {
+      "step": "delete_resume",
+      "status": "PASS",
+      "observed": "Only newly created resume #11 deleted after UI confirmation; Resume deleted successfully; resumes returned to 10."
+    },
+    {
+      "step": "delete_profile",
+      "status": "PASS",
+      "observed": "Only newly created profile #11 deleted after named UI confirmation; Profile deleted successfully; profiles returned to 10."
+    },
+    {
+      "step": "reload_after_deletion",
+      "status": "PASS",
+      "observed": "Safari page reloaded; test records absent; original profile IDs 1-10 and resume IDs 1-10 displayed; counts 10/10/20; Backend and Database Ready."
+    }
+  ],
+  "final_counts": {
+    "profiles": 10,
+    "resumes": 10,
+    "skills": 20
+  },
+  "existing_records_modified_by_this_verification": false,
+  "limitations": [
+    "Local environment only; cloud CRUD is not verified by this check.",
+    "Page reload persistence was verified; service restart persistence and direct database contents were not separately checked.",
+    "This CRUD result does not alter the existing failed security gate or establish GitHub CI success."
+  ]
+}

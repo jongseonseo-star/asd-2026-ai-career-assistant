@@ -1,0 +1,21 @@
+# Student 2 CI Evidence
+
+- Workflow: Cloud Deployment
+- Run ID: 40402532547
+- Run attempt: 1
+- Commit SHA: 3649ed5d25fa9de6cc601e1a69e922a004a81946
+- Branch or ref: main
+- Event: push
+- Job status: success
+- Status scope: Snapshot before teardown and artifact upload; verify the final GitHub run conclusion.
+- Pytest outcome: success
+- Pytest evidence: INCOMPLETE
+- Tests: 314
+- Failures: 0
+- Errors: 0
+- Skipped: 0
+- Security gate: not evaluated here; CI success does not waive pre-commit findings.
+- Generated at: 2026-10-26T21:17:33.684334+00:00
+- Profiles: 10
+- Resumes: 10
+- Skills: 20

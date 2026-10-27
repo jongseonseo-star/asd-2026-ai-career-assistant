@@ -1,0 +1,159 @@
+{
+  "workflow_id": "d6e37bf9f59244599e9f9180db741005",
+  "feature": "resume",
+  "status": "failed",
+  "created_at_utc": "2026-10-22T02:28:41.325132+00:00",
+  "evidence": {
+    "P1": {
+      "career_summary": "Computer science graduate interested in backend development and cloud systems.",
+      "created_at": "2026-09-03 09:49:32",
+      "email": "alex.morgan@example.com",
+      "full_name": "Alex Morgan",
+      "id": 1,
+      "target_role": "Software Engineer",
+      "updated_at": "2026-09-03 09:49:32"
+    },
+    "R1": {
+      "candidate_profile_id": 1,
+      "content": "Computer science graduate with Python, Flask, Git, REST API and SQLite project experience.",
+      "created_at": "2026-09-03 09:49:32",
+      "id": 1,
+      "is_primary": 1,
+      "title": "Software Engineering Resume",
+      "updated_at": "2026-09-03 09:49:32"
+    },
+    "S1": {
+      "candidate_profile_id": 1,
+      "created_at": "2026-09-03 09:49:32",
+      "id": 1,
+      "proficiency_level": "Advanced",
+      "skill_name": "Python",
+      "updated_at": "2026-09-03 09:49:32",
+      "years_experience": 2.0
+    },
+    "S2": {
+      "candidate_profile_id": 1,
+      "created_at": "2026-09-03 09:49:32",
+      "id": 2,
+      "proficiency_level": "Intermediate",
+      "skill_name": "Flask",
+      "updated_at": "2026-09-03 09:49:32",
+      "years_experience": 1.0
+    },
+    "J1": {
+      "kind": "job_requirements_not_candidate_evidence",
+      "text": "Junior software engineer role requiring Python, Flask, REST APIs, automated testing and Docker. Assess only evidence in the selected candidate records; treat missing skills as gaps to verify."
+    }
+  },
+  "trajectory": [
+    {
+      "agent": "Planner",
+      "model": "qwen2.5:7b",
+      "started_at_utc": "2026-10-22T02:28:41.327555+00:00",
+      "status": "completed",
+      "raw_output": "{\"objective\":\"Verify if the candidate meets the job requirements for a Junior Software Engineer role.\",\"steps\":[\"Identify and compare the candidate's skills with the job requirements.\"],\"evidence_ids\":[\"R1\", \"S1\", \"S2\"]}",
+      "finished_at_utc": "2026-10-22T02:28:48.614897+00:00",
+      "output": {
+        "objective": "Verify if the candidate meets the job requirements for a Junior Software Engineer role.",
+        "steps": [
+          "Identify and compare the candidate's skills with the job requirements."
+        ],
+        "evidence_ids": [
+          "R1",
+          "S1",
+          "S2"
+        ]
+      },
+      "generation_source": "ollama"
+    },
+    {
+      "agent": "Worker",
+      "model": "qwen2.5:7b",
+      "started_at_utc": "2026-10-22T02:28:48.616550+00:00",
+      "status": "completed",
+      "raw_output": "{\n    \"strengths\": [\n        {\"text\": \"The candidate has advanced proficiency in Python, which is a key requirement for the role.\", \"evidence_ids\": [\"R1\", \"S1\"]}\n    ],\n    \"skill_gaps\": [\n        {\"text\": \"The candidate lacks experience in Flask, REST APIs, automated testing, and Docker, which are required for the Junior Software Engineer role.\", \"evidence_ids\": [\"J1\"]}\n    ],\n    \"recommended_actions\": [\n        {\"text\": \"The candidate should consider acquiring or enhancing skills in Flask, REST APIs, automated testing, and Docker.\", \"evidence_ids\": [\"J1\"]}\n    ],\n    \"information_missing\": []\n}",
+      "finished_at_utc": "2026-10-22T02:28:56.500799+00:00",
+      "output": {
+        "strengths": [
+          {
+            "text": "The candidate has advanced proficiency in Python, which is a key requirement for the role.",
+            "evidence_ids": [
+              "R1",
+              "S1"
+            ]
+          }
+        ],
+        "skill_gaps": [
+          {
+            "text": "The candidate lacks experience in Flask, REST APIs, automated testing, and Docker, which are required for the Junior Software Engineer role.",
+            "evidence_ids": [
+              "J1"
+            ]
+          }
+        ],
+        "recommended_actions": [
+          {
+            "text": "The candidate should consider acquiring or enhancing skills in Flask, REST APIs, automated testing, and Docker.",
+            "evidence_ids": [
+              "J1"
+            ]
+          }
+        ],
+        "information_missing": []
+      },
+      "generation_source": "ollama"
+    },
+    {
+      "agent": "Reviewer",
+      "model": "llama3.1:8b",
+      "started_at_utc": "2026-10-22T02:28:56.503233+00:00",
+      "status": "failed",
+      "raw_output": "{\n  \"verdict\": \"supported\",\n  \"reason\": \"\",\n  \"risks\": [],\n  \"recommendations\": [\"The candidate should consider acquiring or enhancing skills in Flask, REST APIs, automated testing, and Docker.\"]\n}",
+      "finished_at_utc": "2026-10-22T02:29:04.445591+00:00"
+    }
+  ],
+  "human_decision": {
+    "status": "pending",
+    "decision": null
+  },
+  "plan": {
+    "objective": "Verify if the candidate meets the job requirements for a Junior Software Engineer role.",
+    "steps": [
+      "Identify and compare the candidate's skills with the job requirements."
+    ],
+    "evidence_ids": [
+      "R1",
+      "S1",
+      "S2"
+    ]
+  },
+  "work": {
+    "strengths": [
+      {
+        "text": "The candidate has advanced proficiency in Python, which is a key requirement for the role.",
+        "evidence_ids": [
+          "R1",
+          "S1"
+        ]
+      }
+    ],
+    "skill_gaps": [
+      {
+        "text": "The candidate lacks experience in Flask, REST APIs, automated testing, and Docker, which are required for the Junior Software Engineer role.",
+        "evidence_ids": [
+          "J1"
+        ]
+      }
+    ],
+    "recommended_actions": [
+      {
+        "text": "The candidate should consider acquiring or enhancing skills in Flask, REST APIs, automated testing, and Docker.",
+        "evidence_ids": [
+          "J1"
+        ]
+      }
+    ],
+    "information_missing": []
+  },
+  "error": "Reviewer returned an incomplete response or unknown evidence references. Review the retained original output."
+}

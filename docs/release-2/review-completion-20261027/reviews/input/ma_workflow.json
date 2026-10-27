@@ -1,0 +1,39 @@
+{
+  "mode": "ma_workflow",
+  "target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "scope": [
+    "student-2"
+  ],
+  "report": {
+    "path": "ma_workflow-report.txt",
+    "sha256": "5e6086b01f0c80f2518a5d4fec6686b7b783f4194438c49e58aa4a70e25ce9d0"
+  },
+  "evidence": [
+    {
+      "label": "historical local/security inventory",
+      "path": "../../evidence/inventory-local-and-security.json",
+      "sha256": "7311d0541263c778e951cb2adb93d876c1adc8da526e909e97797c81f7100fcb"
+    },
+    {
+      "label": "e823 final persisted workflow with human Reject",
+      "path": "../../evidence/local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/workflow.json",
+      "sha256": "fae7e4e32a30100b4ff18f1dcc154979b9a1e52a0f12c460098e77c62b3c55b2"
+    },
+    {
+      "label": "e823 original terminal execution metadata",
+      "path": "../../evidence/local/multi-agent/e8238b4a64494961b474cfea0d6e94c6/terminal-execution.json",
+      "sha256": "8458901593c6c5e56070778bfe71138be380ce1639d004230392247b909e0daf"
+    },
+    {
+      "label": "UI/failure records and target source snapshot",
+      "path": "ma_workflow-supporting-snapshot.json",
+      "sha256": "591f4781ca75da99ea8f9d9a6e2c898472f548613b40757896597703d48f30e4"
+    }
+  ],
+  "limitations": [
+    "Application execution records are historical (2026-10-22); their exact execution Git SHA is unverified.",
+    "Target source was read statically from local Git objects; no new application, model or cloud execution occurred.",
+    "Human Reject records apply to application outputs, not development-review approval or release approval.",
+    "The complete report text is intended as model input; raw references support integrity checks and audit."
+  ]
+}

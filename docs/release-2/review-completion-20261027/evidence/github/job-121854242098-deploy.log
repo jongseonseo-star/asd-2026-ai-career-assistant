@@ -1,0 +1,757 @@
+﻿2026-10-26T21:18:24.4991725Z Current runner version: '2.338.0'
+2026-10-26T21:18:24.5029826Z ##[group]Runner Image Provisioner
+2026-10-26T21:18:24.5031404Z Hosted Compute Agent
+2026-10-26T21:18:24.5033159Z Version: 20261021.618
+2026-10-26T21:18:24.5034679Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-26T21:18:24.5036458Z Build Date: 2026-10-21T00:45:21Z
+2026-10-26T21:18:24.5038118Z Worker ID: {26b6f812-b89f-4ed4-ae10-a10eb78124e5}
+2026-10-26T21:18:24.5039689Z Region: eastus
+2026-10-26T21:18:24.5040828Z Cloud: Azure
+2026-10-26T21:18:24.5042421Z ##[endgroup]
+2026-10-26T21:18:24.5044875Z ##[group]Operating System
+2026-10-26T21:18:24.5046369Z Ubuntu
+2026-10-26T21:18:24.5047510Z 24.04.5
+2026-10-26T21:18:24.5048603Z LTS
+2026-10-26T21:18:24.5049722Z ##[endgroup]
+2026-10-26T21:18:24.5050993Z ##[group]Runner Image
+2026-10-26T21:18:24.5052638Z Image: ***-24.04
+2026-10-26T21:18:24.5053890Z Version: 20261012.334.1
+2026-10-26T21:18:24.5056462Z Included Software: https://github.com/actions/runner-images/blob/***24/20261012.334/images/***/Ubuntu2404-Readme.md
+2026-10-26T21:18:24.5059507Z Image Release: https://github.com/actions/runner-images/releases/tag/***24%2F20261012.334
+2026-10-26T21:18:24.5061580Z ##[endgroup]
+2026-10-26T21:18:24.5064298Z ##[group]GITHUB_TOKEN Permissions
+2026-10-26T21:18:24.5067359Z Contents: read
+2026-10-26T21:18:24.5068609Z Metadata: read
+2026-10-26T21:18:24.5069839Z ##[endgroup]
+2026-10-26T21:18:24.5073271Z Secret source: Actions
+2026-10-26T21:18:24.5075201Z Cache mode: write
+2026-10-26T21:18:24.5076513Z Prepare workflow directory
+2026-10-26T21:18:24.5830205Z Prepare all required actions
+2026-10-26T21:18:24.5904605Z Getting action download info
+2026-10-26T21:18:24.7749556Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-26T21:18:24.9840238Z Complete job name: deploy
+2026-10-26T21:18:25.0678995Z ##[group]Run actions/checkout@v6
+2026-10-26T21:18:25.0679982Z with:
+2026-10-26T21:18:25.0680632Z   repository: jongseonseo-star/asd-2026-ai-career-assistant
+2026-10-26T21:18:25.0685302Z   token: ***
+2026-10-26T21:18:25.0685834Z   ssh-strict: true
+2026-10-26T21:18:25.0686363Z   ssh-user: git
+2026-10-26T21:18:25.0686893Z   persist-credentials: true
+2026-10-26T21:18:25.0687481Z   clean: true
+2026-10-26T21:18:25.0688021Z   sparse-checkout-cone-mode: true
+2026-10-26T21:18:25.0688635Z   fetch-depth: 1
+2026-10-26T21:18:25.0689157Z   fetch-tags: false
+2026-10-26T21:18:25.0689700Z   show-progress: true
+2026-10-26T21:18:25.0690254Z   lfs: false
+2026-10-26T21:18:25.0690753Z   submodules: false
+2026-10-26T21:18:25.0691281Z   set-safe-directory: true
+2026-10-26T21:18:25.0691879Z   allow-unsafe-pr-checkout: false
+2026-10-26T21:18:25.0692947Z env:
+2026-10-26T21:18:25.0693496Z   EC2_HOST: ***
+2026-10-26T21:18:25.0694034Z   EC2_USER: ***
+2026-10-26T21:18:25.0697390Z   EC2_SSH_KEY: ***
+2026-10-26T21:18:25.0698736Z   EC2_KNOWN_HOSTS: ***
+2026-10-26T21:18:25.0699279Z ##[endgroup]
+2026-10-26T21:18:25.1733269Z Syncing repository: jongseonseo-star/asd-2026-ai-career-assistant
+2026-10-26T21:18:25.1736700Z ##[group]Getting Git version info
+2026-10-26T21:18:25.1738468Z Working directory is '/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant'
+2026-10-26T21:18:25.1740886Z [command]/usr/bin/git version
+2026-10-26T21:18:25.1825406Z git version 2.55.0
+2026-10-26T21:18:25.1849635Z ##[endgroup]
+2026-10-26T21:18:25.1866459Z Temporarily overriding HOME='/home/runner/work/_temp/2e928346-9991-4ea6-a7a6-f679aff3a8aa' before making global git config changes
+2026-10-26T21:18:25.1869207Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:18:25.1873909Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant
+2026-10-26T21:18:25.1931290Z Deleting the contents of '/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant'
+2026-10-26T21:18:25.1935179Z ##[group]Determining repository object format
+2026-10-26T21:18:25.1937373Z ##[endgroup]
+2026-10-26T21:18:25.1939223Z ##[group]Initializing the repository
+2026-10-26T21:18:25.1942534Z [command]/usr/bin/git init /home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant
+2026-10-26T21:18:25.2062998Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-26T21:18:25.2065036Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-26T21:18:25.2066848Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-26T21:18:25.2068295Z hint: call:
+2026-10-26T21:18:25.2069199Z hint:
+2026-10-26T21:18:25.2070233Z hint: 	git config --global init.defaultBranch <name>
+2026-10-26T21:18:25.2071379Z hint:
+2026-10-26T21:18:25.2072786Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-26T21:18:25.2074605Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-26T21:18:25.2076064Z hint:
+2026-10-26T21:18:25.2077008Z hint: 	git branch -m <name>
+2026-10-26T21:18:25.2077960Z hint:
+2026-10-26T21:18:25.2079142Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-26T21:18:25.2081075Z Initialized empty Git repository in /home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/
+2026-10-26T21:18:25.2085361Z [command]/usr/bin/git remote add origin https://github.com/jongseonseo-star/asd-2026-ai-career-assistant
+2026-10-26T21:18:25.2153405Z ##[endgroup]
+2026-10-26T21:18:25.2155290Z ##[group]Disabling automatic garbage collection
+2026-10-26T21:18:25.2157404Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-26T21:18:25.2197222Z ##[endgroup]
+2026-10-26T21:18:25.2198600Z ##[group]Setting up auth
+2026-10-26T21:18:25.2199695Z Removing SSH command configuration
+2026-10-26T21:18:25.2206482Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:18:25.2259096Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:18:25.2684997Z Removing HTTP extra header
+2026-10-26T21:18:25.2693028Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:18:25.2737510Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:18:25.2969373Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:18:25.2977790Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:18:25.3018663Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:18:25.3249296Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-26T21:18:25.3291917Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git.path /home/runner/work/_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:25.3327756Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:25.3366892Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:25.3402923Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:25.3442711Z ##[endgroup]
+2026-10-26T21:18:25.3443665Z ##[group]Fetching the repository
+2026-10-26T21:18:25.3450811Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3649ed5d25fa9de6cc601e1a69e922a004a81946:refs/remotes/origin/main
+2026-10-26T21:18:25.7303843Z From https://github.com/jongseonseo-star/asd-2026-ai-career-assistant
+2026-10-26T21:18:25.7306323Z  * [new ref]         3649ed5d25fa9de6cc601e1a69e922a004a81946 -> origin/main
+2026-10-26T21:18:25.7316929Z [command]/usr/bin/git branch --list --remote origin/main
+2026-10-26T21:18:25.7347337Z   origin/main
+2026-10-26T21:18:25.7357586Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-10-26T21:18:25.7383797Z 3649ed5d25fa9de6cc601e1a69e922a004a81946
+2026-10-26T21:18:25.7389409Z ##[endgroup]
+2026-10-26T21:18:25.7390742Z ##[group]Determining the checkout info
+2026-10-26T21:18:25.7391868Z ##[endgroup]
+2026-10-26T21:18:25.7397085Z [command]/usr/bin/git sparse-checkout disable
+2026-10-26T21:18:25.7453357Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-26T21:18:25.7484366Z ##[group]Checking out the ref
+2026-10-26T21:18:25.7489904Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-26T21:18:25.7783967Z Switched to a new branch 'main'
+2026-10-26T21:18:25.7790468Z branch 'main' set up to track 'origin/main'.
+2026-10-26T21:18:25.7799351Z ##[endgroup]
+2026-10-26T21:18:25.7844882Z [command]/usr/bin/git log -1 --format=%H
+2026-10-26T21:18:25.7873219Z 3649ed5d25fa9de6cc601e1a69e922a004a81946
+2026-10-26T21:18:25.8116248Z ##[group]Run set -euo pipefail
+2026-10-26T21:18:25.8117240Z [36;1mset -euo pipefail[0m
+2026-10-26T21:18:25.8118250Z [36;1m: "${EC2_HOST:?Set the EC2_HOST repository secret.}"[0m
+2026-10-26T21:18:25.8119622Z [36;1m: "${EC2_USER:?Set the EC2_USER repository secret.}"[0m
+2026-10-26T21:18:25.8121019Z [36;1m: "${EC2_SSH_KEY:?Set the EC2_SSH_KEY repository secret.}"[0m
+2026-10-26T21:18:25.8122966Z [36;1m: "${EC2_KNOWN_HOSTS:?Set the EC2_KNOWN_HOSTS repository secret.}"[0m
+2026-10-26T21:18:25.8124295Z [36;1m[0m
+2026-10-26T21:18:25.8125111Z [36;1mprintf '%s\n' "$EC2_SSH_KEY" > "$RUNNER_TEMP/ec2-key"[0m
+2026-10-26T21:18:25.8126609Z [36;1mprintf '%s\n' "$EC2_KNOWN_HOSTS" > "$RUNNER_TEMP/ec2-known-hosts"[0m
+2026-10-26T21:18:25.8128255Z [36;1mchmod 600 "$RUNNER_TEMP/ec2-key" "$RUNNER_TEMP/ec2-known-hosts"[0m
+2026-10-26T21:18:25.8129555Z [36;1mssh_options=([0m
+2026-10-26T21:18:25.8130307Z [36;1m  -i "$RUNNER_TEMP/ec2-key"[0m
+2026-10-26T21:18:25.8131484Z [36;1m  -o "UserKnownHostsFile=$RUNNER_TEMP/ec2-known-hosts"[0m
+2026-10-26T21:18:25.8133030Z [36;1m  -o StrictHostKeyChecking=yes[0m
+2026-10-26T21:18:25.8133967Z [36;1m  -o BatchMode=yes[0m
+2026-10-26T21:18:25.8134751Z [36;1m  -o ConnectTimeout=15[0m
+2026-10-26T21:18:25.8135534Z [36;1m)[0m
+2026-10-26T21:18:25.8136134Z [36;1mremote="$EC2_USER@$EC2_HOST"[0m
+2026-10-26T21:18:25.8136973Z [36;1m[0m
+2026-10-26T21:18:25.8138094Z [36;1mgit archive --format=tar.gz --output="$RUNNER_TEMP/app.tar.gz" "$GITHUB_SHA" \[0m
+2026-10-26T21:18:25.8140016Z [36;1m  .env.cloud.example docker-compose.cloud.yml shared/frontend \[0m
+2026-10-26T21:18:25.8141649Z [36;1m  student-2/backend student-2/frontend student-2/database \[0m
+2026-10-26T21:18:25.8143523Z [36;1m  student-3/backend student-3/frontend student-3/database \[0m
+2026-10-26T21:18:25.8145106Z [36;1m  student-4/backend student-4/frontend student-4/database \[0m
+2026-10-26T21:18:25.8217183Z [36;1m  scripts/lab11/deploy-ec2.sh[0m
+2026-10-26T21:18:25.8218773Z [36;1mssh "${ssh_options[@]}" "$remote" 'mkdir -p "$HOME/asd-release2/releases"'[0m
+2026-10-26T21:18:25.8220850Z [36;1mscp "${ssh_options[@]}" "$RUNNER_TEMP/app.tar.gz" "$remote:asd-release2/$GITHUB_SHA.tar.gz"[0m
+2026-10-26T21:18:25.8223103Z [36;1mssh "${ssh_options[@]}" "$remote" bash -s -- "$GITHUB_SHA" <<'REMOTE'[0m
+2026-10-26T21:18:25.8224414Z [36;1mset -euo pipefail[0m
+2026-10-26T21:18:25.8225356Z [36;1mrelease_dir="$HOME/asd-release2/releases/$1"[0m
+2026-10-26T21:18:25.8226439Z [36;1mmkdir -p "$release_dir"[0m
+2026-10-26T21:18:25.8227832Z [36;1mtar -xzf "$HOME/asd-release2/$1.tar.gz" -C "$release_dir"[0m
+2026-10-26T21:18:25.8229224Z [36;1mif [[ ! -f "$HOME/asd-release2/.env.cloud" ]]; then[0m
+2026-10-26T21:18:25.8230728Z [36;1m    cp "$release_dir/.env.cloud.example" "$HOME/asd-release2/.env.cloud"[0m
+2026-10-26T21:18:25.8232058Z [36;1mfi[0m
+2026-10-26T21:18:25.8233260Z [36;1mln -sfn "$HOME/asd-release2/.env.cloud" "$release_dir/.env.cloud"[0m
+2026-10-26T21:18:25.8234565Z [36;1mcd "$release_dir"[0m
+2026-10-26T21:18:25.8235380Z [36;1mbash scripts/lab11/deploy-ec2.sh[0m
+2026-10-26T21:18:25.8236506Z [36;1mln -sfn "$release_dir" "$HOME/asd-release2/current"[0m
+2026-10-26T21:18:25.8237671Z [36;1mrm "$HOME/asd-release2/$1.tar.gz"[0m
+2026-10-26T21:18:25.8238566Z [36;1mREMOTE[0m
+2026-10-26T21:18:25.8544290Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-26T21:18:25.8545440Z env:
+2026-10-26T21:18:25.8546133Z   EC2_HOST: ***
+2026-10-26T21:18:25.8546769Z   EC2_USER: ***
+2026-10-26T21:18:25.8554126Z   EC2_SSH_KEY: ***
+2026-10-26T21:18:25.8556647Z   EC2_KNOWN_HOSTS: ***
+2026-10-26T21:18:25.8557400Z ##[endgroup]
+2026-10-26T21:18:37.6146623Z  Image asd-release2-aws-student-2-frontend Building 
+2026-10-26T21:18:37.6147953Z  Image asd-release2-aws-student-3-database Building 
+2026-10-26T21:18:37.6148898Z  Image asd-release2-aws-student-2-database Building 
+2026-10-26T21:18:37.6149700Z  Image asd-release2-aws-student-4-frontend Building 
+2026-10-26T21:18:37.6151151Z  Image asd-release2-aws-student-4-database Building 
+2026-10-26T21:18:37.6151973Z  Image asd-release2-aws-student-3-frontend Building 
+2026-10-26T21:18:37.6153327Z  Image asd-release2-aws-student-3-backend Building 
+2026-10-26T21:18:37.6153894Z  Image asd-release2-aws-shared-frontend Building 
+2026-10-26T21:18:37.6154401Z  Image asd-release2-aws-student-4-backend Building 
+2026-10-26T21:18:37.6154909Z  Image asd-release2-aws-student-2-backend Building 
+2026-10-26T21:18:37.6828976Z #1 [internal] load local bake definitions
+2026-10-26T21:18:37.8277868Z #1 reading from stdin 6.24kB done
+2026-10-26T21:18:37.8278269Z #1 DONE 0.0s
+2026-10-26T21:18:37.9422352Z 
+2026-10-26T21:18:37.9423406Z #2 [student-2-backend internal] load build definition from Dockerfile
+2026-10-26T21:18:37.9424363Z #2 transferring dockerfile: 492B 0.0s done
+2026-10-26T21:18:37.9424752Z #2 DONE 0.1s
+2026-10-26T21:18:37.9424912Z 
+2026-10-26T21:18:37.9425157Z #3 [student-4-database internal] load build definition from Dockerfile
+2026-10-26T21:18:37.9425708Z #3 transferring dockerfile: 409B 0.0s done
+2026-10-26T21:18:37.9426049Z #3 DONE 0.1s
+2026-10-26T21:18:37.9426211Z 
+2026-10-26T21:18:37.9426431Z #4 [shared-frontend internal] load build definition from Dockerfile
+2026-10-26T21:18:37.9426892Z #4 transferring dockerfile: 549B 0.1s done
+2026-10-26T21:18:37.9427248Z #4 DONE 0.1s
+2026-10-26T21:18:37.9427387Z 
+2026-10-26T21:18:37.9427620Z #5 [student-2-database internal] load build definition from Dockerfile
+2026-10-26T21:18:37.9428075Z #5 transferring dockerfile: 493B 0.0s done
+2026-10-26T21:18:38.1682559Z #5 DONE 0.1s
+2026-10-26T21:18:38.1683071Z 
+2026-10-26T21:18:38.1683653Z #6 [student-3-backend internal] load build definition from Dockerfile
+2026-10-26T21:18:38.1684388Z #6 transferring dockerfile: 489B 0.0s done
+2026-10-26T21:18:38.1684803Z #6 DONE 0.1s
+2026-10-26T21:18:38.1684982Z 
+2026-10-26T21:18:38.1685263Z #7 [student-4-frontend internal] load build definition from Dockerfile
+2026-10-26T21:18:38.1685859Z #7 transferring dockerfile: 298B 0.1s done
+2026-10-26T21:18:38.1686382Z #7 DONE 0.1s
+2026-10-26T21:18:38.1686555Z 
+2026-10-26T21:18:38.1686823Z #8 [student-4-backend internal] load build definition from Dockerfile
+2026-10-26T21:18:38.1687368Z #8 transferring dockerfile: 415B 0.0s done
+2026-10-26T21:18:38.1687752Z #8 DONE 0.1s
+2026-10-26T21:18:38.1687919Z 
+2026-10-26T21:18:38.1688189Z #9 [student-3-frontend internal] load build definition from Dockerfile
+2026-10-26T21:18:38.1688730Z #9 transferring dockerfile: 466B 0.0s done
+2026-10-26T21:18:38.1689488Z #9 DONE 0.1s
+2026-10-26T21:18:38.1689619Z 
+2026-10-26T21:18:38.1689844Z #10 [student-3-database internal] load build definition from Dockerfile
+2026-10-26T21:18:38.1690295Z #10 transferring dockerfile: 512B 0.1s done
+2026-10-26T21:18:38.1690620Z #10 DONE 0.1s
+2026-10-26T21:18:38.1690754Z 
+2026-10-26T21:18:38.1690971Z #11 [student-2-frontend internal] load build definition from Dockerfile
+2026-10-26T21:18:38.1691412Z #11 transferring dockerfile: 309B 0.1s done
+2026-10-26T21:18:38.1691729Z #11 DONE 0.2s
+2026-10-26T21:18:38.1691871Z 
+2026-10-26T21:18:38.1692428Z #12 [student-2-database internal] load metadata for docker.io/library/python:3.12-slim
+2026-10-26T21:18:38.7641061Z #12 DONE 0.8s
+2026-10-26T21:18:38.7641314Z 
+2026-10-26T21:18:38.7641698Z #13 [student-3-frontend internal] load .dockerignore
+2026-10-26T21:18:38.7642836Z #13 transferring context: 2B done
+2026-10-26T21:18:38.7643479Z #13 DONE 0.0s
+2026-10-26T21:18:38.7643791Z 
+2026-10-26T21:18:38.7644053Z #14 [student-4-frontend internal] load .dockerignore
+2026-10-26T21:18:38.7644700Z #14 transferring context: 70B done
+2026-10-26T21:18:38.7645119Z #14 DONE 0.0s
+2026-10-26T21:18:38.7645305Z 
+2026-10-26T21:18:38.7645515Z #15 [student-3-database internal] load .dockerignore
+2026-10-26T21:18:38.7646007Z #15 transferring context: 2B done
+2026-10-26T21:18:38.7646397Z #15 DONE 0.0s
+2026-10-26T21:18:38.7646578Z 
+2026-10-26T21:18:38.7646781Z #16 [student-3-frontend internal] load build context
+2026-10-26T21:18:38.7647234Z #16 DONE 0.0s
+2026-10-26T21:18:38.7647411Z 
+2026-10-26T21:18:38.7648002Z #17 [student-2-database internal] load .dockerignore
+2026-10-26T21:18:38.7648502Z #17 transferring context: 115B done
+2026-10-26T21:18:38.7648895Z #17 DONE 0.1s
+2026-10-26T21:18:38.7649071Z 
+2026-10-26T21:18:38.7649272Z #18 [student-3-backend internal] load .dockerignore
+2026-10-26T21:18:38.7649760Z #18 transferring context: 2B done
+2026-10-26T21:18:38.7650116Z #18 DONE 0.1s
+2026-10-26T21:18:38.7650278Z 
+2026-10-26T21:18:38.7650442Z #19 [student-3-database internal] load build context
+2026-10-26T21:18:38.7650825Z #19 DONE 0.0s
+2026-10-26T21:18:38.7650956Z 
+2026-10-26T21:18:38.7651104Z #20 [student-3-backend internal] load build context
+2026-10-26T21:18:38.7651443Z #20 DONE 0.0s
+2026-10-26T21:18:38.7651576Z 
+2026-10-26T21:18:38.7651929Z #21 [shared-frontend internal] load metadata for docker.io/library/nginx:1.27-alpine
+2026-10-26T21:18:38.7652954Z #21 DONE 0.8s
+2026-10-26T21:18:38.7653182Z 
+2026-10-26T21:18:38.7653462Z #22 [student-4-backend internal] load .dockerignore
+2026-10-26T21:18:38.7654118Z #22 transferring context: 70B done
+2026-10-26T21:18:38.7654633Z #22 DONE 0.1s
+2026-10-26T21:18:38.7654847Z 
+2026-10-26T21:18:38.7655595Z #23 [student-3-backend 1/7] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+2026-10-26T21:18:38.7657374Z #23 resolve docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+2026-10-26T21:18:38.8798051Z #23 resolve docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704 0.1s done
+2026-10-26T21:18:38.8798968Z #23 DONE 0.2s
+2026-10-26T21:18:38.8799152Z 
+2026-10-26T21:18:38.8799361Z #24 [student-4-database internal] load .dockerignore
+2026-10-26T21:18:38.8799838Z #24 transferring context: 75B done
+2026-10-26T21:18:38.8800208Z #24 DONE 0.1s
+2026-10-26T21:18:38.8800381Z 
+2026-10-26T21:18:38.8800572Z #25 [student-4-frontend internal] load build context
+2026-10-26T21:18:38.8801037Z #25 transferring context: 31.00kB done
+2026-10-26T21:18:38.8801415Z #25 DONE 0.1s
+2026-10-26T21:18:38.8801584Z 
+2026-10-26T21:18:38.8801776Z #26 [student-2-frontend internal] load .dockerignore
+2026-10-26T21:18:38.8802476Z #26 transferring context: 85B done
+2026-10-26T21:18:38.8802796Z #26 DONE 0.1s
+2026-10-26T21:18:38.8802950Z 
+2026-10-26T21:18:38.8803114Z #27 [student-2-backend internal] load .dockerignore
+2026-10-26T21:18:38.8803507Z #27 transferring context: 115B done
+2026-10-26T21:18:38.8803821Z #27 DONE 0.1s
+2026-10-26T21:18:38.8804301Z 
+2026-10-26T21:18:38.8804465Z #28 [student-2-database internal] load build context
+2026-10-26T21:18:38.8804859Z #28 transferring context: 37.51kB 0.0s done
+2026-10-26T21:18:38.9829896Z #28 DONE 0.1s
+2026-10-26T21:18:38.9830135Z 
+2026-10-26T21:18:38.9830736Z #23 [student-4-database 1/7] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+2026-10-26T21:18:38.9832307Z #23 resolve docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704 0.1s done
+2026-10-26T21:18:38.9833089Z #23 DONE 0.2s
+2026-10-26T21:18:38.9833265Z 
+2026-10-26T21:18:38.9833452Z #29 [shared-frontend internal] load .dockerignore
+2026-10-26T21:18:38.9833894Z #29 transferring context: 2B done
+2026-10-26T21:18:38.9834262Z #29 DONE 0.2s
+2026-10-26T21:18:38.9834426Z 
+2026-10-26T21:18:38.9834605Z #30 [student-2-frontend internal] load build context
+2026-10-26T21:18:38.9834983Z #30 transferring context: 85.01kB 0.0s done
+2026-10-26T21:18:38.9835312Z #30 DONE 0.1s
+2026-10-26T21:18:38.9835444Z 
+2026-10-26T21:18:38.9835595Z #20 [student-3-backend internal] load build context
+2026-10-26T21:18:38.9835962Z #20 transferring context: 47.22kB 0.0s done
+2026-10-26T21:18:39.0808355Z #20 DONE 0.2s
+2026-10-26T21:18:39.0809067Z 
+2026-10-26T21:18:39.0809643Z #16 [student-3-frontend internal] load build context
+2026-10-26T21:18:39.0810279Z #16 transferring context: 43.94kB done
+2026-10-26T21:18:39.0810787Z #16 DONE 0.2s
+2026-10-26T21:18:39.0811096Z 
+2026-10-26T21:18:39.0811816Z #31 [student-4-backend internal] load build context
+2026-10-26T21:18:39.0813087Z #31 transferring context: 31.25kB 0.0s done
+2026-10-26T21:18:39.0813725Z #31 DONE 0.2s
+2026-10-26T21:18:39.0813903Z 
+2026-10-26T21:18:39.0814099Z #19 [student-3-database internal] load build context
+2026-10-26T21:18:39.0814599Z #19 transferring context: 23.43kB 0.0s done
+2026-10-26T21:18:39.0814996Z #19 DONE 0.2s
+2026-10-26T21:18:39.0815163Z 
+2026-10-26T21:18:39.0815342Z #32 [student-2-database 7/8] COPY init_db.py .
+2026-10-26T21:18:39.0815783Z #32 CACHED
+2026-10-26T21:18:39.0815942Z 
+2026-10-26T21:18:39.0816386Z #33 [student-2-database 3/8] RUN addgroup --system appgroup     && adduser --system --ingroup appgroup appuser
+2026-10-26T21:18:39.0816973Z #33 CACHED
+2026-10-26T21:18:39.0817101Z 
+2026-10-26T21:18:39.0817233Z #34 [student-2-database 6/8] COPY app.py .
+2026-10-26T21:18:39.0817551Z #34 CACHED
+2026-10-26T21:18:39.0817684Z 
+2026-10-26T21:18:39.0818144Z #35 [student-2-database 5/8] RUN pip install --no-cache-dir --upgrade pip     && pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:18:39.0818771Z #35 CACHED
+2026-10-26T21:18:39.0818898Z 
+2026-10-26T21:18:39.0819062Z #36 [student-2-database 4/8] COPY requirements.txt .
+2026-10-26T21:18:39.0819412Z #36 CACHED
+2026-10-26T21:18:39.0819538Z 
+2026-10-26T21:18:39.0819688Z #37 [student-3-backend 7/8] COPY prompts ./prompts
+2026-10-26T21:18:39.0820032Z #37 CACHED
+2026-10-26T21:18:39.0820157Z 
+2026-10-26T21:18:39.0820566Z #38 [student-3-backend 5/8] RUN pip install --no-cache-dir --upgrade pip     && pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:18:39.0821171Z #38 CACHED
+2026-10-26T21:18:39.0821296Z 
+2026-10-26T21:18:39.0821422Z #39 [student-3-backend 6/8] COPY app.py .
+2026-10-26T21:18:39.0821733Z #39 CACHED
+2026-10-26T21:18:39.0821856Z 
+2026-10-26T21:18:39.0822008Z #40 [student-3-backend 4/8] COPY requirements.txt .
+2026-10-26T21:18:39.0822552Z #40 CACHED
+2026-10-26T21:18:39.0822677Z 
+2026-10-26T21:18:39.0822926Z #41 [student-4-frontend 4/7] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:18:39.0823414Z #41 CACHED
+2026-10-26T21:18:39.0823540Z 
+2026-10-26T21:18:39.0823702Z #42 [student-4-frontend 6/7] COPY templates ./templates
+2026-10-26T21:18:39.0824049Z #42 CACHED
+2026-10-26T21:18:39.0824175Z 
+2026-10-26T21:18:39.0824328Z #43 [student-4-frontend 3/7] COPY requirements.txt .
+2026-10-26T21:18:39.0824669Z #43 CACHED
+2026-10-26T21:18:39.0824794Z 
+2026-10-26T21:18:39.0824924Z #44 [student-4-frontend 5/7] COPY app.py ./
+2026-10-26T21:18:39.0825514Z #44 CACHED
+2026-10-26T21:18:39.0825641Z 
+2026-10-26T21:18:39.0825785Z #45 [student-4-frontend 7/7] COPY static ./static
+2026-10-26T21:18:39.0826130Z #45 CACHED
+2026-10-26T21:18:39.0826255Z 
+2026-10-26T21:18:39.0826378Z #46 [student-3-frontend 6/7] COPY app.py .
+2026-10-26T21:18:39.0826689Z #46 CACHED
+2026-10-26T21:18:39.0826809Z 
+2026-10-26T21:18:39.0827206Z #47 [student-3-frontend 5/7] RUN pip install --no-cache-dir --upgrade pip     && pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:18:39.0827798Z #47 CACHED
+2026-10-26T21:18:39.0827923Z 
+2026-10-26T21:18:39.0828080Z #48 [student-3-frontend 4/7] COPY requirements.txt .
+2026-10-26T21:18:39.0828414Z #48 CACHED
+2026-10-26T21:18:39.0828546Z 
+2026-10-26T21:18:39.0828739Z #49 [student-3-backend 8/8] RUN chown -R appuser:appgroup /app
+2026-10-26T21:18:39.0829105Z #49 CACHED
+2026-10-26T21:18:39.0829226Z 
+2026-10-26T21:18:39.0829376Z #50 [student-3-database 4/8] COPY requirements.txt .
+2026-10-26T21:18:39.0829707Z #50 CACHED
+2026-10-26T21:18:39.0829836Z 
+2026-10-26T21:18:39.0829984Z #51 [student-3-database 6/8] COPY app.py .
+2026-10-26T21:18:39.0830290Z #51 CACHED
+2026-10-26T21:18:39.0830418Z 
+2026-10-26T21:18:39.0830551Z #52 [student-3-database 7/8] COPY init_db.py .
+2026-10-26T21:18:39.0830867Z #52 CACHED
+2026-10-26T21:18:39.0830990Z 
+2026-10-26T21:18:39.0831380Z #53 [student-3-database 5/8] RUN pip install --no-cache-dir --upgrade pip     && pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:18:39.0831955Z #53 CACHED
+2026-10-26T21:18:39.0832381Z 
+2026-10-26T21:18:39.0832733Z #54 [student-3-database 3/7] RUN addgroup --system appgroup     && adduser --system --ingroup appgroup appuser
+2026-10-26T21:18:39.0833255Z #54 CACHED
+2026-10-26T21:18:39.0833390Z 
+2026-10-26T21:18:39.0833653Z #55 [student-3-database 8/8] RUN mkdir -p /app/data     && chown -R appuser:appgroup /app
+2026-10-26T21:18:39.0834102Z #55 CACHED
+2026-10-26T21:18:39.0834227Z 
+2026-10-26T21:18:39.0834350Z #56 [student-3-database 2/7] WORKDIR /app
+2026-10-26T21:18:39.0834652Z #56 CACHED
+2026-10-26T21:18:39.0834772Z 
+2026-10-26T21:18:39.0834894Z #57 [student-2-frontend 5/7] COPY app.py .
+2026-10-26T21:18:39.0835194Z #57 CACHED
+2026-10-26T21:18:39.0835314Z 
+2026-10-26T21:18:39.0835472Z #58 [student-2-frontend 6/7] COPY templates ./templates
+2026-10-26T21:18:39.0835810Z #58 CACHED
+2026-10-26T21:18:39.0835931Z 
+2026-10-26T21:18:39.0836170Z #59 [student-2-frontend 4/7] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:18:39.0836586Z #59 CACHED
+2026-10-26T21:18:39.0836713Z 
+2026-10-26T21:18:39.0836866Z #60 [student-2-frontend 3/7] COPY requirements.txt .
+2026-10-26T21:18:39.0837192Z #60 CACHED
+2026-10-26T21:18:39.0837312Z 
+2026-10-26T21:18:39.0837441Z #61 [student-4-frontend] exporting to image
+2026-10-26T21:18:39.0837764Z #61 exporting layers
+2026-10-26T21:18:39.1822609Z #61 ...
+2026-10-26T21:18:39.1823074Z 
+2026-10-26T21:18:39.1823588Z #62 [student-2-database 8/8] RUN mkdir -p /app/data     && chown -R appuser:appgroup /app
+2026-10-26T21:18:39.1824261Z #62 CACHED
+2026-10-26T21:18:39.1824445Z 
+2026-10-26T21:18:39.1824686Z #63 [student-4-backend 6/8] COPY app.py job_contract.py ./
+2026-10-26T21:18:39.1825171Z #63 CACHED
+2026-10-26T21:18:39.1825335Z 
+2026-10-26T21:18:39.1825647Z #64 [student-4-backend 5/8] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:18:39.1826215Z #64 CACHED
+2026-10-26T21:18:39.1826379Z 
+2026-10-26T21:18:39.1826570Z #65 [student-4-backend 7/8] COPY prompts ./prompts
+2026-10-26T21:18:39.1826999Z #65 CACHED
+2026-10-26T21:18:39.1827167Z 
+2026-10-26T21:18:39.1827360Z #66 [student-4-backend 4/8] COPY requirements.txt .
+2026-10-26T21:18:39.1827787Z #66 CACHED
+2026-10-26T21:18:39.1827953Z 
+2026-10-26T21:18:39.1828177Z #67 [student-4-backend 8/8] RUN chown -R appuser:appgroup /app
+2026-10-26T21:18:39.1828563Z #67 CACHED
+2026-10-26T21:18:39.1828686Z 
+2026-10-26T21:18:39.1828873Z #68 [student-3-frontend 7/7] RUN chown -R appuser:appgroup /app
+2026-10-26T21:18:39.1829275Z #68 CACHED
+2026-10-26T21:18:39.1829401Z 
+2026-10-26T21:18:39.1829958Z #69 [student-4-database internal] load build context
+2026-10-26T21:18:39.1830355Z #69 transferring context: 13.46kB 0.0s done
+2026-10-26T21:18:39.1830684Z #69 DONE 0.0s
+2026-10-26T21:18:39.1830820Z 
+2026-10-26T21:18:39.1830970Z #70 [student-2-frontend 7/7] COPY static ./static
+2026-10-26T21:18:39.1831313Z #70 CACHED
+2026-10-26T21:18:39.1831444Z 
+2026-10-26T21:18:39.1831696Z #71 [student-4-database 5/7] RUN pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:18:39.1832424Z #71 CACHED
+2026-10-26T21:18:39.1832570Z 
+2026-10-26T21:18:39.1832922Z #72 [student-4-database 3/8] RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+2026-10-26T21:18:39.1833466Z #72 CACHED
+2026-10-26T21:18:39.1833591Z 
+2026-10-26T21:18:39.1833750Z #73 [student-4-database 4/7] COPY requirements.txt .
+2026-10-26T21:18:39.1834099Z #73 CACHED
+2026-10-26T21:18:39.1834224Z 
+2026-10-26T21:18:39.1834388Z #74 [student-4-database 6/7] COPY app.py init_db.py ./
+2026-10-26T21:18:39.1834743Z #74 CACHED
+2026-10-26T21:18:39.1834874Z 
+2026-10-26T21:18:39.1835132Z #75 [student-4-database 7/7] RUN mkdir -p /app/data && chown -R appuser:appgroup /app
+2026-10-26T21:18:39.1835596Z #75 CACHED
+2026-10-26T21:18:39.1835734Z 
+2026-10-26T21:18:39.1835889Z #76 [student-2-backend internal] load build context
+2026-10-26T21:18:39.1836263Z #76 transferring context: 45.16kB 0.0s done
+2026-10-26T21:18:39.1836582Z #76 DONE 0.0s
+2026-10-26T21:18:39.1836717Z 
+2026-10-26T21:18:39.1836862Z #77 [shared-frontend internal] load build context
+2026-10-26T21:18:39.1837364Z #77 transferring context: 5.57kB 0.0s done
+2026-10-26T21:18:39.1837685Z #77 DONE 0.0s
+2026-10-26T21:18:39.1837821Z 
+2026-10-26T21:18:39.1837972Z #78 [student-2-backend 4/8] COPY requirements.txt .
+2026-10-26T21:18:39.1838324Z #78 CACHED
+2026-10-26T21:18:39.1838451Z 
+2026-10-26T21:18:39.1838576Z #56 [student-2-backend 2/7] WORKDIR /app
+2026-10-26T21:18:39.1838886Z #56 CACHED
+2026-10-26T21:18:39.1839011Z 
+2026-10-26T21:18:39.1839345Z #33 [student-2-backend 3/8] RUN addgroup --system appgroup     && adduser --system --ingroup appgroup appuser
+2026-10-26T21:18:39.1839866Z #33 CACHED
+2026-10-26T21:18:39.1839987Z 
+2026-10-26T21:18:39.1840175Z #79 [student-2-backend 6/8] COPY app.py feedback_contract.py ./
+2026-10-26T21:18:39.1840548Z #79 CACHED
+2026-10-26T21:18:39.1840674Z 
+2026-10-26T21:18:39.1840821Z #80 [student-2-backend 7/8] COPY prompts ./prompts
+2026-10-26T21:18:39.1841151Z #80 CACHED
+2026-10-26T21:18:39.1841274Z 
+2026-10-26T21:18:39.1841660Z #81 [student-2-backend 5/8] RUN pip install --no-cache-dir --upgrade pip     && pip install --no-cache-dir -r requirements.txt
+2026-10-26T21:18:39.1842391Z #81 CACHED
+2026-10-26T21:18:39.1842603Z 
+2026-10-26T21:18:39.1842787Z #82 [student-2-backend 8/8] RUN chown -R appuser:appgroup /app
+2026-10-26T21:18:39.1843153Z #82 CACHED
+2026-10-26T21:18:39.1843275Z 
+2026-10-26T21:18:39.1843407Z #61 [student-4-frontend] exporting to image
+2026-10-26T21:18:39.1843743Z #61 exporting layers 0.1s done
+2026-10-26T21:18:39.1844230Z #61 exporting manifest sha256:4ca6037d71021a648e361e95e25797f3981e6e02170e4da939f361f61f3c3263 done
+2026-10-26T21:18:39.1844931Z #61 exporting config sha256:53b3a1f05be180b5510b996f4a4f8cbe7ba314947b420cdf3e0a40d00e681a45 done
+2026-10-26T21:18:39.2944890Z #61 exporting attestation manifest sha256:822f61b5755783f5b80a5246cbc7d8d2edeeab79443afeac8809326a4bad29b6
+2026-10-26T21:18:39.4122397Z #61 ...
+2026-10-26T21:18:39.4122687Z 
+2026-10-26T21:18:39.4123396Z #83 [shared-frontend 1/4] FROM docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+2026-10-26T21:18:39.4124681Z #83 resolve docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10 0.2s done
+2026-10-26T21:18:39.4125492Z #83 DONE 0.2s
+2026-10-26T21:18:39.4125670Z 
+2026-10-26T21:18:39.4126021Z #84 [shared-frontend 3/4] COPY assets/styles.css /usr/share/nginx/html/assets/styles.css
+2026-10-26T21:18:39.4126623Z #84 CACHED
+2026-10-26T21:18:39.4126790Z 
+2026-10-26T21:18:39.4127471Z #85 [shared-frontend 2/4] COPY index.html /usr/share/nginx/html/index.html
+2026-10-26T21:18:39.4127998Z #85 CACHED
+2026-10-26T21:18:39.4128159Z 
+2026-10-26T21:18:39.4128572Z #86 [shared-frontend 4/4] COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
+2026-10-26T21:18:39.4129255Z #86 CACHED
+2026-10-26T21:18:39.4129415Z 
+2026-10-26T21:18:39.4129582Z #61 [student-4-frontend] exporting to image
+2026-10-26T21:18:39.4130376Z #61 exporting attestation manifest sha256:822f61b5755783f5b80a5246cbc7d8d2edeeab79443afeac8809326a4bad29b6 0.2s done
+2026-10-26T21:18:39.4131418Z #61 exporting manifest list sha256:079a0b5b2430f89327ab530f8a6d4c506c2adbcb69a5dd11658fafe515d42a5d
+2026-10-26T21:18:39.5441311Z #61 exporting manifest list sha256:079a0b5b2430f89327ab530f8a6d4c506c2adbcb69a5dd11658fafe515d42a5d 0.1s done
+2026-10-26T21:18:39.5443367Z #61 naming to docker.io/library/asd-release2-aws-student-4-frontend:latest
+2026-10-26T21:18:39.6461473Z #61 naming to docker.io/library/asd-release2-aws-student-4-frontend:latest 0.1s done
+2026-10-26T21:18:39.6462869Z #61 unpacking to docker.io/library/asd-release2-aws-student-4-frontend:latest
+2026-10-26T21:18:39.7601273Z #61 unpacking to docker.io/library/asd-release2-aws-student-4-frontend:latest 0.2s done
+2026-10-26T21:18:39.9960124Z #61 DONE 0.9s
+2026-10-26T21:18:39.9960494Z 
+2026-10-26T21:18:39.9960748Z #87 [student-3-database] exporting to image
+2026-10-26T21:18:39.9961509Z #87 exporting layers 0.0s done
+2026-10-26T21:18:39.9962858Z #87 exporting manifest sha256:1a33d1630ed650822ff25a2c4c15789c80c67a6cda9b729645935394bf7e9b07 0.0s done
+2026-10-26T21:18:39.9963783Z #87 exporting config sha256:f7e421b65ee2563be8ca2d8de6fb171187a8f7f3de47ffa568df692dc10ce2b6 0.0s done
+2026-10-26T21:18:39.9964653Z #87 exporting attestation manifest sha256:3746e195b15ca0cb719d67f1a01256dd3946357c0d3975b950fd0b0e8539f7d5 0.2s done
+2026-10-26T21:18:39.9965523Z #87 exporting manifest list sha256:919060a7969566e18460dd500d60a0d483de9f75d9883cc2efbffce5f5398740 0.2s done
+2026-10-26T21:18:39.9966283Z #87 naming to docker.io/library/asd-release2-aws-student-3-database:latest 0.0s done
+2026-10-26T21:18:39.9966938Z #87 unpacking to docker.io/library/asd-release2-aws-student-3-database:latest 0.1s done
+2026-10-26T21:18:39.9967433Z #87 DONE 0.9s
+2026-10-26T21:18:39.9967574Z 
+2026-10-26T21:18:39.9967709Z #88 [shared-frontend] exporting to image
+2026-10-26T21:18:39.9968039Z #88 exporting layers done
+2026-10-26T21:18:39.9968561Z #88 exporting manifest sha256:ab56da8c93d521983dd4896cbb8839cc036f27070aca970a890f04dad35732da 0.1s done
+2026-10-26T21:18:39.9969358Z #88 exporting config sha256:a999287c4e13b7f0ee0dc802a12ef0a2b826da7d9a4b84981c7b8c22e5514957 0.1s done
+2026-10-26T21:18:39.9970196Z #88 exporting attestation manifest sha256:c5c8fcf612e0d049cfcaf7d478319964a6ed5d5458b666452f5f7a1626123316 0.1s done
+2026-10-26T21:18:39.9971063Z #88 exporting manifest list sha256:17f2b65cb2eeead32a45ba33fcaf282165a5716273ca4b8f57745f98802e3ae0 0.0s done
+2026-10-26T21:18:39.9971781Z #88 naming to docker.io/library/asd-release2-aws-shared-frontend:latest done
+2026-10-26T21:18:39.9972666Z #88 unpacking to docker.io/library/asd-release2-aws-shared-frontend:latest 0.1s done
+2026-10-26T21:18:40.1777755Z #88 ...
+2026-10-26T21:18:40.1777991Z 
+2026-10-26T21:18:40.1778220Z #89 [student-2-database] exporting to image
+2026-10-26T21:18:40.1778711Z #89 exporting layers 0.0s done
+2026-10-26T21:18:40.1779458Z #89 exporting manifest sha256:9e0c3188a4afd9a4aeca97286d2a8f159fd729edb5f4543bf5c45fce3d90ba22 0.0s done
+2026-10-26T21:18:40.1780589Z #89 exporting config sha256:884aa2cbab0b32d1c15a98e8123a53844149ee8891fdfaaced6ecb0604d74025 0.0s done
+2026-10-26T21:18:40.1781730Z #89 exporting attestation manifest sha256:b694bf3b5ecfd999ee7da144fe074f0de4ba5383b11499857a3e88ae647d1b6f 0.2s done
+2026-10-26T21:18:40.1783292Z #89 exporting manifest list sha256:f84e213ee6351d0faabadbb0f7bc084d82febcbbbec0dd30e6d40b8370e172d5 0.2s done
+2026-10-26T21:18:40.1784310Z #89 naming to docker.io/library/asd-release2-aws-student-2-database:latest 0.1s done
+2026-10-26T21:18:40.1785609Z #89 unpacking to docker.io/library/asd-release2-aws-student-2-database:latest 0.1s done
+2026-10-26T21:18:40.1786269Z #89 DONE 0.9s
+2026-10-26T21:18:40.1786455Z 
+2026-10-26T21:18:40.1786629Z #90 [student-3-frontend] exporting to image
+2026-10-26T21:18:40.1787056Z #90 exporting layers 0.0s done
+2026-10-26T21:18:40.1787624Z #90 exporting manifest sha256:4789c028d2503809c6ab977064cf1ee2df6e3be68a3a606726a2bc6cb4c8c886 0.0s done
+2026-10-26T21:18:40.1788466Z #90 exporting config sha256:44ea66bf3d16e77fe58b5d7822521ece50e781e6acaf917772e996a09327c93b 0.0s done
+2026-10-26T21:18:40.1789361Z #90 exporting attestation manifest sha256:52681e387a3e8f1a516bf68c71f11d06405f9eda2aed2348ddd1ce9b02468944 0.2s done
+2026-10-26T21:18:40.1790285Z #90 exporting manifest list sha256:e0b827296a7cc332c8392e82ba5e2088eb702936d4342d045b76e6f917f58ba2 0.1s done
+2026-10-26T21:18:40.1791097Z #90 naming to docker.io/library/asd-release2-aws-student-3-frontend:latest 0.1s done
+2026-10-26T21:18:40.1791789Z #90 unpacking to docker.io/library/asd-release2-aws-student-3-frontend:latest 0.1s done
+2026-10-26T21:18:40.1792475Z #90 DONE 0.9s
+2026-10-26T21:18:40.1792623Z 
+2026-10-26T21:18:40.1792764Z #91 [student-3-backend] exporting to image
+2026-10-26T21:18:40.1793131Z #91 exporting layers 0.0s done
+2026-10-26T21:18:40.1793687Z #91 exporting manifest sha256:2029410a3242b4107fda78211166c0bcc49791d9b2ad79d16c22e0c21621ff7a 0.0s done
+2026-10-26T21:18:40.1794680Z #91 exporting config sha256:a0c2105232dfd66d3e264d1ed78e61e61b3e1984dde55ab9b8d4d10b394ca8e7 0.0s done
+2026-10-26T21:18:40.1795570Z #91 exporting attestation manifest sha256:ac784049d8af33c57e503cc5668963ff3604775750480b2a2195804caffb54cf 0.2s done
+2026-10-26T21:18:40.1796485Z #91 exporting manifest list sha256:a2f0b09a35c507607e62c047a493cce7cb4e9adb591221392b670596baf90727 0.2s done
+2026-10-26T21:18:40.1797279Z #91 naming to docker.io/library/asd-release2-aws-student-3-backend:latest 0.0s done
+2026-10-26T21:18:40.1797914Z #91 unpacking to docker.io/library/asd-release2-aws-student-3-backend:latest 0.1s done
+2026-10-26T21:18:40.1798379Z #91 DONE 0.9s
+2026-10-26T21:18:40.1798514Z 
+2026-10-26T21:18:40.1798644Z #92 [student-4-backend] exporting to image
+2026-10-26T21:18:40.1798967Z #92 exporting layers 0.0s done
+2026-10-26T21:18:40.1799463Z #92 exporting manifest sha256:cb3f7b0ee936e002dd6494982d2859fb252a7707a0cc2477dd8648ec6488b8bf 0.0s done
+2026-10-26T21:18:40.1800192Z #92 exporting config sha256:da07bc9df7c03536f1b4e17604d9ad862ffc320429da2221706613f64dad4d55 0.0s done
+2026-10-26T21:18:40.1800975Z #92 exporting attestation manifest sha256:ab0ceea0792ed1672a30e2aa5ded817d19d8d433589a37b9f39fbcfb96a6fb67 0.2s done
+2026-10-26T21:18:40.1801782Z #92 exporting manifest list sha256:c91c99be10db81f8ad02ba2acef44a428a10f79457dad9a3b765109315b9acf0 0.2s done
+2026-10-26T21:18:40.1802601Z #92 naming to docker.io/library/asd-release2-aws-student-4-backend:latest 0.0s done
+2026-10-26T21:18:40.1803208Z #92 unpacking to docker.io/library/asd-release2-aws-student-4-backend:latest 0.1s done
+2026-10-26T21:18:40.1803658Z #92 DONE 0.9s
+2026-10-26T21:18:40.1803793Z 
+2026-10-26T21:18:40.1803929Z #93 [student-2-frontend] exporting to image
+2026-10-26T21:18:40.1804254Z #93 exporting layers 0.1s done
+2026-10-26T21:18:40.1804752Z #93 exporting manifest sha256:ddb6d38c203cdec6b62fa5da063fa17f3400312b19feca237901fe8567121714 0.0s done
+2026-10-26T21:18:40.1805479Z #93 exporting config sha256:7acb501ab59439e6a4f8af029e4e60237e2f446b4da0703f4322ec9f25b8ac01 0.0s done
+2026-10-26T21:18:40.1806243Z #93 exporting attestation manifest sha256:9585127fe015ffa86a069070128a3f623ba83391a673e115a2d0828c9e8f9869 0.2s done
+2026-10-26T21:18:40.1807039Z #93 exporting manifest list sha256:2f5f9900ee2f4c2e97d6b607709bb30156b6ac3c765954b779fce34ad244d06e 0.2s done
+2026-10-26T21:18:40.1807772Z #93 naming to docker.io/library/asd-release2-aws-student-2-frontend:latest 0.0s done
+2026-10-26T21:18:40.1808379Z #93 unpacking to docker.io/library/asd-release2-aws-student-2-frontend:latest 0.1s done
+2026-10-26T21:18:40.1808964Z #93 DONE 0.9s
+2026-10-26T21:18:40.1809098Z 
+2026-10-26T21:18:40.1809226Z #94 [student-4-database] exporting to image
+2026-10-26T21:18:40.1809554Z #94 exporting layers 0.0s done
+2026-10-26T21:18:40.1810059Z #94 exporting manifest sha256:acac1e4ecbedf8e4f7ac59a8632d300be94be0676caa513ea0c518a313e9202f 0.0s done
+2026-10-26T21:18:40.1810796Z #94 exporting config sha256:168396a25d7201bd8d1a9eb0861da5616e193d36569cee9dc6d4f3891edf41f0 0.1s done
+2026-10-26T21:18:40.1932535Z #94 exporting attestation manifest sha256:cb270ea097db85f1bd2f6eb0d5bd2366bb5c0f578608d90498f3a1d4ff2ad007 0.2s done
+2026-10-26T21:18:40.1933989Z #94 exporting manifest list sha256:010a31a5cbf3b15b486dbfa3c8bb8798e9a2ea9766ce11eb368515a3faab9283 0.1s done
+2026-10-26T21:18:40.1934907Z #94 naming to docker.io/library/asd-release2-aws-student-4-database:latest 0.0s done
+2026-10-26T21:18:40.1935681Z #94 unpacking to docker.io/library/asd-release2-aws-student-4-database:latest 0.0s done
+2026-10-26T21:18:40.1936259Z #94 DONE 1.0s
+2026-10-26T21:18:40.3983758Z 
+2026-10-26T21:18:40.3984342Z #95 [student-2-backend] exporting to image
+2026-10-26T21:18:40.3984871Z #95 exporting layers 0.0s done
+2026-10-26T21:18:40.3985602Z #95 exporting manifest sha256:7b8a624758c16e402529d2cf7b009f6ba406f170d0f8778f8094975d8ae251a4 0.0s done
+2026-10-26T21:18:40.3986671Z #95 exporting config sha256:df9ceeb5d8603e6d1c08c96861c82f44bab42ecd25e0dcf65daefe401c42d7e3 0.1s done
+2026-10-26T21:18:40.3988209Z #95 exporting attestation manifest sha256:ef8a088ba751ce461bb3508ebe63f8ad1540a3c293d8c729a674fbee9616c925 0.2s done
+2026-10-26T21:18:40.3989389Z #95 exporting manifest list sha256:42827240f3efb79b3b7408cf98f4e8f3ab44ec74ed7c5dfcae605f4084ea38ff 0.1s done
+2026-10-26T21:18:40.3990373Z #95 naming to docker.io/library/asd-release2-aws-student-2-backend:latest 0.0s done
+2026-10-26T21:18:40.3991164Z #95 unpacking to docker.io/library/asd-release2-aws-student-2-backend:latest 0.0s done
+2026-10-26T21:18:40.3991682Z #95 DONE 1.0s
+2026-10-26T21:18:40.3991829Z 
+2026-10-26T21:18:40.3991967Z #88 [shared-frontend] exporting to image
+2026-10-26T21:18:40.3992614Z #88 DONE 0.8s
+2026-10-26T21:18:40.5254807Z 
+2026-10-26T21:18:40.5255460Z #96 [student-4-frontend] resolving provenance for metadata file
+2026-10-26T21:18:41.0055965Z #96 DONE 0.5s
+2026-10-26T21:18:41.0056321Z 
+2026-10-26T21:18:41.0056723Z #97 [student-2-database] resolving provenance for metadata file
+2026-10-26T21:18:41.0057490Z #97 DONE 0.3s
+2026-10-26T21:18:41.0057765Z 
+2026-10-26T21:18:41.0058192Z #98 [student-3-backend] resolving provenance for metadata file
+2026-10-26T21:18:41.0058946Z #98 DONE 0.1s
+2026-10-26T21:18:41.0059211Z 
+2026-10-26T21:18:41.0059627Z #99 [student-3-frontend] resolving provenance for metadata file
+2026-10-26T21:18:41.0060148Z #99 DONE 0.4s
+2026-10-26T21:18:41.0060317Z 
+2026-10-26T21:18:41.0060562Z #100 [student-3-database] resolving provenance for metadata file
+2026-10-26T21:18:41.0061062Z #100 DONE 0.3s
+2026-10-26T21:18:41.0061241Z 
+2026-10-26T21:18:41.0061486Z #101 [student-4-backend] resolving provenance for metadata file
+2026-10-26T21:18:41.0062004Z #101 DONE 0.2s
+2026-10-26T21:18:41.0062634Z 
+2026-10-26T21:18:41.0062867Z #102 [student-2-frontend] resolving provenance for metadata file
+2026-10-26T21:18:41.0063276Z #102 DONE 0.4s
+2026-10-26T21:18:41.0063416Z 
+2026-10-26T21:18:41.0063608Z #103 [shared-frontend] resolving provenance for metadata file
+2026-10-26T21:18:41.0063997Z #103 DONE 0.1s
+2026-10-26T21:18:41.0064134Z 
+2026-10-26T21:18:41.0064325Z #104 [student-2-backend] resolving provenance for metadata file
+2026-10-26T21:18:41.0224866Z #104 DONE 0.0s
+2026-10-26T21:18:41.0225198Z 
+2026-10-26T21:18:41.0225622Z #105 [student-4-database] resolving provenance for metadata file
+2026-10-26T21:18:41.0226473Z #105 DONE 0.2s
+2026-10-26T21:18:41.0633173Z  Image asd-release2-aws-student-2-database Built 
+2026-10-26T21:18:41.1032889Z  Image asd-release2-aws-student-2-backend Built 
+2026-10-26T21:18:41.1463395Z  Image asd-release2-aws-student-4-database Built 
+2026-10-26T21:18:41.2111698Z  Image asd-release2-aws-student-4-backend Built 
+2026-10-26T21:18:41.2526041Z  Image asd-release2-aws-student-3-database Built 
+2026-10-26T21:18:41.2985595Z  Image asd-release2-aws-student-2-frontend Built 
+2026-10-26T21:18:41.3397910Z  Image asd-release2-aws-shared-frontend Built 
+2026-10-26T21:18:41.3834935Z  Image asd-release2-aws-student-3-backend Built 
+2026-10-26T21:18:41.4204942Z  Image asd-release2-aws-student-3-frontend Built 
+2026-10-26T21:18:41.4586808Z  Image asd-release2-aws-student-4-frontend Built 
+2026-10-26T21:18:41.5290933Z  Container asd-release2-aws-student-4-backend-1 Running 
+2026-10-26T21:18:41.5291599Z  Container asd-release2-aws-student-4-database-1 Running 
+2026-10-26T21:18:41.5292412Z  Container asd-release2-aws-shared-frontend-1 Running 
+2026-10-26T21:18:41.5292868Z  Container asd-release2-aws-student-3-database-1 Running 
+2026-10-26T21:18:41.5293312Z  Container asd-release2-aws-student-2-frontend-1 Running 
+2026-10-26T21:18:41.5293753Z  Container asd-release2-aws-student-4-frontend-1 Running 
+2026-10-26T21:18:41.5294211Z  Container asd-release2-aws-student-3-backend-1 Running 
+2026-10-26T21:18:41.5294652Z  Container asd-release2-aws-student-2-database-1 Running 
+2026-10-26T21:18:41.5295093Z  Container asd-release2-aws-student-3-frontend-1 Running 
+2026-10-26T21:18:41.5295546Z  Container asd-release2-aws-student-2-backend-1 Running 
+2026-10-26T21:18:41.5963478Z  Container asd-release2-aws-student-4-database-1 Waiting 
+2026-10-26T21:18:42.1021180Z  Container asd-release2-aws-student-4-database-1 Healthy 
+2026-10-26T21:18:42.1022683Z  Container asd-release2-aws-student-3-database-1 Waiting 
+2026-10-26T21:18:42.6040750Z  Container asd-release2-aws-student-3-database-1 Healthy 
+2026-10-26T21:18:42.6041435Z  Container asd-release2-aws-student-2-database-1 Waiting 
+2026-10-26T21:18:43.1060603Z  Container asd-release2-aws-student-2-database-1 Healthy 
+2026-10-26T21:18:43.1061335Z  Container asd-release2-aws-student-4-backend-1 Waiting 
+2026-10-26T21:18:43.6078366Z  Container asd-release2-aws-student-4-backend-1 Healthy 
+2026-10-26T21:18:43.6078910Z  Container asd-release2-aws-student-3-backend-1 Waiting 
+2026-10-26T21:18:44.1093580Z  Container asd-release2-aws-student-3-backend-1 Healthy 
+2026-10-26T21:18:44.1094199Z  Container asd-release2-aws-student-2-backend-1 Waiting 
+2026-10-26T21:18:44.6111938Z  Container asd-release2-aws-student-2-backend-1 Healthy 
+2026-10-26T21:18:44.6113037Z  Container asd-release2-aws-student-2-frontend-1 Waiting 
+2026-10-26T21:18:44.6113606Z  Container asd-release2-aws-student-3-frontend-1 Waiting 
+2026-10-26T21:18:44.6114229Z  Container asd-release2-aws-student-4-frontend-1 Waiting 
+2026-10-26T21:18:45.1138598Z  Container asd-release2-aws-student-4-frontend-1 Healthy 
+2026-10-26T21:18:45.1139722Z  Container asd-release2-aws-student-3-frontend-1 Healthy 
+2026-10-26T21:18:45.1140387Z  Container asd-release2-aws-student-2-frontend-1 Healthy 
+2026-10-26T21:18:45.1140887Z  Container asd-release2-aws-student-4-backend-1 Waiting 
+2026-10-26T21:18:45.1141388Z  Container asd-release2-aws-student-3-frontend-1 Waiting 
+2026-10-26T21:18:45.1141892Z  Container asd-release2-aws-shared-frontend-1 Waiting 
+2026-10-26T21:18:45.1142709Z  Container asd-release2-aws-student-2-frontend-1 Waiting 
+2026-10-26T21:18:45.1143204Z  Container asd-release2-aws-student-4-frontend-1 Waiting 
+2026-10-26T21:18:45.1143684Z  Container asd-release2-aws-student-2-database-1 Waiting 
+2026-10-26T21:18:45.1144153Z  Container asd-release2-aws-student-4-database-1 Waiting 
+2026-10-26T21:18:45.1144633Z  Container asd-release2-aws-student-2-backend-1 Waiting 
+2026-10-26T21:18:45.1145098Z  Container asd-release2-aws-student-3-database-1 Waiting 
+2026-10-26T21:18:45.1145569Z  Container asd-release2-aws-student-3-backend-1 Waiting 
+2026-10-26T21:18:45.6160138Z  Container asd-release2-aws-student-3-database-1 Healthy 
+2026-10-26T21:18:45.6160803Z  Container asd-release2-aws-student-4-frontend-1 Healthy 
+2026-10-26T21:18:45.6179108Z  Container asd-release2-aws-student-3-frontend-1 Healthy 
+2026-10-26T21:18:45.6179698Z  Container asd-release2-aws-student-3-backend-1 Healthy 
+2026-10-26T21:18:45.6180688Z  Container asd-release2-aws-student-4-backend-1 Healthy 
+2026-10-26T21:18:45.6189331Z  Container asd-release2-aws-shared-frontend-1 Healthy 
+2026-10-26T21:18:45.6199581Z  Container asd-release2-aws-student-2-frontend-1 Healthy 
+2026-10-26T21:18:45.6204314Z  Container asd-release2-aws-student-2-backend-1 Healthy 
+2026-10-26T21:18:45.6205777Z  Container asd-release2-aws-student-2-database-1 Healthy 
+2026-10-26T21:18:45.6213810Z  Container asd-release2-aws-student-4-database-1 Healthy 
+2026-10-26T21:18:46.4232664Z Frontend /: OK
+2026-10-26T21:18:46.4261426Z Frontend /resume/: OK
+2026-10-26T21:18:46.4286015Z Frontend /interviews/: OK
+2026-10-26T21:18:46.4310255Z Frontend /jobs/: OK
+2026-10-26T21:18:46.4443720Z Frontend data http://shared-frontend:8082/ui/profiles: OK
+2026-10-26T21:18:46.4597087Z Frontend data http://shared-frontend:8303/ui/sessions: OK
+2026-10-26T21:18:46.5014427Z Frontend data http://shared-frontend:8404/: OK
+2026-10-26T21:18:46.5172609Z Backend and database profiles: OK
+2026-10-26T21:18:46.5338109Z Backend and database interview-sessions: OK
+2026-10-26T21:18:46.6201656Z Backend and database job_postings: OK
+2026-10-26T21:18:46.6202813Z Cloud deployment checks passed.
+2026-10-26T21:18:46.6280316Z ##[group]Run for path in / /resume/ /interviews/ /jobs/; do
+2026-10-26T21:18:46.6280831Z [36;1mfor path in / /resume/ /interviews/ /jobs/; do[0m
+2026-10-26T21:18:46.6281252Z [36;1m  curl --fail --silent --show-error --location \[0m
+2026-10-26T21:18:46.6281717Z [36;1m    --retry 5 --retry-delay 5 --retry-connrefused --max-time 30 \[0m
+2026-10-26T21:18:46.6282566Z [36;1m    "http://$EC2_HOST$path" --output /dev/null[0m
+2026-10-26T21:18:46.6282970Z [36;1mdone[0m
+2026-10-26T21:18:46.6347413Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:18:46.6347705Z env:
+2026-10-26T21:18:46.6348154Z   EC2_HOST: ***
+2026-10-26T21:18:46.6348411Z   EC2_USER: ***
+2026-10-26T21:18:46.6350304Z   EC2_SSH_KEY: ***
+2026-10-26T21:18:46.6351051Z   EC2_KNOWN_HOSTS: ***
+2026-10-26T21:18:46.6351318Z ##[endgroup]
+2026-10-26T21:18:49.9124115Z ##[group]Run rm -f "$RUNNER_TEMP/ec2-key" "$RUNNER_TEMP/ec2-known-hosts"
+2026-10-26T21:18:49.9124681Z [36;1mrm -f "$RUNNER_TEMP/ec2-key" "$RUNNER_TEMP/ec2-known-hosts"[0m
+2026-10-26T21:18:49.9185916Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:18:49.9186200Z env:
+2026-10-26T21:18:49.9186533Z   EC2_HOST: ***
+2026-10-26T21:18:49.9186784Z   EC2_USER: ***
+2026-10-26T21:18:49.9188658Z   EC2_SSH_KEY: ***
+2026-10-26T21:18:49.9189392Z   EC2_KNOWN_HOSTS: ***
+2026-10-26T21:18:49.9189651Z ##[endgroup]
+2026-10-26T21:18:49.9395810Z Post job cleanup.
+2026-10-26T21:18:50.0258872Z [command]/usr/bin/git version
+2026-10-26T21:18:50.0301834Z git version 2.55.0
+2026-10-26T21:18:50.0342889Z Temporarily overriding HOME='/home/runner/work/_temp/3a67cf3d-f566-4062-9e84-e149c4784065' before making global git config changes
+2026-10-26T21:18:50.0344561Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:18:50.0348890Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant
+2026-10-26T21:18:50.0381692Z Removing SSH command configuration
+2026-10-26T21:18:50.0389311Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:18:50.0427847Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:18:50.0685800Z Removing HTTP extra header
+2026-10-26T21:18:50.0692789Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:18:50.0730161Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:18:50.0994055Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:18:50.1002094Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:18:50.1039639Z includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git.path
+2026-10-26T21:18:50.1041215Z includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/worktrees/*.path
+2026-10-26T21:18:50.1042625Z includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:18:50.1043647Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:18:50.1049628Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git.path
+2026-10-26T21:18:50.1078479Z /home/runner/work/_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:50.1091029Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git.path /home/runner/work/_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:50.1144194Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/worktrees/*.path
+2026-10-26T21:18:50.1175975Z /home/runner/work/_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:50.1189845Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/asd-2026-ai-career-assistant/asd-2026-ai-career-assistant/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:50.1236851Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:18:50.1268229Z /github/runner_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:50.1285605Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:50.1325695Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:18:50.1352697Z /github/runner_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:50.1363429Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config
+2026-10-26T21:18:50.1405711Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:18:50.1660235Z Removing credentials config '/home/runner/work/_temp/git-credentials-30c7d527-9be2-4870-add7-ac9a18051be5.config'
+2026-10-26T21:18:50.1848500Z Cleaning up orphan processes
+

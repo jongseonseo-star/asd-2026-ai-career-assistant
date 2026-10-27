@@ -1,0 +1,4 @@
+NAME                                         IMAGE                         COMMAND           SERVICE              CREATED          STATUS                            PORTS
+student-4-job-listing-student-4-backend-1    student-4-backend:release0    "python app.py"   student-4-backend    14 seconds ago   Up 8 seconds (healthy)            0.0.0.0:5401->5401/tcp, [::]:5401->5401/tcp
+student-4-job-listing-student-4-database-1   student-4-database:release0   "python app.py"   student-4-database   14 seconds ago   Up 13 seconds (healthy)           0.0.0.0:5402->5402/tcp, [::]:5402->5402/tcp
+student-4-job-listing-student-4-frontend-1   student-4-frontend:release0   "python app.py"   student-4-frontend   14 seconds ago   Up 2 seconds (health: starting)   0.0.0.0:8404->8404/tcp, [::]:8404->8404/tcp

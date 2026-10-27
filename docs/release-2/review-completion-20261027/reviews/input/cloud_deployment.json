@@ -1,0 +1,50 @@
+{
+  "mode": "cloud_deployment",
+  "target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "scope": [
+    "student-2 CRUD",
+    "student-3 deployment/read checks",
+    "student-4 deployment/read checks"
+  ],
+  "report": {
+    "path": "cloud_deployment-report.txt",
+    "sha256": "a830544999f3b5f15f8ca666f931342f2101e4672f4612f008fc0b7efcc6d74f"
+  },
+  "evidence": [
+    {
+      "label": "GitHub run metadata",
+      "path": "../../evidence/github/cloud-run-40402532547.json",
+      "sha256": "5b597275169622538d850e832037e814a25f97036ad9020365919315c5ba69e6"
+    },
+    {
+      "label": "GitHub deployment log",
+      "path": "../../evidence/github/job-121854242098-deploy.log",
+      "sha256": "3eadde43c804779240b471f71ff8429f69cfbbda48f5007beb5b655a5b4f0ff4"
+    },
+    {
+      "label": "Current Safari CRUD observation",
+      "path": "../../evidence/cloud-ui-20261027.json",
+      "sha256": "3761d445950d9f2d8ba4e7f92e8bf45e27947f9658efdd12ca4222da3f31e309"
+    },
+    {
+      "label": "Cloud Compose source",
+      "path": "../../evidence/cloud-source/docker-compose.cloud.yml",
+      "sha256": "23fb935cfca854d029aa94c9c849bc9e5c258faf9f9a4d05fc0fe4100d2a51b5"
+    },
+    {
+      "label": "Cloud workflow source",
+      "path": "../../evidence/cloud-source/.github__workflows__cloud-deployment.yml",
+      "sha256": "a51abf5b836043eeddf2eca27cb78537d76a7c8fb2dae2037735319d4c5f4d53"
+    },
+    {
+      "label": "Deployment script source",
+      "path": "../../evidence/cloud-source/scripts__lab11__deploy-ec2.sh",
+      "sha256": "eeef723e4155f9803663aab236c612985cc3111c0d357fe87c45193c5559bc73"
+    }
+  ],
+  "limitations": [
+    "The complete selected report is model input. Raw referenced files are hash verified only.",
+    "Current live runtime SHA was not independently read. Other students write CRUD is unverified here.",
+    "Historical security FAILs and the generated CI report discrepancy remain visible. Human release decision pending."
+  ]
+}

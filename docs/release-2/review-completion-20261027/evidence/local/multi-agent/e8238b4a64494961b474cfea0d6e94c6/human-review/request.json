@@ -1,0 +1,6 @@
+{
+  "decision": "reject",
+  "reviewer": "Tomohisa Tamao",
+  "rationale": "I reject this output because the Worker states that REST API, SQLite and project experience are not documented, although R1 explicitly lists them. It also treats REST API and SQLite as job requirements even though no job description was supplied. The Reviewer identifies a contradiction but incorrectly attributes the unsupported claim to the candidate rather than the Worker. The assessment must use the supplied evidence and distinguish candidate statements from AI-generated claims.",
+  "correction": ""
+}

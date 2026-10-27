@@ -1,0 +1,93 @@
+{
+  "kind": "derived_evidence_audit_not_original_test_report",
+  "generated_at_utc": "2026-10-26T23:52:10.542825+00:00",
+  "repository": "jongseonseo-star/asd-2026-ai-career-assistant",
+  "target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "run_id": 40402532547,
+  "run_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/actions/runs/40402532547",
+  "original_artifact_unchanged": true,
+  "junit": {
+    "suite_attributes": [
+      {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "316",
+        "time": "15.552",
+        "timestamp": "2026-10-26T21:16:44.676318+00:00",
+        "hostname": "runnervmtai0g"
+      }
+    ],
+    "declared_tests": 316,
+    "testcase_elements": 314,
+    "difference": 2,
+    "testcase_children": {
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "independent_subtests_attribute": false
+  },
+  "pytest_cli": {
+    "passed_test_items": 314,
+    "passed_subtests": 2,
+    "failures_reported": false,
+    "summary_evidence": [
+      {
+        "line": 623,
+        "text": "2026-10-26T21:17:00.3522888Z 314 passed, 2 subtests passed in 15.55s"
+      }
+    ]
+  },
+  "original_report_pytest": {
+    "file": "pytest-results.xml",
+    "status": "INCOMPLETE",
+    "sha256": "076f680256017116d3b1d2fa55822e05ba0514ae9c888d88cdd047c7e0ceb82f",
+    "tests": 314,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "reason": "No tests, skipped tests, or inconsistent totals require explanation.",
+    "step_outcome": "success"
+  },
+  "collector": {
+    "repository_path": "student-2/testing_review.py",
+    "source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/student-2/testing_review.py#L34",
+    "logic": "Line 35 counts testcase elements. Lines 44-58 compare aggregate tests against descendant testcase count. 316 declared != 314 case elements sets incomplete_totals; lines 62-65 retain INCOMPLETE, with no failures/errors."
+  },
+  "interpretation": {
+    "observation": "The aggregate count 316 equals 314 passing test items plus 2 passing subtests. XML has 314 testcase elements and no failure/error/skipped children.",
+    "confidence": "Counts and collector cause are directly verified. The subtest accounting explanation is corroborated by the CLI summary; the XML has no separate subtest counter.",
+    "status_policy": "Preserve the original aggregate INCOMPLETE. Record job success, CLI 314 + 2 passing, and individual testcase outcomes separately. Do not relabel the original artifact PASS or infer security/release approval.",
+    "code_change_required_for_explanation": false,
+    "rerun_performed": false
+  },
+  "sources": [
+    {
+      "label": "pytest-results.xml",
+      "path": "artifacts/student-2-ci-evidence-40402532547/pytest-results.xml",
+      "sha256": "076f680256017116d3b1d2fa55822e05ba0514ae9c888d88cdd047c7e0ceb82f"
+    },
+    {
+      "label": "report.json",
+      "path": "artifacts/student-2-ci-evidence-40402532547/report.json",
+      "sha256": "ba2ce12fa0bc1761b5c8fe8acc20b9726c83fd1de6dcf00a5f0bfd9fab41da28"
+    },
+    {
+      "label": "job-121853157112-student-2.log",
+      "path": "job-121853157112-student-2.log",
+      "sha256": "1a150955d85c71605f62c8e0bdf00dffcbbf760719c3c79a4bdd4756595c41d9"
+    },
+    {
+      "label": "student-2__testing_review.py.txt",
+      "path": "source-snapshots/student-2__testing_review.py.txt",
+      "sha256": "4eb2fdaf594b964783849c97a9cb160b4aac750222da9a7a9d18b4a410c6dd8a"
+    },
+    {
+      "label": "dotgithub__workflows__student-2.yml.txt",
+      "path": "source-snapshots/dotgithub__workflows__student-2.yml.txt",
+      "sha256": "d6fd798bd209ad8ec245c2bbd2ce2ce1cc730e13cab8c56899e93cafd9e3a3b2"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+NAME                               IMAGE                         COMMAND           SERVICE              CREATED          STATUS                            PORTS
+student2-ci-student-2-backend-1    student-2-backend:release0    "python app.py"   student-2-backend    14 seconds ago   Up 8 seconds (healthy)            0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp
+student2-ci-student-2-database-1   student-2-database:release0   "python app.py"   student-2-database   14 seconds ago   Up 14 seconds (healthy)           0.0.0.0:5002->5002/tcp, [::]:5002->5002/tcp
+student2-ci-student-2-frontend-1   student-2-frontend:release0   "python app.py"   student-2-frontend   14 seconds ago   Up 2 seconds (health: starting)   0.0.0.0:8082->8082/tcp, [::]:8082->8082/tcp

@@ -1,0 +1,97 @@
+# The official nginx entrypoint substitutes service URLs and public ports at startup.
+# Resolve Docker service names when requests arrive, so feature startup order is flexible.
+resolver 127.0.0.11 valid=10s ipv6=off;
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name _;
+
+    location = /health {
+        access_log off;
+        default_type text/plain;
+        return 200 "ok\n";
+    }
+
+    location = /resume/ {
+        return 302 $scheme://$host:${STUDENT2_PUBLIC_PORT}/;
+    }
+
+    location = /jobs/ {
+        return 302 $scheme://$host:${STUDENT4_PUBLIC_PORT}/;
+    }
+
+    location = /interviews/ {
+        return 302 $scheme://$host:${STUDENT3_PUBLIC_PORT}/;
+    }
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ =404;
+    }
+}
+
+server {
+    listen 8082;
+    listen [::]:8082;
+    server_name _;
+    set $student2_frontend ${STUDENT2_FRONTEND_URL};
+
+    # Resume AI calls can include three sequential local model generations.
+    # Keep the ordinary proxy timeout unchanged for CRUD and other features.
+    location ~ ^/ui/(ai/resume-feedback|multi-agent/run)$ {
+        proxy_pass $student2_frontend$request_uri;
+        proxy_read_timeout 450s;
+        proxy_ssl_server_name on;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location / {
+        proxy_pass $student2_frontend$request_uri;
+        proxy_ssl_server_name on;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+server {
+    listen 8303;
+    listen [::]:8303;
+    server_name _;
+    set $student3_frontend ${STUDENT3_FRONTEND_URL};
+
+    location / {
+        proxy_pass $student3_frontend$request_uri;
+        proxy_ssl_server_name on;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+server {
+    listen 8404;
+    listen [::]:8404;
+    server_name _;
+    set $student4_frontend ${STUDENT4_FRONTEND_URL};
+
+    location / {
+        proxy_pass $student4_frontend$request_uri;
+        proxy_ssl_server_name on;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

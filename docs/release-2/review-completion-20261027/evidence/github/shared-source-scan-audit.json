@@ -1,0 +1,322 @@
+{
+  "kind": "derived_current_shared_source_scan_audit",
+  "generated_at_utc": "2026-10-27T00:03:55.561226+00:00",
+  "application_evidence_target_commit": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+  "local_tooling_source": {
+    "worktree": "/Users/tomot/.codex/.chatgpt-projects/g-p-6a6b09115e7881918de58c7e07143535/worktrees/release2-report-completion",
+    "HEAD": "3649ed5d25fa9de6cc601e1a69e922a004a81946",
+    "uncommitted_changes": [
+      " M ai-services/README.md",
+      " M ai-services/agentic_loop.py",
+      " M ai-services/loop_evidence.py",
+      "?? ai-services/REPORT_REVIEWS.md",
+      "?? ai-services/loop_report_reviews.py",
+      "?? ai-services/prompts/loop/cloud_deployment.txt",
+      "?? ai-services/prompts/loop/ma_workflow.txt",
+      "?? ai-services/prompts/loop/testing_report.txt",
+      "?? ai-services/tests/test_report_reviews.py"
+    ],
+    "identity_note": "The local review-tool additions are uncommitted on baseline HEAD; current scan hashes, not HEAD alone, identify the actually scanned source. No publication or deployed revision is established."
+  },
+  "scans": [
+    {
+      "kind": "ruff",
+      "path": "release2-completion/reviews/diagnostics/current-source-security/student-2/security/ruff.json",
+      "sha256": "681c3a639d23dc1f2fa5a3306769ff4adf1a7ee688f947aa2ce22b3047c1ec87",
+      "generated_at_utc": "2026-10-27T00:02:11.024519+00:00",
+      "scope": "student-2 code and shared ai-services code; dependency audit also includes the shared AI runtime requirements.",
+      "shared_source_included": true,
+      "passed": false,
+      "exit_code": 1,
+      "tool_version": "0.16.8",
+      "findings_count": 16
+    },
+    {
+      "kind": "secrets",
+      "path": "release2-completion/reviews/diagnostics/current-source-security/student-2/security/secrets.json",
+      "sha256": "ef655aadfa7bbd19151da6ec851b48e45dcc3fd14baecede9507f976c89254ab",
+      "generated_at_utc": "2026-10-27T00:02:11.424485+00:00",
+      "scope": "student-2 code and shared ai-services code; dependency audit also includes the shared AI runtime requirements.",
+      "shared_source_included": true,
+      "passed": true,
+      "exit_code": 0,
+      "tool_version": "1.5.0",
+      "findings_count": 0
+    }
+  ],
+  "ruff_rule_counts": {
+    "S310": 14,
+    "S603": 1,
+    "S110": 1
+  },
+  "ruff_flagged_statement_baseline_comparison": [
+    {
+      "file": "ai-services/agentic_loop.py",
+      "line": 99,
+      "rule": "S310",
+      "working_source_sha256": "0d55bb0b5fe97172cf664ce630bd45ad6003d8ddabf32dab8deeb399af83fa7a",
+      "base_source_sha256": "fd53328ac916fda0aa262dfde6dca6597bb8b1fa4cee21263434b98f99685652",
+      "base_line": 94,
+      "flagged_source_line": "request = Request(result[\"url\"], data=json.dumps(body).encode(),",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        94
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/agentic_loop.py#L94",
+      "classification": "pre-existing flagged statement; same text, with line shift"
+    },
+    {
+      "file": "ai-services/agentic_loop.py",
+      "line": 101,
+      "rule": "S310",
+      "working_source_sha256": "0d55bb0b5fe97172cf664ce630bd45ad6003d8ddabf32dab8deeb399af83fa7a",
+      "base_source_sha256": "fd53328ac916fda0aa262dfde6dca6597bb8b1fa4cee21263434b98f99685652",
+      "base_line": 96,
+      "flagged_source_line": "with urlopen(request, timeout=timeout) as response:",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        96,
+        175
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/agentic_loop.py#L96",
+      "classification": "pre-existing flagged statement; same text, with line shift"
+    },
+    {
+      "file": "ai-services/agentic_loop.py",
+      "line": 178,
+      "rule": "S310",
+      "working_source_sha256": "0d55bb0b5fe97172cf664ce630bd45ad6003d8ddabf32dab8deeb399af83fa7a",
+      "base_source_sha256": "fd53328ac916fda0aa262dfde6dca6597bb8b1fa4cee21263434b98f99685652",
+      "base_line": 170,
+      "flagged_source_line": "request = Request(url, method=result[\"request\"][\"method\"])",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        170
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/agentic_loop.py#L170",
+      "classification": "pre-existing flagged statement; same text, with line shift"
+    },
+    {
+      "file": "ai-services/agentic_loop.py",
+      "line": 183,
+      "rule": "S310",
+      "working_source_sha256": "0d55bb0b5fe97172cf664ce630bd45ad6003d8ddabf32dab8deeb399af83fa7a",
+      "base_source_sha256": "fd53328ac916fda0aa262dfde6dca6597bb8b1fa4cee21263434b98f99685652",
+      "base_line": 175,
+      "flagged_source_line": "with urlopen(request, timeout=timeout) as response:",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        96,
+        175
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/agentic_loop.py#L175",
+      "classification": "pre-existing flagged statement; same text, with line shift"
+    },
+    {
+      "file": "ai-services/job_generation.py",
+      "line": 36,
+      "rule": "S310",
+      "working_source_sha256": "986a73cd4439a4e4cc4ea7d2e02c158cd95551713bf26439552a18c343040fd7",
+      "base_source_sha256": "986a73cd4439a4e4cc4ea7d2e02c158cd95551713bf26439552a18c343040fd7",
+      "base_line": 36,
+      "flagged_source_line": "request = Request(base_url + \"/api/chat\", data=json.dumps(body).encode(),",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        36
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/job_generation.py#L36",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/job_generation.py",
+      "line": 39,
+      "rule": "S310",
+      "working_source_sha256": "986a73cd4439a4e4cc4ea7d2e02c158cd95551713bf26439552a18c343040fd7",
+      "base_source_sha256": "986a73cd4439a4e4cc4ea7d2e02c158cd95551713bf26439552a18c343040fd7",
+      "base_line": 39,
+      "flagged_source_line": "with urlopen(request, timeout=float(os.getenv(\"OLLAMA_TIMEOUT_SECONDS\", \"180\"))) as response:",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        39
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/job_generation.py#L39",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/loop_collectors.py",
+      "line": 106,
+      "rule": "S603",
+      "working_source_sha256": "3fc3e2e264b67f56bdd27fcd4dfcb989f219c98ef29c3a9644404d3bff77a74c",
+      "base_source_sha256": "3fc3e2e264b67f56bdd27fcd4dfcb989f219c98ef29c3a9644404d3bff77a74c",
+      "base_line": 106,
+      "flagged_source_line": "result = subprocess.run(args, cwd=root, capture_output=True, text=True, timeout=timeout, check=False)",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        106
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/loop_collectors.py#L106",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/mcp_server.py",
+      "line": 58,
+      "rule": "S310",
+      "working_source_sha256": "c7b8b04cfe7fe6fc6fb5292582400bbc1319d5084cfcaaa43f123c7c7dc3a60c",
+      "base_source_sha256": "c7b8b04cfe7fe6fc6fb5292582400bbc1319d5084cfcaaa43f123c7c7dc3a60c",
+      "base_line": 58,
+      "flagged_source_line": "with urlopen(f\"{DATABASE_API_URL}{path}\", timeout=DATABASE_TIMEOUT) as response:",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        58
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/mcp_server.py#L58",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/mcp_server.py",
+      "line": 101,
+      "rule": "S310",
+      "working_source_sha256": "c7b8b04cfe7fe6fc6fb5292582400bbc1319d5084cfcaaa43f123c7c7dc3a60c",
+      "base_source_sha256": "c7b8b04cfe7fe6fc6fb5292582400bbc1319d5084cfcaaa43f123c7c7dc3a60c",
+      "base_line": 101,
+      "flagged_source_line": "with urlopen(JOB_DATABASE_API_URL + path, timeout=DATABASE_TIMEOUT) as response:",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        101
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/mcp_server.py#L101",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/mcp_server.py",
+      "line": 158,
+      "rule": "S310",
+      "working_source_sha256": "c7b8b04cfe7fe6fc6fb5292582400bbc1319d5084cfcaaa43f123c7c7dc3a60c",
+      "base_source_sha256": "c7b8b04cfe7fe6fc6fb5292582400bbc1319d5084cfcaaa43f123c7c7dc3a60c",
+      "base_line": 158,
+      "flagged_source_line": "request = Request(RAG_BASE_URL + path, data=json.dumps(payload).encode(\"utf-8\"),",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        158
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/mcp_server.py#L158",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/mcp_server.py",
+      "line": 161,
+      "rule": "S310",
+      "working_source_sha256": "c7b8b04cfe7fe6fc6fb5292582400bbc1319d5084cfcaaa43f123c7c7dc3a60c",
+      "base_source_sha256": "c7b8b04cfe7fe6fc6fb5292582400bbc1319d5084cfcaaa43f123c7c7dc3a60c",
+      "base_line": 161,
+      "flagged_source_line": "with urlopen(request, timeout=RAG_TIMEOUT) as response:",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        161
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/mcp_server.py#L161",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/multi_agent_server.py",
+      "line": 133,
+      "rule": "S310",
+      "working_source_sha256": "0ff8ecd86f403274486b078526660457df5664e6ec18df627e5e104ad4e1cb42",
+      "base_source_sha256": "0ff8ecd86f403274486b078526660457df5664e6ec18df627e5e104ad4e1cb42",
+      "base_line": 133,
+      "flagged_source_line": "req = Request(url, data=json.dumps(body).encode(\"utf-8\"), headers={\"Content-Type\": \"application/json\"}, method=\"POST\")",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        133
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/multi_agent_server.py#L133",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/multi_agent_server.py",
+      "line": 135,
+      "rule": "S310",
+      "working_source_sha256": "0ff8ecd86f403274486b078526660457df5664e6ec18df627e5e104ad4e1cb42",
+      "base_source_sha256": "0ff8ecd86f403274486b078526660457df5664e6ec18df627e5e104ad4e1cb42",
+      "base_line": 135,
+      "flagged_source_line": "with urlopen(req, timeout=request_timeout) as resp:",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        135
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/multi_agent_server.py#L135",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/rag_retrieval.py",
+      "line": 208,
+      "rule": "S110",
+      "working_source_sha256": "58e75c049b99d6066490da96e11de02932c47f227a25e06ef5a5cdfd3cff96ab",
+      "base_source_sha256": "58e75c049b99d6066490da96e11de02932c47f227a25e06ef5a5cdfd3cff96ab",
+      "base_line": 208,
+      "flagged_source_line": "except Exception:",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        208
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/rag_retrieval.py#L208",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/resume_generation.py",
+      "line": 87,
+      "rule": "S310",
+      "working_source_sha256": "5fce4dd91f92f02e9ec31a839f3856665f0e37a78a26f8f5013bab13e95b8774",
+      "base_source_sha256": "5fce4dd91f92f02e9ec31a839f3856665f0e37a78a26f8f5013bab13e95b8774",
+      "base_line": 87,
+      "flagged_source_line": "request = Request(f\"{OLLAMA_BASE_URL}/api/chat\", data=json.dumps(body).encode(), headers={\"Content-Type\": \"application/json\"}, method=\"POST\")",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        87
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/resume_generation.py#L87",
+      "classification": "pre-existing flagged statement; same line and text"
+    },
+    {
+      "file": "ai-services/resume_generation.py",
+      "line": 89,
+      "rule": "S310",
+      "working_source_sha256": "5fce4dd91f92f02e9ec31a839f3856665f0e37a78a26f8f5013bab13e95b8774",
+      "base_source_sha256": "5fce4dd91f92f02e9ec31a839f3856665f0e37a78a26f8f5013bab13e95b8774",
+      "base_line": 89,
+      "flagged_source_line": "with urlopen(request, timeout=OLLAMA_TIMEOUT) as response:",
+      "same_line_in_base": true,
+      "matching_base_line_candidates": [
+        89
+      ],
+      "base_source_url": "https://github.com/jongseonseo-star/asd-2026-ai-career-assistant/blob/3649ed5d25fa9de6cc601e1a69e922a004a81946/ai-services/resume_generation.py#L89",
+      "classification": "pre-existing flagged statement; same line and text"
+    }
+  ],
+  "baseline_comparison_summary": {
+    "pre_existing_same_source_line": 16,
+    "new_or_changed_flagged_lines": 0,
+    "baseline_ruff_executed": false,
+    "meaning": "All flagged statements existed verbatim in the pinned base source; this is source comparison, not a separately executed baseline Ruff result. It does not suppress, waive or fix the current FAIL."
+  },
+  "recorded_input_integrity": {
+    "ruff": {
+      "input_count": 111,
+      "missing": [],
+      "mismatches": [],
+      "all_recorded_inputs_match_current_working_files": true
+    },
+    "secrets": {
+      "input_count": 111,
+      "missing": [],
+      "mismatches": [],
+      "all_recorded_inputs_match_current_working_files": true
+    }
+  },
+  "limitations": [
+    "Fresh scan scope is Student 2 plus shared ai-services, not fresh scans of Student 3/4 own source.",
+    "No new dependency audit result is present in this current-source scan directory; historical completed FAIL and later INCOMPLETE records still apply.",
+    "Ruff reports potential issues; source comparison identifies pre-existing code, not exploitability, safe disposition or human risk acceptance.",
+    "No model execution, new scan or source change was performed by this auditor."
+  ]
+}
